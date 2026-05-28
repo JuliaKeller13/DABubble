@@ -1,0 +1,82 @@
+/* -------------------------------------------------------- */
+/*                        RESET                             */
+/* -------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+/* Remove default margins */
+:where(h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd) {
+    margin: 0;
+}
+
+/* Lists */
+:where(ul, ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Media */
+:where(img, picture, video, canvas, svg) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Tables */
+:where(table) {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Forms */
+:where(button, input, select, textarea) {
+    font: inherit;
+    color: inherit;
+}
+
+:where(fieldset) {
+    padding: 0;
+    border: 0;
+}
+
+:where(button,
+    summary,
+    [role='button'],
+    input[type='button'],
+    input[type='submit'],
+    input[type='reset']) {
+    cursor: pointer;
+}
+
+:where(:disabled) {
+    cursor: not-allowed;
+}
+
+:where(textarea) {
+    resize: vertical;
+}
+
+:where([hidden]) {
+    display: none;
+}
