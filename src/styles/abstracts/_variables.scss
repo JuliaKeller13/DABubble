@@ -1,0 +1,60 @@
+// ==========================================================================
+// DABUBBLE COLOR PALETTE
+// ==========================================================================
+
+// SCSS Variables (Corrected spelling)
+$white: #ffffff;
+$bg-color: #eceefe;
+$light-purple: #adb0d9;
+$black: #000000;
+$text-gray: #686868;
+$purple-2: #797ef3;
+$purple-3: #535af1;
+$purple-1: #444df2;
+$online-green: #92c83e;
+$rosa-error: #ed1e79;
+
+// SCSS Variables (Aliases with original screenshot spellings to prevent typos)
+$white-color: $white;
+$ligth-purple: $light-purple; // Typo alias from screenshot
+$text-grey: $text-gray;
+
+// ==========================================================================
+// CSS CUSTOM PROPERTIES (:root)
+// ==========================================================================
+:root {
+  --white: #ffffff;
+  --bg-color: #eceefe;
+  --light-purple: #adb0d9;
+  --ligth-purple: #adb0d9; // Typo alias from screenshot
+  --black: #000000;
+  --text-gray: #686868;
+  --purple-2: #797ef3;
+  --purple-3: #535af1;
+  --purple-1: #444df2;
+  --online-green: #92c83e;
+  --rosa-error: #ed1e79;
+}
+
+// ==========================================================================
+// BREAKPOINTS & LAYOUT
+// ==========================================================================
+$breakpoint-mobile-sm: 370px;
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-tablet-lg: 1200px;
+$breakpoint-large: 1440px;
+
+// ==========================================================================
+// Z-INDEX LAYERS
+// ==========================================================================
+$z-index-below: -1;
+$z-index-base: 1;
+$z-index-dropdown: 20;
+$z-index-dropdown-top: 21;
+$z-index-sticky: 30;
+$z-index-overlay: 40;
+$z-index-modal: 50;
+$z-index-toast: 60;
+$z-index-header-sidebar: 100;

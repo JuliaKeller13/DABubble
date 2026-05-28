@@ -1,0 +1,202 @@
+@use '../abstracts/' as *;
+
+// ==========================================================================
+// BASE BUTTON STYLES
+// ==========================================================================
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border-radius: 25px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 150ms ease-in-out;
+  border: none;
+  outline: none;
+  user-select: none;
+  box-sizing: border-box;
+
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+    box-shadow: none !important;
+  }
+
+  img,
+  svg {
+    width: 20px;
+    height: 20px;
+    transition: all 150ms ease-in-out;
+  }
+}
+
+// ==========================================================================
+// PRIMARY BUTTON
+// ==========================================================================
+.btn-primary {
+  @extend .btn;
+  background-color: $purple-1;
+  color: $white;
+
+  &:hover {
+    background-color: $purple-2;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    background-color: $purple-3;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $text-gray;
+    color: $white;
+    opacity: 0.6;
+  }
+
+  // If there's an icon inside, make sure it matches the color if needed
+  img,
+  svg {
+    filter: brightness(0) invert(1);
+  }
+}
+
+// ==========================================================================
+// SECONDARY BUTTON
+// ==========================================================================
+.btn-secondary {
+  @extend .btn;
+  background-color: $white;
+  color: $purple-1;
+  border: 1px solid $purple-1;
+  width: 140px;
+  height: 50px;
+
+  &:hover {
+    background-color: $purple-1;
+    color: $white;
+    border-color: transparent;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    
+    img,
+    svg {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  &:active {
+    background-color: $purple-3;
+    color: $white;
+    border-color: transparent;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: $white;
+    color: $light-purple;
+    border-color: $light-purple;
+    opacity: 0.7;
+    
+    img,
+    svg {
+      filter: none;
+      opacity: 0.5;
+    }
+  }
+}
+
+// ==========================================================================
+// BUTTON SIZE VARIATIONS
+// ==========================================================================
+.btn-no-icon {
+  width: 110px;
+  height: 50px;
+}
+
+.btn-with-icon {
+  width: 150px;
+  height: 50px;
+  gap: 8px;
+}
+
+// ==========================================================================
+// WORKSPACE TOGGLE BUTTONS (VERTICAL SIDEBAR TABS)
+// ==========================================================================
+.btn-workspace {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 24px 8px;
+  background-color: $white;
+  border: none;
+  border-radius: 0 30px 30px 0;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+  outline: none;
+  user-select: none;
+  width: 55px;
+  box-sizing: border-box;
+
+  // Icon at the top
+  .btn-workspace-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 20px;
+    color: $black;
+    transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+    
+    img, svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // Vertical text reading from bottom to top
+  .btn-workspace-text {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: $black;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    transition: color 200ms ease-in-out;
+  }
+
+  // Hover states
+  &:hover {
+    box-shadow: 6px 6px 16px rgba(68, 77, 242, 0.12);
+    
+    .btn-workspace-icon {
+      color: $purple-1;
+      transform: scale(1.1);
+    }
+    
+    .btn-workspace-text {
+      color: $purple-1;
+    }
+  }
+
+  // Active state
+  &:active {
+    box-shadow: 2px 2px 8px rgba(68, 77, 242, 0.08);
+    background-color: $bg-color;
+  }
+}
+
+// Close variation (Height: 340px)
+.btn-workspace-close {
+  @extend .btn-workspace;
+  height: 340px;
+}
+
+// Open variation (Height: 310px)
+.btn-workspace-open {
+  @extend .btn-workspace;
+  height: 310px;
+}
