@@ -3,7 +3,7 @@
 @font-face {
   font-family: 'Nunito Variable';
   src: url('../../../public/fonts/Nunito-VariableFont_wght.ttf') format('truetype-variations'),
-       url('../../../public/fonts/Nunito-VariableFont_wght.ttf') format('truetype'); 
+    url('../../../public/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
   font-weight: 300 900;
   font-style: normal;
   font-display: swap;
@@ -18,6 +18,13 @@ body {
   font-family: var(--font-main);
   margin: 0;
   padding: 0;
+}
+
+.text-intro {
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 80px;
+  color: var(--white);
 }
 
 .text-headline-blue {
