@@ -1,11 +1,42 @@
 @use '../../../styles/abstracts/mixins' as mx;
 
 .header {
-  max-width: 1920px;
   position: absolute;
   top: 25px;
-  left: 50px;
-  height: 120px;
+  left: 0;
+  right: 0;
+  padding: 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  z-index: 10;
+
+  &__left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__center {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    app-searchbar {
+      width: 100%;
+      max-width: 990px;
+      display: block;
+    }
+  }
+
+  &__right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 
   &__logo {
     width: 240px;
@@ -17,7 +48,12 @@
 @include mx.mobile {
   .header {
     top: 20px;
-    left: 20px;
+    padding: 0 20px;
+
+    &__logo {
+      width: 180px;
+      height: 52px;
+    }
   }
 }
 /* #endregion */
