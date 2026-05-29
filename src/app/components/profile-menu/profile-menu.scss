@@ -1,0 +1,63 @@
+@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
+
+.profile-menu-container {
+  width: 345px;
+  height: 70px;
+  @include mx.flex(row, nowrap, flex-end, center);
+  gap: 20px;
+  padding: 0 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background-color 150ms ease-in-out;
+}
+
+.profile-menu-name {
+  font-family: var(--font-main);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--black);
+}
+
+.profile-menu-avatar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-menu-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-menu-status-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  background-color: var(--online-green);
+  border: 2px solid var(--white);
+  border-radius: 50%;
+}
+
+.profile-menu-arrow {
+  width: 14px;
+  height: 9px;
+}
+
+/* #region RESPONSIVE */
+@include mx.mobile {
+  .profile-menu-container {
+    width: auto;
+    gap: 8px;
+    padding: 0 8px;
+  }
+  .profile-menu-name {
+    display: none;
+  }
+}
+/* #endregion */
