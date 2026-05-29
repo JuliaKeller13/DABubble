@@ -52,17 +52,14 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.form.valid) {
         this.loading.set(true);
-        console.log('Login-Daten:', this.form.value);
         this.loading.set(false);
     } else {
       this.form.markAllAsTouched();
     }
   }
   guestLogin(): void {
-    console.log('Gäste-Login getriggert');
   }
 
   loginWithGoogle(): void {
-    console.log('Google Login getriggert');
   }
 }

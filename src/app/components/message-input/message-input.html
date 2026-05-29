@@ -1,0 +1,18 @@
+<div class="message-input">
+  <textarea class="message-input__textarea" placeholder="Nachricht an #Entwicklerteam"></textarea>
+  <div class="message-input__actions">
+    <div class="message-input__actions-left">
+      <button class="message-input__btn" [class.active]="isEmojiActive" (click)="toggleEmoji()" type="button" aria-label="Add Emoji">
+        <img src="img/icons/chatarea/sentiment_satisfied.svg" class="message-input__icon" alt="Smiley">
+      </button>
+      <button class="message-input__btn" [class.active]="isMentionActive" (click)="toggleMention()" type="button" aria-label="Mention User">
+        <img src="img/icons/chatarea/alternate_email.svg" class="message-input__icon" alt="Mention">
+      </button>
+    </div>
+    <div class="message-input__actions-right">
+      <button class="message-input__send-btn" type="button" aria-label="Send Message">
+        <img src="img/icons/chatarea/send.svg" class="message-input__send-icon" alt="Send">
+      </button>
+    </div>
+  </div>
+</div>

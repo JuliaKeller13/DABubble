@@ -42,54 +42,23 @@
     padding-left: 16px;
     display: inline-block;
     width: 440px;
-    
     clip-path: inset(0 100% 0 0);
     animation: logoTextWipe 500ms ease-out forwards;
     animation-delay: 800ms;
   }
 }
 
-// Keyframes
-@keyframes logoFadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 @keyframes logoWrapperExpand {
-  0% {
-    gap: 0;
-  }
-  100% {
-    gap: 16px;
-    @media (max-width: 768px) {
-      gap: 10px;
-    }
-  }
+  0% { gap: 0; }
+  100% { gap: 16px; }
 }
 
 @keyframes logoTextReveal {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 440px; 
-    @media (max-width: 768px) {
-      width: 250px;
-    }
-  }
+  0% { width: 0; }
+  100% { width: 440px; }
 }
 
 @keyframes logoTextWipe {
-  0% {
-    clip-path: inset(0 100% 0 0);
-  }
-  100% {
-    clip-path: inset(0 0% 0 0);
-  }
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
 }

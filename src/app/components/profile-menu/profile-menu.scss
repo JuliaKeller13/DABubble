@@ -2,9 +2,9 @@
 @use '../../../styles/abstracts/variables' as vars;
 
 .profile-menu-container {
+  @include mx.flex(row, nowrap, flex-end, center);
   width: 345px;
   height: 70px;
-  @include mx.flex(row, nowrap, flex-end, center);
   gap: 20px;
   padding: 0 16px;
   border-radius: 100px;
@@ -21,9 +21,8 @@
 }
 
 .profile-menu-avatar-wrapper {
+  @include mx.flex(row, nowrap, center, center);
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .profile-menu-avatar {

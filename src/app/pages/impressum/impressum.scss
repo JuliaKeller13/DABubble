@@ -2,24 +2,20 @@
 @use '../../../styles/abstracts/variables' as vars;
 
 main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include mx.flex(row, nowrap, center, center);
 }
 
 .page-container {
+  @include mx.flex(row, nowrap, center, center);
   position: relative;
   width: 100%;
   max-width: 1920px;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   box-sizing: border-box;
 }
 
 .legal-card {
-  @include mx.flex(column, nowrap);
+  @include mx.flex(column, nowrap, flex-start, stretch);
   gap: 32px;
   background-color: vars.$white;
   border-radius: 30px;
@@ -29,12 +25,12 @@ main {
   box-sizing: border-box;
 
   &__group {
-    @include mx.flex(column, nowrap);
+    @include mx.flex(column, nowrap, flex-start, stretch);
     gap: 16px;
   }
 
   &__address {
-    @include mx.flex(column, nowrap);
+    @include mx.flex(column, nowrap, flex-start, stretch);
     color: vars.$black;
 
     p {
@@ -43,7 +39,7 @@ main {
   }
 
   &__contact {
-    @include mx.flex(column, nowrap);
+    @include mx.flex(column, nowrap, flex-start, stretch);
 
     h2 {
       margin: 0;

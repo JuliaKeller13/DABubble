@@ -7,16 +7,37 @@
   width: 100%;
   box-sizing: border-box;
   padding: 120px 50px 30px 50px;
-  overflow: hidden;
 
   &__content {
     @include mx.flex(row, nowrap, flex-start, stretch);
     width: 100%;
     height: calc(100vh - 150px);
-    gap: 30px;
+    gap: 20px;
+    transition: gap 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    app-sidebar {
+      display: block;
+    }
+
+    app-chat-area {
+      display: block;
+      width: 990px;
+      transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+
+  &--sidebar-closed {
+    .main-layout__content {
+      gap: 0;
+    }
+
+    app-chat-area {
+      width: 1375px;
+    }
   }
 }
 
+/* #region RESPONSIVE */
 @include mx.mobile {
   .main-layout {
     padding: 100px 20px 20px 20px;
@@ -25,6 +46,18 @@
       @include mx.flex(column, nowrap, flex-start, stretch);
       height: auto;
       gap: 20px;
+
+      app-chat-area {
+        width: 100%;
+      }
+    }
+
+    &--sidebar-closed {
+      app-chat-area {
+        width: 100%;
+        margin-left: 0;
+      }
     }
   }
 }
+/* #endregion */
