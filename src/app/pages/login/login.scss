@@ -6,15 +6,16 @@ main {
 }
 
 .page-container {
+  @include flex(row, nowrap, center, center);
   position: relative;
   width: 100%;
   max-width: 1920px;
   min-height: 100vh;
-  @include flex(row, nowrap, center, center);
   box-sizing: border-box;
 }
 
 .login-form-box {
+  @include flex(column, nowrap, flex-start, stretch);
   background: $white;
   padding: 50px 60px;
   border-radius: 30px;
@@ -22,13 +23,10 @@ main {
   text-align: center;
   width: 600px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
   gap: 45px;
 
-  .form-box-header{
-    display: flex;
-    flex-direction: column;
+  .form-box-header {
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 30px;
   }
 }
@@ -66,7 +64,6 @@ main {
   &::before { margin-right: 16px; }
   &::after { margin-left: 16px; }
 }
-
 
 .btns-container {
   @include flex(row, nowrap, center, center);

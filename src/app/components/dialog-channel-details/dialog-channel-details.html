@@ -1,0 +1,49 @@
+<div class="dialog-backdrop" (click)="onClose()"></div>
+<div class="dialog-card" [class.dialog-card--sidebar-closed]="isSidebarClosed" (click)="$event.stopPropagation()">
+  <div class="dialog-card__header">
+    <div class="dialog-card__title">
+      <span class="dialog-card__hash">#</span>
+      <h2 class="dialog-card__title-text">Entwicklerteam</h2>
+    </div>
+    <button class="dialog-card__close-btn" (click)="onClose()" aria-label="Close dialog">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="dialog-card__body">
+    <div class="dialog-card__block">
+      <div class="dialog-card__block-header">
+        <span class="dialog-card__label">Channel-Name</span>
+        <button class="dialog-card__edit-btn" (click)="onEditName()">Bearbeiten</button>
+      </div>
+      <div class="dialog-card__block-content dialog-card__block-content--name">
+        <span class="dialog-card__content-hash">#</span>
+        <span class="dialog-card__content-text">Entwicklerteam</span>
+      </div>
+    </div>
+
+    <div class="dialog-card__block dialog-card__block--description">
+      <div class="dialog-card__block-header">
+        <span class="dialog-card__label">Beschreibung</span>
+        <button class="dialog-card__edit-btn" (click)="onEditDescription()">Bearbeiten</button>
+      </div>
+      <p class="dialog-card__description-text">
+        Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings abhalten, Dokumente teilen und Entscheidungen treffen.
+      </p>
+      
+      <div class="dialog-card__divider"></div>
+
+      <div class="dialog-card__created-by">
+        <span class="dialog-card__label">Erstellt von</span>
+        <span class="dialog-card__creator-name">Noah Braun</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialog-card__footer">
+    <button class="dialog-card__leave-btn" (click)="onLeaveChannel()">Channel verlassen</button>
+  </div>
+</div>

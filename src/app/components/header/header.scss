@@ -1,26 +1,28 @@
 @use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
 
 .header {
-  @include mx.flex(row, nowrap, space-between, center);
+  @include mx.flex(row, nowrap, flex-start, center);
   position: absolute;
   top: 25px;
   left: 0;
   right: 0;
   padding: 0 50px;
   box-sizing: border-box;
-  z-index: 10;
+  z-index: vars.$z-index-sticky;
   max-width: 1920px;
 
   &__left {
     @include mx.flex(row, nowrap, flex-start, center);
-    flex: 1;
+    width: 365px;
+    flex: none;
   }
 
   &__center {
     @include mx.flex(row, nowrap, center, center);
-    flex: 2;
-    margin-left: clamp(16px, 6vw, 100px);
-    margin-right: clamp(16px, 9vw, 150px);
+    width: 990px;
+    flex: none;
+    margin-left: 20px;
 
     app-searchbar {
       width: 100%;
@@ -31,19 +33,28 @@
 
   &__right {
     @include mx.flex(row, nowrap, flex-end, center);
-    flex: 1;
+    margin-left: auto;
+    flex: none;
   }
 
   &__logo {
     width: 240px;
     height: 70px;
+    flex-shrink: 0;
   }
 }
 
+/* #region RESPONSIVE */
 @include mx.mobile {
   .header {
     top: 20px;
     padding: 0 20px;
+    justify-content: space-between;
+
+    &__left {
+      width: auto;
+      flex: 0 0 auto;
+    }
 
     &__logo {
       width: 180px;
@@ -51,8 +62,16 @@
     }
 
     &__center {
+      width: auto;
+      flex: 1;
       margin-left: 16px;
       margin-right: 16px;
     }
+
+    &__right {
+      margin-left: 0;
+      flex: 0 0 auto;
+    }
   }
 }
+/* #endregion */
