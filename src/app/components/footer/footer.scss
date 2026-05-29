@@ -1,0 +1,43 @@
+@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
+
+.auth-footer {
+  @include mx.flex(row, nowrap, center, center);
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 16px;
+  z-index: 10;
+
+  &__link {
+    color: vars.$purple-2;
+    font-size: 18px;
+    font-weight: 400;
+    text-decoration: none;
+    padding: 10px 24px;
+    border: 1px solid transparent;
+    border-radius: 100px;
+    transition: all 150ms ease-in-out;
+
+    &:hover {
+      color: vars.$purple-1;
+      border-color: vars.$purple-2;
+      text-decoration: none;
+    }
+  }
+}
+
+/* #region RESPONSIVE */
+@include mx.mobile {
+  .auth-footer {
+    bottom: 24px;
+    gap: 8px;
+
+    &__link {
+      font-size: 16px;
+      padding: 8px 16px;
+    }
+  }
+}
+/* #endregion */

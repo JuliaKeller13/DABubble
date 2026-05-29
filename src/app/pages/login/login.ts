@@ -6,6 +6,7 @@ import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/ro
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HeaderComponent } from '../../components/header/header';
+import { FooterComponent } from '../../components/footer/footer';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ import { HeaderComponent } from '../../components/header/header';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss'
