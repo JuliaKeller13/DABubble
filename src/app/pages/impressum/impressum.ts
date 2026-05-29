@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Location } from '@angular/common';
 import { LandingLayoutComponent } from '../../components/landing-layout/landing-layout';
 
 @Component({
@@ -7,4 +8,10 @@ import { LandingLayoutComponent } from '../../components/landing-layout/landing-
   templateUrl: './impressum.html',
   styleUrl: './impressum.scss'
 })
-export class ImpressumComponent {}
+export class ImpressumComponent {
+  private location = inject(Location);
+
+  goBack(): void {
+    this.location.back();
+  }
+}
