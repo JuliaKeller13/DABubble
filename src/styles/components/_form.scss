@@ -1,0 +1,94 @@
+@use '@angular/material' as mat;
+@use '../abstracts' as *;
+
+.form {
+  @include flex(column, nowrap, flex-start, stretch);
+  gap: 40px;
+  width: 100%;
+
+  .custom-input {
+    width: 100%;
+
+    @include mat.form-field-overrides(
+      (
+        container-height: 52px,
+        outlined-container-shape: 30px,
+        outlined-outline-color: transparent,
+        outlined-hover-outline-color: $purple-2,
+        outlined-focus-outline-color: $purple-1,
+        outlined-input-text-color: $black,
+        outlined-input-text-placeholder-color: $text-gray,
+        container-vertical-padding: 10px,
+        outlined-outline-width: 1px,
+        outlined-focus-outline-width: 1px,
+        outlined-error-outline-color: $rosa-error,
+        outlined-error-hover-outline-color: $rosa-error,
+        outlined-error-focus-outline-color: $rosa-error,
+      )
+    );
+
+    .mat-mdc-text-field-wrapper {
+      background-color: $bg-color;
+      padding-left: 24px;
+      padding-right: 24px;
+      transition: background-color 150ms ease-in-out;
+      border-radius: 100px;
+    }
+
+    .mat-mdc-form-field-error {
+      color: $rosa-error;
+    }
+
+    .mat-mdc-form-field-error-wrapper {
+      padding: 6px 0 0 0;
+    }
+
+    &.mat-mdc-form-field {
+      .mat-mdc-form-field-infix {
+        display: flex;
+        align-items: center;
+        padding: 0;
+      }
+    }
+
+    .mat-mdc-form-field-icon-prefix {
+      padding: 0;
+    }
+
+    img[matPrefix],
+    svg[matPrefix] {
+      width: 22px;
+      height: 22px;
+    }
+
+    .mat-mdc-form-field-flex {
+      width: 100%;
+      display: flex;
+      gap: 30px;
+    }
+
+    input {
+      @include fluid-text(16, 18);
+      font-family: 'Inter', sans-serif;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+}
+
+input,
+textarea,
+select {
+  @include clean-autofill($white, $black);
+}
+
+body .mat-mdc-form-field {
+  input.mat-mdc-input-element {
+    @include clean-autofill($bg-color, $black);
+  }
+
+  &.mat-focused input.mat-mdc-input-element {
+    @include clean-autofill($white, $black);
+  }
+}

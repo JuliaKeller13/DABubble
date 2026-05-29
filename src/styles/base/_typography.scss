@@ -93,7 +93,7 @@ body {
 .text-chat-time {
   font-family: var(--font-main);
   font-weight: 400;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .text-form-field {
@@ -132,10 +132,4 @@ body {
   @media (max-width: 768px) {
     font-size: 22px;
   }
-}
-
-.text-btn-action {
-  font-family: var(--font-main);
-  font-weight: 600;
-  font-size: 18px;
 }
