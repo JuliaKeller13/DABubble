@@ -1,28 +1,31 @@
-<app-landing-layout>
-  <div class="legal-card">
-    <button class="btn-back" (click)="goBack()" aria-label="Zurück">
-      <img class="btn-back__icon" src="img/icons/arrow_back.svg" alt="">
-      <img class="btn-back__icon-hover" src="img/icons/arrow_back_hover.svg" alt="">
-    </button>
+<main>
+  <div class="page-container">
+    <app-header></app-header>
+    <div class="legal-card">
+      <button class="btn-back" (click)="goBack()" aria-label="Zurück">
+        <img class="btn-back__icon" src="img/icons/arrow_back.svg" alt="">
+        <img class="btn-back__icon-hover" src="img/icons/arrow_back_hover.svg" alt="">
+      </button>
 
-    <div class="legal-card__group">
-      <h1 class="text-headline-blue">Impressum</h1>
+      <div class="legal-card__group">
+        <h1 class="text-headline-blue">Impressum</h1>
 
-      <div class="legal-card__address text-body">
-        <p>Jens Baumann</p>
-        <p>Ginsterweg 15</p>
-        <p>26725 Emden</p>
+        <div class="legal-card__address text-body">
+          <p>Jens Baumann</p>
+          <p>Ginsterweg 15</p>
+          <p>26725 Emden</p>
+        </div>
+      </div>
+
+      <div class="legal-card__contact">
+        <h2 class="text-subtitle-blue">Contact:</h2>
+        <p class="text-body">
+          Email:
+          <a href="mailto:baumannjens@outlook.de" class="email-link">
+            info@jensbaumann.com
+          </a>
+        </p>
       </div>
     </div>
-
-    <div class="legal-card__contact">
-      <h2 class="text-subtitle-blue">Contact:</h2>
-      <p class="text-body">
-        Email:
-        <a href="mailto:baumannjens@outlook.de" class="email-link">
-          info@jensbaumann.com
-        </a>
-      </p>
-    </div>
   </div>
-</app-landing-layout>
+</main>

@@ -1,0 +1,23 @@
+@use '../../../styles/abstracts/mixins' as mx;
+
+.header {
+  max-width: 1920px;
+  position: absolute;
+  top: 25px;
+  left: 50px;
+  height: 120px;
+
+  &__logo {
+    width: 240px;
+    height: 70px;
+  }
+}
+
+/* #region RESPONSIVE */
+@include mx.mobile {
+  .header {
+    top: 20px;
+    left: 20px;
+  }
+}
+/* #endregion */

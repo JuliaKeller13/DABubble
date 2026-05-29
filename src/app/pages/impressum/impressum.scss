@@ -1,6 +1,23 @@
 @use '../../../styles/abstracts/mixins' as mx;
 @use '../../../styles/abstracts/variables' as vars;
 
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
 .legal-card {
   @include mx.flex(column, nowrap);
   gap: 32px;

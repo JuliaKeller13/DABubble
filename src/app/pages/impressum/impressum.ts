@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Location } from '@angular/common';
-import { LandingLayoutComponent } from '../../components/landing-layout/landing-layout';
+import { HeaderComponent } from '../../components/header/header';
 
 @Component({
   selector: 'app-impressum',
-  imports: [LandingLayoutComponent],
+  imports: [HeaderComponent],
   templateUrl: './impressum.html',
   styleUrl: './impressum.scss'
 })

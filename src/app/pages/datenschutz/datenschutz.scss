@@ -1,0 +1,64 @@
+@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.page-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.datenschutz-layout {
+  @include mx.flex(column, nowrap);
+  gap: 32px;
+  width: 100%;
+  padding: 120px 290px 48px 290px;
+  box-sizing: border-box;
+}
+
+.datenschutz-header {
+  h1 {
+    margin: 0;
+  }
+}
+
+.datenschutz-content {
+  @include mx.flex(column, nowrap);
+  gap: 32px;
+}
+
+.datenschutz-section {
+  @include mx.flex(column, nowrap);
+  gap: 8px;
+
+  h2 {
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+    color: vars.$black;
+  }
+}
+
+/* #region RESPONSIVE */
+@include mx.tablet-lg {
+  .datenschutz-layout {
+    padding: 100px 100px 48px 100px;
+  }
+}
+
+@include mx.mobile {
+  .datenschutz-layout {
+    padding: 80px 24px 48px 24px;
+  }
+}
+/* #endregion */

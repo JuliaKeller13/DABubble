@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { LandingLayoutComponent } from '../../components/landing-layout/landing-layout';
+import { HeaderComponent } from '../../components/header/header';
 
 @Component({
   selector: 'app-login',
-  imports: [LandingLayoutComponent],
+  imports: [HeaderComponent],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
