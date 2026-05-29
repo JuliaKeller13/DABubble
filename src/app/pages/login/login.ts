@@ -1,4 +1,3 @@
-import { LandingLayoutComponent } from '../../components/landing-layout/landing-layout';
 import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,7 +9,7 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [LandingLayoutComponent, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
