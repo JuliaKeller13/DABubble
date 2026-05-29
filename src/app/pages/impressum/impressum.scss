@@ -1,0 +1,47 @@
+@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
+
+.legal-card {
+  @include mx.flex(column, nowrap);
+  gap: 32px;
+  background-color: vars.$white;
+  border-radius: 30px;
+  padding: 48px 56px;
+  width: 676px;
+  box-shadow: 0px 8px 30px rgba(vars.$black, 0.08);
+  box-sizing: border-box;
+
+  &__group {
+    @include mx.flex(column, nowrap);
+    gap: 16px;
+  }
+
+  &__address {
+    @include mx.flex(column, nowrap);
+    color: vars.$black;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__contact {
+    @include mx.flex(column, nowrap);
+
+    h2 {
+      margin: 0;
+    }
+
+    .email-link {
+      color: vars.$purple-1;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 150ms ease-in-out;
+
+      &:hover {
+        color: vars.$purple-2;
+        text-decoration: underline;
+      }
+    }
+  }
+}

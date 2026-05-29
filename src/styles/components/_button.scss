@@ -4,9 +4,8 @@
 // BASE BUTTON STYLES
 // ==========================================================================
 .btn {
+  @include flex(row, nowrap, center, center);
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 0 16px;
   border-radius: 25px;
   font-family: 'Inter', sans-serif;
@@ -43,7 +42,7 @@
 
   &:hover {
     background-color: $purple-2;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 4px 8px rgba($black, 0.15);
   }
 
   &:active {
@@ -57,7 +56,6 @@
     opacity: 0.6;
   }
 
-  // If there's an icon inside, make sure it matches the color if needed
   img,
   svg {
     filter: brightness(0) invert(1);
@@ -79,7 +77,7 @@
     background-color: $purple-1;
     color: $white;
     border-color: transparent;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 8px rgba($black, 0.1);
     
     img,
     svg {
@@ -126,15 +124,12 @@
 // WORKSPACE TOGGLE BUTTONS (VERTICAL SIDEBAR TABS)
 // ==========================================================================
 .btn-workspace {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  @include flex(column, nowrap, flex-start, center);
   padding: 24px 8px;
   background-color: $white;
   border: none;
   border-radius: 0 30px 30px 0;
-  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 4px 4px 12px rgba($black, 0.08);
   cursor: pointer;
   transition: all 200ms ease-in-out;
   outline: none;
@@ -170,7 +165,7 @@
 
   // Hover states
   &:hover {
-    box-shadow: 6px 6px 16px rgba(68, 77, 242, 0.12);
+    box-shadow: 6px 6px 16px rgba($purple-1, 0.12);
     
     .btn-workspace-icon {
       color: $purple-1;
@@ -184,7 +179,7 @@
 
   // Active state
   &:active {
-    box-shadow: 2px 2px 8px rgba(68, 77, 242, 0.08);
+    box-shadow: 2px 2px 8px rgba($purple-1, 0.08);
     background-color: $bg-color;
   }
 }
@@ -199,4 +194,50 @@
 .btn-workspace-open {
   @extend .btn-workspace;
   height: 310px;
+}
+
+// ==========================================================================
+// BACK BUTTON (global, used on legal pages etc.)
+// ==========================================================================
+.btn-back {
+  @include flex(row, nowrap, center, center);
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50px;
+  transition: background-color 150ms ease-in-out;
+  outline: none;
+  flex-shrink: 0;
+
+  &__icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+
+  &__icon-hover {
+    display: none;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    background-color: $bg-color;
+
+    .btn-back__icon {
+      display: none;
+    }
+
+    .btn-back__icon-hover {
+      display: block;
+    }
+  }
+
+  &:active {
+    background-color: darken($bg-color, 5%);
+  }
 }
