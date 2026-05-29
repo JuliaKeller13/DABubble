@@ -1,3 +1,7 @@
-<main>
-    <app-header></app-header>
-</main>
+<div class="main-layout" [class.main-layout--sidebar-closed]="isSidebarClosed">
+  <app-header></app-header>
+
+  <div class="main-layout__content">
+    <app-sidebar (toggleSidebar)="onSidebarToggle($event)"></app-sidebar>
+  </div>
+</div>
