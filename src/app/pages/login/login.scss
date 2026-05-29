@@ -1,6 +1,19 @@
 @use '../../../styles/abstracts' as *;
 @use '../../../styles/components/button' as *;
 
+main {
+  @include flex(row, nowrap, center, center);
+}
+
+.page-container {
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100vh;
+  @include flex(row, nowrap, center, center);
+  box-sizing: border-box;
+}
+
 .login-form-box {
   background: $white;
   padding: 50px 60px;

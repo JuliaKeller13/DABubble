@@ -10,6 +10,8 @@
   </div>
 
   <div class="header__right">
-  <app-profile-menu></app-profile-menu>
+    @if (showProfile) {
+      <app-profile-menu></app-profile-menu>
+    }
   </div>
 </header>

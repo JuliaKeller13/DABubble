@@ -5,18 +5,23 @@ import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { HeaderComponent } from '../../components/header/header';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    HeaderComponent
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  // private authService = inject<any>('AuthService');
 
   loginError = false;
     loading = signal(false);
@@ -46,7 +51,6 @@ export class LoginComponent {
     if (this.form.valid) {
         this.loading.set(true);
         console.log('Login-Daten:', this.form.value);
-        //Authentifizierung einfügen
         this.loading.set(false);
     } else {
       this.form.markAllAsTouched();

@@ -11,4 +11,5 @@ import { ProfileMenuComponent } from "../profile-menu/profile-menu";
 })
 export class HeaderComponent {
   @Input() showSearch = true;
+  @Input() showProfile = true;
 }
