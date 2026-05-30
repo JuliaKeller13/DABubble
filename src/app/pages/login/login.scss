@@ -32,26 +32,20 @@ main {
   }
 }
 
-.forgot-password-container {
-  text-align: center;
-  margin-top: -10px;
-  margin-bottom: 10px;
+.forgot-password-link {
+  color: $purple-2;
+  text-decoration: none;
+  transition: color 150ms ease-in-out;
 
-  .forgot-password-link {
-    color: $purple-2;
-    text-decoration: none;
-    transition: color 150ms ease-in-out;
-
-    &:hover {
-      color: $purple-3;
-      text-decoration: underline;
-    }
+  &:hover {
+    color: $purple-3;
+    text-decoration: underline;
   }
 }
 
 .divider {
   @include flex(row, nowrap, center, center);
-  margin: 8px 0;
+  gap: 16px;
   color: $black;
   width: 100%;
 
@@ -61,21 +55,12 @@ main {
     flex: 1;
     border-bottom: 1px solid $light-purple;
   }
-
-  &::before { margin-right: 16px; }
-  &::after { margin-left: 16px; }
 }
 
 .btns-container {
   @include flex(row, nowrap, center, center);
   gap: 16px;
   width: 100%;
-  margin-top: 10px;
-
-  .btn-primary {
-    flex: 1;
-    height: 50px;
-  }
 }
 
 .mobile-header-only,

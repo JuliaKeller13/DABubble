@@ -30,6 +30,11 @@
           }
         </mat-form-field>
 
+      <a href="#" class="forgot-password-link">Passwort vergessen?</a>
+
+      <div class="divider">
+        <p class="text-body">ODER</p>
+      </div>
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
           <img matPrefix src="img/icons/form/lock.svg" alt="lock" />
           <input
@@ -55,6 +60,12 @@
           <span>ODER</span>
         </div>
 
+      <div class="btns-container">
+        <button class="btn-primary" type="submit" [disabled]="form.invalid || loading()">
+          Anmelden
+        </button>
+        <button class="btn-secondary" type="button" (click)="guestLogin()" [disabled]="loading()">
+          Gäste Login
         <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="loading()">
           <img class="google-logo" src="img/icons/google.svg" alt="Google Logo" />
           Anmelden mit Google
