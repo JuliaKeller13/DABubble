@@ -9,3 +9,7 @@ main {
   background-color: var(--bg-color);
   box-sizing: border-box;
 }
+
+.header.login-header.header--transparent {
+	justify-content: space-between;
+}

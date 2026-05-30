@@ -1,4 +1,4 @@
-<header class="header" [class.header--transparent]="isTransparent">
+<header class="header" [class.header--transparent]="isTransparent" [class.login-header]="loginHeader">
   <div class="header__left">
     <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="header__logo">
   </div>
@@ -12,6 +12,12 @@
   @if (showProfile) {
     <div class="header__right">
       <app-profile-menu></app-profile-menu>
+    </div>
+  }
+
+  @if (showSignup) {
+    <div class="header__right">
+      <app-signup></app-signup>
     </div>
   }
 </header>
