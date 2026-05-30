@@ -29,8 +29,7 @@
 
     .mat-mdc-text-field-wrapper {
       background-color: $bg-color;
-      padding-left: 24px;
-      padding-right: 24px;
+      padding-inline: 24px;
       transition: background-color 150ms ease-in-out;
       border-radius: 100px;
     }
@@ -69,7 +68,8 @@
 
     input {
       @include fluid-text(16, 18);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito Variable', sans-serif;
+      font-weight: 500;
       border: none;
       background: transparent;
       box-shadow: none;
@@ -92,3 +92,15 @@ body .mat-mdc-form-field {
     @include clean-autofill($bg-color, $black);
   }
 }
+
+/* #region RESPONSIVE */
+@include mobile-md {
+  .form {
+    gap: 30px;
+
+    .custom-input .mat-mdc-form-field-flex {
+      gap: 20px;
+    }
+  }
+}
+/* #endregion */

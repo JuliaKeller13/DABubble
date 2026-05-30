@@ -1,7 +1,12 @@
 <main>
   <div class="page-container">
-    <app-header [showSearch]="false" [showProfile]="false" [isTransparent]="true" class="desktop-header-only"></app-header>
-    
+    <app-header
+      [showSearch]="false"
+      [showProfile]="false"
+      [isTransparent]="true"
+      class="desktop-header-only"
+    ></app-header>
+
     <div class="mobile-header-only">
       <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="login-logo" />
     </div>
@@ -9,7 +14,9 @@
     <div class="login-form-box">
       <header class="form-box-header">
         <h1 class="text-headline-blue">Anmeldung</h1>
-        <p class="text-body">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</p>
+        <p class="text-body">
+          Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.
+        </p>
       </header>
 
       <form [formGroup]="form" class="form" novalidate (ngSubmit)="onSubmit()">
@@ -30,11 +37,6 @@
           }
         </mat-form-field>
 
-      <a href="#" class="forgot-password-link">Passwort vergessen?</a>
-
-      <div class="divider">
-        <p class="text-body">ODER</p>
-      </div>
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
           <img matPrefix src="img/icons/form/lock.svg" alt="lock" />
           <input
@@ -53,23 +55,22 @@
         </mat-form-field>
 
         <div class="forgot-password-container">
-          <a href="#" class="forgot-password-link">Passwort vergessen?</a>
+          <a href="#" class="forgot-password-link text-chat-list">Passwort vergessen?</a>
         </div>
 
         <div class="divider">
-          <span>ODER</span>
+          <span class="text-chat-list">ODER</span>
         </div>
 
-      <div class="btns-container">
-        <button class="btn-primary" type="submit" [disabled]="form.invalid || loading()">
-          Anmelden
-        </button>
-        <button class="btn-secondary" type="button" (click)="guestLogin()" [disabled]="loading()">
-          Gäste Login
-        <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="loading()">
-          <img class="google-logo" src="img/icons/google.svg" alt="Google Logo" />
-          Anmelden mit Google
-        </button>
+        <button
+            type="button"
+            class="btn-google"
+            (click)="loginWithGoogle()"
+            [disabled]="loading()"
+          >
+            <img class="google-logo" src="img/icons/google.svg" alt="Google Logo" />
+            Anmelden mit Google
+          </button>
 
         <div class="btns-container">
           <button class="btn-primary" type="submit" [disabled]="form.invalid || loading()">
@@ -82,9 +83,9 @@
       </form>
     </div>
 
-    <div class="register-promo mobile-register-only">
-      <span class="register-promo__text">Neu bei DABubble?</span>
-      <button class="btn-register" type="button">Konto erstellen</button>
+    <div class="mobile-register-only">
+      <span class="text-body-18">Neu bei DABubble?</span>
+      <button class="btn-register text-body-bold-18" type="button">Konto erstellen</button>
     </div>
 
     <app-footer></app-footer>
