@@ -1,8 +1,9 @@
-@use '../abstracts/mixins' as mx;
+@use '../abstracts/mixins' as *;
 
 @font-face {
   font-family: 'Nunito Variable';
-  src: url('../../../public/fonts/Nunito-VariableFont_wght.ttf') format('truetype-variations'),
+  src:
+    url('../../../public/fonts/Nunito-VariableFont_wght.ttf') format('truetype-variations'),
     url('../../../public/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
   font-weight: 300 900;
   font-style: normal;
@@ -11,13 +12,19 @@
 
 :root {
   --font-main: 'Nunito Variable', sans-serif;
-  --color-primary-blue: #444DF2;
+  --color-primary-blue: #444df2;
 }
 
 body {
   font-family: var(--font-main);
   margin: 0;
   padding: 0;
+}
+
+.text-body {
+  font-family: var(--font-main);
+  font-weight: 400;
+  @include fluid-text(17, 20);
 }
 
 .text-intro {
@@ -30,12 +37,8 @@ body {
 .text-headline-blue {
   font-family: var(--font-main);
   font-weight: 700;
-  font-size: 46px;
+  @include fluid-text(32, 46);
   color: var(--color-primary-blue);
-
-  @media (max-width: 768px) {
-    font-size: 32px;
-  }
 }
 
 .text-subhead-blue {
@@ -61,27 +64,13 @@ body {
 .text-chat-list {
   font-family: var(--font-main);
   font-weight: 400;
-  font-size: 18px;
-
-  @media (max-width: 768px) {
-    font-size: 17px;
-  }
+  @include fluid-text(17, 18);
 }
 
 .text-account-name {
   font-family: var(--font-main);
   font-weight: 700;
   font-size: 32px;
-}
-
-.text-body {
-  font-family: var(--font-main);
-  font-weight: 400;
-  font-size: 20px;
-
-  @media (max-width: 768px) {
-    font-size: 17px;
-  }
 }
 
 .text-chat-name {
@@ -105,11 +94,7 @@ body {
 .text-searchbar {
   font-family: var(--font-main);
   font-weight: 400;
-  font-size: 24px;
-
-  @media (max-width: 768px) {
-    font-size: 17px;
-  }
+  @include fluid-text(17, 24);
 }
 
 .text-btn {
@@ -127,11 +112,7 @@ body {
 .text-toast {
   font-family: var(--font-main);
   font-weight: 700;
-  font-size: 36px;
-
-  @media (max-width: 768px) {
-    font-size: 22px;
-  }
+  @include fluid-text(22, 36);
 }
 
 .text-title-24 {
