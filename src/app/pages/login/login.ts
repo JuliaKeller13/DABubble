@@ -1,10 +1,9 @@
-import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
 
@@ -22,11 +21,12 @@ import { FooterComponent } from '../../components/footer/footer';
   styleUrl: './login.scss'
 })
 export class LoginComponent {
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
-  loginError = false;
-    loading = signal(false);
+  loginError = signal(false);
+  loading = signal(false);
 
   form = this.fb.group({
     email: [
@@ -40,23 +40,44 @@ export class LoginComponent {
   });
 
   clearLoginError(): void {
-    this.loginError = false;
-    ['email', 'password'].forEach(controlName => {
-      const ctrl = this.form.get(controlName);
-      if (ctrl?.hasError('loginError')) {
-        ctrl.setErrors(null);
-      }
-    });
-  }
-
-  onSubmit(): void {
-    if (this.form.valid) {
-        this.loading.set(true);
-        this.loading.set(false);
-    } else {
-      this.form.markAllAsTouched();
+    this.loginError.set(false);
+    const passwordCtrl = this.form.get('password');
+    if (passwordCtrl?.hasError('loginError')) {
+      passwordCtrl.setErrors(null);
     }
   }
+
+  async onSubmit(): Promise<void> {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.loading.set(true);
+    this.loginError.set(false);
+    
+    const { email, password } = this.form.getRawValue();
+
+    try {
+      const { error } = await this.authService.loginWithEmail(email, password);
+      
+      if (error) {
+        this.handleError();
+      } else {
+        this.router.navigate(['/main']);
+      }
+    } catch (e) {
+      this.handleError();
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  private handleError(): void {
+    this.loginError.set(true);
+    this.form.get('password')?.setErrors({ loginError: true });
+  }
+
   guestLogin(): void {
     this.router.navigate(['/main']);
   }
