@@ -1,0 +1,106 @@
+@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
+
+.thread-view {
+  @include mx.flex(column, nowrap, flex-start, stretch);
+  position: relative;
+  width: 100%;
+  height: 940px;
+  background-color: var(--white);
+  border-radius: 30px;
+  box-sizing: border-box;
+
+  &__header {
+    @include mx.flex(row, nowrap, space-between, center);
+    width: 100%;
+    height: 95px;
+    box-sizing: border-box;
+    padding: 0 45px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    background-color: var(--white);
+    border-radius: 30px 30px 0 0;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    clip-path: inset(0 0 -20px 0 round 30px 30px 0 0);
+    flex-shrink: 0;
+  }
+
+  &__header-left {
+    @include mx.flex(row, nowrap, flex-start, center);
+    gap: 10px;
+  }
+
+  &__title {
+    color: var(--black);
+    margin: 0;
+    user-select: none;
+  }
+
+  &__channel-name {
+    color: var(--purple-2);
+    user-select: none;
+    margin-top: 4px;
+  }
+
+  &__close-btn {
+    @include mx.flex(row, nowrap, center, center);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: all 0.15s ease;
+    padding: 0;
+
+    &:hover {
+      background-color: var(--bg-color);
+
+      .thread-view__close-icon--normal {
+        display: none;
+      }
+      .thread-view__close-icon--hover {
+        display: block;
+      }
+    }
+  }
+
+  &__close-icon {
+    width: 24px;
+    height: 24px;
+    display: none;
+
+    &--normal {
+      display: block;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__footer {
+    width: 100%;
+    padding: 0 35px 40px 35px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+}
+
+/* #region RESPONSIVE */
+@include mx.mobile {
+  .thread-view {
+    width: 100%;
+    height: auto;
+    min-height: 500px;
+
+    &__header {
+      width: 100%;
+      height: 70px;
+      padding: 0 20px;
+    }
+  }
+}
+/* #endregion */

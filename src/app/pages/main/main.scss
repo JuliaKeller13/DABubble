@@ -17,6 +17,7 @@
 
     app-sidebar {
       display: block;
+      transition: margin-right 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     app-chat-area {
@@ -24,11 +25,18 @@
       width: 990px;
       transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    app-thread-view {
+      display: block;
+      width: 485px;
+      height: 940px;
+      flex-shrink: 0;
+    }
   }
 
   &--sidebar-closed {
-    .main-layout__content {
-      gap: 0;
+    app-sidebar {
+      margin-right: -20px;
     }
 
     app-chat-area {
@@ -50,12 +58,20 @@
       app-chat-area {
         width: 100%;
       }
+
+      app-thread-view {
+        width: 100%;
+      }
     }
 
     &--sidebar-closed {
       app-chat-area {
         width: 100%;
         margin-left: 0;
+      }
+
+      app-thread-view {
+        width: 100%;
       }
     }
   }

@@ -1,5 +1,5 @@
 <div class="message-input">
-  <textarea class="message-input__textarea" placeholder="Nachricht an #Entwicklerteam"></textarea>
+  <textarea class="message-input__textarea" [placeholder]="placeholder"></textarea>
   <div class="message-input__actions">
     <div class="message-input__actions-left">
       <button class="message-input__btn" [class.active]="isEmojiActive" (click)="toggleEmoji()" type="button" aria-label="Add Emoji">
