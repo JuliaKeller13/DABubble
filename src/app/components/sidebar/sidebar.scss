@@ -4,7 +4,7 @@
 .sidebar {
   position: relative;
   width: 365px;
-  height: 940px;
+  height: 100%;
   transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
 
@@ -132,6 +132,10 @@
       background-color: var(--bg-color);
       color: var(--purple-1);
     }
+  }
+
+  &__new-msg-btn-img {
+    display: none;
   }
 
   &__content {
@@ -400,16 +404,79 @@
 @include mx.mobile {
   .sidebar {
     width: 100%;
-    height: auto;
-    max-height: 400px;
+    height: 100%;
+    max-height: none;
+
+    &.sidebar--closed {
+      width: 100%;
+
+      .sidebar__card {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
 
     &__card {
-      border-radius: 20px;
-      padding: 15px;
+      border-radius: 0;
+      padding: 16px;
+      box-shadow: none;
+      height: 100%;
     }
 
     &__toggle {
       display: none;
+    }
+
+    &__header {
+      margin-bottom: 0;
+    }
+
+    &__header-left {
+      display: none;
+    }
+
+    &__new-msg-btn-svg {
+      display: none;
+    }
+
+    &__new-msg-btn-img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+
+      &--normal {
+        display: block;
+      }
+
+      &--hover {
+        display: none;
+      }
+    }
+
+    &__new-msg-btn {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      width: 60px;
+      height: 60px;
+      background: transparent;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+      z-index: vars.$z-index-sticky;
+      @include mx.flex(row, nowrap, center, center);
+
+      &:hover {
+        background: transparent;
+
+        .sidebar__new-msg-btn-img--normal {
+          display: none;
+        }
+
+        .sidebar__new-msg-btn-img--hover {
+          display: block;
+        }
+      }
     }
   }
 }

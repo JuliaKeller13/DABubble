@@ -1,71 +1,81 @@
 <main>
-
   <div class="page-container">
-    <app-header [showSearch]="false" [showProfile]="false"></app-header>
+    <app-header [showSearch]="false" [showProfile]="false" [isTransparent]="true" class="desktop-header-only"></app-header>
+    
+    <div class="mobile-header-only">
+      <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="login-logo" />
+    </div>
+
     <div class="login-form-box">
-    <header class="form-box-header">
-      <h1 class="text-headline-blue">Anmeldung</h1>
-      <p class="text-body">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</p>
-    </header>
+      <header class="form-box-header">
+        <h1 class="text-headline-blue">Anmeldung</h1>
+        <p class="text-body">Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</p>
+      </header>
 
-    <form [formGroup]="form" class="form" novalidate>
-      <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
-        <img matPrefix src="img/icons/form/mail.svg" alt="mail" />
-        <input
-          matInput
-          formControlName="email"
-          type="email"
-          placeholder="beispielname@email.com"
-          (input)="clearLoginError()"
-        />
-        @if (form.get('email')?.touched && form.get('email')?.hasError('required')) {
-          <mat-error>Bitte geben Sie Ihre E-Mail ein.</mat-error>
-        }
-        @if (form.get('email')?.hasError('pattern')) {
-          <mat-error>*Diese E-Mail-Adresse ist leider ungültig.</mat-error>
-        }
-      </mat-form-field>
+      <form [formGroup]="form" class="form" novalidate (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
+          <img matPrefix src="img/icons/form/mail.svg" alt="mail" />
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="beispielname@email.com"
+            (input)="clearLoginError()"
+          />
+          @if (form.get('email')?.touched && form.get('email')?.hasError('required')) {
+            <mat-error>Bitte geben Sie Ihre E-Mail ein.</mat-error>
+          }
+          @if (form.get('email')?.hasError('pattern')) {
+            <mat-error>*Diese E-Mail-Adresse ist leider ungültig.</mat-error>
+          }
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
-        <img matPrefix src="img/icons/form/lock.svg" alt="lock" />
-        <input
-          matInput
-          formControlName="password"
-          type="password"
-          placeholder="Passwort"
-          (input)="clearLoginError()"
-        />
-        @if (form.get('password')?.touched && form.get('password')?.hasError('required')) {
-          <mat-error>Bitte geben Sie ein Passwort ein.</mat-error>
-        }
-        @if (form.get('password')?.hasError('loginError')) {
-          <mat-error>Falsches Passwort oder E-Mail. Bitte noch einmal versuchen.</mat-error>
-        }
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
+          <img matPrefix src="img/icons/form/lock.svg" alt="lock" />
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            placeholder="Passwort"
+            (input)="clearLoginError()"
+          />
+          @if (form.get('password')?.touched && form.get('password')?.hasError('required')) {
+            <mat-error>Bitte geben Sie ein Passwort ein.</mat-error>
+          }
+          @if (form.get('password')?.hasError('loginError')) {
+            <mat-error>Falsches Passwort oder E-Mail. Bitte noch einmal versuchen.</mat-error>
+          }
+        </mat-form-field>
 
-      <div class="forgot-password-container">
-        <a href="#" class="forgot-password-link">Passwort vergessen?</a>
-      </div>
+        <div class="forgot-password-container">
+          <a href="#" class="forgot-password-link">Passwort vergessen?</a>
+        </div>
 
-      <div class="divider">
-        <span>ODER</span>
-      </div>
+        <div class="divider">
+          <span>ODER</span>
+        </div>
 
-      <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="loading()">
-        <img class="google-logo" src="/img/icons/google.svg" alt="Google Logo" />
-        Anmelden mit Google
-      </button>
-
-      <div class="btns-container">
-        <button class="btn-primary" type="submit" [disabled]="form.invalid || loading()">
-          Login
+        <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="loading()">
+          <img class="google-logo" src="img/icons/google.svg" alt="Google Logo" />
+          Anmelden mit Google
         </button>
-        <button class="btn-secondary" type="button" (click)="guestLogin()" [disabled]="loading()">
-          Guest Log in
-        </button>
-      </div>
-    </form>
+
+        <div class="btns-container">
+          <button class="btn-primary" type="submit" [disabled]="form.invalid || loading()">
+            Anmelden
+          </button>
+          <button class="btn-secondary" type="button" (click)="guestLogin()" [disabled]="loading()">
+            Gäste-Login
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="register-promo mobile-register-only">
+      <span class="register-promo__text">Neu bei DABubble?</span>
+      <button class="btn-register" type="button">Konto erstellen</button>
+    </div>
+
+    <app-footer></app-footer>
   </div>
-  <app-footer></app-footer>
- </div>
 </main>

@@ -58,6 +58,7 @@ export class LoginComponent {
     }
   }
   guestLogin(): void {
+    this.router.navigate(['/main']);
   }
 
   loginWithGoogle(): void {
