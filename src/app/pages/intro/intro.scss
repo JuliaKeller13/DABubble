@@ -62,3 +62,37 @@
   0% { clip-path: inset(0 100% 0 0); }
   100% { clip-path: inset(0 0% 0 0); }
 }
+
+/* #region RESPONSIVE */
+@media (max-width: 768px) {
+  .intro {
+    .intro__logo-wrapper {
+      animation-name: logoWrapperExpandMobile;
+    }
+
+    .intro__logo-img {
+      width: 45px;
+    }
+
+    .intro__logo-text-box {
+      animation-name: logoTextRevealMobile;
+    }
+
+    .intro__logo-text {
+      font-size: 26px;
+      width: auto;
+      white-space: nowrap;
+    }
+  }
+
+  @keyframes logoWrapperExpandMobile {
+    0% { gap: 0; }
+    100% { gap: 8px; }
+  }
+
+  @keyframes logoTextRevealMobile {
+    0% { width: 0; }
+    100% { width: 120px; }
+  }
+}
+/* #endregion */
