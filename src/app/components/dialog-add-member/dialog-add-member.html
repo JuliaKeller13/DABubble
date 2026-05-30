@@ -1,0 +1,41 @@
+<div class="add-member">
+  <div class="add-member__drag-handle"></div>
+
+  <div class="add-member__header">
+    <h2 class="add-member__title">Leute hinzufügen</h2>
+    <button class="add-member__close-btn" (click)="closeDialog()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="add-member__form">
+    <div class="add-member__radio-group">
+
+      <label class="add-member__radio-btn">
+        <input type="radio" name="selectionType" value="all"
+               [(ngModel)]="selectionType"
+               class="add-member__radio-input">
+        <span class="add-member__radio-label">
+          Alle Mitglieder von <span class="add-member__channel-name">{{ data.channelName }}</span> hinzufügen
+        </span>
+      </label>
+
+      <label class="add-member__radio-btn">
+        <input type="radio" name="selectionType" value="specific"
+               [(ngModel)]="selectionType"
+               class="add-member__radio-input">
+        <span class="add-member__radio-label">Bestimmte Leute hinzufügen</span>
+      </label>
+
+    </div>
+
+    <div class="add-member__actions">
+      <button class="add-member__submit-btn" (click)="saveSelection()">
+        Erstellen
+      </button>
+    </div>
+  </div>
+</div>

@@ -46,7 +46,7 @@
               Channels
             </span>
           </div>
-          <button class="sidebar__add-btn">
+          <button class="sidebar__add-btn" (click)="openCreateChannelDialog()">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"/>
               <line x1="5" y1="12" x2="19" y2="12"/>
@@ -56,7 +56,7 @@
 
         @if (isChannelsExpanded) {
           <div class="sidebar__list">
-            @for (channel of channels; track channel.id) {
+            @for (channel of channels(); track channel.id) {
               <div 
                 class="sidebar__item sidebar__item--channel text-body-18" 
                 [class.sidebar__item--active]="channel.id === activeChannelId"
@@ -66,7 +66,7 @@
                 <span class="sidebar__item-name">{{ channel.name }}</span>
               </div>
             }
-            <div class="sidebar__item sidebar__item--add-channel text-body-18">
+            <div class="sidebar__item sidebar__item--add-channel text-body-18" (click)="openCreateChannelDialog()">
               <div class="sidebar__item-icon-wrapper">
                 <img src="img/icons/add/add_circle.svg" alt="Add icon" class="sidebar__item-icon-img sidebar__item-icon-img--normal">
                 <img src="img/icons/add/add_circle_hover.svg" alt="Add icon hover" class="sidebar__item-icon-img sidebar__item-icon-img--hover">
@@ -98,14 +98,14 @@
 
         @if (isDMsExpanded) {
           <div class="sidebar__list">
-            @for (user of users; track user.name) {
+            @for (user of users(); track user.id) {
               <div class="sidebar__item sidebar__item--user text-body-18">
                 <div class="sidebar__avatar-wrapper">
-                  <img [src]="user.avatar" [alt]="user.name" class="sidebar__avatar">
+                  <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="sidebar__avatar">
                   <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="user.status === 'online'"></span>
                 </div>
                 <span class="sidebar__item-name">
-                  {{ user.name }}{{ user.isSelf ? ' (Du)' : '' }}
+                  {{ user.display_name }}
                 </span>
               </div>
             }

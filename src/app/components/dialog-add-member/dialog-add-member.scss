@@ -1,0 +1,154 @@
+@use '../../../styles/abstracts/mixins' as mx;
+
+.add-member {
+  @include mx.flex(column, nowrap, space-between, stretch);
+  padding: 40px;
+  background-color: var(--white);
+  border-radius: 30px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  font-family: "Nunito", sans-serif;
+
+  &__drag-handle {
+    display: none;
+    width: 40px;
+    height: 4px;
+    background-color: #d0d0d0;
+    border-radius: 2px;
+    margin: -20px auto 16px auto;
+  }
+
+  &__header {
+    @include mx.flex(row, nowrap, space-between, center);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--black);
+  }
+
+  &__close-btn {
+    @include mx.flex(row, nowrap, center, center);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--black);
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      background-color: var(--bg-color);
+      color: var(--purple-1);
+    }
+  }
+
+  &__form {
+    @include mx.flex(column, nowrap, space-between, stretch);
+    gap: 30px;
+    flex-grow: 1;
+    margin-top: 20px;
+  }
+
+  &__radio-group {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    gap: 20px;
+  }
+
+  &__radio-btn {
+    @include mx.flex(row, nowrap, flex-start, center);
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  &__radio-input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-gray);
+    border-radius: 50%;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    position: relative;
+
+    &:checked {
+      border-color: var(--purple-1);
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--purple-1);
+      }
+    }
+
+    &:hover {
+      border-color: var(--purple-1);
+    }
+  }
+
+  &__radio-label {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--black);
+  }
+
+  &__channel-name {
+    color: var(--purple-1);
+    font-weight: 700;
+  }
+
+  &__actions {
+    @include mx.flex(row, nowrap, flex-end, stretch);
+  }
+
+  &__submit-btn {
+    background-color: var(--purple-1);
+    color: var(--white);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 35px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: var(--purple-2);
+    }
+  }
+}
+
+/* #region Responsive */
+@media (max-width: 767px) {
+  .add-member {
+    &__drag-handle {
+      display: block;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .add-member {
+    border-radius: 0;
+    padding: 24px;
+    justify-content: flex-start;
+    gap: 24px;
+
+    &__form {
+      justify-content: flex-start;
+      gap: 30px;
+    }
+  }
+}
+/* #endregion */

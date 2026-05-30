@@ -1,0 +1,50 @@
+<div class="create-channel">
+  <div class="create-channel__header">
+    <h2 class="create-channel__title">Channel erstellen</h2>
+    <button class="create-channel__close-btn" (click)="closeDialog()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <p class="create-channel__subtitle">
+    Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.
+  </p>
+
+  <div class="create-channel__form">
+    <div class="create-channel__field">
+      <label class="create-channel__label">Channel-Name</label>
+      <div class="create-channel__input-wrapper">
+        <span class="create-channel__hash">#</span>
+        <input 
+          type="text" 
+          placeholder="z.B. Kooperationsprojekte" 
+          [(ngModel)]="channelName"
+          name="channelName"
+          class="create-channel__input"
+          required>
+      </div>
+    </div>
+
+    <div class="create-channel__field">
+      <label class="create-channel__label">Beschreibung <span class="create-channel__label--optional">(optional)</span></label>
+      <input 
+        type="text" 
+        placeholder="Dein Text hier" 
+        [(ngModel)]="channelDescription"
+        name="channelDescription"
+        class="create-channel__input">
+    </div>
+
+    <div class="create-channel__actions">
+      <button 
+        class="create-channel__submit-btn" 
+        [disabled]="!channelName.trim()" 
+        (click)="saveChannel()">
+        Erstellen
+      </button>
+    </div>
+  </div>
+</div>

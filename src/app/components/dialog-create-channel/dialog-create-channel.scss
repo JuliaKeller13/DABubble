@@ -1,0 +1,140 @@
+@use '../../../styles/abstracts/mixins' as mx;
+
+.create-channel {
+  @include mx.flex(column, nowrap, space-between, stretch);
+  padding: 40px;
+  background-color: var(--white);
+  border-radius: 30px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  font-family: "Nunito", sans-serif;
+
+  &__header {
+    @include mx.flex(row, nowrap, space-between, center);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--black);
+  }
+
+  &__close-btn {
+    @include mx.flex(row, nowrap, center, center);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--black);
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      background-color: var(--bg-color);
+      color: var(--purple-1);
+    }
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--black);
+  }
+
+  &__form {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    gap: 20px;
+  }
+
+  &__field {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    gap: 8px;
+  }
+
+  &__label {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--black);
+
+    &--optional {
+      font-weight: 400;
+      color: var(--text-gray);
+    }
+  }
+
+  &__input-wrapper {
+    @include mx.flex(row, nowrap, flex-start, center);
+    position: relative;
+  }
+
+  &__hash {
+    position: absolute;
+    left: 20px;
+    font-size: 18px;
+    color: var(--text-gray);
+    font-weight: 400;
+  }
+
+  &__input-wrapper &__input {
+    padding-left: 45px;
+  }
+
+  &__input {
+    width: 100%;
+    height: 60px;
+    padding: 18px 20px;
+    border: 1px solid var(--light-purple);
+    border-radius: 30px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+
+    &::placeholder {
+      color: var(--light-purple);
+    }
+
+    &:focus {
+      border-color: var(--purple-1);
+    }
+  }
+
+  &__actions {
+    @include mx.flex(row, nowrap, flex-end, stretch);
+  }
+
+  &__submit-btn {
+    background-color: var(--purple-3);
+    color: var(--white);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: var(--purple-1);
+    }
+
+    &:disabled {
+      background-color: var(--light-purple);
+      cursor: not-allowed;
+    }
+  }
+}
+
+/* #region Responsive */
+@media (max-width: 900px) {
+  .create-channel {
+    border-radius: 0;
+    padding: 24px;
+    justify-content: flex-start;
+    gap: 24px;
+  }
+}
+/* #endregion */
