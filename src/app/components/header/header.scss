@@ -7,7 +7,7 @@
   top: 25px;
   left: 0;
   right: 0;
-  padding: 0 50px;
+  padding: 0 20px;
   box-sizing: border-box;
   z-index: vars.$z-index-sticky;
   max-width: 1920px;
@@ -38,7 +38,7 @@
   }
 
   &__logo {
-    width: 240px;
+    width: 245px;
     height: 70px;
     flex-shrink: 0;
   }

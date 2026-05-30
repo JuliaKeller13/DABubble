@@ -5,8 +5,10 @@
   background-color: var(--bg-color);
   min-height: 100vh;
   width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
   box-sizing: border-box;
-  padding: 120px 50px 30px 50px;
+  padding: 120px 20px 30px 20px;
 
   &__content {
     @include mx.flex(row, nowrap, flex-start, stretch);
