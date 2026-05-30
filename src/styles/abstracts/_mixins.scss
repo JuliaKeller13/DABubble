@@ -123,21 +123,21 @@
 
 // Up to 768px (Mobile/Large-Mobile range)
 @mixin mobile {
-  @media (max-width: #{vars.$breakpoint-tablet}) {
+  @media (max-width: #{vars.$breakpoint-tablet-max}) {
     @content;
   }
 }
 
 // From 769px to 1024px (Tablet Landscape)
 @mixin tablet {
-  @media (min-width: #{vars.$breakpoint-tablet + 1px}) and (max-width: #{vars.$breakpoint-desktop}) {
+  @media (min-width: 769px) and (max-width: #{vars.$breakpoint-tablet-max}) {
     @content;
   }
 }
 
 // Up to 1024px (Mobile and Tablet)
 @mixin tablet-lg {
-  @media (max-width: #{vars.$breakpoint-desktop}) {
+  @media (max-width: #{vars.$breakpoint-tablet-max}) {
     @content;
   }
 }
@@ -151,7 +151,7 @@
 
 // From 1025px (Desktop)
 @mixin desktop {
-  @media (min-width: #{vars.$breakpoint-desktop + 1px}) {
+  @media (min-width: #{vars.$breakpoint-tablet-max + 1px}) {
     @content;
   }
 }

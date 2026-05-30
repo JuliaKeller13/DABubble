@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 interface Channel {
   id: string;
@@ -20,8 +20,7 @@ interface User {
 })
 export class SidebarComponent {
   @Output() toggleSidebar = new EventEmitter<boolean>();
-
-  isClosed = false;
+  @Input() isClosed = false;
   isChannelsExpanded = true;
   isDMsExpanded = true;
   activeChannelId = '1';

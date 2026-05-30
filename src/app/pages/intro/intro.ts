@@ -11,9 +11,8 @@ export class IntroComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
-    // Wait for the animation to complete (1300ms) + 5 seconds, then navigate to login
     setTimeout(() => {
       this.router.navigate(['/login']);
-    }, 6300);
+    }, 3500);
   }
 }

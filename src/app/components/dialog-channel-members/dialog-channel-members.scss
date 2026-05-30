@@ -1,0 +1,206 @@
+@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
+
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: block;
+  z-index: vars.$z-index-modal;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.dialog-card {
+  @include mx.flex(column, nowrap, flex-start, stretch);
+  position: absolute;
+  top: 90px;
+  right: 110px;
+  z-index: vars.$z-index-modal-content;
+  width: 415px;
+  background-color: var(--white);
+  border-radius: 30px 0px 30px 30px;
+  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  box-sizing: border-box;
+  animation: slideDownIn 0.2s ease-out;
+  max-width: calc(100% - 100px);
+
+  &__header {
+    @include mx.flex(row, nowrap, space-between, center);
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-family: var(--font-main);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--black);
+    margin: 0;
+  }
+
+  &__close-btn {
+    @include mx.flex(row, nowrap, center, center);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--black);
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: var(--bg-color);
+      color: var(--purple-1);
+    }
+  }
+
+  &__body {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    gap: 24px;
+  }
+
+  &__members-list {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include mx.scrollbar(6px, vars.$light-purple);
+    gap: 15px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
+
+  &__member-row {
+    @include mx.flex(row, nowrap, flex-start, center);
+    gap: 15px;
+    padding: 4px 8px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--bg-color);
+    }
+  }
+
+  &__avatar-container {
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__status-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: #92c73e;
+    border: 2px solid var(--white);
+    border-radius: 50%;
+  }
+
+  &__member-name {
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--black);
+  }
+
+  &__add-btn {
+    @include mx.flex(row, nowrap, flex-start, center);
+    gap: 15px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 100px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--bg-color);
+
+      .dialog-card__add-icon--normal {
+        display: none;
+      }
+      .dialog-card__add-icon--hover {
+        display: block;
+      }
+      .dialog-card__add-text {
+        color: var(--purple-1);
+      }
+    }
+  }
+
+  &__add-icon-container {
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
+  &__add-icon {
+    width: 40px;
+    height: 40px;
+    display: none;
+
+    &--normal {
+      display: block;
+    }
+  }
+
+  &__add-text {
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--black);
+    transition: color 0.15s ease, font-weight 0.15s ease;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDownIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* #region RESPONSIVE */
+@include mx.mobile {
+  .dialog-card {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 380px;
+    border-radius: 30px;
+    padding: 24px;
+    animation: fadeIn 0.2s ease-out;
+
+    &__title {
+      font-size: 20px;
+    }
+
+    &__member-name,
+    &__add-text {
+      font-size: 16px;
+    }
+  }
+
+  @keyframes slideDownIn {
+    from { transform: translate(-50%, -60%); opacity: 0; }
+    to { transform: translate(-50%, -50%); opacity: 1; }
+  }
+}
+/* #endregion */

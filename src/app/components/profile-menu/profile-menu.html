@@ -1,8 +1,33 @@
-<div class="profile-menu-container">
+<div class="profile-menu-container" (click)="toggleMenu($event)">
   <span class="profile-menu-name">Frederik Beck</span>
   <div class="profile-menu-avatar-wrapper">
     <img src="img/avatars/avatar_male_1.svg" alt="Frederik Beck" class="profile-menu-avatar">
     <div class="profile-menu-status-dot"></div>
   </div>
-  <img src="img/icons/arrow_dropdown.svg" alt="Menü öffnen" class="profile-menu-arrow">
+  <svg class="profile-menu-arrow" width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.96875 8.1875C6.80208 8.1875 6.64083 8.15625 6.485 8.09375C6.32833 8.03125 6.19792 7.94792 6.09375 7.84375L0.34375 2.09375C0.114583 1.86458 0 1.57292 0 1.21875C0 0.864583 0.114583 0.572916 0.34375 0.34375C0.572916 0.114583 0.864583 0 1.21875 0C1.57292 0 1.86458 0.114583 2.09375 0.34375L6.96875 5.21875L11.8437 0.34375C12.0729 0.114583 12.3646 0 12.7188 0C13.0729 0 13.3646 0.114583 13.5937 0.34375C13.8229 0.572916 13.9375 0.864583 13.9375 1.21875C13.9375 1.57292 13.8229 1.86458 13.5937 2.09375L7.84375 7.84375C7.71875 7.96875 7.58333 8.05708 7.4375 8.10875C7.29167 8.16125 7.13542 8.1875 6.96875 8.1875Z" fill="currentColor"/>
+  </svg>
 </div>
+
+@if (isOpen) {
+  <div class="profile-menu-overlay" [class.profile-menu-overlay--closing]="isClosing" (click)="closeMenu()"></div>
+  <div class="profile-menu-sheet" [class.profile-menu-sheet--closing]="isClosing" (click)="$event.stopPropagation()">
+    <div class="profile-menu-sheet__handle" (click)="closeMenu()"></div>
+    
+    <div class="profile-menu-sheet__options">
+      <button class="profile-menu-sheet__option" (click)="openProfile()">
+        <img src="img/icons/account_workspace/account_circle.svg" alt="Profil" class="profile-menu-sheet__icon">
+        <span class="profile-menu-sheet__text">Profil</span>
+      </button>
+      
+      <button class="profile-menu-sheet__option" (click)="logout()">
+        <svg class="profile-menu-sheet__icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        <span class="profile-menu-sheet__text">Log out</span>
+      </button>
+    </div>
+  </div>
+}

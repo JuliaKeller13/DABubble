@@ -2,9 +2,7 @@
 @use '../../../styles/abstracts/variables' as vars;
 
 main {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  @include mx.flex(row, nowrap, center, flex-start);
 }
 
 .page-container {
@@ -16,7 +14,7 @@ main {
 }
 
 .datenschutz-layout {
-  @include mx.flex(column, nowrap);
+  @include mx.flex(column, nowrap, flex-start, stretch);
   gap: 32px;
   width: 100%;
   padding: 120px 290px 48px 290px;
@@ -30,12 +28,12 @@ main {
 }
 
 .datenschutz-content {
-  @include mx.flex(column, nowrap);
+  @include mx.flex(column, nowrap, flex-start, stretch);
   gap: 32px;
 }
 
 .datenschutz-section {
-  @include mx.flex(column, nowrap);
+  @include mx.flex(column, nowrap, flex-start, stretch);
   gap: 8px;
 
   h2 {

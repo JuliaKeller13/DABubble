@@ -42,54 +42,57 @@
     padding-left: 16px;
     display: inline-block;
     width: 440px;
-    
     clip-path: inset(0 100% 0 0);
     animation: logoTextWipe 500ms ease-out forwards;
     animation-delay: 800ms;
   }
 }
 
-// Keyframes
-@keyframes logoFadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 @keyframes logoWrapperExpand {
-  0% {
-    gap: 0;
-  }
-  100% {
-    gap: 16px;
-    @media (max-width: 768px) {
-      gap: 10px;
-    }
-  }
+  0% { gap: 0; }
+  100% { gap: 16px; }
 }
 
 @keyframes logoTextReveal {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 440px; 
-    @media (max-width: 768px) {
-      width: 250px;
-    }
-  }
+  0% { width: 0; }
+  100% { width: 440px; }
 }
 
 @keyframes logoTextWipe {
-  0% {
-    clip-path: inset(0 100% 0 0);
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+/* #region RESPONSIVE */
+@media (max-width: 768px) {
+  .intro {
+    .intro__logo-wrapper {
+      animation-name: logoWrapperExpandMobile;
+    }
+
+    .intro__logo-img {
+      width: 45px;
+    }
+
+    .intro__logo-text-box {
+      animation-name: logoTextRevealMobile;
+    }
+
+    .intro__logo-text {
+      font-size: 26px;
+      width: auto;
+      white-space: nowrap;
+    }
   }
-  100% {
-    clip-path: inset(0 0% 0 0);
+
+  @keyframes logoWrapperExpandMobile {
+    0% { gap: 0; }
+    100% { gap: 8px; }
+  }
+
+  @keyframes logoTextRevealMobile {
+    0% { width: 0; }
+    100% { width: 120px; }
   }
 }
+/* #endregion */

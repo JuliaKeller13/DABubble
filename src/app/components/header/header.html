@@ -1,17 +1,17 @@
-<header class="header">
+<header class="header" [class.header--transparent]="isTransparent">
   <div class="header__left">
     <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="header__logo">
   </div>
 
-  <div class="header__center">
-    @if (showSearch) {
+  @if (showSearch) {
+    <div class="header__center">
       <app-searchbar></app-searchbar>
-    }
-  </div>
+    </div>
+  }
 
-  <div class="header__right">
-    @if (showProfile) {
+  @if (showProfile) {
+    <div class="header__right">
       <app-profile-menu></app-profile-menu>
-    }
-  </div>
+    </div>
+  }
 </header>
