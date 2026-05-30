@@ -55,12 +55,12 @@ export class LoginComponent {
 
     this.loading.set(true);
     this.loginError.set(false);
-    
+
     const { email, password } = this.form.getRawValue();
 
     try {
       const { error } = await this.authService.loginWithEmail(email, password);
-      
+
       if (error) {
         this.handleError();
       } else {
@@ -73,15 +73,43 @@ export class LoginComponent {
     }
   }
 
+  async guestLogin(): Promise<void> {
+    this.loading.set(true);
+    this.loginError.set(false);
+    try {
+      const { error } = await this.authService.guestLogin();
+      if (error) {
+        this.handleError();
+      } else {
+        this.router.navigate(['/main']);
+      }
+    } catch (e) {
+      this.handleError();
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async loginWithGoogle(): Promise<void> {
+    this.loading.set(true);
+    this.loginError.set(false);
+
+    try {
+      const targetUrl = `${window.location.origin}/main`;
+      const { error } = await this.authService.loginWithGoogle(targetUrl);
+
+      if (error) {
+        throw error;
+      }
+    } catch (e) {
+      console.error('Google Login Fehler:', e);
+      this.loginError.set(true);
+      this.loading.set(false);
+    }
+  }
+
   private handleError(): void {
     this.loginError.set(true);
     this.form.get('password')?.setErrors({ loginError: true });
-  }
-
-  guestLogin(): void {
-    this.router.navigate(['/main']);
-  }
-
-  loginWithGoogle(): void {
   }
 }
