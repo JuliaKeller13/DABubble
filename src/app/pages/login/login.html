@@ -43,12 +43,10 @@
         }
       </mat-form-field>
 
-      <div class="forgot-password-container">
-        <a href="#" class="forgot-password-link">Passwort vergessen?</a>
-      </div>
+      <a href="#" class="forgot-password-link">Passwort vergessen?</a>
 
       <div class="divider">
-        <span>ODER</span>
+        <p class="text-body">ODER</p>
       </div>
 
       <button type="button" class="btn-google" (click)="loginWithGoogle()" [disabled]="loading()">
@@ -58,10 +56,10 @@
 
       <div class="btns-container">
         <button class="btn-primary" type="submit" [disabled]="form.invalid || loading()">
-          Login
+          Anmelden
         </button>
         <button class="btn-secondary" type="button" (click)="guestLogin()" [disabled]="loading()">
-          Guest Log in
+          Gäste Login
         </button>
       </div>
     </form>

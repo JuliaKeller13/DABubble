@@ -80,7 +80,7 @@
 input,
 textarea,
 select {
-  @include clean-autofill($white, $black);
+  @include clean-autofill($bg-color, $black);
 }
 
 body .mat-mdc-form-field {
@@ -89,6 +89,6 @@ body .mat-mdc-form-field {
   }
 
   &.mat-focused input.mat-mdc-input-element {
-    @include clean-autofill($white, $black);
+    @include clean-autofill($bg-color, $black);
   }
 }
