@@ -1,0 +1,21 @@
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 2rem;
+  transform: translateX(-50%);
+  min-width: 220px;
+  max-width: 90vw;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  opacity: 0.98;
+  &.success {
+    background: #2ecc40;
+  }
+  &.error {
+    background: #e74c3c;
+  }
+}

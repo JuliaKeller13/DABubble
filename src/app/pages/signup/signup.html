@@ -1,0 +1,106 @@
+<main>
+  <div class="page-container">
+    <app-header
+      [showSearch]="false"
+      [showProfile]="false"
+      [showSignup]="false"
+      [isTransparent]="true"
+      [loginHeader]="false"
+      class="desktop-header-only"
+    ></app-header>
+
+    <div class="mobile-header-only">
+      <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="login-logo" />
+    </div>
+
+    <div class="login-form-box">
+      <button class="btn-back" aria-label="Zurück" routerLink="/login">
+        <img class="btn-back__icon" src="img/icons/arrow_back.svg" alt="Zurück Button" />
+        <img
+          class="btn-back__icon-hover"
+          src="img/icons/arrow_back_hover.svg"
+          alt="Zurück Button"
+        />
+      </button>
+      <header class="form-box-header">
+        <h1 class="text-headline-blue">Konto erstellen</h1>
+        <p class="text-body">
+          Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.
+        </p>
+      </header>
+
+      <form [formGroup]="form" class="form" (ngSubmit)="signUp()" novalidate>
+        <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
+          <img matPrefix src="img/icons/form/person.svg" alt="user" />
+          <input
+            matInput
+            formControlName="name"
+            placeholder="Name und Nachname"
+            autocomplete="off"
+          />
+          @if (form.get('name')?.hasError('required')) {
+            <mat-error>Name ist erforderlich</mat-error>
+          }
+          @if (form.get('name')?.hasError('pattern')) {
+            <mat-error>Vor- & Nachname erforderlich (keine Zahlen)</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
+          <img matPrefix src="img/icons/form/mail.svg" alt="mail" />
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="beispielname@email.com"
+            autocomplete="off"
+          />
+          @if (form.get('email')?.touched && form.get('email')?.hasError('required')) {
+            <mat-error>E-Mail ist erforderlich.</mat-error>
+          }
+          @if (form.get('email')?.hasError('pattern')) {
+            <mat-error>E-Mail ist ungültig</mat-error>
+          }
+        </mat-form-field>
+
+
+        <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
+          <img matPrefix src="img/icons/form/lock.svg" alt="lock" />
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            placeholder="Passwort"
+            autocomplete="new-password"
+          />
+          @if (form.get('password')?.touched && form.get('password')?.hasError('required')) {
+            <mat-error>Passwort ist erforderlich.</mat-error>
+          }
+          @if (form.get('password')?.hasError('minlength')) {
+            <mat-error>Passwort muss mindestens 6 Zeichen haben.</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="checkbox-container">
+          <div class="custom-checkbox" (click)="form.get('acceptTerms')?.setValue(!form.get('acceptTerms')?.value)">
+            <img
+              [src]="form.get('acceptTerms')?.value ? 'img/icons/button_icons/box_checked.svg' : 'img/icons/button_icons/box_unchecked.svg'"
+              [alt]="form.get('acceptTerms')?.value ? 'checked' : 'unchecked'"
+              class="checkbox-icon"
+            />
+            <p class="checkbox-label">
+              Ich akzeptiere die <a routerLink="/datenschutz">Datenschutzbestimmungen</a>
+            </p>
+          </div>
+          <input type="checkbox" formControlName="acceptTerms" class="hidden-checkbox" />
+        </div>
+
+        <button class="btn-primary" type="submit">
+          Weiter
+        </button>
+      </form>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</main>

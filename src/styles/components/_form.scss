@@ -16,7 +16,7 @@
         outlined-outline-color: transparent,
         outlined-hover-outline-color: $purple-2,
         outlined-focus-outline-color: $purple-1,
-        outlined-input-text-color: $black,
+        outlined-input-text-color: $text-gray,
         outlined-input-text-placeholder-color: $text-gray,
         container-vertical-padding: 10px,
         outlined-outline-width: 1px,
@@ -54,10 +54,20 @@
       padding: 0;
     }
 
+    mat-icon[matPrefix],
     img[matPrefix],
-    svg[matPrefix] {
-      width: 22px;
-      height: 22px;
+    svg[matPrefix],
+    .mat-mdc-form-field-icon-prefix {
+      width: 24px;
+      height: 24px;
+      fill: $text-gray;
+      color: $text-gray;
+      transition: color 150ms ease, fill 150ms ease;
+
+      svg {
+        fill: $text-gray;
+        transition: fill 150ms ease;
+      }
     }
 
     .mat-mdc-form-field-flex {
@@ -66,13 +76,42 @@
       gap: 30px;
     }
 
-    input {
+    input.mat-mdc-input-element {
       @include fluid-text(16, 18);
       font-family: 'Nunito Variable', sans-serif;
       font-weight: 500;
       border: none;
       background: transparent;
       box-shadow: none;
+      transition: color 150ms ease;
+
+      &::placeholder {
+        transition: color 150ms ease, -webkit-text-fill-color 150ms ease;
+      }
+    }
+
+    &.mat-focused {
+      mat-icon[matPrefix],
+      img[matPrefix],
+      svg[matPrefix],
+      .mat-mdc-form-field-icon-prefix {
+        fill: $black;
+        color: $black;
+
+        svg {
+          fill: $black;
+        }
+      }
+
+      input.mat-mdc-input-element {
+        color: $black;
+        -webkit-text-fill-color: $black;
+
+        &::placeholder {
+          color: transparent;
+          -webkit-text-fill-color: transparent;
+        }
+      }
     }
   }
 }

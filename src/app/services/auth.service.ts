@@ -44,6 +44,23 @@ export class AuthService {
         });
     }
 
+    async signup(name: string, email: string, password: string): Promise<{ error: any, data: any }> {
+        const { data, error } = await this.supabaseSvc.supabase.auth.signUp({
+            email,
+            password
+        });
+
+        if (error || !data.user) {
+            return { error, data };
+        }
+
+        const { error: profileError } = await this.supabaseSvc.supabase
+            .from('profiles')
+            .upsert({ id: data.user.id, display_name: name, email });
+
+        return { error: error || profileError, data };
+    }
+
     async logout(): Promise<void> {
         await this.supabaseSvc.supabase.auth.signOut();
     }
