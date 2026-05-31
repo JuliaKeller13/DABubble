@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login';
 import { ImpressumComponent } from './pages/impressum/impressum';
 import { DatenschutzComponent } from './pages/datenschutz/datenschutz';
 import { MainComponent } from './pages/main/main';
+import { Signup } from './pages/signup/signup';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'intro', pathMatch: 'full' },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'impressum', component: ImpressumComponent },
   { path: 'datenschutz', component: DatenschutzComponent },
-  { path: 'main', component: MainComponent }
+  { path: 'main', component: MainComponent },
+  { path: 'signup', component: Signup }
 ];
