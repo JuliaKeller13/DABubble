@@ -52,7 +52,7 @@ export class AuthService {
 
     this.currentUserProfileSignal.set(data as UserProfile);
 
-    this.setupPresence(user);
+    await this.setupPresence(user);
   }
 
   async loginWithEmail(email: string, password: string): Promise<AuthResponse> {
@@ -91,13 +91,15 @@ export class AuthService {
     await this.supabaseSvc.supabase.auth.signOut();
   }
 
-  private setupPresence(user: User) {
-    this.cleanupPresence();
+  private async setupPresence(user: User) {
+    await this.cleanupPresence();
 
-    this.presenceChannel = this.supabaseSvc.supabase.channel('online-users');
+    const channel = this.supabaseSvc.supabase.channel('online-users');
+    this.presenceChannel = channel;
 
-    this.presenceChannel.on('presence', { event: 'sync' }, () => {
-      const state = this.presenceChannel!.presenceState();
+    channel.on('presence', { event: 'sync' }, () => {
+      if (!this.presenceChannel) return;
+      const state = channel.presenceState();
       const onlineIds = new Set<string>();
 
       Object.values(state).forEach((presences: any) => {
@@ -111,9 +113,9 @@ export class AuthService {
       this.onlineUserIdsSignal.set(onlineIds);
     });
 
-    this.presenceChannel.subscribe(async (status) => {
-      if (status === 'SUBSCRIBED') {
-        await this.presenceChannel!.track({
+    channel.subscribe(async (status) => {
+      if (status === 'SUBSCRIBED' && this.presenceChannel === channel) {
+        await channel.track({
           userId: user.id,
         });
       }
