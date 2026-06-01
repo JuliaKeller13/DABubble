@@ -267,6 +267,7 @@
 
   &:active {
     font-weight: 500;
+    border: 1px solid $text-grey;
   }
   
   &:disabled {

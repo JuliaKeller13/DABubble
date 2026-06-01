@@ -3,6 +3,8 @@ import { AuthService } from '../../services/auth.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
@@ -14,6 +16,7 @@ import { FooterComponent } from '../../components/footer/footer';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
     HeaderComponent,
     FooterComponent,
     RouterLink
@@ -25,6 +28,13 @@ export class LoginComponent {
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private iconRegistry = inject(MatIconRegistry);
+  private sanitizer = inject(DomSanitizer);
+
+  constructor() {
+    this.iconRegistry.addSvgIcon('mail', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/mail.svg'));
+    this.iconRegistry.addSvgIcon('lock', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/lock.svg'));
+  }
 
   loginError = signal(false);
   loading = signal(false);

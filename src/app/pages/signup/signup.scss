@@ -18,7 +18,7 @@ main {
 .login-form-box {
   @include flex(column, nowrap, flex-start, stretch);
   background: $white;
-  padding: 50px 60px;
+  padding: 40px 50px;
   border-radius: 30px;
   box-shadow: 0 10px 40px rgba($black, 0.04);
   text-align: center;
@@ -26,6 +26,9 @@ main {
   box-sizing: border-box;
   gap: 45px;
   position: relative;
+  @include mobile-md {
+    padding: 20px;
+  }
 
   .btn-back {
     position: absolute;
@@ -56,8 +59,55 @@ main {
   pointer-events: none;
 }
 
+.custom-checkbox {
+  @include flex(row, nowrap, flex-start, center);
+  gap: 8px;
+
+  .checkbox-label {
+    text-align: left;
+    hyphens: auto;
+  }
+
+  .checkbox-icon {
+    color: $purple-2;
+    transition: color 150ms ease-in-out;
+    flex-shrink: 0;
+  }
+
+  &:hover .checkbox-icon {
+    color: $purple-1;
+    cursor: pointer;
+    background-color: $bg-color;
+    border-radius: 50%;
+  }
+
+  a {
+    color: $purple-2;
+    text-decoration: none;
+    hyphens: none;
+    border-radius: 30px;
+    transition:
+      color 150ms ease-in-out,
+      text-shadow 150ms ease-in-out;
+
+    &:hover {
+      color: $purple-1;
+      text-shadow: 0 0 0.4px currentColor;
+      background-color: $bg-color;
+    }
+  }
+
+  @include mobile-md {
+    @include flex(row, nowrap, flex-start, flex-start);
+  }
+}
+
+.form .btn-primary {
+  align-self: flex-end;
+}
 
 /* #region RESPONSIVE */
+
 @media (max-width: 768px) {
   .desktop-header-only {
     display: none;
@@ -84,11 +134,19 @@ main {
     width: 100%;
     max-width: 600px;
     margin-block: 30px;
-    padding: 35px 20px;
     gap: 20px;
 
     .form-box-header {
       gap: 20px;
+      
+      h1{
+        margin-inline: 35px;
+      }
+    }
+
+    .btn-back {
+      top: 20px;
+      left: 15px;
     }
   }
 }

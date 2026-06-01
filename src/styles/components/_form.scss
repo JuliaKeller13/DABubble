@@ -14,16 +14,16 @@
         container-height: 52px,
         outlined-container-shape: 30px,
         outlined-outline-color: transparent,
-        outlined-hover-outline-color: $purple-2,
-        outlined-focus-outline-color: $purple-1,
+        outlined-hover-outline-color: $text-gray,
+        outlined-focus-outline-color: $purple-3,
         outlined-input-text-color: $text-gray,
         outlined-input-text-placeholder-color: $text-gray,
         container-vertical-padding: 10px,
         outlined-outline-width: 1px,
         outlined-focus-outline-width: 1px,
-        outlined-error-outline-color: $rosa-error,
-        outlined-error-hover-outline-color: $rosa-error,
-        outlined-error-focus-outline-color: $rosa-error,
+        outlined-error-outline-color: $purple-3,
+        outlined-error-hover-outline-color: $purple-3,
+        outlined-error-focus-outline-color: $purple-3,
       )
     );
 
@@ -60,14 +60,8 @@
     .mat-mdc-form-field-icon-prefix {
       width: 24px;
       height: 24px;
-      fill: $text-gray;
       color: $text-gray;
-      transition: color 150ms ease, fill 150ms ease;
-
-      svg {
-        fill: $text-gray;
-        transition: fill 150ms ease;
-      }
+      transition: color 150ms ease;
     }
 
     .mat-mdc-form-field-flex {
@@ -86,23 +80,24 @@
       transition: color 150ms ease;
 
       &::placeholder {
-        transition: color 150ms ease, -webkit-text-fill-color 150ms ease;
+        transition:
+          color 150ms ease,
+          -webkit-text-fill-color 150ms ease;
       }
     }
 
-    &.mat-focused {
+    &.mat-focused,
+    &:has(input.mat-mdc-input-element:not(:placeholder-shown)) {
       mat-icon[matPrefix],
       img[matPrefix],
       svg[matPrefix],
       .mat-mdc-form-field-icon-prefix {
-        fill: $black;
         color: $black;
-
-        svg {
-          fill: $black;
-        }
       }
+    }
 
+    &.mat-focused,
+    &:has(input.mat-mdc-input-element:not(:placeholder-shown)) {
       input.mat-mdc-input-element {
         color: $black;
         -webkit-text-fill-color: $black;
@@ -132,7 +127,6 @@ body .mat-mdc-form-field {
   }
 }
 
-/* #region RESPONSIVE */
 @include mobile-md {
   .form {
     gap: 30px;
@@ -142,4 +136,3 @@ body .mat-mdc-form-field {
     }
   }
 }
-/* #endregion */

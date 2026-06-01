@@ -23,7 +23,7 @@
 
       <form [formGroup]="form" class="form" novalidate (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
-          <img matPrefix src="img/icons/form/mail.svg" alt="mail" />
+          <mat-icon matPrefix svgIcon="mail"></mat-icon>
           <input
             matInput
             formControlName="email"
@@ -40,7 +40,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
-          <img matPrefix src="img/icons/form/lock.svg" alt="lock" />
+          <mat-icon matPrefix svgIcon="lock"></mat-icon>
           <input
             matInput
             formControlName="password"

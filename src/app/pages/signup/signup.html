@@ -31,7 +31,7 @@
 
       <form [formGroup]="form" class="form" (ngSubmit)="signUp()" novalidate>
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
-          <img matPrefix src="img/icons/form/person.svg" alt="user" />
+          <mat-icon matPrefix svgIcon="person"></mat-icon>
           <input
             matInput
             formControlName="name"
@@ -47,7 +47,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
-          <img matPrefix src="img/icons/form/mail.svg" alt="mail" />
+          <mat-icon matPrefix svgIcon="mail"></mat-icon>
           <input
             matInput
             formControlName="email"
@@ -65,7 +65,7 @@
 
 
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
-          <img matPrefix src="img/icons/form/lock.svg" alt="lock" />
+          <mat-icon matPrefix svgIcon="lock"></mat-icon>
           <input
             matInput
             formControlName="password"
@@ -82,14 +82,14 @@
         </mat-form-field>
 
         <div class="checkbox-container">
-          <div class="custom-checkbox" (click)="form.get('acceptTerms')?.setValue(!form.get('acceptTerms')?.value)">
-            <img
-              [src]="form.get('acceptTerms')?.value ? 'img/icons/button_icons/box_checked.svg' : 'img/icons/button_icons/box_unchecked.svg'"
-              [alt]="form.get('acceptTerms')?.value ? 'checked' : 'unchecked'"
+          <div class="custom-checkbox">
+            <mat-icon
+              [svgIcon]="form.get('acceptTerms')?.value ? 'box-checked' : 'box-unchecked'"
               class="checkbox-icon"
-            />
+              (click)="form.get('acceptTerms')?.setValue(!form.get('acceptTerms')?.value)"
+            ></mat-icon>
             <p class="checkbox-label">
-              Ich akzeptiere die <a routerLink="/datenschutz">Datenschutzbestimmungen</a>
+              Ich stimme der <a routerLink="/datenschutz">Datenschutzerklärung</a> zu.
             </p>
           </div>
           <input type="checkbox" formControlName="acceptTerms" class="hidden-checkbox" />
