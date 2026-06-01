@@ -37,7 +37,23 @@ export class AuthService {
             console.error('Error loading profile:', error);
             return this.currentUserProfileSignal.set(null);
         }
-        this.currentUserProfileSignal.set(data as UserProfile);
+        
+        const profile = data as UserProfile;
+        
+        // Update user status to online in the database if it is not already online
+        if (profile.status !== 'online') {
+            const { error: updateError } = await this.supabaseSvc.supabase
+                .from('profiles')
+                .update({ status: 'online' })
+                .eq('id', user.id);
+            if (!updateError) {
+                profile.status = 'online';
+            } else {
+                console.error('Error updating status to online:', updateError);
+            }
+        }
+        
+        this.currentUserProfileSignal.set(profile);
     }
 
     async loginWithEmail(email: string, password: string): Promise<AuthResponse> {
@@ -71,6 +87,14 @@ export class AuthService {
     }
 
     async logout(): Promise<void> {
+        const currentUser = this.currentUserSignal();
+        if (currentUser) {
+            // Update user status to offline in the database before signing out
+            await this.supabaseSvc.supabase
+                .from('profiles')
+                .update({ status: 'offline' })
+                .eq('id', currentUser.id);
+        }
         await this.supabaseSvc.supabase.auth.signOut();
     }
 }

@@ -102,7 +102,7 @@
               <div class="sidebar__item sidebar__item--user text-body-18">
                 <div class="sidebar__avatar-wrapper">
                   <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="sidebar__avatar">
-                  <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="user.status === 'online'"></span>
+                  <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="isUserOnline(user)"></span>
                 </div>
                 <span class="sidebar__item-name">
                   {{ user.display_name }}

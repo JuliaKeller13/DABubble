@@ -51,10 +51,10 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 14px;
-  height: 14px;
+  width: 17px;
+  height: 17px;
   background-color: var(--text-gray);
-  border: 2px solid var(--white);
+  border: 2px solid var(--bg-color);
   border-radius: 50%;
 
   &--online {
@@ -190,6 +190,10 @@
   .profile-menu-avatar {
     width: 50px;
     height: 50px;
+  }
+  .profile-menu-status-dot {
+    width: 14px;
+    height: 14px;
   }
   .profile-menu-overlay {
     @include mx.flex(column, nowrap, flex-end, stretch);

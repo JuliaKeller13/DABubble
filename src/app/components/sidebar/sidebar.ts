@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 import { Channel } from '../../interfaces/channel.interface';
 import { User } from '../../interfaces/user.interface';
 import { channelService } from '../../services/channel.service';
@@ -49,6 +50,15 @@ export class SidebarComponent implements OnInit {
     this.users.set(fetchedUsers);
   }
 
+  // Check if a user is online, falling back to the reactive auth signal for the current user
+  isUserOnline(user: User): boolean {
+    const currentProfile = this.authSvc.currentUserProfile();
+    if (currentProfile && user.id === currentProfile.id) {
+      return currentProfile.status === 'online';
+    }
+    return user.status === 'online';
+  }
+
   // Set active channel
   selectChannel(id: string | undefined) {
     if (!id) return;
@@ -71,8 +81,8 @@ export class SidebarComponent implements OnInit {
     this.toggleSidebar.emit(this.isClosed);
   }
 
-  // Open create channel dialog
-  openCreateChannelDialog(): void {
+  // Open create channel dialog flow sequentially using async/await
+  async openCreateChannelDialog(): Promise<void> {
     const dialogRef = this.dialog.open(dialogCreateChannelComponent, {
       width: '870px',
       height: '540px',
@@ -81,34 +91,32 @@ export class SidebarComponent implements OnInit {
       panelClass: 'custom-dialog-container'
     });
 
-    dialogRef.afterClosed().subscribe(async (result) => {
-      if (result) {
-        const addMemberRef = this.dialog.open(dialogAddMemberComponent, {
-          width: '710px',
-          height: '290px',
-          maxWidth: '100vw',
-          maxHeight: '100vh',
-          panelClass: 'custom-dialog-container',
-          data: { channelName: result.name }
-        });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (!result) return;
 
-        addMemberRef.afterClosed().subscribe(async (memberResult) => {
-          if (memberResult) {
-            try {
-              const currentUserId = this.authSvc.currentUser()?.id;
-              await this.channelSvc.createChannel({
-                name: result.name,
-                description: result.description,
-                created_by: currentUserId ?? ''
-              });
-              await this.loadData();
-            } catch (error) {
-              console.error('Failed to create channel:', error);
-            }
-          }
-        });
-      }
+    const addMemberRef = this.dialog.open(dialogAddMemberComponent, {
+      width: '710px',
+      height: '290px',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      panelClass: 'custom-dialog-container',
+      data: { channelName: result.name }
     });
+
+    const memberResult = await firstValueFrom(addMemberRef.afterClosed());
+    if (!memberResult) return;
+
+    try {
+      const currentUserId = this.authSvc.currentUser()?.id;
+      await this.channelSvc.createChannel({
+        name: result.name,
+        description: result.description,
+        created_by: currentUserId ?? ''
+      });
+      await this.loadData();
+    } catch (error) {
+      console.error('Failed to create channel:', error);
+    }
   }
 
 }
