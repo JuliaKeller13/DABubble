@@ -51,12 +51,9 @@ export class SidebarComponent implements OnInit {
   }
 
   // Check if a user is online, falling back to the reactive auth signal for the current user
+  // Checks if a user is currently online using the real-time presence signal
   isUserOnline(user: User): boolean {
-    const currentProfile = this.authSvc.currentUserProfile();
-    if (currentProfile && user.id === currentProfile.id) {
-      return currentProfile.status === 'online';
-    }
-    return user.status === 'online';
+    return this.authSvc.onlineUserIds().has(user.id);
   }
 
   // Set active channel

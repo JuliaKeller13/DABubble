@@ -7,12 +7,12 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [],
   templateUrl: './profile-menu.html',
-  styleUrl: './profile-menu.scss'
+  styleUrl: './profile-menu.scss',
 })
 export class ProfileMenuComponent {
   private router = inject(Router);
   private authService = inject(AuthService);
-  
+
   currentUserProfile = this.authService.currentUserProfile;
   isOpen = false;
   isClosing = false;
@@ -31,7 +31,7 @@ export class ProfileMenuComponent {
 
   closeMenu() {
     if (!this.isOpen || this.isClosing) return;
-    
+
     if (window.innerWidth <= 1024) {
       this.isClosing = true;
       setTimeout(() => {
@@ -59,6 +59,12 @@ export class ProfileMenuComponent {
 
   openProfile() {
     this.closeMenu();
+  }
+
+  // Checks if the current logged-in user is online
+  isOnline(): boolean {
+    const profile = this.currentUserProfile();
+    return profile ? this.authService.onlineUserIds().has(profile.id) : false;
   }
 
   async logout() {
