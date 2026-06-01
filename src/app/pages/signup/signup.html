@@ -29,7 +29,7 @@
         </p>
       </header>
 
-      <form [formGroup]="form" class="form" (ngSubmit)="signUp()" novalidate>
+      <form [formGroup]="form" class="form" novalidate>
         <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">
           <mat-icon matPrefix svgIcon="person"></mat-icon>
           <input
@@ -95,7 +95,13 @@
           <input type="checkbox" formControlName="acceptTerms" class="hidden-checkbox" />
         </div>
 
-        <button class="btn-primary" type="submit">
+        <button
+          class="btn-primary"
+          type="button"
+          routerLink="/choose-avatar"
+          [state]="{ signupData: form.getRawValue() }"
+          (click)="continueToChooseAvatar($event)"
+        >
           Weiter
         </button>
       </form>

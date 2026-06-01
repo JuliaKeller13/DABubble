@@ -1,0 +1,127 @@
+@use '../../../styles/abstracts' as *;
+@use '../../../styles/components/button' as *;
+
+main {
+  @include flex(row, nowrap, center, center);
+}
+
+.page-container {
+  @include flex(column, nowrap, center, center);
+  position: relative;
+  width: 100%;
+  max-width: 1920px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 110px 20px;
+}
+
+.login-form-box {
+  @include flex(column, nowrap, flex-start, stretch);
+  background: $white;
+  padding: 40px 70px;
+  border-radius: 30px;
+  box-shadow: 0 10px 40px rgba($black, 0.04);
+  text-align: center;
+  width: 600px;
+  box-sizing: border-box;
+  gap: 60px;
+  position: relative;
+
+  @include mobile-md {
+    padding: 20px;
+  }
+
+  .btn-back {
+    position: absolute;
+    top: 45px;
+    left: 32px;
+  }
+
+  .form-box-header {
+    @include flex(column, nowrap, flex-start, stretch);
+    gap: 30px;
+  }
+}
+
+.result-selection {
+  @include flex(column, nowrap, flex-end, center);
+  gap: 30px;
+
+  .choose-avatar img{
+    width: 168px;
+    height: 168px;
+  }
+  .avatar-list{
+    @include flex(column, nowrap, flex-start, flex-start);
+    gap: 16px;
+
+
+        text-align: left;
+  }
+
+  .avatars {
+    @include flex(row, wrap, flex-start, center);
+    gap: 8px;
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+}
+
+.actions {
+  @include flex(row, nowrap, flex-end, center);
+}
+
+.mobile-header-only {
+  display: none;
+}
+
+.desktop-header-only {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .desktop-header-only {
+    display: none;
+  }
+
+  .mobile-header-only {
+    @include flex(row, nowrap, center, center);
+    width: 100%;
+    padding-top: 70px;
+    box-sizing: border-box;
+  }
+
+  .login-logo {
+    height: 80px;
+    object-fit: contain;
+  }
+
+  .page-container {
+    @include flex(column, nowrap, flex-start, center);
+    padding: 0 16px 50px 16px;
+  }
+
+  .login-form-box {
+    width: 100%;
+    max-width: 600px;
+    margin-block: 30px;
+    gap: 20px;
+
+    .form-box-header {
+      gap: 20px;
+
+      h1 {
+        margin-inline: 35px;
+      }
+    }
+
+    .btn-back {
+      top: 20px;
+      left: 15px;
+    }
+  }
+}

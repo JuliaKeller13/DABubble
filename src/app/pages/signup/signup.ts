@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,8 +7,6 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
-import { AuthService } from '../../services/auth.service';
-import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -26,9 +24,6 @@ import { ToastService } from '../../services/toast.service';
 })
 export class Signup {
   private fb = inject(NonNullableFormBuilder);
-  private router = inject(Router);
-  private authService = inject(AuthService);
-  private toast = inject(ToastService);
   private iconRegistry = inject(MatIconRegistry);
   private sanitizer = inject(DomSanitizer);
 
@@ -49,22 +44,11 @@ export class Signup {
     this.iconRegistry.addSvgIcon('box-unchecked', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/button_icons/box_unchecked.svg'));
   }
 
-  async signUp(): Promise<void> {
+  continueToChooseAvatar(event: Event): void {
     if (this.form.invalid) {
+      event.preventDefault();
       this.form.markAllAsTouched();
       return;
     }
-
-    this.loading.set(true);
-    const { name, email, password } = this.form.getRawValue();
-    const { error } = await this.authService.signup(name, email, password);
-    this.loading.set(false);
-
-    if (error) {
-      this.toast.show('Registrierung fehlgeschlagen: ' + (error.message || error), 'error');
-      return;
-    }
-    this.toast.show('Konto erfolgreich erstellt!', 'success');
-    this.router.navigate(['/login']);
   }
 }

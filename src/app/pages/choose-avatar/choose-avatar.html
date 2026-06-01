@@ -1,0 +1,60 @@
+<main>
+  <div class="page-container">
+    <app-header
+      [showSearch]="false"
+      [showProfile]="false"
+      [showSignup]="false"
+      [isTransparent]="true"
+      [loginHeader]="false"
+      class="desktop-header-only"
+    ></app-header>
+
+    <div class="mobile-header-only">
+      <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="login-logo" />
+    </div>
+
+    <div class="login-form-box">
+      <button class="btn-back" aria-label="Zurueck" routerLink="/signup">
+        <img class="btn-back__icon" src="img/icons/arrow_back.svg" alt="Zurueck Button" />
+        <img
+          class="btn-back__icon-hover"
+          src="img/icons/arrow_back_hover.svg"
+          alt="Zurueck Button"
+        />
+      </button>
+
+      <header class="form-box-header">
+        <h1 class="text-headline-blue">Wähle deinen Avatar</h1>
+      </header>
+
+      <section class="result-selection">
+        <div class="choose-avatar">
+          <img src="img/avatars/avatar_default.svg" alt="person" />
+          <!-- hier gleiche container wie img oben person, aber google Foto übernehmen, wenn user sich mit google anmeldet wenn nicht mit google soll dieser Kreis nicht sichtbar sein-->
+        </div>
+
+        <p class="text-account-name">Username</p>
+
+        <div class="avatar-list">
+          <p>Aus der Liste auswählen</p>
+          <div class="avatars">
+            <img src="img/avatars/avatar_female_1.svg" alt="Avatar Frau" />
+            <img src="img/avatars/avatar_female_2.svg" alt="Avatar Frau" />
+            <img src="img/avatars/avatar_male_1.svg" alt="Avatar Mann" />
+            <img src="img/avatars/avatar_male_2.svg" alt="Avatar Mann" />
+            <img src="img/avatars/avatar_male_3.svg" alt="Avatar Mann" />
+            <img src="img/avatars/avatar_male_2.svg" alt="Avatar Mann" />
+          </div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button class="btn-primary" type="button" (click)="completeSignup()" [disabled]="loading()">
+          Weiter
+        </button>
+      </div>
+    </div>
+
+    <app-footer></app-footer>
+  </div>
+</main>
