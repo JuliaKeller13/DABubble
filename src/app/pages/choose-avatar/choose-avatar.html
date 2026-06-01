@@ -27,6 +27,27 @@
         <h1 class="text-headline-blue">Wähle deinen Avatar</h1>
       </header>
 
+      <section class="result-selection">
+        <div class="choose-avatar">
+          <img src="img/avatars/avatar_default.svg" alt="person" />
+          <!-- hier gleiche container wie img oben person, aber google Foto übernehmen, wenn user sich mit google anmeldet wenn nicht mit google soll dieser Kreis nicht sichtbar sein-->
+        </div>
+
+        <p class="text-account-name">Username</p>
+
+        <div class="avatar-list">
+          <p>Aus der Liste auswählen</p>
+          <div class="avatars">
+            <img src="img/avatars/avatar_female_1.svg" alt="Avatar Frau" />
+            <img src="img/avatars/avatar_female_2.svg" alt="Avatar Frau" />
+            <img src="img/avatars/avatar_male_1.svg" alt="Avatar Mann" />
+            <img src="img/avatars/avatar_male_2.svg" alt="Avatar Mann" />
+            <img src="img/avatars/avatar_male_3.svg" alt="Avatar Mann" />
+            <img src="img/avatars/avatar_male_2.svg" alt="Avatar Mann" />
+          </div>
+        </div>
+      </section>
+
       <div class="actions">
         <button class="btn-primary" type="button" (click)="completeSignup()" [disabled]="loading()">
           Weiter
