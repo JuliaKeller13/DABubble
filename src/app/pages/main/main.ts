@@ -16,15 +16,18 @@ export class MainComponent implements OnInit {
   isSidebarClosed = false;
   isThreadOpen = true;
 
+  // Performs initial screen size checks on component initialization
   ngOnInit() {
     this.checkScreenSize();
   }
 
+  // Reacts to browser viewport resize events
   @HostListener('window:resize')
   onResize() {
     this.checkScreenSize();
   }
 
+  // Adjusts sidebar and thread visibility flags based on viewport width
   private checkScreenSize() {
     if (window.innerWidth < 1430) {
       this.isSidebarClosed = true;
@@ -34,6 +37,7 @@ export class MainComponent implements OnInit {
     }
   }
 
+  // Handles sidebar toggle actions and coordinates thread panel visibility
   onSidebarToggle(isClosed: boolean) {
     this.isSidebarClosed = isClosed;
     if (window.innerWidth < 1430) {

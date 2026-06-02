@@ -113,6 +113,41 @@
     }
   }
 
+  &__input-wrapper {
+    @include mx.flex(row, nowrap, flex-start, center);
+    width: 100%;
+    height: 60px;
+    border: 1px solid var(--light-purple); /* #ADB0D9 */
+    border-radius: 40px;
+    padding: 0 24px;
+    gap: 10px;
+    box-sizing: border-box;
+    background-color: var(--white);
+
+    &:focus-within {
+      border-color: var(--purple-1);
+      box-shadow: 0 0 4px rgba(68, 77, 242, 0.25);
+    }
+  }
+
+  &__input-hash {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--black);
+    font-family: var(--font-main);
+  }
+
+  &__input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: var(--font-main);
+    font-size: 18px;
+    color: var(--black);
+    background: transparent;
+    padding: 0;
+  }
+
   &__block-content {
     @include mx.flex(row, nowrap, flex-start, center);
     gap: 8px;
@@ -157,6 +192,26 @@
   &__footer {
     @include mx.flex(row, nowrap, flex-end, center);
     margin-top: 25px;
+    gap: 16px;
+  }
+
+  &__delete-btn {
+    background-color: var(--light-red);
+    color: var(--red-text);
+    border: none;
+    border-radius: 100px;
+    padding: 14px 28px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.04);
+
+    &:hover {
+      background-color: var(--red-hover);
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
+    }
   }
 
   &__leave-btn {
@@ -211,6 +266,12 @@
       font-size: 18px;
     }
 
+    &__footer {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    &__delete-btn,
     &__leave-btn {
       width: 100%;
       padding: 12px;

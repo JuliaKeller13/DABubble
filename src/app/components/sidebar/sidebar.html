@@ -59,8 +59,8 @@
             @for (channel of channels(); track channel.id) {
               <div 
                 class="sidebar__item sidebar__item--channel text-body-18" 
-                [class.sidebar__item--active]="channel.id === activeChannelId"
-                [class.text-body-bold-18]="channel.id === activeChannelId"
+                [class.sidebar__item--active]="channel.id === activeChannel()?.id"
+                [class.text-body-bold-18]="channel.id === activeChannel()?.id"
                 (click)="selectChannel(channel.id)">
                 <span class="sidebar__hash text-title-20">#</span>
                 <span class="sidebar__item-name">{{ channel.name }}</span>

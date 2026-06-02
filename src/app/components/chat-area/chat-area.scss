@@ -41,7 +41,17 @@
   &__header-left {
     @include mx.flex(row, nowrap, flex-start, center);
     gap: 10px;
-    cursor: pointer;
+
+    &--clickable {
+      cursor: pointer;
+
+      &:hover {
+        .chat-area__title,
+        .chat-area__hash {
+          color: var(--purple-1);
+        }
+      }
+    }
   }
 
   &__header-right {
@@ -73,6 +83,7 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--white);
+    background-color: var(--white);
     margin-left: -10px;
 
     &:first-child {

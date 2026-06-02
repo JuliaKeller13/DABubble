@@ -19,12 +19,37 @@ export class AuthService {
   readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
 
   constructor() {
-    this.supabaseSvc.supabase.auth.getSession().then(({ data }) => {
-      this.handleUserChange(data.session?.user ?? null);
-    });
-    this.supabaseSvc.supabase.auth.onAuthStateChange((_event, session) => {
+    this.supabaseSvc.supabase.auth.getSession()
+      .then(({ data, error }) => {
+        if (error) {
+          console.warn('Authentication session error. Clearing state:', error.message);
+          this.supabaseSvc.supabase.auth.signOut();
+          this.clearAuthUrlHash();
+        } else {
+          this.handleUserChange(data.session?.user ?? null);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to get session:', err);
+        this.supabaseSvc.supabase.auth.signOut();
+        this.clearAuthUrlHash();
+      });
+
+    this.supabaseSvc.supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        this.clearAuthUrlHash();
+      }
       this.handleUserChange(session?.user ?? null);
     });
+  }
+
+  private clearAuthUrlHash() {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash;
+      if (hash.includes('access_token') || hash.includes('error') || hash.includes('refresh_token')) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    }
   }
 
   private handleUserChange(user: User | null) {
@@ -45,6 +70,33 @@ export class AuthService {
       .single();
 
     if (error) {
+      if (error.code === 'PGRST116') {
+        const displayName = user.user_metadata?.['full_name'] || user.user_metadata?.['name'] || user.email?.split('@')[0] || 'Neuer User';
+        const avatarUrl = user.user_metadata?.['avatar_url'] || null;
+
+        const { data: newProfile, error: createError } = await this.supabaseSvc.supabase
+          .from('profiles')
+          .insert({
+            id: user.id,
+            display_name: displayName,
+            email: user.email || '',
+            avatar_url: avatarUrl,
+            status: 'online'
+          })
+          .select()
+          .single();
+
+        if (createError) {
+          console.error('Error creating profile after login:', createError);
+          await this.cleanupPresence();
+          return this.currentUserProfileSignal.set(null);
+        }
+
+        this.currentUserProfileSignal.set(newProfile as UserProfile);
+        await this.setupPresence(user);
+        return;
+      }
+
       console.error('Error loading profile:', error);
       await this.cleanupPresence();
       return this.currentUserProfileSignal.set(null);
@@ -55,6 +107,7 @@ export class AuthService {
     await this.setupPresence(user);
   }
 
+  // Logs in a user using email and password credentials
   async loginWithEmail(email: string, password: string): Promise<AuthResponse> {
     return await this.supabaseSvc.supabase.auth.signInWithPassword({
       email,
@@ -62,12 +115,14 @@ export class AuthService {
     });
   }
 
+  // Logs in as a guest user using pre-configured credentials
   async guestLogin(): Promise<AuthResponse> {
     const guestEmail = 'gast@dabubble.de';
     const guestPassword = 'Guest248635719/';
     return await this.loginWithEmail(guestEmail, guestPassword);
   }
 
+  // Starts OAuth login flow using Google provider
   async loginWithGoogle(redirectTo?: string): Promise<any> {
     return await this.supabaseSvc.supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -77,6 +132,7 @@ export class AuthService {
     });
   }
 
+  // Registers a new user and creates their profile in the database
   async signup(name: string, email: string, password: string): Promise<{ error: any; data: any }> {
     const { data, error } = await this.supabaseSvc.supabase.auth.signUp({ email, password });
     if (error || !data.user) return { error, data };
@@ -86,6 +142,7 @@ export class AuthService {
     return { error: error || profileError, data };
   }
 
+  // Logs out the current user and clears presence state
   async logout(): Promise<void> {
     await this.cleanupPresence();
     await this.supabaseSvc.supabase.auth.signOut();

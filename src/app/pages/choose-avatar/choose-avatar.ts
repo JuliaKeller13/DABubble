@@ -25,6 +25,7 @@ export class ChooseAvatar {
   loading = signal(false);
   private signupData: SignupData | null = null;
 
+  // Initializes component and checks for required registration state data
   constructor() {
     const state = history.state?.signupData as Partial<SignupData> | undefined;
 
@@ -41,6 +42,7 @@ export class ChooseAvatar {
     this.router.navigate(['/signup']);
   }
 
+  // Performs final user registration request using temporary signup data
   async completeSignup(): Promise<void> {
     if (!this.signupData) {
       this.toast.show('Bitte zuerst die Registrierungsdaten ausfuellen.', 'error');

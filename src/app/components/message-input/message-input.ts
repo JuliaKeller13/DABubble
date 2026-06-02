@@ -13,10 +13,12 @@ export class MessageInputComponent {
   isEmojiActive = false;
   isMentionActive = false;
 
+  // Toggles the visibility of the emoji picker
   toggleEmoji() {
     this.isEmojiActive = !this.isEmojiActive;
   }
 
+  // Toggles the visibility of the mention dropdown
   toggleMention() {
     this.isMentionActive = !this.isMentionActive;
   }

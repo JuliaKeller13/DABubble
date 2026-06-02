@@ -11,6 +11,7 @@ import { HeaderComponent } from '../../components/header/header';
 export class ImpressumComponent {
   private location = inject(Location);
 
+  // Navigates back to the previous page in history
   goBack(): void {
     this.location.back();
   }

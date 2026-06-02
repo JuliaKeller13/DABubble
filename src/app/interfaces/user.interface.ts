@@ -4,5 +4,6 @@ export interface User {
     email: string;
     avatar_url: string;
     status: 'online' | 'offline' | 'away';
+    custom_status?: string;
     created_at?: string;
 }
