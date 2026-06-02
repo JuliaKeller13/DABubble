@@ -50,23 +50,34 @@ main {
   .choose-avatar img{
     width: 168px;
     height: 168px;
+    border-radius: 50%;
   }
   .avatar-list{
     @include flex(column, nowrap, flex-start, flex-start);
     gap: 16px;
 
 
-        text-align: left;
+    text-align: left;
   }
 
   .avatars {
     @include flex(row, wrap, flex-start, center);
     gap: 8px;
+
     img {
       width: 70px;
       height: 70px;
       border-radius: 50%;
       cursor: pointer;
+      object-fit: cover;
+
+      &.selected {
+        outline: 4px solid $bg-color;
+      }
+
+      &:hover{
+        outline: 4px solid #E6E6E6;
+      }
     }
   }
 }

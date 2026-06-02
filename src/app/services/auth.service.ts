@@ -3,6 +3,21 @@ import { supabaseService } from './supabase.service';
 import { AuthResponse, User, RealtimeChannel } from '@supabase/supabase-js';
 import { User as UserProfile } from '../interfaces/user.interface';
 
+type ProfileUpsertPayload = {
+  id: string;
+  display_name: string;
+  email: string;
+  avatar_url: string;
+  status: UserProfile['status'];
+};
+
+type SupabaseIdentityData = {
+  avatar_url?: unknown;
+  picture?: unknown;
+  picture_url?: unknown;
+  photoURL?: unknown;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -63,6 +78,8 @@ export class AuthService {
       return this.currentUserProfileSignal.set(null);
     }
 
+    await this.ensureUserProfile(user);
+
     const { data, error } = await this.supabaseSvc.supabase
       .from('profiles')
       .select('*')
@@ -107,7 +124,77 @@ export class AuthService {
     await this.setupPresence(user);
   }
 
-  // Logs in a user using email and password credentials
+  private async ensureUserProfile(user: User): Promise<void> {
+    const metadata = user.user_metadata ?? {};
+    const displayName = this.getDisplayName(metadata);
+    const email = user.email ?? metadata['email'];
+
+    if (!displayName || !email) return;
+
+    const { data: existing, error: fetchError } = await this.supabaseSvc.supabase
+      .from('profiles')
+      .select('id, avatar_url')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (fetchError) {
+      console.error('Error checking profile:', fetchError);
+      return;
+    }
+
+    if (!existing) {
+      const { error } = await this.supabaseSvc.supabase
+        .from('profiles')
+        .insert({
+          id: user.id,
+          display_name: displayName,
+          email,
+          avatar_url: this.getAvatarUrl(user),
+          status: 'online',
+        });
+      if (error) console.error('Error creating profile:', error);
+    } else {
+      const updates: Partial<ProfileUpsertPayload> = {
+        display_name: displayName,
+        email,
+        status: 'online',
+      };
+      if (!existing['avatar_url']) {
+        updates['avatar_url'] = this.getAvatarUrl(user);
+      }
+      const { error } = await this.supabaseSvc.supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', user.id);
+      if (error) console.error('Error updating profile:', error);
+    }
+  }
+
+  private getDisplayName(metadata: User['user_metadata']): string {
+    const name = metadata['full_name'] ?? metadata['name'] ?? metadata['display_name'];
+    return typeof name === 'string' ? name.trim() : '';
+  }
+
+  private getAvatarUrl(user: User): string {
+    const metadata = user.user_metadata ?? {};
+    const identities = Array.isArray(user.identities) ? user.identities : [];
+    const avatarUrl =
+      metadata['avatar_url'] ??
+      metadata['picture'] ??
+      metadata['picture_url'] ??
+      identities
+        .map((identity) => identity?.identity_data as SupabaseIdentityData | undefined)
+        .flatMap((identityData) => [
+          identityData?.avatar_url,
+          identityData?.picture,
+          identityData?.picture_url,
+          identityData?.photoURL,
+        ])
+        .find((candidate) => typeof candidate === 'string' && candidate.trim().length > 0);
+
+    return typeof avatarUrl === 'string' ? avatarUrl : '';
+  }
+
   async loginWithEmail(email: string, password: string): Promise<AuthResponse> {
     return await this.supabaseSvc.supabase.auth.signInWithPassword({
       email,
@@ -132,13 +219,12 @@ export class AuthService {
     });
   }
 
-  // Registers a new user and creates their profile in the database
-  async signup(name: string, email: string, password: string): Promise<{ error: any; data: any }> {
+  async signup(name: string, email: string, password: string, avatarUrl: string): Promise<{ error: any; data: any }> {
     const { data, error } = await this.supabaseSvc.supabase.auth.signUp({ email, password });
     if (error || !data.user) return { error, data };
     const { error: profileError } = await this.supabaseSvc.supabase
       .from('profiles')
-      .upsert({ id: data.user.id, display_name: name, email });
+      .upsert({ id: data.user.id, display_name: name, email, avatar_url: avatarUrl, status: 'online' });
     return { error: error || profileError, data };
   }
 
