@@ -139,6 +139,24 @@ main {
       left: 15px;
     }
   }
+
+  .result-selection {
+    .choose-avatar img {
+      width: 120px;
+      height: 120px;
+    }
+
+    .avatars {
+      gap: 4px;
+
+      .avatar-option img {
+        width: 55px;
+        height: 55px;
+      }
+    }
+  }
+
+  
 }
 
 @include mobile-md {
