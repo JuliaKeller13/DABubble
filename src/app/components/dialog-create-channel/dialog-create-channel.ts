@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 
@@ -15,18 +15,20 @@ import { FormsModule } from '@angular/forms';
 export class dialogCreateChannelComponent {
   private dialogRef = inject(MatDialogRef<dialogCreateChannelComponent>);
 
+  @Output() channelSaved = new EventEmitter<{ name: string, description: string }>();
+
   channelName = '';
   channelDescription = '';
 
-  // Close dialog
+  // Close the dialog
   closeDialog(): void {
     this.dialogRef.close();
   }
 
-  // Submit channel data if name is set
+  // Emit channel data to the parent component
   saveChannel(): void {
     if (this.channelName.trim()) {
-      this.dialogRef.close({
+      this.channelSaved.emit({
         name: this.channelName,
         description: this.channelDescription
       });

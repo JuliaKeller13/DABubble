@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 export class supabaseService {
     public supabase: SupabaseClient;
 
+    // Initializes the Supabase client connection using environment configurations
     constructor() {
         this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
     }

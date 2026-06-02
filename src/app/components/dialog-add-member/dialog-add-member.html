@@ -1,8 +1,16 @@
-<div class="add-member">
+<div class="add-member" [class.add-member--embedded]="isEmbedded">
   <div class="add-member__drag-handle"></div>
 
   <div class="add-member__header">
-    <h2 class="add-member__title">Leute hinzufügen</h2>
+    <div class="add-member__title-container">
+      <h2 class="add-member__title">Leute hinzufügen</h2>
+      @if (data.mode === 'add') {
+        <div class="add-member__subtitle">
+          <span class="add-member__hash">#</span>
+          <span class="add-member__channel-name-subtitle">{{ data.channelName }}</span>
+        </div>
+      }
+    </div>
     <button class="add-member__close-btn" (click)="closeDialog()">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -12,29 +20,85 @@
   </div>
 
   <div class="add-member__form">
-    <div class="add-member__radio-group">
+    @if (data.mode !== 'add') {
+      <div class="add-member__radio-group">
+        <label class="add-member__radio-btn">
+          <input type="radio" name="selectionType" value="all"
+                 [(ngModel)]="selectionType"
+                 class="add-member__radio-input">
+          <span class="add-member__radio-label">
+            Alle Mitglieder von <span class="add-member__channel-name">Entwicklerteam</span> hinzufügen
+          </span>
+        </label>
 
-      <label class="add-member__radio-btn">
-        <input type="radio" name="selectionType" value="all"
-               [(ngModel)]="selectionType"
-               class="add-member__radio-input">
-        <span class="add-member__radio-label">
-          Alle Mitglieder von <span class="add-member__channel-name">{{ data.channelName }}</span> hinzufügen
-        </span>
-      </label>
+        <label class="add-member__radio-btn">
+          <input type="radio" name="selectionType" value="specific"
+                 [(ngModel)]="selectionType"
+                 class="add-member__radio-input">
+          <span class="add-member__radio-label">Bestimmte Leute hinzufügen</span>
+        </label>
+      </div>
+    }
 
-      <label class="add-member__radio-btn">
-        <input type="radio" name="selectionType" value="specific"
-               [(ngModel)]="selectionType"
-               class="add-member__radio-input">
-        <span class="add-member__radio-label">Bestimmte Leute hinzufügen</span>
-      </label>
+    <!-- Inline chip-input container (visible if specific selection or mode 'add') -->
+    @if (selectionType === 'specific' || data.mode === 'add') {
+      <div class="add-member__specific-selection">
+        
+        <!-- Inline chip-input container -->
+        <div class="add-member__input-container" [class.add-member__input-container--focused]="isFocused" (click)="searchInput.focus()">
+          @for (user of selectedUsersList; track user.id) {
+            <div class="add-member__chip">
+              <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__chip-avatar">
+              <span class="add-member__chip-name">{{ user.display_name }}</span>
+              <button type="button" class="add-member__chip-remove" (click)="removeUserChip(user.id)" aria-label="Entfernen">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          }
 
-    </div>
+          <input #searchInput
+                 type="text" 
+                 [(ngModel)]="searchQuery" 
+                 (ngModelChange)="filterUsers()"
+                 (focus)="isFocused = true"
+                 (blur)="isFocused = false"
+                 placeholder="{{ selectedUsersList.length === 0 ? 'Name eingeben' : '' }}" 
+                 class="add-member__search-input">
+        </div>
+
+        <!-- Suggestions Dropdown menu -->
+        @if (searchQuery.trim().length > 0 && filteredUsers.length > 0) {
+          <div class="add-member__suggestions-dropdown" (mousedown)="$event.preventDefault()">
+            @for (user of filteredUsers; track user.id) {
+              <div class="add-member__suggestion-row" (click)="selectUserFromDropdown(user)">
+                <div class="add-member__suggestion-pill">
+                  <div class="add-member__suggestion-avatar-wrapper">
+                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__suggestion-avatar">
+                    <span class="add-member__status-dot" [class.add-member__status-dot--online]="user.status === 'online'"></span>
+                  </div>
+                  <span class="add-member__suggestion-name">
+                    {{ user.display_name }}
+                    @if (user.custom_status) {
+                      <span class="add-member__user-status">({{ user.custom_status }})</span>
+                    }
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
 
     <div class="add-member__actions">
-      <button class="add-member__submit-btn" (click)="saveSelection()">
-        Erstellen
+      <button class="add-member__submit-btn" 
+              [class.add-member__submit-btn--disabled]="isSubmitDisabled()"
+              [disabled]="isSubmitDisabled()"
+              (click)="saveSelection()">
+        {{ data.mode === 'add' ? 'Hinzufügen' : 'Erstellen' }}
       </button>
     </div>
   </div>

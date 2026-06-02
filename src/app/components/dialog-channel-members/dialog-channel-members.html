@@ -1,36 +1,43 @@
 <div class="dialog-backdrop" (click)="onClose()"></div>
-<div class="dialog-card" [class.dialog-card--sidebar-closed]="isSidebarClosed" (click)="$event.stopPropagation()">
-  <div class="dialog-card__header">
-    <h2 class="dialog-card__title">Mitglieder</h2>
-    <button class="dialog-card__close-btn" (click)="onClose()" aria-label="Close dialog">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-  </div>
-
-  <div class="dialog-card__body">
-    <div class="dialog-card__members-list">
-      @for (member of members; track member.name) {
-        <div class="dialog-card__member-row">
-          <div class="dialog-card__avatar-container">
-            <img class="dialog-card__avatar" [src]="member.avatar" [alt]="member.name">
-            <span class="dialog-card__status-dot"></span>
-          </div>
-          <span class="dialog-card__member-name">
-            {{ member.name }}{{ member.name === 'Frederik Beck' ? ' (Du)' : '' }}
-          </span>
-        </div>
-      }
+<div class="dialog-card" [class.dialog-card--embedded-view]="view === 'add'" [ngClass]="'dialog-card--' + positionClass" (click)="$event.stopPropagation()">
+  @if (view === 'members') {
+    <div class="dialog-card__header">
+      <h2 class="dialog-card__title">Mitglieder</h2>
+      <button class="dialog-card__close-btn" (click)="onClose()" aria-label="Close dialog">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
 
-    <button class="dialog-card__add-btn" (click)="onAddMember()">
-      <div class="dialog-card__add-icon-container">
-        <img class="dialog-card__add-icon dialog-card__add-icon--normal" src="img/icons/chatarea/addcontact.svg" alt="Add member">
-        <img class="dialog-card__add-icon dialog-card__add-icon--hover" src="img/icons/chatarea/addcontact_hover.svg" alt="Add member">
+    <div class="dialog-card__body">
+      <div class="dialog-card__members-list">
+        @for (member of members; track $index) {
+          <div class="dialog-card__member-row">
+            <div class="dialog-card__avatar-container">
+              <img class="dialog-card__avatar" [src]="member.avatar" [alt]="member.name">
+              <span class="dialog-card__status-dot"></span>
+            </div>
+            <span class="dialog-card__member-name">
+              {{ member.name }}{{ member.name === 'Frederik Beck' ? ' (Du)' : '' }}
+            </span>
+          </div>
+        }
       </div>
-      <span class="dialog-card__add-text">Mitglieder hinzufügen</span>
-    </button>
-  </div>
+
+      <button class="dialog-card__add-btn" (click)="onAddMember()">
+        <div class="dialog-card__add-icon-container">
+          <img class="dialog-card__add-icon dialog-card__add-icon--normal" src="img/icons/chatarea/addcontact.svg" alt="Add member">
+          <img class="dialog-card__add-icon dialog-card__add-icon--hover" src="img/icons/chatarea/addcontact_hover.svg" alt="Add member">
+        </div>
+        <span class="dialog-card__add-text">Mitglieder hinzufügen</span>
+      </button>
+    </div>
+  } @else {
+    <app-dialog-add-member 
+      [inputData]="{ channelName: channelName, mode: 'add' }" 
+      (dialogClosed)="onAddMemberClosed($event)">
+    </app-dialog-add-member>
+  }
 </div>

@@ -40,4 +40,18 @@ export class userService {
         return data as User[];
     }
 
+    // Fetch a single user profile by ID from the database
+    async getUserById(id: string): Promise<User | null> {
+        const { data, error } = await this.supabaseSvc.supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (error) {
+            console.error('Fehler beim Laden des Users:', error.message);
+            return null;
+        }
+        return data as User;
+    }
 }

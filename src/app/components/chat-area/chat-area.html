@@ -1,15 +1,23 @@
 <div class="chat-area">
   <div class="chat-area__header">
-    <div class="chat-area__header-left" (click)="openChannelDetails()">
-      <span class="chat-area__hash">#</span>
-      <h2 class="chat-area__title">Entwicklerteam</h2>
-      <img src="img/icons/arrow_dropdown.svg" class="chat-area__arrow-icon" alt="Dropdown">
+    <div 
+      class="chat-area__header-left" 
+      [class.chat-area__header-left--clickable]="activeChannel()"
+      (click)="activeChannel() ? openChannelDetails() : null"
+    >
+      @if (activeChannel()) {
+        <span class="chat-area__hash">#</span>
+      }
+      <h2 class="chat-area__title">{{ activeChannel()?.name || 'Kein Channel ausgewählt' }}</h2>
+      @if (activeChannel()) {
+        <img src="img/icons/arrow_dropdown.svg" class="chat-area__arrow-icon" alt="Dropdown">
+      }
     </div>
 
     <div class="chat-area__header-right">
       <div class="chat-area__members-trigger" (click)="openChannelMembers()">
         <div class="chat-area__avatar-group">
-          @for (member of visibleMembers; track member.name) {
+          @for (member of visibleMembers; track $index) {
             <img
               class="chat-area__avatar"
               [src]="member.avatar"
@@ -20,7 +28,7 @@
         </div>
         <span class="chat-area__member-count">{{ memberCount }}</span>
       </div>
-      <button class="chat-area__add-member-btn" type="button" aria-label="Mitglied hinzufügen">
+      <button #addMemberBtn class="chat-area__add-member-btn" type="button" aria-label="Mitglied hinzufügen" (click)="onAddMember()">
         <img src="img/icons/chatarea/addcontact.svg" class="chat-area__add-member-icon chat-area__add-member-icon--normal" alt="Add Member">
         <img src="img/icons/chatarea/addcontact_hover.svg" class="chat-area__add-member-icon chat-area__add-member-icon--hover" alt="Add Member Hover">
       </button>
@@ -39,6 +47,6 @@
   }
 
   @if (isChannelMembersOpen) {
-    <app-dialog-channel-members [isSidebarClosed]="isSidebarClosed" [members]="members" (close)="closeChannelMembers()" (addMember)="onAddMember()"></app-dialog-channel-members>
+    <app-dialog-channel-members [isSidebarClosed]="isSidebarClosed" [members]="members()" [channelName]="activeChannel()?.name || ''" [initialView]="channelMembersInitialView" [positionClass]="channelMembersPosition" (close)="closeChannelMembers()" (addMember)="onMembersAdded($event)"></app-dialog-channel-members>
   }
 </div>
