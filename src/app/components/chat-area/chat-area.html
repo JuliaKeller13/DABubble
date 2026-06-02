@@ -36,11 +36,37 @@
     </div>
   </div>
 
-  <div class="chat-area__body">
+  <div class="chat-area__body" #scrollContainer>
+    @if (messages().length === 0) {
+      <div class="chat-area__empty-state">
+        <span class="chat-area__empty-hash">#</span>
+        <h3 class="chat-area__empty-title">Willkommen in #{{ activeChannel()?.name }}!</h3>
+        <p class="chat-area__empty-text">Das ist der Anfang des Channels #{{ activeChannel()?.name }}.</p>
+      </div>
+    } @else {
+      @for (group of groupedMessages; track group.dateLabel) {
+        <div class="chat-area__date-divider">
+          <div class="chat-area__date-line"></div>
+          <div class="chat-area__date-bubble">{{ group.dateLabel }}</div>
+          <div class="chat-area__date-line"></div>
+        </div>
+
+        @for (msg of group.messages; track msg.id) {
+          <app-message
+            [message]="msg"
+            [currentUserId]="currentUserId"
+            (threadClick)="onThreadClicked($event)"
+          ></app-message>
+        }
+      }
+    }
   </div>
 
   <div class="chat-area__footer">
-    <app-message-input></app-message-input>
+    <app-message-input
+      [placeholder]="activeChannel() ? 'Nachricht an #' + activeChannel()!.name : 'Wähle einen Channel'"
+      (sendMessage)="onSendMessage($event)"
+    ></app-message-input>
   </div>
 
   @if (isChannelDetailsOpen) {

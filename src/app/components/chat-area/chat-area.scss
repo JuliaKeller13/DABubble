@@ -6,7 +6,7 @@
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: var(--white);
+  background-color: vars.$white;
   border-radius: 30px;
   box-sizing: border-box;
 
@@ -17,7 +17,7 @@
     box-sizing: border-box;
     padding: 0 45px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    background-color: var(--white);
+    background-color: vars.$white;
     border-radius: 30px 30px 0 0;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
     clip-path: inset(0 0 -20px 0 round 30px 30px 0 0);
@@ -30,6 +30,70 @@
     overflow-y: auto;
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 24px;
+    @include mx.scrollbar(6px, vars.$light-purple);
+  }
+
+  &__date-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 24px 0;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  &__date-line {
+    flex: 1;
+    height: 1px;
+    background-color: vars.$light-purple;
+    opacity: 0.4;
+  }
+
+  &__date-bubble {
+    padding: 8px 20px;
+    background-color: vars.$white;
+    border: 1px solid vars.$light-purple;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 500;
+    color: vars.$black;
+    margin: 0;
+  }
+
+  &__empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 40px;
+    text-align: center;
+    color: vars.$text-gray;
+  }
+
+  &__empty-hash {
+    font-size: 60px;
+    font-weight: 700;
+    color: vars.$purple-2;
+    margin-bottom: 12px;
+  }
+
+  &__empty-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: vars.$black;
+    margin: 0 0 8px 0;
+  }
+
+  &__empty-text {
+    font-size: 16px;
+    margin: 0;
+    color: vars.$text-gray;
   }
 
   &__footer {
@@ -49,7 +113,7 @@
       &:hover {
         .chat-area__title,
         .chat-area__hash {
-          color: var(--purple-1);
+          color: vars.$purple-1;
         }
       }
     }
@@ -70,7 +134,7 @@
     transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: var(--bg-color);
+      background-color: vars.$bg-color;
     }
   }
 
@@ -83,8 +147,8 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--white);
-    background-color: var(--white);
+    border: 2px solid vars.$white;
+    background-color: vars.$white;
     margin-left: -10px;
 
     &:first-child {
@@ -96,7 +160,7 @@
     font-family: var(--font-main);
     font-size: 20px;
     font-weight: 700;
-    color: var(--black);
+    color: vars.$black;
   }
 
   &__add-member-btn {
@@ -111,7 +175,7 @@
     transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: var(--bg-color);
+      background-color: vars.$bg-color;
 
       .chat-area__add-member-icon--normal {
         display: none;
@@ -135,7 +199,7 @@
   &__hash {
     font-size: 24px;
     font-weight: 700;
-    color: var(--black);
+    color: vars.$black;
     font-family: var(--font-main);
     user-select: none;
     transition: color 0.15s ease;
@@ -144,7 +208,7 @@
   &__title {
     font-size: 24px;
     font-weight: 700;
-    color: var(--black);
+    color: vars.$black;
     margin: 0;
     font-family: var(--font-main);
     user-select: none;

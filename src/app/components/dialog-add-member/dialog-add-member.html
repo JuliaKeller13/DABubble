@@ -77,7 +77,7 @@
                 <div class="add-member__suggestion-pill">
                   <div class="add-member__suggestion-avatar-wrapper">
                     <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__suggestion-avatar" referrerpolicy="no-referrer">
-                    <span class="add-member__status-dot" [class.add-member__status-dot--online]="user.status === 'online'"></span>
+                    <span class="add-member__status-dot" [class.add-member__status-dot--online]="isUserOnline(user)"></span>
                   </div>
                   <span class="add-member__suggestion-name">
                     {{ user.display_name }}

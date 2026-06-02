@@ -1,5 +1,11 @@
 <div class="message-input">
-  <textarea class="message-input__textarea" [placeholder]="placeholder"></textarea>
+  <textarea 
+    class="message-input__textarea" 
+    [placeholder]="placeholder"
+    [(ngModel)]="messageText"
+    (keydown.enter)="onEnterPressed($event)"
+  ></textarea>
+  
   <div class="message-input__actions">
     <div class="message-input__actions-left">
       <button class="message-input__btn" [class.active]="isEmojiActive" (click)="toggleEmoji()" type="button" aria-label="Add Emoji">
@@ -9,8 +15,15 @@
         <img src="img/icons/chatarea/alternate_email.svg" class="message-input__icon" alt="Mention">
       </button>
     </div>
+    
     <div class="message-input__actions-right">
-      <button class="message-input__send-btn" type="button" aria-label="Send Message">
+      <button 
+        class="message-input__send-btn" 
+        [class.message-input__send-btn--active]="messageText.trim().length > 0"
+        (click)="send()" 
+        type="button" 
+        aria-label="Send Message"
+      >
         <img src="img/icons/chatarea/send.svg" class="message-input__send-icon" alt="Send">
       </button>
     </div>

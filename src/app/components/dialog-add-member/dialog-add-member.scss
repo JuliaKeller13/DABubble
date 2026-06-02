@@ -1,9 +1,10 @@
 @use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts/variables' as vars;
 
 .add-member {
   @include mx.flex(column, nowrap, space-between, stretch);
   padding: 40px;
-  background-color: var(--white);
+  background-color: vars.$white;
   border-radius: 30px;
   box-sizing: border-box;
   width: 100%;
@@ -37,7 +38,7 @@
     margin: 0;
     font-size: 24px;
     font-weight: 700;
-    color: var(--black);
+    color: vars.$black;
   }
 
   &__subtitle {
@@ -61,14 +62,14 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--black);
+    color: vars.$black;
     padding: 8px;
     border-radius: 50%;
     transition: background-color 0.2s ease, color 0.2s ease;
 
     &:hover {
-      background-color: var(--bg-color);
-      color: var(--purple-1);
+      background-color: vars.$bg-color;
+      color: vars.$purple-1;
     }
   }
 
@@ -95,7 +96,7 @@
     -webkit-appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid var(--text-gray);
+    border: 2px solid vars.$text-gray;
     border-radius: 50%;
     flex-shrink: 0;
     cursor: pointer;
@@ -103,7 +104,7 @@
     position: relative;
 
     &:checked {
-      border-color: var(--purple-1);
+      border-color: vars.$purple-1;
 
       &::after {
         content: '';
@@ -114,23 +115,23 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background-color: var(--purple-1);
+        background-color: vars.$purple-1;
       }
     }
 
     &:hover {
-      border-color: var(--purple-1);
+      border-color: vars.$purple-1;
     }
   }
 
   &__radio-label {
     font-size: 18px;
     font-weight: 500;
-    color: var(--black);
+    color: vars.$black;
   }
 
   &__channel-name {
-    color: var(--purple-1);
+    color: vars.$purple-1;
     font-weight: 700;
   }
 
@@ -139,8 +140,8 @@
   }
 
   &__submit-btn {
-    background-color: var(--purple-1);
-    color: var(--white);
+    background-color: vars.$purple-1;
+    color: vars.$white;
     border: none;
     border-radius: 25px;
     padding: 12px 35px;
@@ -150,7 +151,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: var(--purple-2);
+      background-color: vars.$purple-2;
     }
 
     &--disabled {
@@ -177,13 +178,13 @@
     padding: 8px 20px;
     border: 1px solid #ADB0D9;
     border-radius: 30px;
-    background-color: var(--white);
+    background-color: vars.$white;
     min-height: 46px;
     box-sizing: border-box;
     transition: border-color 0.2s ease;
 
     &--focused {
-      border-color: var(--purple-1);
+      border-color: vars.$purple-1;
     }
   }
 
@@ -195,7 +196,7 @@
     border-radius: 20px;
     font-size: 16px;
     font-weight: 500;
-    color: var(--black);
+    color: vars.$black;
     line-height: 1;
     flex-shrink: 0;
   }
@@ -205,7 +206,7 @@
     height: 24px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: var(--white);
+    background-color: vars.$white;
   }
 
   &__chip-remove {
@@ -214,13 +215,13 @@
     border: none;
     padding: 2px;
     border-radius: 50%;
-    color: var(--black);
+    color: vars.$black;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
 
     &:hover {
       background-color: #d0d2f0;
-      color: var(--purple-1);
+      color: vars.$purple-1;
     }
   }
 
@@ -242,7 +243,7 @@
     left: 40px;
     width: 335px;
     max-height: 300px;
-    background-color: var(--white);
+    background-color: vars.$white;
     border: 1px solid #ADB0D9;
     border-radius: 0 20px 20px 20px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
@@ -271,7 +272,7 @@
 
     &:hover {
       .add-member__suggestion-pill {
-        background-color: var(--bg-color);
+        background-color: vars.$bg-color;
       }
     }
   }
@@ -298,7 +299,7 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    background-color: var(--white);
+    background-color: vars.$white;
   }
 
   &__status-dot {
@@ -308,18 +309,18 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid var(--white);
-    background-color: #5F6368;
+    border: 2px solid vars.$white;
+    background-color: vars.$text-gray;
 
     &--online {
-      background-color: #00E676;
+      background-color: vars.$online-green;
     }
   }
 
   &__suggestion-name {
     font-size: 18px;
     font-weight: 500;
-    color: var(--black);
+    color: vars.$black;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -328,7 +329,7 @@
   &__user-status {
     font-size: 14px;
     font-weight: 400;
-    color: var(--text-gray);
+    color: vars.$text-gray;
   }
 }
 

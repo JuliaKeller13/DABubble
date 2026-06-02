@@ -1,8 +1,10 @@
-import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member';
+import { AuthService } from '../../services/auth.service';
 
 interface ChannelMember {
+  id: string;
   name: string;
   avatar: string;
 }
@@ -23,7 +25,14 @@ export class DialogChannelMembersComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
   @Output() addMember = new EventEmitter<any>();
 
+  private authSvc = inject(AuthService);
+
   view: 'members' | 'add' = 'members';
+
+  // Check if a member is currently online
+  isUserOnline(member: ChannelMember): boolean {
+    return this.authSvc.onlineUserIds().has(member.id);
+  }
 
   // Sets the initial sub-view (either members list or add member form) on component initialization
   ngOnInit() {

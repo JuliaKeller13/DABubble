@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dialog-channel-details',
@@ -18,6 +19,12 @@ export class DialogChannelDetailsComponent implements OnInit {
 
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
+  private authSvc = inject(AuthService);
+
+  // Check if a user is currently online
+  isUserOnline(member: any): boolean {
+    return this.authSvc.onlineUserIds().has(member.id);
+  }
 
   activeChannel = this.channelSvc.activeChannel;
   creatorName = signal<string>('Laden...');

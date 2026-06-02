@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/materia
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { userService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 import { User } from '../../interfaces/user.interface';
 
 @Component({
@@ -20,10 +21,16 @@ export class dialogAddMemberComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<dialogAddMemberComponent>, { optional: true });
   private injectedData = inject<{ channelName: string, mode?: 'create' | 'add' }>(MAT_DIALOG_DATA, { optional: true });
   private userSvc = inject(userService);
+  private authSvc = inject(AuthService);
 
   @Input() inputData?: { channelName: string, mode?: 'create' | 'add' };
   @Input() isEmbedded = false;
   @Output() dialogClosed = new EventEmitter<any>();
+
+  // Check if a user is currently online using the real-time presence signal
+  isUserOnline(user: User): boolean {
+    return this.authSvc.onlineUserIds().has(user.id);
+  }
 
   // Resolves the input parameters from either MatDialog injection or component bindings
   public get data() {

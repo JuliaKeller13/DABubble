@@ -17,7 +17,7 @@
           <div class="dialog-card__member-row">
             <div class="dialog-card__avatar-container">
               <img class="dialog-card__avatar" [src]="member.avatar" [alt]="member.name">
-              <span class="dialog-card__status-dot"></span>
+              <span class="dialog-card__status-dot" [class.dialog-card__status-dot--online]="isUserOnline(member)"></span>
             </div>
             <span class="dialog-card__member-name">
               {{ member.name }}{{ member.name === 'Frederik Beck' ? ' (Du)' : '' }}
