@@ -1,5 +1,5 @@
 <div class="main-layout" [class.main-layout--sidebar-closed]="isSidebarClosed">
-  <app-header></app-header>
+  <app-header [isSidebarClosed]="isSidebarClosed" (backToSidebar)="onSidebarToggle(false)"></app-header>
 
   <div class="main-layout__content">
     <app-sidebar [isClosed]="isSidebarClosed" (toggleSidebar)="onSidebarToggle($event)"></app-sidebar>

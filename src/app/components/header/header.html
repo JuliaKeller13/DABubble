@@ -1,6 +1,17 @@
 <header class="header" [class.header--transparent]="isTransparent" [class.login-header]="loginHeader">
   <div class="header__left">
-    <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="header__logo">
+    @if (isSidebarClosed && !loginHeader && !isTransparent) {
+      <button class="header__back-btn" (click)="goBack()" aria-label="Zurück">
+        <img src="img/icons/arrow_responsive_left.svg" alt="Zurück" class="header__back-btn-img">
+      </button>
+      <div class="header__workspace-info">
+        <img src="img/logo/workspace_logo.svg" alt="Devspace Logo" class="header__workspace-logo">
+        <span class="header__workspace-title text-title-24">Devspace</span>
+      </div>
+      <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="header__logo header__logo--desktop-only">
+    } @else {
+      <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="header__logo">
+    }
   </div>
 
   @if (showSearch) {

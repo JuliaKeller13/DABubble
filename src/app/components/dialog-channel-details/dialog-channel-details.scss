@@ -232,6 +232,74 @@
       box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
     }
   }
+
+  &__edit-btn-text {
+    display: inline;
+  }
+
+  &__edit-btn-icon {
+    display: none;
+  }
+
+  /* Members styling */
+  &__block--members {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  &__members-list {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    gap: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 4px;
+    @include mx.scrollbar(6px, vars.$light-purple);
+  }
+
+  &__member-row {
+    @include mx.flex(row, nowrap, flex-start, center);
+    gap: 15px;
+    padding: 6px 10px;
+    border-radius: 30px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: var(--bg-color);
+    }
+  }
+
+  &__member-avatar-wrapper {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  &__member-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__member-status-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--online-green);
+    border: 2px solid var(--white);
+  }
+
+  &__member-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--black);
+    font-family: var(--font-main);
+  }
 }
 
 @keyframes fadeIn {
@@ -245,20 +313,52 @@
 }
 
 /* #region RESPONSIVE */
-@include mx.mobile {
+@include mx.tablet-lg {
+  .dialog-backdrop {
+    display: none;
+  }
+
   .dialog-card {
-    padding: 25px;
-    border-radius: 0px 30px 30px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px 16px;
+    z-index: vars.$z-index-header-sidebar + 10;
+    overflow-y: auto;
+    background-color: var(--white);
+    animation: fadeIn 0.15s ease-out;
+
+    &__header {
+      margin-bottom: 24px;
+      padding: 0 4px;
+    }
 
     &__title-text,
     &__hash {
       font-size: 24px;
     }
 
+    &__body {
+      gap: 16px;
+    }
+
+    &__block {
+      padding: 16px 20px;
+      border-radius: 20px;
+    }
+
     &__label,
-    &__edit-btn,
     &__description-text,
-    &__block-content--name {
+    &__block-content--name,
+    &__member-name {
       font-size: 16px;
     }
 
@@ -266,9 +366,59 @@
       font-size: 18px;
     }
 
+    /* Pencil circular edit button on mobile */
+    &__edit-btn {
+      @include mx.flex(row, nowrap, center, center);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--bg-color);
+      border: none;
+      color: var(--purple-1);
+      padding: 0;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: var(--light-purple);
+      }
+
+      .dialog-card__edit-btn-text {
+        display: none;
+      }
+
+      .dialog-card__edit-btn-icon {
+        display: block;
+        width: 16px;
+        height: 16px;
+      }
+
+      /* Speichern button remains text */
+      &--save {
+        width: auto;
+        height: auto;
+        border-radius: 6px;
+        background: transparent;
+        padding: 2px 6px;
+
+        .dialog-card__edit-btn-text {
+          display: inline;
+        }
+
+        .dialog-card__edit-btn-icon {
+          display: none;
+        }
+      }
+    }
+
+    &__members-list {
+      max-height: 250px;
+    }
+
     &__footer {
       flex-direction: column;
       gap: 12px;
+      margin-top: 24px;
+      padding: 0 4px;
     }
 
     &__delete-btn,

@@ -401,7 +401,7 @@
 }
 
 /* #region RESPONSIVE */
-@include mx.mobile {
+@include mx.tablet-lg {
   .sidebar {
     width: 100%;
     height: 100%;

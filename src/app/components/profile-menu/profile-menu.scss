@@ -176,7 +176,7 @@
 }
 
 /* #region RESPONSIVE */
-@include mx.mobile {
+@include mx.tablet-lg {
   .profile-menu-container {
     width: auto;
     gap: 8px;
@@ -238,7 +238,7 @@
   }
 }
 
-@media (min-width: 769px) and (max-width: 1350px) {
+@media (min-width: 1025px) and (max-width: 1350px) {
   .profile-menu-container {
     width: auto;
   }

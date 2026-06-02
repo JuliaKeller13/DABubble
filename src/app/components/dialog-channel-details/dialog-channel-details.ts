@@ -13,6 +13,7 @@ import { userService } from '../../services/user.service';
 })
 export class DialogChannelDetailsComponent implements OnInit {
   @Input() isSidebarClosed = false;
+  @Input() members: any[] = [];
   @Output() close = new EventEmitter<void>();
 
   private channelSvc = inject(channelService);

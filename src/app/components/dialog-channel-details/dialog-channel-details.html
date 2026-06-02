@@ -18,9 +18,12 @@
       <div class="dialog-card__block-header">
         <span class="dialog-card__label">Channel-Name</span>
         @if (isEditingName) {
-          <button class="dialog-card__edit-btn" (click)="saveName()">Speichern</button>
+          <button class="dialog-card__edit-btn dialog-card__edit-btn--save" (click)="saveName()">Speichern</button>
         } @else {
-          <button class="dialog-card__edit-btn" (click)="onEditName()">Bearbeiten</button>
+          <button class="dialog-card__edit-btn" (click)="onEditName()" aria-label="Bearbeiten">
+            <span class="dialog-card__edit-btn-text">Bearbeiten</span>
+            <img class="dialog-card__edit-btn-icon" src="img/icons/edit.svg" alt="Bearbeiten">
+          </button>
         }
       </div>
       
@@ -41,9 +44,12 @@
       <div class="dialog-card__block-header">
         <span class="dialog-card__label">Beschreibung</span>
         @if (isEditingDescription) {
-          <button class="dialog-card__edit-btn" (click)="saveDescription()">Speichern</button>
+          <button class="dialog-card__edit-btn dialog-card__edit-btn--save" (click)="saveDescription()">Speichern</button>
         } @else {
-          <button class="dialog-card__edit-btn" (click)="onEditDescription()">Bearbeiten</button>
+          <button class="dialog-card__edit-btn" (click)="onEditDescription()" aria-label="Bearbeiten">
+            <span class="dialog-card__edit-btn-text">Bearbeiten</span>
+            <img class="dialog-card__edit-btn-icon" src="img/icons/edit.svg" alt="Bearbeiten">
+          </button>
         }
       </div>
       
@@ -62,6 +68,23 @@
       <div class="dialog-card__created-by">
         <span class="dialog-card__label">Erstellt von</span>
         <span class="dialog-card__creator-name">{{ creatorName() }}</span>
+      </div>
+    </div>
+
+    <div class="dialog-card__block dialog-card__block--members">
+      <span class="dialog-card__label">Mitglieder</span>
+      <div class="dialog-card__members-list">
+        @for (member of members; track $index) {
+          <div class="dialog-card__member-row">
+            <div class="dialog-card__member-avatar-wrapper">
+              <img class="dialog-card__member-avatar" [src]="member.avatar" [alt]="member.name">
+              <span class="dialog-card__member-status-dot"></span>
+            </div>
+            <span class="dialog-card__member-name">
+              {{ member.name }}{{ member.name === 'Frederik Beck' ? ' (Du)' : '' }}
+            </span>
+          </div>
+        }
       </div>
     </div>
   </div>

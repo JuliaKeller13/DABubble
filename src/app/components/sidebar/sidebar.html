@@ -99,7 +99,7 @@
         @if (isDMsExpanded) {
           <div class="sidebar__list">
             @for (user of users(); track user.id) {
-              <div class="sidebar__item sidebar__item--user text-body-18">
+              <div class="sidebar__item sidebar__item--user text-body-18" (click)="selectUser(user.id)">
                 <div class="sidebar__avatar-wrapper">
                   <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="sidebar__avatar" referrerpolicy="no-referrer">
                   <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="isUserOnline(user)"></span>

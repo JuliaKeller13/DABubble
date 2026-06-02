@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { SearchBarComponent } from "../searchbar/searchbar";
 import { ProfileMenuComponent } from "../profile-menu/profile-menu";
 import { Signup } from '../signup/signup';
@@ -16,4 +16,10 @@ export class HeaderComponent {
   @Input() showSignup = false;
   @Input() isTransparent = false;
   @Input() loginHeader = false;
+  @Input() isSidebarClosed = false;
+  @Output() backToSidebar = new EventEmitter<void>();
+
+  goBack() {
+    this.backToSidebar.emit();
+  }
 }

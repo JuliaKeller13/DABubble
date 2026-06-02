@@ -82,11 +82,26 @@ export class SidebarComponent implements OnInit {
     return this.authSvc.onlineUserIds().has(user.id);
   }
 
-  // Set the active channel
+  // Set the active channel and close the sidebar on mobile/tablet viewports
   selectChannel(id: string | undefined) {
     if (!id) return;
     const channel = this.channels().find(c => c.id === id) || null;
     this.channelSvc.selectChannel(channel);
+
+    if (window.innerWidth <= 1440) {
+      this.isClosed = true;
+      this.toggleSidebar.emit(true);
+    }
+  }
+
+  // Set the active DM user and close the sidebar on mobile/tablet viewports
+  selectUser(id: string | undefined) {
+    if (!id) return;
+    // Currently, we close the sidebar on mobile/tablet screens to open the chat area
+    if (window.innerWidth <= 1440) {
+      this.isClosed = true;
+      this.toggleSidebar.emit(true);
+    }
   }
 
   // Expand or collapse the channels list

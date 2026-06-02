@@ -29,7 +29,7 @@ export class MainComponent implements OnInit {
 
   // Adjusts sidebar and thread visibility flags based on viewport width
   private checkScreenSize() {
-    if (window.innerWidth < 1430) {
+    if (window.innerWidth <= 1440) {
       this.isSidebarClosed = true;
       this.isThreadOpen = true;
     } else {
@@ -41,7 +41,7 @@ export class MainComponent implements OnInit {
   // Handles sidebar toggle actions and coordinates thread panel visibility
   onSidebarToggle(isClosed: boolean) {
     this.isSidebarClosed = isClosed;
-    if (window.innerWidth < 1430) {
+    if (window.innerWidth <= 1440) {
       if (!isClosed) {
         this.isThreadOpen = false;
       } else {
