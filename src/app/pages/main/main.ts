@@ -33,6 +33,7 @@ export class MainComponent implements OnInit {
       this.isSidebarClosed = true;
       this.isThreadOpen = true;
     } else {
+      this.isSidebarClosed = false;
       this.isThreadOpen = true;
     }
   }
