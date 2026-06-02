@@ -16,7 +16,7 @@
         @for (member of members; track $index) {
           <div class="dialog-card__member-row">
             <div class="dialog-card__avatar-container">
-              <img class="dialog-card__avatar" [src]="member.avatar" [alt]="member.name">
+              <img class="dialog-card__avatar" [src]="member.avatar" [alt]="member.name" referrerpolicy="no-referrer">
               <span class="dialog-card__status-dot" [class.dialog-card__status-dot--online]="isUserOnline(member)"></span>
             </div>
             <span class="dialog-card__member-name">

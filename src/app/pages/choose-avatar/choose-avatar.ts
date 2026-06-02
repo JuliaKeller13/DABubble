@@ -13,7 +13,7 @@ import { SignupData, SignupStateService } from '../../services/signup-state.serv
   styleUrl: './choose-avatar.scss'
 })
 export class ChooseAvatar {
-  private readonly loginRedirectDelay = 1800;
+  private readonly successToastDuration = 1500;
   private readonly existingUserErrorCodes = new Set(['user_already_exists']);
   private router = inject(Router);
   private authService = inject(AuthService);
@@ -80,8 +80,8 @@ export class ChooseAvatar {
     }
 
     this.signupState.clearSignupData();
-    this.toast.show('Konto erfolgreich erstellt!', 'success', this.loginRedirectDelay);
-    window.setTimeout(() => this.router.navigate(['/login']), this.loginRedirectDelay);
+    this.toast.show('Konto erfolgreich erstellt!', 'success', this.successToastDuration);
+    await this.router.navigate(['/login']);
   }
 
   private applyGoogleAvatarDefault(): void {
