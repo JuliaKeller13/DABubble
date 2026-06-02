@@ -202,6 +202,12 @@ export class AuthService {
     });
   }
 
+  async requestPasswordReset(email: string): Promise<{ error: unknown }> {
+    const { error } = await this.supabaseSvc.supabase.auth.resetPasswordForEmail(email);
+
+    return { error };
+  }
+
   // Logs in as a guest user using pre-configured credentials
   async guestLogin(): Promise<AuthResponse> {
     const guestEmail = 'gast@dabubble.de';
