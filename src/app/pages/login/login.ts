@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -25,9 +26,11 @@ import { FooterComponent } from '../../components/footer/footer';
   styleUrl: './login.scss'
 })
 export class LoginComponent {
+  private readonly mainRedirectDelay = 1800;
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private toast = inject(ToastService);
   private iconRegistry = inject(MatIconRegistry);
   private sanitizer = inject(DomSanitizer);
 
@@ -78,7 +81,7 @@ export class LoginComponent {
       if (error) {
         this.handleError();
       } else {
-        this.router.navigate(['/main']);
+        this.redirectToMainWithToast();
       }
     } catch (e) {
       this.handleError();
@@ -96,7 +99,7 @@ export class LoginComponent {
       if (error) {
         this.handleError();
       } else {
-        this.router.navigate(['/main']);
+        this.redirectToMainWithToast();
       }
     } catch (e) {
       this.handleError();
@@ -128,5 +131,10 @@ export class LoginComponent {
   private handleError(): void {
     this.loginError.set(true);
     this.form.get('password')?.setErrors({ loginError: true });
+  }
+
+  private redirectToMainWithToast(): void {
+    this.toast.show('Erfolgreich angemeldet!', 'success', this.mainRedirectDelay);
+    window.setTimeout(() => this.router.navigate(['/main']), this.mainRedirectDelay);
   }
 }

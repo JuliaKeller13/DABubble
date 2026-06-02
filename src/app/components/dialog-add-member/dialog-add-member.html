@@ -48,7 +48,7 @@
         <div class="add-member__input-container" [class.add-member__input-container--focused]="isFocused" (click)="searchInput.focus()">
           @for (user of selectedUsersList; track user.id) {
             <div class="add-member__chip">
-              <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__chip-avatar">
+              <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__chip-avatar" referrerpolicy="no-referrer">
               <span class="add-member__chip-name">{{ user.display_name }}</span>
               <button type="button" class="add-member__chip-remove" (click)="removeUserChip(user.id)" aria-label="Entfernen">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -76,7 +76,7 @@
               <div class="add-member__suggestion-row" (click)="selectUserFromDropdown(user)">
                 <div class="add-member__suggestion-pill">
                   <div class="add-member__suggestion-avatar-wrapper">
-                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__suggestion-avatar">
+                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__suggestion-avatar" referrerpolicy="no-referrer">
                     <span class="add-member__status-dot" [class.add-member__status-dot--online]="user.status === 'online'"></span>
                   </div>
                   <span class="add-member__suggestion-name">

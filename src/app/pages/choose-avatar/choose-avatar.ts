@@ -18,6 +18,7 @@ type SignupData = {
   styleUrl: './choose-avatar.scss'
 })
 export class ChooseAvatar {
+  private readonly loginRedirectDelay = 1800;
   private router = inject(Router);
   private authService = inject(AuthService);
   private toast = inject(ToastService);
@@ -79,11 +80,20 @@ export class ChooseAvatar {
     this.loading.set(false);
 
     if (error) {
-      this.toast.show('Registrierung fehlgeschlagen: ' + (error.message || error), 'error');
+      const isExisting =
+        error.code === 'user_already_exists' ||
+        error.message?.toLowerCase().includes('already registered') ||
+        error.message?.toLowerCase().includes('already been registered') ||
+        error.message?.toLowerCase().includes('email address is already') ||
+        error.status === 422;
+      const msg = isExisting
+        ? 'Benutzer ist bereits registriert.'
+        : 'Registrierung fehlgeschlagen.';
+      this.toast.show(msg, 'error');
       return;
     }
 
-    this.toast.show('Konto erfolgreich erstellt!', 'success');
-    this.router.navigate(['/login']);
+    this.toast.show('Konto erfolgreich erstellt!', 'success', this.loginRedirectDelay);
+    window.setTimeout(() => this.router.navigate(['/login']), this.loginRedirectDelay);
   }
 }

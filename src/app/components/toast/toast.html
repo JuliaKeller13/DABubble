@@ -1,5 +1,13 @@
-@if (toast()) {
-  <div class="toast" [ngClass]="toast()?.type">
-    {{ toast()?.message }}
+@if (toast(); as currentToast) {
+  <div class="toast-overlay" aria-hidden="true"></div>
+  <div
+    class="toast"
+    [class.toast--success]="currentToast.type === 'success'"
+    [class.toast--error]="currentToast.type === 'error'"
+    aria-atomic="true"
+    aria-live="polite"
+    role="status"
+  >
+    <p class="text-toast">{{ currentToast.message }}</p>
   </div>
 }

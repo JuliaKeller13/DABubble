@@ -5,6 +5,7 @@
       [src]="currentUserProfile()?.avatar_url || 'img/avatars/avatar_default.svg'"
       [alt]="currentUserProfile()?.display_name || 'Gast'"
       class="profile-menu-avatar"
+      referrerpolicy="no-referrer"
     />
     <div class="profile-menu-status-dot" [class.profile-menu-status-dot--online]="isOnline()"></div>
   </div>
