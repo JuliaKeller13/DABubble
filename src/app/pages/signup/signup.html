@@ -98,8 +98,6 @@
         <button
           class="btn-primary"
           type="button"
-          routerLink="/choose-avatar"
-          [state]="{ signupData: form.getRawValue() }"
           (click)="continueToChooseAvatar($event)"
           [disabled]="form.invalid"
         >

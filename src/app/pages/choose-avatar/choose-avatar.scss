@@ -27,10 +27,6 @@ main {
   gap: 60px;
   position: relative;
 
-  @include mobile-md {
-    padding: 20px;
-  }
-
   .btn-back {
     position: absolute;
     top: 45px;
@@ -47,15 +43,14 @@ main {
   @include flex(column, nowrap, flex-end, center);
   gap: 30px;
 
-  .choose-avatar img{
+  .choose-avatar img {
     width: 168px;
     height: 168px;
     border-radius: 50%;
   }
-  .avatar-list{
+  .avatar-list {
     @include flex(column, nowrap, flex-start, flex-start);
     gap: 16px;
-
 
     text-align: left;
   }
@@ -64,20 +59,29 @@ main {
     @include flex(row, wrap, flex-start, center);
     gap: 8px;
 
-    img {
-      width: 70px;
-      height: 70px;
+    .avatar-option {
+      border: none;
+      background: transparent;
+      padding: 0;
       border-radius: 50%;
       cursor: pointer;
-      object-fit: cover;
+      line-height: 0;
 
       &.selected {
         outline: 4px solid $bg-color;
       }
 
-      &:hover{
-        outline: 4px solid #E6E6E6;
+      &:hover,
+      &:focus-visible {
+        outline: 4px solid $beige-hover-avatar;
       }
+    }
+
+    .avatar-option img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
     }
   }
 }
@@ -94,7 +98,7 @@ main {
   display: block;
 }
 
-@media (max-width: 768px) {
+@include mobile {
   .desktop-header-only {
     display: none;
   }
@@ -134,5 +138,11 @@ main {
       top: 20px;
       left: 15px;
     }
+  }
+}
+
+@include mobile-md {
+  .login-form-box {
+    padding: 20px;
   }
 }

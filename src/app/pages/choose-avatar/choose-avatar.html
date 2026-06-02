@@ -30,7 +30,6 @@
       <section class="result-selection">
         <div class="choose-avatar">
           <img [src]="selectedAvatar()" alt="person" />
-          <!-- hier gleiche container wie img oben person, aber google Foto übernehmen, wenn user sich mit google anmeldet wenn nicht mit google soll dieser Kreis nicht sichtbar sein-->
         </div>
 
         <p class="text-account-name">{{ userName }}</p>
@@ -38,20 +37,28 @@
         <div class="avatar-list">
           <p>Aus der Liste auswählen</p>
           <div class="avatars">
-            @for (avatar of avatars; track avatar) {
-              <img
-                [src]="avatar"
-                alt="Avatar"
+            @for (avatar of avatars; track avatar; let i = $index) {
+              <button
+                type="button"
+                class="avatar-option"
                 [class.selected]="selectedAvatar() === avatar"
+                [attr.aria-label]="'Avatar ' + (i + 1) + ' auswählen'"
+                [attr.aria-pressed]="selectedAvatar() === avatar"
                 (click)="selectAvatar(avatar)"
-              />
+              >
+                <img
+                  [src]="avatar"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </button>
             }
           </div>
         </div>
       </section>
 
       <div class="actions">
-        <button class="btn-primary" type="button" (click)="completeSignup()" [disabled]="loading() || !avatarSelected">
+        <button class="btn-primary" type="button" (click)="completeSignup()" [disabled]="loading() || !avatarSelected()">
           Weiter
         </button>
       </div>

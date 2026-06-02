@@ -16,6 +16,7 @@ $rosa-error: #ed1e79;
 $light-red: #ffebeb;
 $red-text: #f03e3e;
 $red-hover: #ffd8d8;
+$beige-hover-avatar: #E6E6E6;
 
 // SCSS Variables (Aliases with original screenshot spellings to prevent typos)
 $white-color: $white;
@@ -39,6 +40,7 @@ $text-grey: $text-gray;
   --light-red: #ffebeb;
   --red-text: #f03e3e;
   --red-hover: #ffd8d8;
+  --beige-hover-avatar: #E6E6E6;
 }
 
 // ==========================================================================
@@ -46,6 +48,7 @@ $text-grey: $text-gray;
 // ==========================================================================
 $breakpoint-mobile-sm: 370px;
 $breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
 $breakpoint-tablet-max: 1024px;
 $breakpoint-tablet-lg: 1200px;
 $breakpoint-large: 1440px;
