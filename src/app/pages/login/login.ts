@@ -26,7 +26,7 @@ import { ToastService } from '../../services/toast.service';
   styleUrl: './login.scss'
 })
 export class LoginComponent {
-  private readonly mainRedirectDelay = 1800;
+  private readonly successToastDuration = 1500;
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
@@ -34,7 +34,6 @@ export class LoginComponent {
   private iconRegistry = inject(MatIconRegistry);
   private sanitizer = inject(DomSanitizer);
 
-  // Registers SVG icons for the login form input fields
   constructor() {
     this.iconRegistry.addSvgIcon('mail', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/mail.svg'));
     this.iconRegistry.addSvgIcon('lock', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/lock.svg'));
@@ -54,7 +53,6 @@ export class LoginComponent {
     password: ['', Validators.required],
   });
 
-  // Resets the login error state and clears password control errors
   clearLoginError(): void {
     this.loginError.set(false);
     const passwordCtrl = this.form.get('password');
@@ -63,7 +61,6 @@ export class LoginComponent {
     }
   }
 
-  // Handles the email/password authentication submission
   async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -81,7 +78,7 @@ export class LoginComponent {
       if (error) {
         this.handleError();
       } else {
-        this.redirectToMainWithToast();
+        await this.redirectToMainWithToast();
       }
     } catch (e) {
       this.handleError();
@@ -90,31 +87,33 @@ export class LoginComponent {
     }
   }
 
-  // Triggers a guest login and redirects to the main app dashboard
   async guestLogin(): Promise<void> {
     this.loading.set(true);
     this.loginError.set(false);
     try {
       const { error } = await this.authService.guestLogin();
       if (error) {
+        console.error('Gast-Login Fehler:', error);
+        this.toast.show('Gast-Login ist derzeit nicht verfügbar.', 'error');
         this.handleError();
       } else {
-        this.redirectToMainWithToast();
+        await this.redirectToMainWithToast();
       }
     } catch (e) {
+      console.error('Gast-Login Ausnahme:', e);
+      this.toast.show('Gast-Login ist derzeit nicht verfügbar.', 'error');
       this.handleError();
     } finally {
       this.loading.set(false);
     }
   }
 
-  // Initiates OAuth login using the Google provider
   async loginWithGoogle(): Promise<void> {
     this.loading.set(true);
     this.loginError.set(false);
 
     try {
-      const targetUrl = `${window.location.origin}/main`;
+      const targetUrl = `${window.location.origin}/main?auth=google-login-success`;
       const { error } = await this.authService.loginWithGoogle(targetUrl);
 
       if (error) {
@@ -127,14 +126,13 @@ export class LoginComponent {
     }
   }
 
-  // Sets state and validator error markers on authentication failure
   private handleError(): void {
     this.loginError.set(true);
     this.form.get('password')?.setErrors({ loginError: true });
   }
 
-  private redirectToMainWithToast(): void {
-    this.toast.show('Erfolgreich angemeldet!', 'success', this.mainRedirectDelay);
-    window.setTimeout(() => this.router.navigate(['/main']), this.mainRedirectDelay);
+  private async redirectToMainWithToast(): Promise<void> {
+    this.toast.show('Erfolgreich angemeldet!', 'success', this.successToastDuration);
+    await this.router.navigate(['/main']);
   }
 }

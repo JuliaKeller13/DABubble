@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastComponent } from './components/toast/toast';
+import { AuthRedirectToastService } from './services/auth-redirect-toast.service';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +10,11 @@ import { ToastComponent } from './components/toast/toast';
   styleUrl: './app.scss'
 })
 export class App {
+  private readonly authRedirectToast = inject(AuthRedirectToastService);
+
   title = 'DABubble';
+
+  constructor() {
+    this.authRedirectToast.handleGoogleLoginSuccess();
+  }
 }

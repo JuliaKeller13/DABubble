@@ -23,6 +23,15 @@
   z-index: $z-index-toast;
   will-change: transform, opacity;
   animation: toast-slide-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  @include flex(row, nowrap, center, center);
+  gap: 20px;
+}
+
+.toast-icon {
+  width: 40px;
+  height: auto;
+  margin-right: 12px;
+  flex-shrink: 0;
 }
 
 @media (max-width: $breakpoint-mobile) {
@@ -30,6 +39,10 @@
     right: 0;
     bottom: 100px;
     padding: 20px 30px;
+
+    .toast-icon {
+      width: 24px;
+    }
   }
 }
 
@@ -45,6 +58,10 @@
 }
 
 @keyframes toast-overlay-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

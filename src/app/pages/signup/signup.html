@@ -77,7 +77,7 @@
             <mat-error>Passwort ist erforderlich.</mat-error>
           }
           @if (form.get('password')?.hasError('minlength')) {
-            <mat-error>Passwort muss mindestens 6 Zeichen haben.</mat-error>
+            <mat-error>Passwort muss mindestens {{ passwordMinLength }} Zeichen haben.</mat-error>
           }
         </mat-form-field>
 

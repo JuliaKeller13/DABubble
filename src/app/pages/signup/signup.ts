@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
 import { SignupStateService } from '../../services/signup-state.service';
+import { buildPasswordValidators, PASSWORD_MIN_LENGTH } from '../../validators/password.validators';
 
 @Component({
   selector: 'app-signup',
@@ -25,6 +26,8 @@ import { SignupStateService } from '../../services/signup-state.service';
   styleUrl: './signup.scss',
 })
 export class Signup {
+  readonly passwordMinLength = PASSWORD_MIN_LENGTH;
+
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
   private iconRegistry = inject(MatIconRegistry);
@@ -36,7 +39,7 @@ export class Signup {
   form = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: ['', buildPasswordValidators()],
     acceptTerms: [false, Validators.requiredTrue],
   });
 
