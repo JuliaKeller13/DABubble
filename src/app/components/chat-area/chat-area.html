@@ -63,9 +63,20 @@
   </div>
 
   <div class="chat-area__footer">
+    @if (typingUsers().length > 0) {
+      <div class="chat-area__typing-indicator">
+        <span>{{ getTypingText() }}</span>
+        <div class="typing-dots">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    }
     <app-message-input
       [placeholder]="activeChannel() ? 'Nachricht an #' + activeChannel()!.name : 'Wähle einen Channel'"
       (sendMessage)="onSendMessage($event)"
+      (typing)="onTypingStatusChange($event)"
     ></app-message-input>
   </div>
 

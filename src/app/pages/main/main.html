@@ -1,10 +1,12 @@
-<div class="main-layout" [class.main-layout--sidebar-closed]="isSidebarClosed">
-  <app-header [isSidebarClosed]="isSidebarClosed" (backToSidebar)="onSidebarToggle(false)"></app-header>
+<div class="main-layout" 
+     [class.main-layout--sidebar-closed]="isSidebarClosed"
+     [class.main-layout--thread-open]="threadSvc.isThreadOpen()">
+  <app-header [isSidebarClosed]="isSidebarClosed" (backToSidebar)="onHeaderBack()"></app-header>
 
   <div class="main-layout__content">
     <app-sidebar [isClosed]="isSidebarClosed" (toggleSidebar)="onSidebarToggle($event)"></app-sidebar>
     <app-chat-area [isSidebarClosed]="isSidebarClosed"></app-chat-area>
-    @if (isThreadOpen) {
+    @if (threadSvc.isThreadOpen()) {
       <app-thread-view></app-thread-view>
     }
   </div>

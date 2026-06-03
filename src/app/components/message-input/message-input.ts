@@ -12,16 +12,43 @@ import { FormsModule } from '@angular/forms';
 export class MessageInputComponent {
   @Input() placeholder: string = 'Nachricht an #Entwicklerteam';
   @Output() sendMessage = new EventEmitter<string>();
+  @Output() typing = new EventEmitter<boolean>();
 
   messageText = '';
   isEmojiActive = false;
   isMentionActive = false;
 
+  private typingTimeout: any;
+  private isCurrentlyTyping = false;
+
   // Emits the entered message text and resets the input box
   send() {
     if (!this.messageText.trim()) return;
+    if (this.typingTimeout) {
+      clearTimeout(this.typingTimeout);
+    }
+    this.isCurrentlyTyping = false;
+    this.typing.emit(false);
+
     this.sendMessage.emit(this.messageText);
     this.messageText = '';
+  }
+
+  // Emits typing state based on keyboard inputs and debounce timeouts
+  onInputChange() {
+    if (!this.isCurrentlyTyping) {
+      this.isCurrentlyTyping = true;
+      this.typing.emit(true);
+    }
+
+    if (this.typingTimeout) {
+      clearTimeout(this.typingTimeout);
+    }
+
+    this.typingTimeout = setTimeout(() => {
+      this.isCurrentlyTyping = false;
+      this.typing.emit(false);
+    }, 3000);
   }
 
   // Listens to Enter key hits and submits unless Shift key is held down

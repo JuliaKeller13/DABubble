@@ -5,7 +5,7 @@ import { Message } from '../interfaces/message.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MessageService {
   private supabaseSvc = inject(supabaseService);
@@ -28,11 +28,11 @@ export class MessageService {
 
       // Fetch all user profiles to map them in memory (resilient to FK naming schema issues)
       const allUsers = await this.userSvc.getAllUsers();
-      const userMap = new Map(allUsers.map(u => [u.id, u]));
+      const userMap = new Map(allUsers.map((u) => [u.id, u]));
 
-      return (messages as Message[]).map(msg => ({
+      return (messages as Message[]).map((msg) => ({
         ...msg,
-        sender: userMap.get(msg.sender_id)
+        sender: userMap.get(msg.sender_id),
       }));
     } catch (err) {
       console.error('Failed to get channel messages:', err);
@@ -41,12 +41,17 @@ export class MessageService {
   }
 
   // Insert a new message into Supabase
-  async sendMessage(content: string, senderId: string, channelId: string, parentMessageId?: string): Promise<Message | null> {
+  async sendMessage(
+    content: string,
+    senderId: string,
+    channelId: string,
+    parentMessageId?: string,
+  ): Promise<Message | null> {
     try {
       const payload: any = {
         content,
         sender_id: senderId,
-        channel_id: channelId
+        channel_id: channelId,
       };
 
       if (parentMessageId) {
@@ -83,7 +88,8 @@ export class MessageService {
   // Subscribe to real-time additions and updates for a channel's messages
   subscribeToChannelMessages(
     channelId: string,
-    callback: (event: 'INSERT' | 'UPDATE' | 'DELETE', message: Message) => void
+    callback: (event: 'INSERT' | 'UPDATE' | 'DELETE', message: Message) => void,
+    broadcastCallback?: (payload: { userId: string, userName: string, isTyping: boolean }) => void
   ): RealtimeChannel {
     const channel = this.supabaseSvc.supabase.channel(`room:${channelId}`);
 
@@ -94,7 +100,7 @@ export class MessageService {
           event: '*',
           schema: 'public',
           table: 'messages',
-          filter: `channel_id=eq.${channelId}`
+          filter: `channel_id=eq.${channelId}`,
         },
         async (payload) => {
           const eventType = payload.eventType;
@@ -115,6 +121,15 @@ export class MessageService {
           }
 
           callback(eventType as 'INSERT' | 'UPDATE', rawMessage);
+        }
+      )
+      .on(
+        'broadcast',
+        { event: 'typing' },
+        (payload: any) => {
+          if (broadcastCallback && payload.payload) {
+            broadcastCallback(payload.payload);
+          }
         }
       )
       .subscribe();
@@ -149,7 +164,7 @@ export class MessageService {
 
       if (userIds.includes(userId)) {
         // Toggle off: remove user ID
-        userIds = userIds.filter(id => id !== userId);
+        userIds = userIds.filter((id) => id !== userId);
       } else {
         // Toggle on: add user ID
         userIds.push(userId);
@@ -171,6 +186,85 @@ export class MessageService {
       }
     } catch (err) {
       console.error('Failed to toggle reaction:', err);
+    }
+  }
+
+  async getThreadReplies(parentMessageId: string): Promise<Message[]> {
+    try {
+      const { data: messages, error } = await this.supabaseSvc.supabase
+        .from('messages')
+        .select('*')
+        .eq('parent_id', parentMessageId)
+        .order('created_at', { ascending: true });
+      if (error) {
+        console.error('Error fetching replies:', error.message);
+        return [];
+      }
+      const allUsers = await this.userSvc.getAllUsers();
+      const userMap = new Map(allUsers.map((u) => [u.id, u]));
+      return (messages as Message[]).map((msg) => ({
+        ...msg,
+        sender: userMap.get(msg.sender_id),
+      }));
+    } catch (err) {
+      console.error('Failed to get thread replies:', err);
+      return [];
+    }
+  }
+
+  subscribeToThreadReplies(
+    parentMessageId: string,
+    callback: (event: 'INSERT' | 'UPDATE' | 'DELETE', message: Message) => void,
+    broadcastCallback?: (payload: { userId: string, userName: string, isTyping: boolean }) => void
+  ): RealtimeChannel {
+    const channel = this.supabaseSvc.supabase.channel(`thread:${parentMessageId}`);
+    channel
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'messages',
+          filter: `parent_id=eq.${parentMessageId}`,
+        },
+        async (payload) => {
+          const eventType = payload.eventType;
+          let rawMessage = (payload.new || payload.old) as Message;
+          if (!rawMessage || !rawMessage.id) return;
+          if (eventType === 'DELETE') {
+            callback('DELETE', rawMessage);
+            return;
+          }
+          if (rawMessage.sender_id) {
+            const senderProfile = await this.userSvc.getUserById(rawMessage.sender_id);
+            if (senderProfile) {
+              rawMessage.sender = senderProfile;
+            }
+          }
+          callback(eventType as 'INSERT' | 'UPDATE', rawMessage);
+        },
+      )
+      .on(
+        'broadcast',
+        { event: 'typing' },
+        (payload: any) => {
+          if (broadcastCallback && payload.payload) {
+            broadcastCallback(payload.payload);
+          }
+        }
+      )
+      .subscribe();
+    return channel;
+  }
+
+  // Sends typing status broadcast to a Supabase channel
+  sendTypingStatus(channel: RealtimeChannel | null, userId: string, userName: string, isTyping: boolean) {
+    if (channel) {
+      channel.send({
+        type: 'broadcast',
+        event: 'typing',
+        payload: { userId, userName, isTyping }
+      });
     }
   }
 }

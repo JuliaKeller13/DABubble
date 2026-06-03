@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Message } from '../../interfaces/message.interface';
@@ -10,17 +10,19 @@ import { userService } from '../../services/user.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './message.html',
-  styleUrl: './message.scss'
+  styleUrl: './message.scss',
 })
 export class MessageComponent {
   @Input({ required: true }) message!: Message;
   @Input({ required: true }) currentUserId!: string;
+  @Input() isThreadMessage = false;
 
   @Output() threadClick = new EventEmitter<Message>();
   @Output() editClick = new EventEmitter<Message>();
 
   private messageSvc = inject(MessageService);
   private userSvc = inject(userService);
+  private elementRef = inject(ElementRef);
 
   showReactionPicker = false;
   showHoverReactionPicker = false;
@@ -72,17 +74,28 @@ export class MessageComponent {
         emoji,
         count: userIds.length,
         userReacted: userIds.includes(this.currentUserId),
-        userIds
+        userIds,
       };
     });
   }
 
   // Toggle reaction on the message using the current user's profile
   async toggleReaction(emoji: string) {
-    if (!this.message.id) return;
-    await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
     this.showReactionPicker = false;
     this.showHoverReactionPicker = false;
+    if (!this.message.id) return;
+    await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
+  }
+
+  // Closes all popups when a click occurs outside the message component
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.showReactionPicker = false;
+      this.showHoverReactionPicker = false;
+      this.showMoreMenu = false;
+      this.showEditEmojiPicker = false;
+    }
   }
 
   showEditEmojiPicker = false;
@@ -136,7 +149,7 @@ export class MessageComponent {
         .from('messages')
         .update({ content: this.editContent })
         .eq('id', this.message.id);
-      
+
       if (!error) {
         this.message.content = this.editContent;
         this.isEditing = false;

@@ -2,19 +2,61 @@
   <div class="thread-view__header">
     <div class="thread-view__header-left">
       <h2 class="thread-view__title text-title-24">Thread</h2>
-      <span class="thread-view__channel-name text-chat-time"># Entwicklerteam</span>
+      <span class="thread-view__channel-name text-chat-time"># {{ threadSvc.activeMessage()?.sender?.display_name }}</span>
     </div>
 
-    <button class="thread-view__close-btn" type="button" aria-label="Thread schließen">
+    <button class="thread-view__close-btn" type="button" aria-label="Thread schließen" (click)="onClose()">
       <img src="img/icons/threads/close_button.svg" class="thread-view__close-icon thread-view__close-icon--normal" alt="Thread schließen">
       <img src="img/icons/threads/close_button_hover.svg" class="thread-view__close-icon thread-view__close-icon--hover" alt="Thread schließen">
     </button>
   </div>
 
-  <div class="thread-view__body">
+  <div class="thread-view__body" #repliesContainer>
+    @if (threadSvc.activeMessage(); as parentMsg) {
+      <!-- Parent message (marked as isThreadMessage to disable thread action toggles recursively) -->
+      <div class="thread-view__parent">
+        <app-message 
+          [message]="parentMsg" 
+          [currentUserId]="currentUserId" 
+          [isThreadMessage]="true">
+        </app-message>
+      </div>
+
+      <!-- Divider specifying response count -->
+      @if (replies().length > 0) {
+        <div class="thread-view__divider">
+          <span>{{ replies().length }} {{ replies().length === 1 ? 'Antwort' : 'Antworten' }}</span>
+        </div>
+      }
+
+      <!-- Loop through replies -->
+      <div class="thread-view__replies-list">
+        @for (reply of replies(); track reply.id) {
+          <app-message 
+            [message]="reply" 
+            [currentUserId]="currentUserId" 
+            [isThreadMessage]="true">
+          </app-message>
+        }
+      </div>
+    }
   </div>
 
   <div class="thread-view__footer">
-    <app-message-input placeholder="Antworten..."></app-message-input>
+    @if (typingUsers().length > 0) {
+      <div class="thread-view__typing-indicator">
+        <span>{{ getTypingText() }}</span>
+        <div class="typing-dots">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+      </div>
+    }
+    <app-message-input 
+      placeholder="Antworten..." 
+      (sendMessage)="onSendReply($event)"
+      (typing)="onTypingStatusChange($event)">
+    </app-message-input>
   </div>
 </div>
