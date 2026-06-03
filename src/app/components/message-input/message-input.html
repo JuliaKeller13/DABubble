@@ -3,6 +3,7 @@
     class="message-input__textarea" 
     [placeholder]="placeholder"
     [(ngModel)]="messageText"
+    (input)="onInputChange()"
     (keydown.enter)="onEnterPressed($event)"
   ></textarea>
   

@@ -1,4 +1,13 @@
-import { Component, Input, inject, signal, effect, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  inject,
+  signal,
+  effect,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageInputComponent } from '../message-input/message-input';
 import { MessageComponent } from '../message/message';
@@ -12,6 +21,7 @@ import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member
 import { userService } from '../../services/user.service';
 import { Message } from '../../interfaces/message.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { ThreadService } from '../../services/thread.service';
 
 interface ChannelMember {
   id: string;
@@ -33,10 +43,10 @@ interface DateGroup {
     MessageComponent,
     DialogChannelDetailsComponent,
     DialogChannelMembersComponent,
-    MatDialogModule
+    MatDialogModule,
   ],
   templateUrl: './chat-area.html',
-  styleUrl: './chat-area.scss'
+  styleUrl: './chat-area.scss',
 })
 export class ChatAreaComponent implements OnDestroy {
   @Input() isSidebarClosed = false;
@@ -50,6 +60,7 @@ export class ChatAreaComponent implements OnDestroy {
   private dialog = inject(MatDialog);
   private messageSvc = inject(MessageService);
   private authSvc = inject(AuthService);
+  private threadSvc = inject(ThreadService);
 
   // Expose active channel from the shared service
   activeChannel = this.channelSvc.activeChannel;
@@ -57,6 +68,8 @@ export class ChatAreaComponent implements OnDestroy {
   members = signal<ChannelMember[]>([]);
   messages = signal<Message[]>([]);
   private messagesSubscription: RealtimeChannel | null = null;
+  typingUsers = signal<{ userId: string; userName: string }[]>([]);
+  private typingTimeouts = new Map<string, any>();
 
   // Retrieve current user ID
   get currentUserId(): string {
@@ -81,11 +94,13 @@ export class ChatAreaComponent implements OnDestroy {
       if (channel && channel.id) {
         try {
           const dbMembers = await this.channelSvc.getChannelMembers(channel.id);
-          this.members.set(dbMembers.map(user => ({
-            id: user.id,
-            name: user.display_name,
-            avatar: user.avatar_url || 'img/avatars/avatar_default.svg'
-          })));
+          this.members.set(
+            dbMembers.map((user) => ({
+              id: user.id,
+              name: user.display_name,
+              avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
+            })),
+          );
         } catch (error) {
           console.error('Error loading channel members:', error);
           this.members.set([]);
@@ -112,21 +127,24 @@ export class ChatAreaComponent implements OnDestroy {
           this.messages.set(dbMessages);
           this.scrollToBottom();
 
-          // Create realtime subscription for live insertions and updates
+          // Create realtime subscription for live insertions, updates and typing broadcasts
           this.messagesSubscription = this.messageSvc.subscribeToChannelMessages(
             channel.id,
             (event, msg) => {
               if (event === 'INSERT') {
-                this.messages.update(prev => {
-                  if (prev.some(m => m.id === msg.id)) return prev;
+                this.messages.update((prev) => {
+                  if (prev.some((m) => m.id === msg.id)) return prev;
                   return [...prev, msg];
                 });
                 this.scrollToBottom();
               } else if (event === 'UPDATE') {
-                this.messages.update(prev => prev.map(m => m.id === msg.id ? msg : m));
+                this.messages.update((prev) => prev.map((m) => (m.id === msg.id ? msg : m)));
               } else if (event === 'DELETE') {
-                this.messages.update(prev => prev.filter(m => m.id !== msg.id));
+                this.messages.update((prev) => prev.filter((m) => m.id !== msg.id));
               }
+            },
+            (typingPayload) => {
+              this.handleTypingBroadcast(typingPayload);
             }
           );
         } catch (error) {
@@ -147,11 +165,25 @@ export class ChatAreaComponent implements OnDestroy {
   }
 
   // Group messages dynamically by their formatted creation date label
+  // Group only root messages dynamically by their formatted creation date label
   get groupedMessages(): DateGroup[] {
     const groups: DateGroup[] = [];
-    this.messages().forEach(msg => {
+
+    // Filter root messages and map their reply counts and last reply times
+    const rootMessages = this.messages()
+      .filter((msg) => !msg.parent_id)
+      .map((msg) => {
+        const replies = this.messages().filter((m) => m.parent_id === msg.id);
+        return {
+          ...msg,
+          reply_count: replies.length,
+          last_reply_time: replies.length > 0 ? replies[replies.length - 1].created_at : undefined,
+        } as Message;
+      });
+
+    rootMessages.forEach((msg) => {
       const label = this.getDateLabel(msg.created_at);
-      let group = groups.find(g => g.dateLabel === label);
+      let group = groups.find((g) => g.dateLabel === label);
       if (!group) {
         group = { dateLabel: label, messages: [] };
         groups.push(group);
@@ -174,7 +206,11 @@ export class ChatAreaComponent implements OnDestroy {
     } else if (date.toDateString() === yesterday.toDateString()) {
       return 'Gestern';
     } else {
-      const options: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' };
+      const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+      };
       const formatted = date.toLocaleDateString('de-DE', options);
       return formatted.replace('.', ''); // Removes the dot after the day number (e.g. "14. Januar" -> "14 Januar")
     }
@@ -199,7 +235,7 @@ export class ChatAreaComponent implements OnDestroy {
       console.warn('[onSendMessage] No active channel');
       return;
     }
-    
+
     const userId = this.currentUserId;
     if (!userId) {
       console.warn('[onSendMessage] Current user ID is null/empty');
@@ -208,8 +244,8 @@ export class ChatAreaComponent implements OnDestroy {
 
     const newMsg = await this.messageSvc.sendMessage(content, userId, channel.id);
     if (newMsg) {
-      this.messages.update(prev => {
-        if (prev.some(m => m.id === newMsg.id)) return prev;
+      this.messages.update((prev) => {
+        if (prev.some((m) => m.id === newMsg.id)) return prev;
         return [...prev, newMsg];
       });
       this.scrollToBottom();
@@ -218,9 +254,61 @@ export class ChatAreaComponent implements OnDestroy {
     }
   }
 
-  // Placeholder handler for starting threads
+  // Triggers opening the thread view for a message
   onThreadClicked(message: Message) {
-    // Thread trigger hook
+    this.threadSvc.openThread(message);
+  }
+
+  // Handles real-time typing events from other users
+  handleTypingBroadcast(payload: { userId: string; userName: string; isTyping: boolean }) {
+    if (payload.userId === this.currentUserId) return;
+
+    // Clear existing timeout for this user
+    const existingTimeout = this.typingTimeouts.get(payload.userId);
+    if (existingTimeout) {
+      clearTimeout(existingTimeout);
+      this.typingTimeouts.delete(payload.userId);
+    }
+
+    if (payload.isTyping) {
+      // Add user if not already in the typing list
+      this.typingUsers.update((users) => {
+        if (users.some((u) => u.userId === payload.userId)) return users;
+        return [...users, { userId: payload.userId, userName: payload.userName }];
+      });
+
+      // Automatically remove user after 5 seconds of inactivity as a safeguard
+      const timeout = setTimeout(() => {
+        this.typingUsers.update((users) => users.filter((u) => u.userId !== payload.userId));
+        this.typingTimeouts.delete(payload.userId);
+      }, 5000);
+      this.typingTimeouts.set(payload.userId, timeout);
+    } else {
+      // Remove user from typing list
+      this.typingUsers.update((users) => users.filter((u) => u.userId !== payload.userId));
+    }
+  }
+
+  // Emits typing state over the active realtime channel broadcast
+  onTypingStatusChange(isTyping: boolean) {
+    const profile = this.authSvc.currentUserProfile();
+    if (profile && this.messagesSubscription) {
+      this.messageSvc.sendTypingStatus(
+        this.messagesSubscription,
+        profile.id,
+        profile.display_name,
+        isTyping
+      );
+    }
+  }
+
+  // Builds the localized typing text string
+  getTypingText(): string {
+    const users = this.typingUsers();
+    if (users.length === 0) return '';
+    if (users.length === 1) return `${users[0].userName} schreibt...`;
+    if (users.length === 2) return `${users[0].userName} und ${users[1].userName} schreiben...`;
+    return 'Mehrere Personen schreiben...';
   }
 
   // Opens the channel details dialog view
@@ -258,7 +346,7 @@ export class ChatAreaComponent implements OnDestroy {
   // Adds selected members to the channel and refreshes the member list
   async onMembersAdded(memberResult: any) {
     if (!memberResult) return;
-    
+
     const active = this.activeChannel();
     if (!active || !active.id) return;
 
@@ -266,21 +354,23 @@ export class ChatAreaComponent implements OnDestroy {
       let memberIds: string[] = [];
       if (memberResult.selectionType === 'all') {
         const allUsers = await this.userSvc.getAllUsers();
-        memberIds = allUsers.map(u => u.id);
+        memberIds = allUsers.map((u) => u.id);
       } else if (memberResult.selectionType === 'specific' && memberResult.selectedUsers) {
         memberIds = memberResult.selectedUsers;
       }
 
       if (memberIds.length > 0) {
         await this.channelSvc.addMembersToChannel(active.id, memberIds);
-        
+
         // Reload channel members list in chat-area
         const dbMembers = await this.channelSvc.getChannelMembers(active.id);
-        this.members.set(dbMembers.map(user => ({
-          id: user.id,
-          name: user.display_name,
-          avatar: user.avatar_url || 'img/avatars/avatar_default.svg'
-        })));
+        this.members.set(
+          dbMembers.map((user) => ({
+            id: user.id,
+            name: user.display_name,
+            avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
+          })),
+        );
       }
     } catch (error) {
       console.error('Error adding members in chat area:', error);
