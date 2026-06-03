@@ -18,7 +18,6 @@ export class AuthRedirectToastService {
       return;
     }
 
-    this.toast.show('Erfolgreich angemeldet!', 'success', this.redirectToastDuration);
     url.searchParams.delete('auth');
 
     const search = url.searchParams.toString();

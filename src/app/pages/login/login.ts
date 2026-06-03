@@ -78,7 +78,7 @@ export class LoginComponent {
       if (error) {
         this.handleError();
       } else {
-        await this.redirectToMainWithToast();
+        await this.redirectToMain();
       }
     } catch (e) {
       this.handleError();
@@ -97,7 +97,7 @@ export class LoginComponent {
         this.toast.show('Gast-Login ist derzeit nicht verfügbar.', 'error');
         this.handleError();
       } else {
-        await this.redirectToMainWithToast();
+        await this.redirectToMain();
       }
     } catch (e) {
       console.error('Gast-Login Ausnahme:', e);
@@ -131,8 +131,7 @@ export class LoginComponent {
     this.form.get('password')?.setErrors({ loginError: true });
   }
 
-  private async redirectToMainWithToast(): Promise<void> {
-    this.toast.show('Erfolgreich angemeldet!', 'success', this.successToastDuration);
+  private async redirectToMain(): Promise<void> {
     await this.router.navigate(['/main']);
   }
 }
