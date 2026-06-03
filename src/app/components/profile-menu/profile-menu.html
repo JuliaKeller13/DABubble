@@ -1,5 +1,5 @@
 <div class="profile-menu-container" (click)="toggleMenu($event)">
-  <span class="profile-menu-name">{{ currentUserProfile()?.display_name || 'Gast' }}</span>
+  <span class="profile-menu-name">{{ currentUserProfile()?.display_name }}</span>
   <div class="profile-menu-avatar-wrapper">
     <img
       [src]="currentUserProfile()?.avatar_url || 'img/avatars/avatar_default.svg'"

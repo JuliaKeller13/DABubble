@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class ProfileMenuComponent {
   private router = inject(Router);
-  private authService = inject(AuthService);
+  authService = inject(AuthService);
 
   currentUserProfile = this.authService.currentUserProfile;
   isOpen = false;

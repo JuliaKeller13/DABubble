@@ -113,7 +113,7 @@ export class LoginComponent {
     this.loginError.set(false);
 
     try {
-      const targetUrl = `${window.location.origin}/main?auth=google-login-success`;
+      const targetUrl = new URL('main?auth=google-login-success', document.baseURI).href;
       const { error } = await this.authService.loginWithGoogle(targetUrl);
 
       if (error) {

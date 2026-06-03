@@ -36,11 +36,13 @@ export class AuthService {
   private currentUserProfileSignal = signal<UserProfile | null>(null);
   private presenceChannel: RealtimeChannel | null = null;
   private onlineUserIdsSignal = signal<Set<string>>(new Set());
+  private isInitializedSignal = signal(false);
 
   readonly onlineUserIds = this.onlineUserIdsSignal.asReadonly();
   readonly currentUser = this.currentUserSignal.asReadonly();
   readonly currentUserProfile = this.currentUserProfileSignal.asReadonly();
   readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
+  readonly isInitialized = this.isInitializedSignal.asReadonly();
 
   constructor() {
     this.supabaseSvc.supabase.auth.getSession()
@@ -60,6 +62,9 @@ export class AuthService {
         console.error('Failed to get session:', err);
         this.supabaseSvc.supabase.auth.signOut();
         this.clearAuthUrlHash();
+      })
+      .finally(() => {
+        this.isInitializedSignal.set(true);
       });
 
     this.supabaseSvc.supabase.auth.onAuthStateChange((event, session) => {
@@ -134,10 +139,12 @@ export class AuthService {
       return newProfile as UserProfile;
     }
 
-    await this.supabaseSvc.supabase
+    // Fire-and-forget: nicht abwarten, sofort das Profil zurückgeben
+    this.supabaseSvc.supabase
       .from('profiles')
       .update({ status: 'online', display_name: displayName })
-      .eq('id', user.id);
+      .eq('id', user.id)
+      .then(() => {});
 
     return { ...existingProfile, status: 'online', display_name: displayName } as UserProfile;
   }
@@ -215,7 +222,7 @@ export class AuthService {
   async requestPasswordReset(email: string): Promise<AuthServiceResult> {
     const redirectTo = typeof window === 'undefined'
       ? undefined
-      : `${window.location.origin}/password-reset`;
+      : new URL('password-reset', document.baseURI).href;
 
     const { error } = await this.supabaseSvc.supabase.auth.resetPasswordForEmail(
       email,
@@ -257,7 +264,7 @@ export class AuthService {
     return await this.supabaseSvc.supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: redirectTo || window.location.origin + '/main',
+        redirectTo: redirectTo || new URL('main', document.baseURI).href,
       },
     });
   }

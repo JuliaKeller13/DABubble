@@ -1,0 +1,5 @@
+Options -MultiViews
+RewriteEngine On
+RewriteBase /projects/dabubble/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
