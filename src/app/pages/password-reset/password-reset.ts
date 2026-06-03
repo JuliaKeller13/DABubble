@@ -84,7 +84,7 @@ export class PasswordReset {
         return;
       }
 
-      this.toast.show('Passwort erfolgreich geaendert.', 'success');
+      this.toast.show('Anmelden', 'success');
       await this.router.navigate(['/login']);
     } finally {
       this.loading.set(false);

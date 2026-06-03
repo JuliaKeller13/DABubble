@@ -1,29 +1,16 @@
-import { Injectable, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NavigationStart, Router } from '@angular/router';
+import { Injectable, signal } from '@angular/core';
 
 const DEFAULT_TOAST_DURATION = 3000;
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
-  private readonly router = inject(Router);
   private hideTimerId: number | null = null;
 
-  readonly toast = signal<{ message: string; type: 'success' | 'error' } | null>(null);
+  readonly toast = signal<{ message: string; type: 'success' | 'error'; icon?: 'send' } | null>(null);
 
-  constructor() {
-    this.router.events
-      .pipe(takeUntilDestroyed())
-      .subscribe((event) => {
-        if (event instanceof NavigationStart && this.isLoginRoute(event.url)) {
-          this.hide();
-        }
-      });
-  }
-
-  show(message: string, type: 'success' | 'error' = 'success', duration = DEFAULT_TOAST_DURATION) {
+  show(message: string, type: 'success' | 'error' = 'success', duration = DEFAULT_TOAST_DURATION, icon?: 'send') {
     this.clearTimer();
-    this.toast.set({ message, type });
+    this.toast.set({ message, type, icon });
     this.hideTimerId = window.setTimeout(() => {
       this.toast.set(null);
       this.hideTimerId = null;
@@ -40,11 +27,5 @@ export class ToastService {
       window.clearTimeout(this.hideTimerId);
       this.hideTimerId = null;
     }
-  }
-
-  private isLoginRoute(url: string): boolean {
-    const normalizedUrl = url.split('?')[0]?.split('#')[0] ?? '';
-
-    return normalizedUrl === '/login' || normalizedUrl.endsWith('/login');
   }
 }

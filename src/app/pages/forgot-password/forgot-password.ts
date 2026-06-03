@@ -73,7 +73,7 @@ export class ForgotPassword {
         return;
       }
 
-      this.toast.show('Die E-Mail zum Zuruecksetzen wurde gesendet.', 'success');
+      this.toast.show('E-Mail gesendet', 'success', undefined, 'send');
       await this.router.navigate(['/login']);
     } finally {
       this.loading.set(false);

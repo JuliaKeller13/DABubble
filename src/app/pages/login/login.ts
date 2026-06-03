@@ -93,11 +93,15 @@ export class LoginComponent {
     try {
       const { error } = await this.authService.guestLogin();
       if (error) {
+        console.error('Gast-Login Fehler:', error);
+        this.toast.show('Gast-Login ist derzeit nicht verfügbar.', 'error');
         this.handleError();
       } else {
         await this.redirectToMainWithToast();
       }
     } catch (e) {
+      console.error('Gast-Login Ausnahme:', e);
+      this.toast.show('Gast-Login ist derzeit nicht verfügbar.', 'error');
       this.handleError();
     } finally {
       this.loading.set(false);
@@ -109,7 +113,7 @@ export class LoginComponent {
     this.loginError.set(false);
 
     try {
-      const targetUrl = `${window.location.origin}/main`;
+      const targetUrl = `${window.location.origin}/main?auth=google-login-success`;
       const { error } = await this.authService.loginWithGoogle(targetUrl);
 
       if (error) {

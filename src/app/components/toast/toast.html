@@ -1,5 +1,6 @@
 @if (toast(); as currentToast) {
   <div class="toast-overlay" aria-hidden="true"></div>
+  
   <div
     class="toast"
     [class.toast--success]="currentToast.type === 'success'"
@@ -8,6 +9,10 @@
     aria-live="polite"
     role="status"
   >
+    @if (currentToast.icon === 'send') {
+      <img class="toast-icon" src="img/icons/send.svg" alt="E-Mail gesendet" />
+    }
+    
     <p class="text-toast">{{ currentToast.message }}</p>
   </div>
 }

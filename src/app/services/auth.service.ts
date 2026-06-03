@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { supabaseService } from './supabase.service';
-import { AuthResponse, User, RealtimeChannel } from '@supabase/supabase-js';
+import { AuthError, AuthResponse, OAuthResponse, PostgrestError, RealtimeChannel, User } from '@supabase/supabase-js';
 import { User as UserProfile } from '../interfaces/user.interface';
 
 type ProfileUpsertPayload = {
@@ -16,6 +16,15 @@ type SupabaseIdentityData = {
   picture?: unknown;
   picture_url?: unknown;
   photoURL?: unknown;
+};
+
+type AuthServiceResult = {
+  error: AuthError | null;
+};
+
+type SignupResult = {
+  data: AuthResponse['data'];
+  error: AuthError | PostgrestError | null;
 };
 
 @Injectable({
@@ -41,6 +50,9 @@ export class AuthService {
           this.supabaseSvc.supabase.auth.signOut();
           this.clearAuthUrlHash();
         } else {
+          if (data.session) {
+            this.clearAuthUrlHash();
+          }
           this.handleUserChange(data.session?.user ?? null);
         }
       })
@@ -52,6 +64,8 @@ export class AuthService {
 
     this.supabaseSvc.supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
+        this.clearAuthUrlHash();
+      } else if (session) {
         this.clearAuthUrlHash();
       }
       this.handleUserChange(session?.user ?? null);
@@ -74,105 +88,101 @@ export class AuthService {
 
   private async loadUserProfile(user: User | null) {
     if (!user) {
-      await this.cleanupPresence();
-      return this.currentUserProfileSignal.set(null);
+      return this.clearUserState();
     }
 
-    await this.ensureUserProfile(user);
-
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single();
-
-    if (error) {
-      if (error.code === 'PGRST116') {
-        const displayName = user.user_metadata?.['full_name'] || user.user_metadata?.['name'] || user.email?.split('@')[0] || 'Neuer User';
-        const avatarUrl = user.user_metadata?.['avatar_url'] || null;
-
-        const { data: newProfile, error: createError } = await this.supabaseSvc.supabase
-          .from('profiles')
-          .insert({
-            id: user.id,
-            display_name: displayName,
-            email: user.email || '',
-            avatar_url: avatarUrl,
-            status: 'online'
-          })
-          .select()
-          .single();
-
-        if (createError) {
-          console.error('Error creating profile after login:', createError);
-          await this.cleanupPresence();
-          return this.currentUserProfileSignal.set(null);
-        }
-
-        this.currentUserProfileSignal.set(newProfile as UserProfile);
-        await this.setupPresence(user);
-        return;
-      }
-
-      console.error('Error loading profile:', error);
-      await this.cleanupPresence();
-      return this.currentUserProfileSignal.set(null);
+    const profileData = await this.syncProfileWithDatabase(user);
+    
+    if (profileData) {
+      this.currentUserProfileSignal.set(profileData);
+      await this.setupPresence(user);
     }
-
-    this.currentUserProfileSignal.set(data as UserProfile);
-
-    await this.setupPresence(user);
   }
 
-  private async ensureUserProfile(user: User): Promise<void> {
-    const metadata = user.user_metadata ?? {};
-    const displayName = this.getDisplayName(metadata);
-    const email = user.email ?? metadata['email'];
+  private async clearUserState() {
+    await this.cleanupPresence();
+    this.currentUserProfileSignal.set(null);
+  }
 
-    if (!displayName || !email) return;
+  private async syncProfileWithDatabase(user: User): Promise<UserProfile | null> {
+    const displayName = this.getProfileDisplayName(user);
+    const email = this.getProfileEmail(user);
+    const avatarUrl = this.getAvatarUrl(user) || null;
 
-    const { data: existing, error: fetchError } = await this.supabaseSvc.supabase
+    const { data: existingProfile, error: fetchError } = await this.supabaseSvc.supabase
       .from('profiles')
-      .select('id, avatar_url')
+      .select('*')
       .eq('id', user.id)
       .maybeSingle();
 
     if (fetchError) {
-      console.error('Error checking profile:', fetchError);
-      return;
+      console.error('Error loading profile:', fetchError);
+      return null;
     }
 
-    if (!existing) {
-      const { error } = await this.supabaseSvc.supabase
+    if (!existingProfile) {
+      const { data: newProfile, error: createError } = await this.supabaseSvc.supabase
         .from('profiles')
-        .insert({
-          id: user.id,
-          display_name: displayName,
-          email,
-          avatar_url: this.getAvatarUrl(user),
-          status: 'online',
-        });
-      if (error) console.error('Error creating profile:', error);
-    } else {
-      const updates: Partial<ProfileUpsertPayload> = {
-        display_name: displayName,
-        email,
-        status: 'online',
-      };
-      if (!existing['avatar_url']) {
-        updates['avatar_url'] = this.getAvatarUrl(user);
+        .insert({ id: user.id, display_name: displayName, email, avatar_url: avatarUrl, status: 'online' })
+        .select()
+        .single();
+
+      if (createError) {
+        console.error('Error creating profile:', createError);
+        return null;
       }
-      const { error } = await this.supabaseSvc.supabase
-        .from('profiles')
-        .update(updates)
-        .eq('id', user.id);
-      if (error) console.error('Error updating profile:', error);
+      return newProfile as UserProfile;
     }
+
+    await this.supabaseSvc.supabase
+      .from('profiles')
+      .update({ status: 'online', display_name: displayName })
+      .eq('id', user.id);
+
+    return { ...existingProfile, status: 'online', display_name: displayName } as UserProfile;
   }
 
   private getDisplayName(metadata: User['user_metadata']): string {
     const name = metadata['full_name'] ?? metadata['name'] ?? metadata['display_name'];
     return typeof name === 'string' ? name.trim() : '';
+  }
+
+  private getProfileDisplayName(user: User): string {
+    const metadata = user.user_metadata ?? {};
+    const displayName = this.getDisplayName(metadata);
+
+    if (displayName) {
+      return displayName;
+    }
+
+    if (user.email) {
+      return user.email.split('@')[0] ?? 'Neuer User';
+    }
+
+    if (user.is_anonymous) {
+      return 'Gast';
+    }
+
+    return 'Neuer User';
+  }
+
+  private getProfileEmail(user: User): string {
+    const metadata = user.user_metadata ?? {};
+    const metadataEmail = metadata['email'];
+
+    if (user.email) {
+      return user.email;
+    }
+
+    if (typeof metadataEmail === 'string' && metadataEmail.trim()) {
+      return metadataEmail.trim();
+    }
+
+    if (user.is_anonymous) {
+      return `guest-${user.id}@guest.dabubble.local`;
+    }
+
+    return '';
   }
 
   private getAvatarUrl(user: User): string {
@@ -202,19 +212,20 @@ export class AuthService {
     });
   }
 
-  async requestPasswordReset(email: string): Promise<{ error: unknown }> {
+  async requestPasswordReset(email: string): Promise<AuthServiceResult> {
     const redirectTo = typeof window === 'undefined'
       ? undefined
       : `${window.location.origin}/password-reset`;
 
-    const { error } = await this.supabaseSvc.supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://localhost:4200/password-reset',
-    });
+    const { error } = await this.supabaseSvc.supabase.auth.resetPasswordForEmail(
+      email,
+      redirectTo ? { redirectTo } : undefined,
+    );
 
     return { error };
   }
 
-  async updatePassword(password: string): Promise<{ error: unknown }> {
+  async updatePassword(password: string): Promise<AuthServiceResult> {
     const { error } = await this.supabaseSvc.supabase.auth.updateUser({
       password,
     });
@@ -222,15 +233,17 @@ export class AuthService {
     return { error };
   }
 
-  // Logs in as a guest user using pre-configured credentials
   async guestLogin(): Promise<AuthResponse> {
-    const guestEmail = 'gast@dabubble.de';
-    const guestPassword = 'Guest248635719/';
-    return await this.loginWithEmail(guestEmail, guestPassword);
+    return await this.supabaseSvc.supabase.auth.signInAnonymously({
+      options: {
+        data: {
+          display_name: 'Gast',
+        },
+      },
+    });
   }
 
-  // Starts OAuth login flow using Google provider
-  async loginWithGoogle(redirectTo?: string): Promise<any> {
+  async loginWithGoogle(redirectTo?: string): Promise<OAuthResponse> {
     return await this.supabaseSvc.supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -239,7 +252,7 @@ export class AuthService {
     });
   }
 
-  async signup(name: string, email: string, password: string, avatarUrl: string): Promise<{ error: any; data: any }> {
+  async signup(name: string, email: string, password: string, avatarUrl: string): Promise<SignupResult> {
     const { data, error } = await this.supabaseSvc.supabase.auth.signUp({ email, password });
     if (error || !data.user) return { error, data };
     const { error: profileError } = await this.supabaseSvc.supabase
@@ -248,7 +261,6 @@ export class AuthService {
     return { error: error || profileError, data };
   }
 
-  // Logs out the current user and clears presence state
   async logout(): Promise<void> {
     await this.cleanupPresence();
     await this.supabaseSvc.supabase.auth.signOut();
@@ -257,30 +269,45 @@ export class AuthService {
   private async setupPresence(user: User) {
     await this.cleanupPresence();
 
-    const channel = this.supabaseSvc.supabase.channel('online-users');
-    this.presenceChannel = channel;
+    this.presenceChannel = this.supabaseSvc.supabase.channel('online-users');
 
+    this.setupPresenceSyncListener(this.presenceChannel);
+    this.subscribeAndTrackPresence(this.presenceChannel, user.id);
+  }
+
+  private setupPresenceSyncListener(channel: RealtimeChannel) {
     channel.on('presence', { event: 'sync' }, () => {
-      if (!this.presenceChannel) return;
+      if (this.presenceChannel !== channel) return; 
+      
       const state = channel.presenceState();
-      const onlineIds = new Set<string>();
-
-      Object.values(state).forEach((presences: any) => {
-        presences.forEach((p: any) => {
-          if (p.userId) {
-            onlineIds.add(p.userId);
-          }
-        });
-      });
-
+      const onlineIds = this.extractOnlineUserIds(state);
+      
       this.onlineUserIdsSignal.set(onlineIds);
     });
+  }
 
+  private extractOnlineUserIds(state: Record<string, any[]>): Set<string> {
+    const onlineIds = new Set<string>();
+
+    Object.values(state).forEach((presences) => {
+      presences.forEach((presence) => {
+        if (presence['userId']) {
+          onlineIds.add(presence['userId'] as string);
+        }
+      });
+    });
+
+    return onlineIds;
+  }
+
+  private subscribeAndTrackPresence(channel: RealtimeChannel, userId: string) {
     channel.subscribe(async (status) => {
       if (status === 'SUBSCRIBED' && this.presenceChannel === channel) {
-        await channel.track({
-          userId: user.id,
-        });
+        const trackStatus = await channel.track({ userId });
+        
+        if (trackStatus !== 'ok') {
+          console.error('Failed to track presence status');
+        }
       }
     });
   }
