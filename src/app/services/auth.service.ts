@@ -234,6 +234,16 @@ export class AuthService {
   }
 
   async guestLogin(): Promise<AuthResponse> {
+    const { data: { session }, error: sessionError } = await this.supabaseSvc.supabase.auth.getSession();
+
+    if (session) {
+      console.log('User/Gast ist bereits eingeloggt, Session wird wiederverwendet.');
+      return {
+        data: { user: session.user, session },
+        error: sessionError ?? null,
+      } as AuthResponse;
+    }
+
     return await this.supabaseSvc.supabase.auth.signInAnonymously({
       options: {
         data: {
