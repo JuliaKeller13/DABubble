@@ -48,3 +48,14 @@
     </div>
   </div>
 }
+
+@if (showDesktopSelfProfileDialog()) {
+  <div class="profile-menu-overlay" (click)="closeProfileDialog()"></div>
+  <div class="profile-menu-dialog" (click)="$event.stopPropagation()">
+    <app-dialog-profile
+      [profile]="selectedProfile()!"
+      [variant]="'desktop-sheet'"
+      (closed)="closeProfileDialog()"
+    ></app-dialog-profile>
+  </div>
+}

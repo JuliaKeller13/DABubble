@@ -88,11 +88,23 @@
     gap: 15px;
     padding: 4px 8px;
     border-radius: 100px;
-    cursor: pointer;
     transition: background-color 0.15s ease;
 
     &:hover {
       background-color: vars.$bg-color;
+    }
+  }
+
+  &__member-trigger {
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid vars.$purple-1;
+      outline-offset: 2px;
     }
   }
 
@@ -129,6 +141,20 @@
     font-size: 18px;
     font-weight: 400;
     color: vars.$black;
+
+    &--button {
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: color 0.15s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: vars.$purple-1;
+        outline: none;
+      }
+    }
   }
 
   &__add-btn {

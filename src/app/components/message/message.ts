@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Message } from '../../interfaces/message.interface';
 import { MessageService } from '../../services/message.service';
-import { userService } from '../../services/user.service';
+import { ProfileDialogService } from '../../services/profile-dialog.service';
 
 @Component({
   selector: 'app-message',
@@ -21,8 +21,8 @@ export class MessageComponent {
   @Output() editClick = new EventEmitter<Message>();
 
   private messageSvc = inject(MessageService);
-  private userSvc = inject(userService);
   private elementRef = inject(ElementRef);
+  private profileDialogSvc = inject(ProfileDialogService);
 
   showReactionPicker = false;
   showHoverReactionPicker = false;
@@ -103,6 +103,14 @@ export class MessageComponent {
   // Trigger opening the message thread view
   onStartThread() {
     this.threadClick.emit(this.message);
+  }
+
+  openSenderProfile(): void {
+    if (!this.message.sender) {
+      return;
+    }
+
+    this.profileDialogSvc.open(this.message.sender, { suppressOutsideCloseOnce: this.isCurrentUser });
   }
 
   // Enable editing state for the message

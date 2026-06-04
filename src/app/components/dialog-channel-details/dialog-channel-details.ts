@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { ProfileDialogService } from '../../services/profile-dialog.service';
 
 @Component({
   selector: 'app-dialog-channel-details',
@@ -20,6 +21,7 @@ export class DialogChannelDetailsComponent implements OnInit {
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
   private authSvc = inject(AuthService);
+  private profileDialogSvc = inject(ProfileDialogService);
 
   // Check if a user is currently online
   isUserOnline(member: any): boolean {
@@ -103,5 +105,9 @@ export class DialogChannelDetailsComponent implements OnInit {
         console.error('Failed to delete channel:', error);
       }
     }
+  }
+
+  async openMemberProfile(memberId: string): Promise<void> {
+    await this.profileDialogSvc.openById(memberId, { suppressOutsideCloseOnce: true });
   }
 }

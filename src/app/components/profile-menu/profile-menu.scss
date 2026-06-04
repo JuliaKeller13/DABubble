@@ -70,16 +70,18 @@
 }
 
 .profile-menu-overlay {
-  display: none;
+  display: block;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: vars.$z-index-header-sidebar;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.4);
+  animation: fade-in 0.25s ease-out forwards;
 
   &--closing {
+    animation: fade-out 0.25s ease-in forwards;
     pointer-events: none;
   }
 }
@@ -137,6 +139,13 @@
     font-size: 18px;
     font-weight: 700;
   }
+}
+
+.profile-menu-dialog {
+  position: absolute;
+  top: 75px;
+  right: 0;
+  z-index: vars.$z-index-header-sidebar + 1;
 }
 
 @keyframes slide-up {
@@ -198,10 +207,8 @@
   }
   .profile-menu-overlay {
     @include mx.flex(column, nowrap, flex-end, stretch);
-    animation: fade-in 0.25s ease-out forwards;
 
     &--closing {
-      animation: fade-out 0.25s ease-in forwards;
     }
   }
   .profile-menu-sheet {

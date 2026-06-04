@@ -1,0 +1,21 @@
+@if (profileDialogSvc.selectedProfile(); as selectedProfile) {
+	@if (showSelfProfileOverlay()) {
+		<div class="dialog-profile-overlay__sheet-overlay" (click)="closeProfileDialog()">
+			<div class="dialog-profile-overlay__sheet" (click)="stopProfileDialogClose($event)">
+				<app-dialog-profile
+					[profile]="selectedProfile"
+					(closed)="closeProfileDialog()"
+				></app-dialog-profile>
+			</div>
+		</div>
+	} @else if (showOtherProfileOverlay()) {
+		<div class="dialog-profile-overlay__backdrop" (click)="closeProfileDialog()">
+			<div class="dialog-profile-overlay__panel" (click)="stopProfileDialogClose($event)">
+				<app-dialog-profile
+					[profile]="selectedProfile"
+					(closed)="closeProfileDialog()"
+				></app-dialog-profile>
+			</div>
+		</div>
+	}
+}

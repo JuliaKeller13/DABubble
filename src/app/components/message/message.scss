@@ -58,6 +58,10 @@
     object-fit: cover;
     background-color: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.05);
+
+    &--clickable {
+      cursor: pointer;
+    }
   }
 
   &__content-block {
@@ -81,6 +85,21 @@
 
     &--current {
       color: vars.$black; /* Matches Figma black font color */
+    }
+
+    &--button {
+      padding: 0;
+      border: none;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+      transition: color 0.15s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: vars.$purple-1;
+        outline: none;
+      }
     }
   }
 

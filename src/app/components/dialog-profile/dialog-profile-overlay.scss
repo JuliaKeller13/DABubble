@@ -1,0 +1,53 @@
+@use '../../../styles/abstracts' as *;
+
+.dialog-profile-overlay {
+	&__sheet-overlay {
+		position: fixed;
+		inset: 0;
+		background: transparent;
+		z-index: 100;
+	}
+
+	&__sheet {
+		position: fixed;
+		top: 75px;
+		right: 0;
+		z-index: 101;
+	}
+
+	&__backdrop {
+		position: fixed;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 16px;
+		background: rgba(0, 0, 0, 0.4);
+		z-index: 80;
+		box-sizing: border-box;
+	}
+
+	&__panel {
+		max-width: 100%;
+	}
+}
+
+@include tablet-lg {
+	.dialog-profile-overlay {
+		&__sheet-overlay {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 16px;
+			background: rgba(0, 0, 0, 0.12);
+			z-index: $z-index-header-sidebar + 2;
+			box-sizing: border-box;
+		}
+
+		&__sheet {
+			position: static;
+			max-width: 100%;
+			z-index: $z-index-header-sidebar + 3;
+		}
+	}
+}

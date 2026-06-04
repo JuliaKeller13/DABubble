@@ -5,7 +5,9 @@
       [src]="message.sender?.avatar_url || 'img/avatars/avatar_default.svg'"
       [alt]="message.sender?.display_name || 'User'"
       class="msg-container__avatar"
+      [class.msg-container__avatar--clickable]="!!message.sender"
       referrerpolicy="no-referrer"
+      (click)="openSenderProfile()"
     />
   </div>
 
@@ -15,11 +17,13 @@
     <div class="msg-container__meta">
       @if (isCurrentUser) {
         <span class="msg-container__time">{{ formattedTime }}</span>
-        <span class="msg-container__sender msg-container__sender--current">{{
-          message.sender?.display_name
-        }}</span>
+        <button class="msg-container__sender msg-container__sender--current msg-container__sender--button" type="button" (click)="openSenderProfile()">
+          {{ message.sender?.display_name }}
+        </button>
       } @else {
-        <span class="msg-container__sender">{{ message.sender?.display_name }}</span>
+        <button class="msg-container__sender msg-container__sender--button" type="button" (click)="openSenderProfile()">
+          {{ message.sender?.display_name }}
+        </button>
         <span class="msg-container__time">{{ formattedTime }}</span>
       }
     </div>

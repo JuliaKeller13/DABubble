@@ -76,13 +76,15 @@
       <div class="dialog-card__members-list">
         @for (member of members; track $index) {
           <div class="dialog-card__member-row">
-            <div class="dialog-card__member-avatar-wrapper">
-              <img class="dialog-card__member-avatar" [src]="member.avatar" [alt]="member.name">
-              <span class="dialog-card__member-status-dot" [class.dialog-card__member-status-dot--online]="isUserOnline(member)"></span>
-            </div>
-            <span class="dialog-card__member-name">
+            <button type="button" class="dialog-card__member-avatar-button" (click)="openMemberProfile(member.id)">
+              <span class="dialog-card__member-avatar-wrapper">
+                <img class="dialog-card__member-avatar" [src]="member.avatar" [alt]="member.name">
+                <span class="dialog-card__member-status-dot" [class.dialog-card__member-status-dot--online]="isUserOnline(member)"></span>
+              </span>
+            </button>
+            <button type="button" class="dialog-card__member-name dialog-card__member-name--button" (click)="openMemberProfile(member.id)">
               {{ member.name }}{{ member.name === 'Frederik Beck' ? ' (Du)' : '' }}
-            </span>
+            </button>
           </div>
         }
       </div>

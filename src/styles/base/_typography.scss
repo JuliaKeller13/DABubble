@@ -127,6 +127,42 @@ body {
   font-size: 20px;
 }
 
+.text-profile-title {
+  font-family: var(--font-main);
+  font-weight: 700;
+  @include fluid-text(20, 24);
+}
+
+.text-profile-name {
+  font-family: var(--font-main);
+  font-weight: 700;
+  @include fluid-text(28, 32);
+}
+
+.text-profile-status {
+  font-family: var(--font-main);
+  font-weight: 400;
+  @include fluid-text(18, 22);
+}
+
+.text-profile-label {
+  font-family: var(--font-main);
+  font-weight: 700;
+  @include fluid-text(18, 20);
+}
+
+.text-profile-value {
+  font-family: var(--font-main);
+  font-weight: 400;
+  @include fluid-text(16, 18);
+}
+
+.text-profile-action {
+  font-family: var(--font-main);
+  font-weight: 600;
+  @include fluid-text(16, 18);
+}
+
 .text-body-18 {
   font-family: var(--font-main);
   font-weight: 400;

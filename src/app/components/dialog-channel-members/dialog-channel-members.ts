@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, Input, OnInit, inject } from '@angular
 import { CommonModule } from '@angular/common';
 import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member';
 import { AuthService } from '../../services/auth.service';
+import { ProfileDialogService } from '../../services/profile-dialog.service';
 
 interface ChannelMember {
   id: string;
@@ -26,6 +27,7 @@ export class DialogChannelMembersComponent implements OnInit {
   @Output() addMember = new EventEmitter<any>();
 
   private authSvc = inject(AuthService);
+  private profileDialogSvc = inject(ProfileDialogService);
 
   view: 'members' | 'add' = 'members';
 
@@ -55,5 +57,9 @@ export class DialogChannelMembersComponent implements OnInit {
       this.addMember.emit(result);
     }
     this.close.emit();
+  }
+
+  async openMemberProfile(memberId: string): Promise<void> {
+    await this.profileDialogSvc.openById(memberId, { suppressOutsideCloseOnce: true });
   }
 }
