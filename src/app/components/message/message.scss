@@ -545,6 +545,42 @@
       left: 0;
     }
   }
+
+  &__link {
+    color: vars.$purple-1;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.15s ease, text-decoration 0.15s ease;
+
+    &:hover {
+      color: vars.$purple-3;
+      text-decoration: underline;
+    }
+
+    &--mention {
+      color: vars.$purple-1;
+    }
+
+    &--channel {
+      color: vars.$purple-1;
+    }
+  }
+
+  &__bubble--current {
+    .msg-container__link {
+      color: vars.$white;
+      text-decoration: underline;
+
+      &:hover {
+        color: vars.$bg-color;
+      }
+
+      &--mention, &--channel {
+        color: vars.$white;
+      }
+    }
+  }
 }
 
 /* #region RESPONSIVE */

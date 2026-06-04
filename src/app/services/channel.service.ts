@@ -12,13 +12,41 @@ export class channelService {
   private activeChannelSignal = signal<Channel | null>(null);
   private channelsSignal = signal<Channel[]>([]);
   
-  // Expose the active channel and channels list as read-only signals
+  private activeChannelMembersSignal = signal<User[]>([]);
+
+  // Expose the active channel, channels list and members as read-only signals
   readonly activeChannel = this.activeChannelSignal.asReadonly();
   readonly channels = this.channelsSignal.asReadonly();
+  readonly activeChannelMembers = this.activeChannelMembersSignal.asReadonly();
 
-  // Update the active channel
-  selectChannel(channel: Channel | null) {
+  // Update the active channel and load members proactively
+  async selectChannel(channel: Channel | null) {
     this.activeChannelSignal.set(channel);
+    if (channel && channel.id) {
+      try {
+        const members = await this.getChannelMembers(channel.id);
+        this.activeChannelMembersSignal.set(members);
+      } catch (e) {
+        console.error('Error loading channel members in selectChannel:', e);
+        this.activeChannelMembersSignal.set([]);
+      }
+    } else {
+      this.activeChannelMembersSignal.set([]);
+    }
+  }
+
+  async refreshActiveChannelMembers(): Promise<User[]> {
+    const active = this.activeChannel();
+    if (active && active.id) {
+      try {
+        const members = await this.getChannelMembers(active.id);
+        this.activeChannelMembersSignal.set(members);
+        return members;
+      } catch (e) {
+        console.error('Error refreshing active channel members:', e);
+      }
+    }
+    return [];
   }
 
   // Load all channels into the reactive signal

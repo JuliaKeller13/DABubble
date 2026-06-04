@@ -129,7 +129,17 @@
       </div>
     } @else {
       <div class="msg-container__bubble" [class.msg-container__bubble--current]="isCurrentUser">
-        <p class="msg-container__text">{{ message.content }}</p>
+        <p class="msg-container__text">
+          @for (token of tokens; track $index) {
+            @if (token.type === 'text') {
+              <span>{{ token.text }}</span>
+            } @else if (token.type === 'channel') {
+              <a class="msg-container__link msg-container__link--channel" (click)="onChannelClick(token.channelId!)">{{ token.text }}</a>
+            } @else if (token.type === 'mention') {
+              <a class="msg-container__link msg-container__link--mention" (click)="onUserClick(token.userId!)">{{ token.text }}</a>
+            }
+          }
+        </p>
       </div>
     }
 

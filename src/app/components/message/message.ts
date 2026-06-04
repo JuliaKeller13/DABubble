@@ -1,10 +1,21 @@
-import { Component, Input, Output, EventEmitter, inject, ElementRef, HostListener } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ElementRef, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Message } from '../../interfaces/message.interface';
 import { MessageService } from '../../services/message.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
 import { ToastService } from '../../services/toast.service';
+import { channelService } from '../../services/channel.service';
+import { userService } from '../../services/user.service';
+import { ThreadService } from '../../services/thread.service';
+import { User } from '../../interfaces/user.interface';
+
+interface MessageToken {
+  type: 'text' | 'channel' | 'mention';
+  text: string;
+  channelId?: string;
+  userId?: string;
+}
 
 @Component({
   selector: 'app-message',
@@ -13,8 +24,17 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: './message.html',
   styleUrl: './message.scss',
 })
-export class MessageComponent {
-  @Input({ required: true }) message!: Message;
+export class MessageComponent implements OnInit {
+  private _message!: Message;
+
+  @Input({ required: true }) set message(val: Message) {
+    this._message = val;
+    this.parseMessageContent();
+  }
+  get message(): Message {
+    return this._message;
+  }
+
   @Input({ required: true }) currentUserId!: string;
   @Input() isThreadMessage = false;
 
@@ -26,12 +46,19 @@ export class MessageComponent {
   private elementRef = inject(ElementRef);
   private profileDialogSvc = inject(ProfileDialogService);
   private toastSvc = inject(ToastService);
+  private channelSvc = inject(channelService);
+  private userSvc = inject(userService);
+  private threadSvc = inject(ThreadService);
+  private cdr = inject(ChangeDetectorRef);
 
   showReactionPicker = false;
   showHoverReactionPicker = false;
   showMoreMenu = false;
   isEditing = false;
   editContent = '';
+
+  private static allUsers: User[] = [];
+  tokens: MessageToken[] = [];
 
   // Toggles the visibility of the message options menu
   toggleMoreOptions() {
@@ -154,6 +181,138 @@ export class MessageComponent {
     }
   }
 
+  async ngOnInit() {
+    if (MessageComponent.allUsers.length === 0) {
+      try {
+        MessageComponent.allUsers = await this.userSvc.getAllUsers();
+      } catch (e) {
+        console.error('Fehler beim Laden der User im MessageComponent-Init:', e);
+      }
+    }
+    
+    // Defer initial parse to prevent ExpressionChangedAfterItHasBeenCheckedError
+    setTimeout(() => {
+      this.parseMessageContent();
+      this.cdr.markForCheck();
+    }, 0);
+  }
+
+  parseMessageContent() {
+    const content = this.message?.content || '';
+    if (!content) {
+      this.tokens = [];
+      this.cdr.markForCheck();
+      return;
+    }
+
+    if (MessageComponent.allUsers.length > 0) {
+      this.executeParsing(content);
+    } else {
+      this.userSvc.getAllUsers().then(users => {
+        MessageComponent.allUsers = users;
+        setTimeout(() => {
+          this.executeParsing(content);
+          this.cdr.markForCheck();
+        }, 0);
+      }).catch(e => {
+        console.error('Fehler beim Laden der User für Message-Parsing:', e);
+        setTimeout(() => {
+          this.executeParsing(content);
+          this.cdr.markForCheck();
+        }, 0);
+      });
+    }
+  }
+
+  private executeParsing(content: string) {
+    const channels = this.channelSvc.channels();
+    const users = MessageComponent.allUsers;
+    const searchTerms: { text: string; type: 'channel' | 'mention'; id: string }[] = [];
+
+    channels.forEach(ch => {
+      if (ch.name) {
+        searchTerms.push({
+          text: '#' + ch.name,
+          type: 'channel',
+          id: ch.id || ''
+        });
+      }
+    });
+
+    users.forEach(u => {
+      if (u.display_name) {
+        searchTerms.push({
+          text: '@' + u.display_name,
+          type: 'mention',
+          id: u.id
+        });
+      }
+    });
+
+    searchTerms.sort((a, b) => b.text.length - a.text.length);
+
+    const result: MessageToken[] = [];
+    let remainingText = content;
+
+    while (remainingText.length > 0) {
+      let earliestMatchIndex = -1;
+      let matchingTerm: typeof searchTerms[0] | null = null;
+
+      for (const term of searchTerms) {
+        const index = remainingText.indexOf(term.text);
+        if (index !== -1) {
+          if (earliestMatchIndex === -1 || index < earliestMatchIndex) {
+            earliestMatchIndex = index;
+            matchingTerm = term;
+          }
+        }
+      }
+
+      if (matchingTerm && earliestMatchIndex !== -1) {
+        if (earliestMatchIndex > 0) {
+          result.push({
+            type: 'text',
+            text: remainingText.substring(0, earliestMatchIndex)
+          });
+        }
+
+        result.push({
+          type: matchingTerm.type,
+          text: matchingTerm.text,
+          channelId: matchingTerm.type === 'channel' ? matchingTerm.id : undefined,
+          userId: matchingTerm.type === 'mention' ? matchingTerm.id : undefined
+        });
+
+        remainingText = remainingText.substring(earliestMatchIndex + matchingTerm.text.length);
+      } else {
+        result.push({
+          type: 'text',
+          text: remainingText
+        });
+        break;
+      }
+    }
+
+    this.tokens = result;
+    this.cdr.markForCheck();
+  }
+
+  onChannelClick(channelId: string) {
+    const channel = this.channelSvc.channels().find(c => c.id === channelId);
+    if (channel) {
+      this.channelSvc.selectChannel(channel);
+      this.userSvc.selectDirectChatUser(null);
+      this.threadSvc.closeThread();
+    }
+  }
+
+  onUserClick(userId: string) {
+    const user = MessageComponent.allUsers.find(u => u.id === userId);
+    if (user) {
+      this.profileDialogSvc.open(user, { suppressOutsideCloseOnce: userId === this.currentUserId });
+    }
+  }
+
   // Save the updated message content to Supabase
   async saveEdit() {
     if (!this.message.id || !this.editContent.trim()) return;
@@ -165,6 +324,7 @@ export class MessageComponent {
 
       if (!error) {
         this.message.content = this.editContent;
+        this.parseMessageContent();
         this.isEditing = false;
         this.showEditEmojiPicker = false;
       }

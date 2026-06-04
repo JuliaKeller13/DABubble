@@ -119,27 +119,17 @@ export class ChatAreaComponent implements OnDestroy {
       }
     });
 
-    // Effect 1: Channel Members
-    effect(async () => {
-      const channel = this.activeChannel();
-      if (channel && channel.id) {
-        try {
-          const dbMembers = await this.channelSvc.getChannelMembers(channel.id);
-          const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
-          this.members.set(
-            filteredMembers.map((user) => ({
-              id: user.id,
-              name: user.display_name,
-              avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
-            })),
-          );
-        } catch (error) {
-          console.error('Error loading channel members:', error);
-          this.members.set([]);
-        }
-      } else {
-        this.members.set([]);
-      }
+    // Effect 1: Channel Members (reads from reactive activeChannelMembers signal in channelService)
+    effect(() => {
+      const dbMembers = this.channelSvc.activeChannelMembers();
+      const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
+      this.members.set(
+        filteredMembers.map((user) => ({
+          id: user.id,
+          name: user.display_name,
+          avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
+        })),
+      );
     });
 
     // Effect 2: Messages and Realtime Updates (both Channel and DM)
@@ -457,16 +447,8 @@ export class ChatAreaComponent implements OnDestroy {
       if (memberIds.length > 0) {
         await this.channelSvc.addMembersToChannel(active.id, memberIds);
 
-        // Reload channel members list in chat-area
-        const dbMembers = await this.channelSvc.getChannelMembers(active.id);
-        const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
-        this.members.set(
-          filteredMembers.map((user) => ({
-            id: user.id,
-            name: user.display_name,
-            avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
-          })),
-        );
+        // Reload active channel members signal (automatically updates members in chat-area)
+        await this.channelSvc.refreshActiveChannelMembers();
       }
     } catch (error) {
       console.error('Error adding members in chat area:', error);
@@ -479,15 +461,8 @@ export class ChatAreaComponent implements OnDestroy {
     if (!active || !active.id) return;
 
     try {
-      const dbMembers = await this.channelSvc.getChannelMembers(active.id);
-      const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
-      this.members.set(
-        filteredMembers.map((user) => ({
-          id: user.id,
-          name: user.display_name,
-          avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
-        })),
-      );
+      // Reload active channel members signal (automatically updates members in chat-area)
+      await this.channelSvc.refreshActiveChannelMembers();
     } catch (error) {
       console.error('Error reloading members list after removal:', error);
     }

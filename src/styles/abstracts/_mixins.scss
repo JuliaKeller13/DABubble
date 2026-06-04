@@ -30,6 +30,10 @@
     height: $width;
   }
 
+  &::-webkit-scrollbar:horizontal {
+    display: none;
+  }
+
   &::-webkit-scrollbar-track {
     background: transparent;
     border-radius: 10px;

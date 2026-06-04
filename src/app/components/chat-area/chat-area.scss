@@ -29,6 +29,7 @@
     @include mx.flex(column, nowrap, flex-start, stretch);
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     width: 100%;
     box-sizing: border-box;
     padding-bottom: 24px;

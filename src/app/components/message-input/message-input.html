@@ -1,4 +1,49 @@
 <div class="message-input">
+  <!-- User Mentions Popup -->
+  @if (activePopup === 'users') {
+    <div class="mention-popup" (click)="$event.stopPropagation()">
+      <div class="mention-popup__list">
+        @if (isLoading) {
+          <div class="mention-popup__loading">Mitglieder werden geladen...</div>
+        } @else {
+          @for (user of popupUsers; track user.id) {
+            <div class="mention-popup__item" (click)="insertMention('@' + user.name)">
+              <div class="mention-popup__avatar-container">
+                <img [src]="user.avatar" class="mention-popup__avatar" alt="Avatar">
+                <span class="mention-popup__status-badge" [class.online]="isUserOnlineById(user.id)"></span>
+              </div>
+              <span class="mention-popup__name">{{ user.name }} {{ user.id === currentUserId ? '(Du)' : '' }}</span>
+            </div>
+          }
+          @if (popupUsers.length === 0) {
+            <div class="mention-popup__empty">Keine Mitglieder gefunden</div>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Channel Mentions Popup -->
+  @if (activePopup === 'channels') {
+    <div class="mention-popup" (click)="$event.stopPropagation()">
+      <div class="mention-popup__list">
+        @if (isLoading) {
+          <div class="mention-popup__loading">Channels werden geladen...</div>
+        } @else {
+          @for (channel of popupChannels; track channel.id) {
+            <div class="mention-popup__item" (click)="insertMention('#' + channel.name)">
+              <span class="mention-popup__hashtag">#</span>
+              <span class="mention-popup__name">{{ channel.name }}</span>
+            </div>
+          }
+          @if (popupChannels.length === 0) {
+            <div class="mention-popup__empty">Keine Channels vorhanden</div>
+          }
+        }
+      </div>
+    </div>
+  }
+
   <textarea 
     class="message-input__textarea" 
     [placeholder]="placeholder"
