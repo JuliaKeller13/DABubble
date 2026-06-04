@@ -142,7 +142,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.channelSvc.selectChannel(fetchedChannels[0]);
     }
 
-    const fetchedUsers = await this.userSvc.getAllUsers();
+    const allFetchedUsers = await this.userSvc.getAllUsers();
+    const fetchedUsers = this.userSvc.filterDuplicateGuests(allFetchedUsers, currentUserId);
     this.users.set(fetchedUsers);
 
     if (currentUserId) {
@@ -383,7 +384,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
             let memberIds: string[] = [];
             if (memberResult.selectionType === 'all') {
               const allUsers = await this.userSvc.getAllUsers();
-              memberIds = allUsers.map(u => u.id);
+              const filteredUsers = this.userSvc.filterDuplicateGuests(allUsers, currentUserId ?? null);
+              memberIds = filteredUsers.map(u => u.id);
             } else if (memberResult.selectionType === 'specific' && memberResult.selectedUsers) {
               memberIds = memberResult.selectedUsers;
             }

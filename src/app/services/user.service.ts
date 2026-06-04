@@ -10,6 +10,15 @@ export class userService {
     private activeDirectChatUserSignal = signal<User | null>(null);
     readonly activeDirectChatUser = this.activeDirectChatUserSignal.asReadonly();
 
+    // Helper method to filter out duplicate guest profiles
+    filterDuplicateGuests(users: User[], currentUserId: string | null): User[] {
+        const guests = users.filter((u) => u.display_name === 'Gast');
+        if (guests.length <= 1) return users;
+        const currentGuest = currentUserId ? guests.find((u) => u.id === currentUserId) : null;
+        const guestToShow = currentGuest || guests[0];
+        return users.filter((u) => u.display_name !== 'Gast' || u.id === guestToShow.id);
+    }
+
     // Select active target user for direct messaging
     selectDirectChatUser(user: User | null) {
         this.activeDirectChatUserSignal.set(user);

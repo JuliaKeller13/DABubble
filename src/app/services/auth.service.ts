@@ -214,7 +214,7 @@ export class AuthService {
 
   async loginWithEmail(email: string, password: string): Promise<AuthResponse> {
     return await this.supabaseSvc.supabase.auth.signInWithPassword({
-      email,
+      email: email.trim(),
       password,
     });
   }
@@ -225,7 +225,7 @@ export class AuthService {
       : new URL('password-reset', document.baseURI).href;
 
     const { error } = await this.supabaseSvc.supabase.auth.resetPasswordForEmail(
-      email,
+      email.trim(),
       redirectTo ? { redirectTo } : undefined,
     );
 
@@ -314,8 +314,9 @@ export class AuthService {
   }
 
   async signup(name: string, email: string, password: string, avatarUrl: string): Promise<SignupResult> {
+    const trimmedEmail = email.trim();
     const { data, error } = await this.supabaseSvc.supabase.auth.signUp({
-      email,
+      email: trimmedEmail,
       password,
       options: {
         data: {
@@ -327,7 +328,7 @@ export class AuthService {
     if (error || !data.user) return { error, data };
     const { error: profileError } = await this.supabaseSvc.supabase
       .from('profiles')
-      .upsert({ id: data.user.id, display_name: name, email, avatar_url: avatarUrl, status: 'online' });
+      .upsert({ id: data.user.id, display_name: name, email: trimmedEmail, avatar_url: avatarUrl, status: 'online' });
     return { error: error || profileError, data };
   }
 
