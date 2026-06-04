@@ -17,6 +17,7 @@ $light-red: #ffebeb;
 $red-text: #f03e3e;
 $red-hover: #ffd8d8;
 $beige-hover-avatar: #E6E6E6;
+$link-blue: #1381ff;
 
 // SCSS Variables (Aliases with original screenshot spellings to prevent typos)
 $white-color: $white;
@@ -67,4 +68,11 @@ $z-index-modal-content: 55;
 $z-index-toast: 60;
 $z-index-header-sidebar: 100;
 $z-index-mobile-modal: 110;
+
+// ==========================================================================
+// SHADOWS
+// ==========================================================================
+$shadow-dialog: 0px 6px 10px 0px #00000033;
+$shadow-btn: 0px 4px 6px rgba(0, 0, 0, 0.04);
+$shadow-btn-hover: 0px 6px 12px rgba(0, 0, 0, 0.08);
 

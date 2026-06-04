@@ -240,6 +240,50 @@ export class AuthService {
     return { error };
   }
 
+  async updateCurrentUserProfile(displayName: string, avatarUrl: string): Promise<UserProfile | null> {
+    const currentUser = this.currentUser();
+    const currentProfile = this.currentUserProfile();
+    const trimmedName = displayName.trim();
+    const trimmedAvatarUrl = avatarUrl.trim();
+
+    if (!currentUser || !currentProfile || !trimmedName || !trimmedAvatarUrl) {
+      return null;
+    }
+
+    const { error: authError } = await this.supabaseSvc.supabase.auth.updateUser({
+      data: {
+        display_name: trimmedName,
+        full_name: trimmedName,
+        avatar_url: trimmedAvatarUrl,
+      },
+    });
+
+    if (authError) {
+      console.error('Error updating auth user metadata:', authError);
+      return null;
+    }
+
+    const { data: updatedProfile, error: profileError } = await this.supabaseSvc.supabase
+      .from('profiles')
+      .update({ display_name: trimmedName, avatar_url: trimmedAvatarUrl })
+      .eq('id', currentProfile.id)
+      .select()
+      .single();
+
+    if (profileError) {
+      console.error('Error updating profile:', profileError);
+      return null;
+    }
+
+    const mergedProfile = {
+      ...currentProfile,
+      ...updatedProfile,
+    } as UserProfile;
+
+    this.currentUserProfileSignal.set(mergedProfile);
+    return mergedProfile;
+  }
+
   async guestLogin(): Promise<AuthResponse> {
     const { data: { session }, error: sessionError } = await this.supabaseSvc.supabase.auth.getSession();
 

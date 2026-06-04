@@ -24,6 +24,7 @@ import { Message } from '../../interfaces/message.interface';
 import { User } from '../../interfaces/user.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { ThreadService } from '../../services/thread.service';
+import { ProfileDialogService } from '../../services/profile-dialog.service';
 
 interface ChannelMember {
   id: string;
@@ -63,6 +64,7 @@ export class ChatAreaComponent implements OnDestroy {
   private messageSvc = inject(MessageService);
   private authSvc = inject(AuthService);
   private threadSvc = inject(ThreadService);
+  private profileDialogSvc = inject(ProfileDialogService);
 
   // Expose active channel and active direct chat user from the shared services
   activeChannel = this.channelSvc.activeChannel;
@@ -71,6 +73,18 @@ export class ChatAreaComponent implements OnDestroy {
   // Check if a user is currently online
   isUserOnline(user: User): boolean {
     return this.authSvc.onlineUserIds().has(user.id);
+  }
+
+  openActiveDirectChatProfile(): void {
+    const activeUser = this.activeDirectChatUser();
+
+    if (!activeUser) {
+      return;
+    }
+
+    this.profileDialogSvc.open(activeUser, {
+      suppressOutsideCloseOnce: activeUser.id === this.currentUserId,
+    });
   }
 
   members = signal<ChannelMember[]>([]);
@@ -131,6 +145,11 @@ export class ChatAreaComponent implements OnDestroy {
     effect(async () => {
       const channel = this.activeChannel();
       const targetUser = this.activeDirectChatUser();
+
+      if (!channel || targetUser) {
+        this.isChannelDetailsOpen = false;
+        this.isChannelMembersOpen = false;
+      }
 
       // Cleanup previous subscription
       if (this.messagesSubscription) {

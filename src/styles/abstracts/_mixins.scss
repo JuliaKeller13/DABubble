@@ -65,6 +65,14 @@
   align-items: $align-items;
 }
 
+// Mixin to reset native button styling
+@mixin button-reset {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
 // Mixin for centering content
 @mixin maxContent {
   padding-left: calc((100% - 1440px) / 2);

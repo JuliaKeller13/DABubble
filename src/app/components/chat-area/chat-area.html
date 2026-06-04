@@ -10,16 +10,20 @@
         <h2 class="chat-area__title">{{ activeChannel()?.name }}</h2>
         <img src="img/icons/arrow_dropdown.svg" class="chat-area__arrow-icon" alt="Dropdown">
       } @else if (activeDirectChatUser()) {
-        <div class="chat-area__header-avatar-wrapper">
-          <img 
-            [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
-            [alt]="activeDirectChatUser()?.display_name" 
-            class="chat-area__header-avatar"
-            referrerpolicy="no-referrer"
-          >
-          <span class="chat-area__status-dot" [class.chat-area__status-dot--online]="isUserOnline(activeDirectChatUser()!)"></span>
-        </div>
-        <h2 class="chat-area__title">{{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}</h2>
+        <button class="chat-area__profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
+          <div class="chat-area__header-avatar-wrapper">
+            <img 
+              [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
+              [alt]="activeDirectChatUser()?.display_name" 
+              class="chat-area__header-avatar"
+              referrerpolicy="no-referrer"
+            >
+            <span class="chat-area__status-dot" [class.chat-area__status-dot--online]="isUserOnline(activeDirectChatUser()!)"></span>
+          </div>
+        </button>
+        <button class="chat-area__profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
+          <h2 class="chat-area__title">{{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}</h2>
+        </button>
       } @else {
         <h2 class="chat-area__title">Kein Channel ausgewählt</h2>
       }
@@ -58,15 +62,19 @@
           <p class="chat-area__empty-text">Das ist der Anfang des Channels #{{ activeChannel()?.name }}.</p>
         } @else if (activeDirectChatUser()) {
           <div class="chat-area__empty-header">
-            <img 
-              [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
-              [alt]="activeDirectChatUser()?.display_name" 
-              class="chat-area__empty-avatar"
-              referrerpolicy="no-referrer"
-            >
-            <h3 class="chat-area__empty-title">
-              {{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}
-            </h3>
+            <button class="chat-area__empty-profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
+              <img 
+                [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
+                [alt]="activeDirectChatUser()?.display_name" 
+                class="chat-area__empty-avatar"
+                referrerpolicy="no-referrer"
+              >
+            </button>
+            <button class="chat-area__empty-profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
+              <h3 class="chat-area__empty-title">
+                {{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}
+              </h3>
+            </button>
           </div>
           @if (activeDirectChatUser()?.id === currentUserId) {
             <p class="chat-area__empty-text">
@@ -74,7 +82,11 @@
             </p>
           } @else {
             <p class="chat-area__empty-text">
-              Diese Unterhaltung findet nur zwischen dir und <span class="chat-area__empty-highlight">@{{ activeDirectChatUser()?.display_name }}</span> statt.
+              Diese Unterhaltung findet nur zwischen dir und
+              <button class="chat-area__empty-highlight-trigger" type="button" (click)="openActiveDirectChatProfile()">
+                <span class="chat-area__empty-highlight">@{{ activeDirectChatUser()?.display_name }}</span>
+              </button>
+              statt.
             </p>
           }
         }

@@ -1,0 +1,122 @@
+@use '../../../styles/abstracts' as *;
+
+.dialog-profile {
+	&__body--edit {
+		gap: 45px;
+	}
+
+	&__edit-field {
+		@include flex(column, nowrap, flex-start, stretch);
+		gap: 7px;
+	}
+
+	&__edit-label-row {
+		@include flex(row, nowrap, flex-start, center);
+		gap: 20px;
+	}
+
+	&__edit-label-icon {
+		width: 30px;
+		height: 30px;
+		flex-shrink: 0;
+	}
+
+	&__edit-label {
+		margin: 0;
+		color: $black;
+	}
+
+	&__edit-input {
+		width: 100%;
+		height: 60px;
+		padding: 0 28px;
+		border: 1px solid $light-purple;
+		border-radius: 40px;
+		background: $white;
+		color: $text-gray;
+		box-sizing: border-box;
+		outline: none;
+		transition: border-color 0.15s ease, color 0.15s ease;
+
+		&::placeholder {
+			color: $text-gray;
+		}
+
+		&:focus {
+			border-color: $purple-1;
+			color: $black;
+		}
+	}
+
+	&__avatar-picker {
+		@include flex(column, nowrap, flex-start, stretch);
+		gap: 16px;
+	}
+
+	&__avatar-picker-label {
+		margin: 0;
+		color: $black;
+	}
+
+	&__avatar-options {
+		@include flex(row, wrap, flex-start, center);
+		gap: 8px;
+	}
+
+	&__avatar-option {
+		@include button-reset;
+		border-radius: 50%;
+		line-height: 0;
+
+		&--selected {
+			outline: 4px solid $bg-color;
+		}
+
+		&:not(.dialog-profile__avatar-option--selected):hover,
+		&:not(.dialog-profile__avatar-option--selected):focus-visible {
+			outline: 4px solid $beige-hover-avatar;
+		}
+	}
+
+	&__avatar-option-image {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		object-fit: cover;
+	}
+
+	&__edit-actions {
+		@include flex(row, nowrap, center, center);
+		gap: 30px;
+	}
+
+	&__action-btn {
+		justify-content: center;
+
+		&:focus-visible {
+			outline: none;
+		}
+
+		&.btn-primary:disabled {
+			background: $text-gray;
+		}
+	}
+}
+
+@include mobile-sm {
+	.dialog-profile {
+		&__edit-actions {
+			@include flex(column, nowrap, stretch, stretch);
+			gap: 16px;
+		}
+
+		&__avatar-options {
+			gap: 4px;
+		}
+
+		&__action-btn {
+			width: 100%;
+			min-width: 0;
+		}
+	}
+}

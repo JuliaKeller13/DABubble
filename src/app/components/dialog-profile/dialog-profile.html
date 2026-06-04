@@ -6,7 +6,7 @@
 	aria-label="Profil"
 >
 	<header class="dialog-profile__header">
-		<h2 class="dialog-profile__title text-profile-title">Profil</h2>
+		<h2 class="dialog-profile__title text-profile-title">{{ headerTitle() }}</h2>
 
 		<button
 			class="dialog-profile__close"
@@ -19,44 +19,97 @@
 		</button>
 	</header>
 
-	<div class="dialog-profile__body">
-		<div class="dialog-profile__avatar-wrap">
-			<img class="dialog-profile__avatar" [src]="avatarUrl()" [alt]="displayName()" referrerpolicy="no-referrer">
-		</div>
+	@if (isEditing()) {
+		<div class="dialog-profile__body dialog-profile__body--edit">
+			<div class="dialog-profile__avatar-wrap">
+				<img class="dialog-profile__avatar" [src]="editableAvatarUrl()" [alt]="displayName()" referrerpolicy="no-referrer">
+			</div>
 
-		<div class="dialog-profile__identity-row">
-			<div class="dialog-profile__identity">
-				<h3 class="dialog-profile__name text-profile-name">{{ displayName() }}</h3>
-
-				<div class="dialog-profile__status">
-					<span class="dialog-profile__status-dot" [class.dialog-profile__status-dot--offline]="!isOnline()"></span>
-					<span class="dialog-profile__status-text text-profile-status" [class.dialog-profile__status-text--offline]="!isOnline()">{{ isOnline() ? 'Aktiv' : 'Abwesend' }}</span>
+			<div class="dialog-profile__avatar-picker">
+				<p class="dialog-profile__avatar-picker-label text-profile-label">Avatar auswählen</p>
+				<div class="dialog-profile__avatar-options">
+					@for (avatar of availableAvatars; track avatar; let i = $index) {
+						<button
+							class="dialog-profile__avatar-option"
+							type="button"
+							[class.dialog-profile__avatar-option--selected]="editableAvatarUrl() === avatar"
+							[attr.aria-label]="'Avatar ' + (i + 1) + ' auswählen'"
+							[attr.aria-pressed]="editableAvatarUrl() === avatar"
+							(click)="selectAvatar(avatar)"
+						>
+							<img class="dialog-profile__avatar-option-image" [src]="avatar" alt="" aria-hidden="true">
+						</button>
+					}
 				</div>
 			</div>
 
-			@if (canEdit()) {
-				<button class="dialog-profile__edit text-profile-action" type="button" (click)="requestEdit()">
-					Bearbeiten
+			<div class="dialog-profile__edit-field">
+				<div class="dialog-profile__edit-label-row">
+					<img src="img/icons/account_circle.svg" alt="" class="dialog-profile__edit-label-icon">
+					<p class="dialog-profile__edit-label text-profile-label">Vollständiger Name</p>
+				</div>
+
+				<input
+					class="dialog-profile__edit-input text-profile-value"
+					type="text"
+					[value]="editableName()"
+					(input)="updateEditableName($event)"
+					placeholder="Vollständiger Name"
+					maxlength="80"
+				>
+			</div>
+
+			<div class="dialog-profile__edit-actions">
+				<button class="dialog-profile__action-btn btn-secondary text-profile-action" type="button" (click)="cancelEdit()">
+					Abbrechen
+				</button>
+
+				<button class="dialog-profile__action-btn btn-primary text-profile-action" type="button" (click)="saveProfile()">
+					Speichern
+				</button>
+			</div>
+		</div>
+	} @else {
+		<div class="dialog-profile__body">
+			<div class="dialog-profile__avatar-wrap">
+				<img class="dialog-profile__avatar" [src]="avatarUrl()" [alt]="displayName()" referrerpolicy="no-referrer">
+			</div>
+
+			<div class="dialog-profile__identity-row">
+				<div class="dialog-profile__identity">
+					<h3 class="dialog-profile__name text-profile-name">{{ displayName() }}</h3>
+
+					<div class="dialog-profile__status">
+						<span class="dialog-profile__status-dot" [class.dialog-profile__status-dot--offline]="!isOnline()"></span>
+						<span class="dialog-profile__status-text text-profile-status" [class.dialog-profile__status-text--offline]="!isOnline()">{{ isOnline() ? 'Aktiv' : 'Abwesend' }}</span>
+					</div>
+				</div>
+
+				@if (canEdit()) {
+					<button class="dialog-profile__edit text-profile-action" type="button" (click)="requestEdit()">
+						<img src="img/icons/edit.svg" alt="" class="dialog-profile__edit-icon">
+						<span class="dialog-profile__edit-text">Bearbeiten</span>
+					</button>
+				}
+			</div>
+
+			<div class="dialog-profile__info-block">
+				<div class="dialog-profile__info-icon" aria-hidden="true">
+					<img src="img/icons/form/mail.svg" alt="" class="dialog-profile__info-icon-image">
+				</div>
+
+				<div class="dialog-profile__info-content">
+					<p class="dialog-profile__info-label text-profile-label">E-Mail-Adresse</p>
+					<a class="dialog-profile__info-value text-profile-value" [href]="'mailto:' + email()">{{ email() }}</a>
+				</div>
+			</div>
+
+			@if (!canEdit()) {
+				<button class="dialog-profile__message-btn text-profile-action" type="button" (click)="openDirectChat()">
+					<img src="img/icons/button_icons/mode_comment.svg" alt="" class="dialog-profile__message-btn-icon">
+					<span>Nachricht</span>
 				</button>
 			}
 		</div>
-
-		<div class="dialog-profile__info-block">
-			<div class="dialog-profile__info-icon" aria-hidden="true">
-				<img src="img/icons/form/mail.svg" alt="" class="dialog-profile__info-icon-image">
-			</div>
-
-			<div class="dialog-profile__info-content">
-				<p class="dialog-profile__info-label text-profile-label">E-Mail-Adresse</p>
-				<a class="dialog-profile__info-value text-profile-value" [href]="'mailto:' + email()">{{ email() }}</a>
-			</div>
-		</div>
-
-		@if (!canEdit()) {
-			<button class="dialog-profile__message-btn text-profile-action" type="button">
-				<img src="img/icons/button_icons/mode_comment.svg" alt="" class="dialog-profile__message-btn-icon">
-				<span>Nachricht</span>
-			</button>
-		}
-	</div>
+	}
 </section>

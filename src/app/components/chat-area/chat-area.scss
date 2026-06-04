@@ -135,6 +135,21 @@
     font-weight: 600;
   }
 
+  &__empty-highlight-trigger {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: inherit;
+
+    &:hover {
+      .chat-area__empty-highlight {
+        color: vars.$purple-1;
+      }
+    }
+  }
+
   &__footer {
     width: 100%;
     padding: 0 35px 40px 35px;
@@ -156,6 +171,28 @@
         }
       }
     }
+  }
+
+  &__profile-trigger,
+  &__empty-profile-trigger {
+    @include mx.flex(row, nowrap, flex-start, center);
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: inherit;
+
+    &:hover {
+      .chat-area__title,
+      .chat-area__empty-title {
+        color: vars.$purple-1;
+      }
+    }
+  }
+
+  &__empty-profile-trigger {
+    align-items: flex-end;
   }
 
   &__header-right {
