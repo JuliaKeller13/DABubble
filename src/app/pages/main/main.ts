@@ -16,6 +16,7 @@ import { ThreadService } from '../../services/thread.service';
 
 export class MainComponent implements OnInit {
   isSidebarClosed = false;
+  private isInitialLoad = true;
   
   // Inject the shared thread service
   public threadSvc = inject(ThreadService);
@@ -33,7 +34,28 @@ export class MainComponent implements OnInit {
 
   // Adjusts sidebar and thread visibility flags based on viewport width
   private checkScreenSize() {
-    if (window.innerWidth <= 1440) {
+    const width = window.innerWidth;
+
+    if (this.isInitialLoad) {
+      this.isInitialLoad = false;
+      if (width <= 1024) {
+        this.isSidebarClosed = false; // Show sidebar on mobile/tablet on initial load
+      } else if (width <= 1440) {
+        this.isSidebarClosed = true;  // Close sidebar on smaller desktops by default
+      } else {
+        this.isSidebarClosed = false; // Keep sidebar open on larger desktops
+      }
+      this.threadSvc.closeThread();
+      return;
+    }
+
+    // On resize:
+    if (width <= 1024) {
+      // Do nothing on mobile/tablet resize to preserve current view
+      return;
+    }
+
+    if (width <= 1440) {
       this.isSidebarClosed = true;
       this.threadSvc.closeThread(); // Close thread automatically on smaller viewports
     } else {
