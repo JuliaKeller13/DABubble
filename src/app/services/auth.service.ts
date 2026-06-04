@@ -2,6 +2,8 @@ import { Injectable, inject, signal, computed } from '@angular/core';
 import { supabaseService } from './supabase.service';
 import { AuthError, AuthResponse, OAuthResponse, PostgrestError, RealtimeChannel, User } from '@supabase/supabase-js';
 import { User as UserProfile } from '../interfaces/user.interface';
+import { channelService } from './channel.service';
+import { userService } from './user.service';
 
 type ProfileUpsertPayload = {
   id: string;
@@ -32,6 +34,8 @@ type SignupResult = {
 })
 export class AuthService {
   private supabaseSvc = inject(supabaseService);
+  private channelSvc = inject(channelService);
+  private userSvc = inject(userService);
   private currentUserSignal = signal<User | null>(null);
   private currentUserProfileSignal = signal<UserProfile | null>(null);
   private presenceChannel: RealtimeChannel | null = null;
@@ -107,6 +111,8 @@ export class AuthService {
   private async clearUserState() {
     await this.cleanupPresence();
     this.currentUserProfileSignal.set(null);
+    this.channelSvc.selectChannel(null);
+    this.userSvc.selectDirectChatUser(null);
   }
 
   private async syncProfileWithDatabase(user: User): Promise<UserProfile | null> {

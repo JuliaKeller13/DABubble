@@ -62,6 +62,7 @@
           <input #searchInput
                  type="text" 
                  [(ngModel)]="searchQuery" 
+                 (input)="filterUsers()"
                  (ngModelChange)="filterUsers()"
                  (focus)="isFocused = true"
                  (blur)="isFocused = false"
@@ -70,22 +71,28 @@
         </div>
 
         <!-- Suggestions Dropdown menu -->
-        @if (searchQuery.trim().length > 0 && filteredUsers.length > 0) {
+        @if (searchQuery.trim().length > 0) {
           <div class="add-member__suggestions-dropdown" (mousedown)="$event.preventDefault()">
-            @for (user of filteredUsers; track user.id) {
-              <div class="add-member__suggestion-row" (click)="selectUserFromDropdown(user)">
-                <div class="add-member__suggestion-pill">
-                  <div class="add-member__suggestion-avatar-wrapper">
-                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__suggestion-avatar" referrerpolicy="no-referrer">
-                    <span class="add-member__status-dot" [class.add-member__status-dot--online]="isUserOnline(user)"></span>
+            @if (filteredUsers.length > 0) {
+              @for (user of filteredUsers; track user.id) {
+                <div class="add-member__suggestion-row" (click)="selectUserFromDropdown(user)">
+                  <div class="add-member__suggestion-pill">
+                    <div class="add-member__suggestion-avatar-wrapper">
+                      <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="add-member__suggestion-avatar" referrerpolicy="no-referrer">
+                      <span class="add-member__status-dot" [class.add-member__status-dot--online]="isUserOnline(user)"></span>
+                    </div>
+                    <span class="add-member__suggestion-name">
+                      {{ user.display_name }}
+                      @if (user.custom_status) {
+                        <span class="add-member__user-status">({{ user.custom_status }})</span>
+                      }
+                    </span>
                   </div>
-                  <span class="add-member__suggestion-name">
-                    {{ user.display_name }}
-                    @if (user.custom_status) {
-                      <span class="add-member__user-status">({{ user.custom_status }})</span>
-                    }
-                  </span>
                 </div>
+              }
+            } @else {
+              <div class="add-member__no-results">
+                Keine weiteren Benutzer gefunden
               </div>
             }
           </div>

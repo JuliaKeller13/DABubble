@@ -157,6 +157,29 @@
     }
   }
 
+  &__remove-btn {
+    @include mx.flex(row, nowrap, center, center);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: vars.$text-gray;
+    margin-left: auto;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background-color: rgba(237, 30, 121, 0.1);
+      color: vars.$rosa-error;
+    }
+  }
+
+  &__remove-icon {
+    width: 14px;
+    height: 14px;
+  }
+
   &__add-btn {
     @include mx.flex(row, nowrap, flex-start, center);
     gap: 15px;

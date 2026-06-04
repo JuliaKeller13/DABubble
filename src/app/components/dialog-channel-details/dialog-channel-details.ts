@@ -46,14 +46,37 @@ export class DialogChannelDetailsComponent implements OnInit {
     }
   }
 
+  get currentUserId(): string {
+    return this.authSvc.currentUser()?.id || '';
+  }
+
   // Emits close event to close the dialog
   onClose() {
     this.close.emit();
   }
 
-  // Emits close event to leave the channel and close details
-  onLeaveChannel() {
-    this.close.emit();
+  // Leave the channel in the database and local signals
+  async onLeaveChannel() {
+    const active = this.activeChannel();
+    const currentUserId = this.currentUserId;
+    if (active && active.id && currentUserId) {
+      try {
+        await this.channelSvc.removeMemberFromChannel(active.id, currentUserId);
+        await this.channelSvc.loadChannels();
+
+        // If the left channel was active, switch to first remaining or null
+        const remaining = this.channelSvc.channels();
+        if (remaining.length > 0) {
+          this.channelSvc.selectChannel(remaining[0]);
+        } else {
+          this.channelSvc.selectChannel(null);
+        }
+
+        this.close.emit();
+      } catch (error) {
+        console.error('Failed to leave channel:', error);
+      }
+    }
   }
 
   // Enters edit mode for the channel name
@@ -65,7 +88,7 @@ export class DialogChannelDetailsComponent implements OnInit {
   // Saves the edited channel name to Supabase database
   async saveName() {
     const active = this.activeChannel();
-    if (active && active.id && this.editNameValue.trim()) {
+    if (active && active.id && this.editNameValue.trim() && active.created_by === this.currentUserId) {
       try {
         await this.channelSvc.updateChannel(active.id, { name: this.editNameValue.trim() });
         this.isEditingName = false;
@@ -84,7 +107,7 @@ export class DialogChannelDetailsComponent implements OnInit {
   // Saves the edited channel description to Supabase database
   async saveDescription() {
     const active = this.activeChannel();
-    if (active && active.id) {
+    if (active && active.id && active.created_by === this.currentUserId) {
       try {
         await this.channelSvc.updateChannel(active.id, { description: this.editDescriptionValue.trim() });
         this.isEditingDescription = false;
@@ -97,7 +120,7 @@ export class DialogChannelDetailsComponent implements OnInit {
   // Deletes active channel and closes details dialog
   async onDeleteChannel() {
     const active = this.activeChannel();
-    if (active && active.id) {
+    if (active && active.id && active.created_by === this.currentUserId) {
       try {
         await this.channelSvc.deleteChannel(active.id);
         this.close.emit();

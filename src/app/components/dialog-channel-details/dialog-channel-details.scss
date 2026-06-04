@@ -96,6 +96,7 @@
   }
 
   &__edit-btn {
+    position: relative;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -107,9 +108,63 @@
     padding: 2px 6px;
     border-radius: 6px;
 
-    &:hover {
+    &:hover:not(.dialog-card__edit-btn--disabled) {
       color: vars.$purple-3;
       background-color: vars.$bg-color;
+    }
+
+    &--disabled {
+      color: vars.$light-purple !important;
+      cursor: not-allowed;
+
+      &:hover::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 130%;
+        right: 0;
+        background-color: vars.$light-red;
+        color: vars.$rosa-error;
+        border: 1px solid vars.$red-hover;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        white-space: nowrap;
+        z-index: 10;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.06);
+        pointer-events: none;
+        line-height: 1.4;
+        font-family: var(--font-main);
+
+        @media (max-width: 768px) {
+          white-space: normal;
+          width: 240px;
+          text-align: center;
+          right: -10px;
+        }
+
+        @media (max-width: 360px) {
+          width: 200px;
+          right: -10px;
+        }
+
+        @media (max-width: 320px) {
+          width: 180px;
+          right: -10px;
+        }
+      }
+
+      &:hover::before {
+        content: '';
+        position: absolute;
+        bottom: 110%;
+        right: 15px;
+        border-width: 6px;
+        border-style: solid;
+        border-color: vars.$light-red transparent transparent transparent;
+        z-index: 10;
+        pointer-events: none;
+      }
     }
   }
 
@@ -409,8 +464,14 @@
       padding: 0;
       transition: background-color 0.15s ease;
 
-      &:hover {
+      &:hover:not(.dialog-card__edit-btn--disabled) {
         background-color: vars.$light-purple;
+      }
+
+      &--disabled {
+        background-color: rgba(0, 0, 0, 0.04) !important;
+        color: vars.$light-purple !important;
+        cursor: not-allowed;
       }
 
       .dialog-card__edit-btn-text {

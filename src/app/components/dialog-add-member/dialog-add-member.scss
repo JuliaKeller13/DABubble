@@ -331,6 +331,15 @@
     font-weight: 400;
     color: vars.$text-gray;
   }
+
+  &__no-results {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    color: vars.$text-gray;
+    text-align: center;
+    font-family: inherit;
+  }
 }
 
 /* #region Responsive */

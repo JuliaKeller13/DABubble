@@ -54,7 +54,20 @@
   </div>
 
   <div class="chat-area__body" #scrollContainer>
-    @if (messages().length === 0) {
+    @if (!activeChannel() && !activeDirectChatUser()) {
+      <div class="chat-area__welcome-container">
+        <div class="chat-area__welcome-header">
+          <img src="img/logo/workspace_logo.svg" alt="Devspace Logo" class="chat-area__welcome-logo">
+          <h3 class="chat-area__welcome-title">Willkommen im Devspace!</h3>
+        </div>
+        <p class="chat-area__welcome-text">
+          Hier beginnt deine Zusammenarbeit. Du bist aktuell noch keinem Channel zugewiesen oder hast keinen Chat ausgewählt.
+        </p>
+        <p class="chat-area__welcome-hint">
+          Nutze die Sidebar links, um eine Direktnachricht zu starten, einem Channel beizutreten oder einen neuen Channel zu erstellen.
+        </p>
+      </div>
+    } @else if (messages().length === 0) {
       <div class="chat-area__empty-state">
         @if (activeChannel()) {
           <span class="chat-area__empty-hash">#</span>
@@ -111,29 +124,31 @@
     }
   </div>
 
-  <div class="chat-area__footer">
-    @if (typingUsers().length > 0) {
-      <div class="chat-area__typing-indicator">
-        <span>{{ getTypingText() }}</span>
-        <div class="typing-dots">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
+  @if (activeChannel() || activeDirectChatUser()) {
+    <div class="chat-area__footer">
+      @if (typingUsers().length > 0) {
+        <div class="chat-area__typing-indicator">
+          <span>{{ getTypingText() }}</span>
+          <div class="typing-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
         </div>
-      </div>
-    }
-    <app-message-input
-      [placeholder]="activeChannel() ? 'Nachricht an #' + activeChannel()!.name : (activeDirectChatUser() ? 'Nachricht an @' + activeDirectChatUser()!.display_name : 'Wähle einen Channel')"
-      (sendMessage)="onSendMessage($event)"
-      (typing)="onTypingStatusChange($event)"
-    ></app-message-input>
-  </div>
+      }
+      <app-message-input
+        [placeholder]="activeChannel() ? 'Nachricht an #' + activeChannel()!.name : (activeDirectChatUser() ? 'Nachricht an @' + activeDirectChatUser()!.display_name : 'Wähle einen Channel')"
+        (sendMessage)="onSendMessage($event)"
+        (typing)="onTypingStatusChange($event)"
+      ></app-message-input>
+    </div>
+  }
 
   @if (isChannelDetailsOpen) {
     <app-dialog-channel-details [isSidebarClosed]="isSidebarClosed" [members]="members()" (close)="closeChannelDetails()"></app-dialog-channel-details>
   }
 
   @if (isChannelMembersOpen) {
-    <app-dialog-channel-members [isSidebarClosed]="isSidebarClosed" [members]="members()" [channelName]="activeChannel()?.name || ''" [initialView]="channelMembersInitialView" [positionClass]="channelMembersPosition" (close)="closeChannelMembers()" (addMember)="onMembersAdded($event)"></app-dialog-channel-members>
+    <app-dialog-channel-members [isSidebarClosed]="isSidebarClosed" [members]="members()" [channelName]="activeChannel()?.name || ''" [initialView]="channelMembersInitialView" [positionClass]="channelMembersPosition" (close)="closeChannelMembers()" (addMember)="onMembersAdded($event)" (memberRemoved)="onMemberRemoved($event)"></app-dialog-channel-members>
   }
 </div>

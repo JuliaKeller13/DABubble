@@ -28,11 +28,34 @@ export class channelService {
     return fetched;
   }
 
-  // Fetch all channels from Supabase
+  // Fetch all channels from Supabase that the current user is a member of
   async getChannels(): Promise<Channel[]> {
+    const { data: { user }, error: userError } = await this.supabaseSvc.supabase.auth.getUser();
+    if (userError || !user) {
+      console.warn('No authenticated user found while fetching channels');
+      return [];
+    }
+
+    const { data: memberData, error: memberError } = await this.supabaseSvc.supabase
+      .from('channel_members')
+      .select('channel_id')
+      .eq('user_id', user.id);
+
+    if (memberError) {
+      console.error('Error fetching channel memberships:', memberError.message);
+      return [];
+    }
+
+    if (!memberData || memberData.length === 0) {
+      return [];
+    }
+
+    const channelIds = memberData.map(item => item.channel_id);
+
     const { data, error } = await this.supabaseSvc.supabase
       .from('channels')
-      .select('*');
+      .select('*')
+      .in('id', channelIds);
 
     if (error) {
       console.error('Error fetching channels:', error.message);
@@ -55,6 +78,11 @@ export class channelService {
     if (error) {
       console.error('Error creating channel:', error.message);
       throw error;
+    }
+
+    const active = data?.[0];
+    if (active && active.id && channel.created_by) {
+      await this.addMembersToChannel(active.id, [channel.created_by]);
     }
     
     // Reload channels to update the signal
@@ -117,9 +145,28 @@ export class channelService {
     return data;
   }
 
-  // Add multiple members to a channel
+  // Add multiple members to a channel, filtering out existing ones to prevent duplicates
   async addMembersToChannel(channelId: string, userIds: string[]): Promise<any> {
-    const rows = userIds.map(userId => ({
+    if (userIds.length === 0) return [];
+
+    const { data: existing, error: fetchError } = await this.supabaseSvc.supabase
+      .from('channel_members')
+      .select('user_id')
+      .eq('channel_id', channelId);
+
+    if (fetchError) {
+      console.error('Error fetching existing channel members:', fetchError.message);
+      throw fetchError;
+    }
+
+    const existingUserIds = new Set((existing || []).map(row => row.user_id));
+    const newUserIds = userIds.filter(id => !existingUserIds.has(id));
+
+    if (newUserIds.length === 0) {
+      return [];
+    }
+
+    const rows = newUserIds.map(userId => ({
       channel_id: channelId,
       user_id: userId
     }));
@@ -131,6 +178,22 @@ export class channelService {
 
     if (error) {
       console.error('Error adding members to channel:', error.message);
+      throw error;
+    }
+    return data;
+  }
+
+  // Remove a member from a channel
+  async removeMemberFromChannel(channelId: string, userId: string): Promise<any> {
+    const { data, error } = await this.supabaseSvc.supabase
+      .from('channel_members')
+      .delete()
+      .eq('channel_id', channelId)
+      .eq('user_id', userId)
+      .select();
+
+    if (error) {
+      console.error('Error removing member from channel:', error.message);
       throw error;
     }
     return data;

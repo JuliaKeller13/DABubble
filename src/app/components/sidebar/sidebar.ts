@@ -138,6 +138,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const currentUserId = this.currentUserId;
     const fetchedChannels = await this.channelSvc.loadChannels();
     
+    const active = this.activeChannel();
+    if (active && !fetchedChannels.some(c => c.id === active.id)) {
+      this.channelSvc.selectChannel(null);
+    }
+    
     if (fetchedChannels.length > 0 && !this.activeChannel() && !this.userSvc.activeDirectChatUser()) {
       this.channelSvc.selectChannel(fetchedChannels[0]);
     }
@@ -391,7 +396,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
             }
 
             if (memberIds.length > 0) {
-              await this.channelSvc.addMembersToChannel(active.id, memberIds);
+              // Filter out current user because the creator is already added in channelSvc.createChannel()
+              if (currentUserId) {
+                memberIds = memberIds.filter(id => id !== currentUserId);
+              }
+              if (memberIds.length > 0) {
+                await this.channelSvc.addMembersToChannel(active.id, memberIds);
+              }
             }
           }
 

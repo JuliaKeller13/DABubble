@@ -472,4 +472,24 @@ export class ChatAreaComponent implements OnDestroy {
       console.error('Error adding members in chat area:', error);
     }
   }
+
+  // Refreshes the channel members list after a member has been removed
+  async onMemberRemoved(memberId: string) {
+    const active = this.activeChannel();
+    if (!active || !active.id) return;
+
+    try {
+      const dbMembers = await this.channelSvc.getChannelMembers(active.id);
+      const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
+      this.members.set(
+        filteredMembers.map((user) => ({
+          id: user.id,
+          name: user.display_name,
+          avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
+        })),
+      );
+    } catch (error) {
+      console.error('Error reloading members list after removal:', error);
+    }
+  }
 }

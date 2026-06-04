@@ -20,7 +20,11 @@
         @if (isEditingName) {
           <button class="dialog-card__edit-btn dialog-card__edit-btn--save" (click)="saveName()">Speichern</button>
         } @else {
-          <button class="dialog-card__edit-btn" (click)="onEditName()" aria-label="Bearbeiten">
+          <button class="dialog-card__edit-btn" 
+                  [class.dialog-card__edit-btn--disabled]="activeChannel()?.created_by !== currentUserId"
+                  [attr.data-tooltip]="activeChannel()?.created_by !== currentUserId ? 'Nur der Ersteller kann den Channel bearbeiten' : null"
+                  (click)="activeChannel()?.created_by === currentUserId ? onEditName() : null" 
+                  aria-label="Bearbeiten">
             <span class="dialog-card__edit-btn-text">Bearbeiten</span>
             <img class="dialog-card__edit-btn-icon" src="img/icons/edit.svg" alt="Bearbeiten">
           </button>
@@ -46,7 +50,11 @@
         @if (isEditingDescription) {
           <button class="dialog-card__edit-btn dialog-card__edit-btn--save" (click)="saveDescription()">Speichern</button>
         } @else {
-          <button class="dialog-card__edit-btn" (click)="onEditDescription()" aria-label="Bearbeiten">
+          <button class="dialog-card__edit-btn" 
+                  [class.dialog-card__edit-btn--disabled]="activeChannel()?.created_by !== currentUserId"
+                  [attr.data-tooltip]="activeChannel()?.created_by !== currentUserId ? 'Nur der Ersteller kann den Channel bearbeiten' : null"
+                  (click)="activeChannel()?.created_by === currentUserId ? onEditDescription() : null" 
+                  aria-label="Bearbeiten">
             <span class="dialog-card__edit-btn-text">Bearbeiten</span>
             <img class="dialog-card__edit-btn-icon" src="img/icons/edit.svg" alt="Bearbeiten">
           </button>
@@ -70,29 +78,12 @@
         <span class="dialog-card__creator-name">{{ creatorName() }}</span>
       </div>
     </div>
-
-    <div class="dialog-card__block dialog-card__block--members">
-      <span class="dialog-card__label">Mitglieder</span>
-      <div class="dialog-card__members-list">
-        @for (member of members; track $index) {
-          <div class="dialog-card__member-row">
-            <button type="button" class="dialog-card__member-avatar-button" (click)="openMemberProfile(member.id)">
-              <span class="dialog-card__member-avatar-wrapper">
-                <img class="dialog-card__member-avatar" [src]="member.avatar" [alt]="member.name">
-                <span class="dialog-card__member-status-dot" [class.dialog-card__member-status-dot--online]="isUserOnline(member)"></span>
-              </span>
-            </button>
-            <button type="button" class="dialog-card__member-name dialog-card__member-name--button" (click)="openMemberProfile(member.id)">
-              {{ member.name }}{{ member.name === 'Frederik Beck' ? ' (Du)' : '' }}
-            </button>
-          </div>
-        }
-      </div>
-    </div>
   </div>
 
   <div class="dialog-card__footer">
-    <button class="dialog-card__delete-btn" (click)="onDeleteChannel()">Channel löschen</button>
+    @if (activeChannel()?.created_by === currentUserId) {
+      <button class="dialog-card__delete-btn" (click)="onDeleteChannel()">Channel löschen</button>
+    }
     <button class="dialog-card__leave-btn" (click)="onLeaveChannel()">Channel verlassen</button>
   </div>
 </div>

@@ -45,9 +45,9 @@ export class DialogProfileComponent {
 	}
 
 	readonly headerTitle = computed(() => this.isEditing() ? 'Dein Profil bearbeiten' : 'Profil');
-	readonly displayName = computed(() => this.profile().display_name.trim());
-	readonly email = computed(() => this.profile().email.trim());
-	readonly avatarUrl = computed(() => this.profile().avatar_url.trim() || this.avatarSvc.getDefaultAvatar());
+	readonly displayName = computed(() => (this.profile().display_name || '').trim());
+	readonly email = computed(() => (this.profile().email || '').trim());
+	readonly avatarUrl = computed(() => (this.profile().avatar_url || '').trim() || this.avatarSvc.getDefaultAvatar());
 	readonly isOnline = computed(() => {
 		return this.authService.onlineUserIds().has(this.profile().id);
 	});

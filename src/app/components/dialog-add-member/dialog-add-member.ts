@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { userService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { channelService } from '../../services/channel.service';
 import { User } from '../../interfaces/user.interface';
 
 @Component({
@@ -22,6 +23,7 @@ export class dialogAddMemberComponent implements OnInit {
   private injectedData = inject<{ channelName: string, mode?: 'create' | 'add' }>(MAT_DIALOG_DATA, { optional: true });
   private userSvc = inject(userService);
   private authSvc = inject(AuthService);
+  private channelSvc = inject(channelService);
 
   @Input() inputData?: { channelName: string, mode?: 'create' | 'add' };
   @Input() isEmbedded = false;
@@ -48,10 +50,23 @@ export class dialogAddMemberComponent implements OnInit {
   async ngOnInit() {
     const allUsers = await this.userSvc.getAllUsers();
     const currentUserId = this.authSvc.currentUser()?.id || null;
-    this.users = this.userSvc.filterDuplicateGuests(allUsers, currentUserId);
+    let usersList = this.userSvc.filterDuplicateGuests(allUsers, currentUserId);
+
     if (this.data.mode === 'add') {
       this.selectionType = 'specific';
+      const activeChannel = this.channelSvc.activeChannel();
+      if (activeChannel && activeChannel.id) {
+        try {
+          const existingMembers = await this.channelSvc.getChannelMembers(activeChannel.id);
+          const existingMemberIds = new Set(existingMembers.map(m => m.id));
+          usersList = usersList.filter(user => !existingMemberIds.has(user.id));
+        } catch (error) {
+          console.error('Error fetching existing channel members for filtering:', error);
+        }
+      }
     }
+
+    this.users = usersList;
     this.filterUsers();
   }
 
@@ -64,7 +79,7 @@ export class dialogAddMemberComponent implements OnInit {
       this.filteredUsers = this.users.filter(user => {
         const matchesQuery = 
           user.display_name.toLowerCase().includes(query) ||
-          user.email.toLowerCase().includes(query);
+          (user.email && user.email.toLowerCase().includes(query));
         const isAlreadySelected = this.selectedUsersList.some(u => u.id === user.id);
         return matchesQuery && !isAlreadySelected;
       });
