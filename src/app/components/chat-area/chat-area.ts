@@ -125,8 +125,9 @@ export class ChatAreaComponent implements OnDestroy {
       if (channel && channel.id) {
         try {
           const dbMembers = await this.channelSvc.getChannelMembers(channel.id);
+          const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
           this.members.set(
-            dbMembers.map((user) => ({
+            filteredMembers.map((user) => ({
               id: user.id,
               name: user.display_name,
               avatar: user.avatar_url || 'img/avatars/avatar_default.svg',
@@ -447,7 +448,8 @@ export class ChatAreaComponent implements OnDestroy {
       let memberIds: string[] = [];
       if (memberResult.selectionType === 'all') {
         const allUsers = await this.userSvc.getAllUsers();
-        memberIds = allUsers.map((u) => u.id);
+        const filteredAllUsers = this.userSvc.filterDuplicateGuests(allUsers, this.currentUserId);
+        memberIds = filteredAllUsers.map((u) => u.id);
       } else if (memberResult.selectionType === 'specific' && memberResult.selectedUsers) {
         memberIds = memberResult.selectedUsers;
       }
@@ -457,8 +459,9 @@ export class ChatAreaComponent implements OnDestroy {
 
         // Reload channel members list in chat-area
         const dbMembers = await this.channelSvc.getChannelMembers(active.id);
+        const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
         this.members.set(
-          dbMembers.map((user) => ({
+          filteredMembers.map((user) => ({
             id: user.id,
             name: user.display_name,
             avatar: user.avatar_url || 'img/avatars/avatar_default.svg',

@@ -46,7 +46,9 @@ export class dialogAddMemberComponent implements OnInit {
 
   // Loads all workspace users and checks initial display mode on component initialization
   async ngOnInit() {
-    this.users = await this.userSvc.getAllUsers();
+    const allUsers = await this.userSvc.getAllUsers();
+    const currentUserId = this.authSvc.currentUser()?.id || null;
+    this.users = this.userSvc.filterDuplicateGuests(allUsers, currentUserId);
     if (this.data.mode === 'add') {
       this.selectionType = 'specific';
     }
