@@ -1,5 +1,7 @@
 @if (toast(); as currentToast) {
-  <div class="toast-overlay" aria-hidden="true"></div>
+  @if (currentToast.overlay !== false) {
+    <div class="toast-overlay" aria-hidden="true"></div>
+  }
   
   <div
     class="toast"

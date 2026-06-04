@@ -6,11 +6,11 @@ const DEFAULT_TOAST_DURATION = 3000;
 export class ToastService {
   private hideTimerId: number | null = null;
 
-  readonly toast = signal<{ message: string; type: 'success' | 'error'; icon?: 'send' } | null>(null);
+  readonly toast = signal<{ message: string; type: 'success' | 'error'; icon?: 'send'; overlay?: boolean } | null>(null);
 
-  show(message: string, type: 'success' | 'error' = 'success', duration = DEFAULT_TOAST_DURATION, icon?: 'send') {
+  show(message: string, type: 'success' | 'error' = 'success', duration = DEFAULT_TOAST_DURATION, icon?: 'send', overlay = true) {
     this.clearTimer();
-    this.toast.set({ message, type, icon });
+    this.toast.set({ message, type, icon, overlay });
     this.hideTimerId = window.setTimeout(() => {
       this.toast.set(null);
       this.hideTimerId = null;

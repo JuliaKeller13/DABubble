@@ -9,6 +9,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { MessageInputComponent } from '../message-input/message-input';
 import { MessageComponent } from '../message/message';
 import { DialogChannelDetailsComponent } from '../dialog-channel-details/dialog-channel-details';
@@ -20,6 +21,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member';
 import { userService } from '../../services/user.service';
 import { Message } from '../../interfaces/message.interface';
+import { User } from '../../interfaces/user.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { ThreadService } from '../../services/thread.service';
 
@@ -62,12 +64,19 @@ export class ChatAreaComponent implements OnDestroy {
   private authSvc = inject(AuthService);
   private threadSvc = inject(ThreadService);
 
-  // Expose active channel from the shared service
+  // Expose active channel and active direct chat user from the shared services
   activeChannel = this.channelSvc.activeChannel;
+  activeDirectChatUser = this.userSvc.activeDirectChatUser;
+
+  // Check if a user is currently online
+  isUserOnline(user: User): boolean {
+    return this.authSvc.onlineUserIds().has(user.id);
+  }
 
   members = signal<ChannelMember[]>([]);
   messages = signal<Message[]>([]);
   private messagesSubscription: RealtimeChannel | null = null;
+  private messageDeletedSubscription: Subscription | null = null;
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
@@ -88,6 +97,14 @@ export class ChatAreaComponent implements OnDestroy {
 
   // Listens to active channel changes, loads members and handles messages subscription
   constructor() {
+    this.messageDeletedSubscription = this.messageSvc.messageDeleted.subscribe((id) => {
+      this.messages.update((prev) => prev.filter((m) => m.id !== id));
+      const activeThreadMsg = this.threadSvc.activeMessage();
+      if (activeThreadMsg && activeThreadMsg.id === id) {
+        this.threadSvc.closeThread();
+      }
+    });
+
     // Effect 1: Channel Members
     effect(async () => {
       const channel = this.activeChannel();
@@ -110,15 +127,19 @@ export class ChatAreaComponent implements OnDestroy {
       }
     });
 
-    // Effect 2: Channel Messages and Realtime Updates
+    // Effect 2: Messages and Realtime Updates (both Channel and DM)
     effect(async () => {
       const channel = this.activeChannel();
+      const targetUser = this.activeDirectChatUser();
 
       // Cleanup previous subscription
       if (this.messagesSubscription) {
         this.messageSvc.unsubscribe(this.messagesSubscription);
         this.messagesSubscription = null;
       }
+
+      // Reset typing users list when transitioning to a different chat room
+      this.typingUsers.set([]);
 
       if (channel && channel.id) {
         try {
@@ -151,6 +172,38 @@ export class ChatAreaComponent implements OnDestroy {
           console.error('Error loading channel messages:', error);
           this.messages.set([]);
         }
+      } else if (targetUser && targetUser.id) {
+        try {
+          // Fetch historical direct messages
+          const dbMessages = await this.messageSvc.getDirectMessages(this.currentUserId, targetUser.id);
+          this.messages.set(dbMessages);
+          this.scrollToBottom();
+
+          // Create realtime subscription for DMs
+          this.messagesSubscription = this.messageSvc.subscribeToDirectMessages(
+            this.currentUserId,
+            targetUser.id,
+            (event, msg) => {
+              if (event === 'INSERT') {
+                this.messages.update((prev) => {
+                  if (prev.some((m) => m.id === msg.id)) return prev;
+                  return [...prev, msg];
+                });
+                this.scrollToBottom();
+              } else if (event === 'UPDATE') {
+                this.messages.update((prev) => prev.map((m) => (m.id === msg.id ? msg : m)));
+              } else if (event === 'DELETE') {
+                this.messages.update((prev) => prev.filter((m) => m.id !== msg.id));
+              }
+            },
+            (typingPayload) => {
+              this.handleTypingBroadcast(typingPayload);
+            }
+          );
+        } catch (error) {
+          console.error('Error loading direct messages:', error);
+          this.messages.set([]);
+        }
       } else {
         this.messages.set([]);
       }
@@ -161,6 +214,9 @@ export class ChatAreaComponent implements OnDestroy {
   ngOnDestroy() {
     if (this.messagesSubscription) {
       this.messageSvc.unsubscribe(this.messagesSubscription);
+    }
+    if (this.messageDeletedSubscription) {
+      this.messageDeletedSubscription.unsubscribe();
     }
   }
 
@@ -193,7 +249,7 @@ export class ChatAreaComponent implements OnDestroy {
     return groups;
   }
 
-  // Generate date labels (Heute, Gestern, or localized weekdays)
+  // Generate date labels (Today, Yesterday, or localized weekdays)
   private getDateLabel(dateStr?: string): string {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -212,7 +268,7 @@ export class ChatAreaComponent implements OnDestroy {
         month: 'long',
       };
       const formatted = date.toLocaleDateString('de-DE', options);
-      return formatted.replace('.', ''); // Removes the dot after the day number (e.g. "14. Januar" -> "14 Januar")
+      return formatted.replace('.', ''); // Removes the dot after the day number (e.g. "14. January" -> "14 January")
     }
   }
 
@@ -226,15 +282,11 @@ export class ChatAreaComponent implements OnDestroy {
     }, 100);
   }
 
-  // Send a new message to the active channel
+  // Send a new message to the active channel or direct chat user
   async onSendMessage(content: any) {
     if (typeof content !== 'string') return;
     const channel = this.activeChannel();
-
-    if (!channel || !channel.id) {
-      console.warn('[onSendMessage] No active channel');
-      return;
-    }
+    const dmUser = this.activeDirectChatUser();
 
     const userId = this.currentUserId;
     if (!userId) {
@@ -242,21 +294,43 @@ export class ChatAreaComponent implements OnDestroy {
       return;
     }
 
-    const newMsg = await this.messageSvc.sendMessage(content, userId, channel.id);
-    if (newMsg) {
-      this.messages.update((prev) => {
-        if (prev.some((m) => m.id === newMsg.id)) return prev;
-        return [...prev, newMsg];
-      });
-      this.scrollToBottom();
-    } else {
-      console.error('[onSendMessage] Failed to send message to database');
+    if (channel && channel.id) {
+      const newMsg = await this.messageSvc.sendMessage(content, userId, channel.id);
+      if (newMsg) {
+        this.messages.update((prev) => {
+          if (prev.some((m) => m.id === newMsg.id)) return prev;
+          return [...prev, newMsg];
+        });
+        this.scrollToBottom();
+      } else {
+        console.error('[onSendMessage] Failed to send message to database');
+      }
+    } else if (dmUser && dmUser.id) {
+      const newMsg = await this.messageSvc.sendDirectMessage(content, userId, dmUser.id);
+      if (newMsg) {
+        this.messages.update((prev) => {
+          if (prev.some((m) => m.id === newMsg.id)) return prev;
+          return [...prev, newMsg];
+        });
+        this.scrollToBottom();
+      } else {
+        console.error('[onSendMessage] Failed to send direct message to database');
+      }
     }
   }
 
   // Triggers opening the thread view for a message
   onThreadClicked(message: Message) {
     this.threadSvc.openThread(message);
+  }
+
+  // Handles message deletion by updating the local messages list and closing thread if active
+  onMessageDeleted(messageId: string) {
+    this.messages.update((prev) => prev.filter((m) => m.id !== messageId));
+    const activeThreadMsg = this.threadSvc.activeMessage();
+    if (activeThreadMsg && activeThreadMsg.id === messageId) {
+      this.threadSvc.closeThread();
+    }
   }
 
   // Handles real-time typing events from other users

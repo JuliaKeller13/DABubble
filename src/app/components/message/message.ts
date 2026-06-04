@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Message } from '../../interfaces/message.interface';
 import { MessageService } from '../../services/message.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-message',
@@ -19,10 +20,12 @@ export class MessageComponent {
 
   @Output() threadClick = new EventEmitter<Message>();
   @Output() editClick = new EventEmitter<Message>();
+  @Output() delete = new EventEmitter<string>();
 
   private messageSvc = inject(MessageService);
   private elementRef = inject(ElementRef);
   private profileDialogSvc = inject(ProfileDialogService);
+  private toastSvc = inject(ToastService);
 
   showReactionPicker = false;
   showHoverReactionPicker = false;
@@ -30,6 +33,7 @@ export class MessageComponent {
   isEditing = false;
   editContent = '';
 
+  // Toggles the visibility of the message options menu
   toggleMoreOptions() {
     this.showMoreMenu = !this.showMoreMenu;
   }
@@ -37,7 +41,7 @@ export class MessageComponent {
   // Emojis offered in the quick reaction bar
   quickEmojis = ['🚀', '✅', '👍', '❤️', '😂', '😮'];
 
-  // Get thread replies count (mocked or retrieved)
+  // Retrieves the number of replies in this message thread
   get replyCount(): number {
     return (this.message as any).reply_count || 0;
   }
@@ -105,6 +109,7 @@ export class MessageComponent {
     this.threadClick.emit(this.message);
   }
 
+  // Opens the profile dialog of the sender of this message
   openSenderProfile(): void {
     if (!this.message.sender) {
       return;
@@ -171,15 +176,9 @@ export class MessageComponent {
   // Trigger delete confirmation for this message
   async deleteMessage() {
     if (!this.message.id) return;
-    if (confirm('Möchtest du diese Nachricht wirklich löschen?')) {
-      try {
-        await this.messageSvc['supabaseSvc'].supabase
-          .from('messages')
-          .delete()
-          .eq('id', this.message.id);
-      } catch (err) {
-        console.error('Failed to delete message:', err);
-      }
-    }
+    const msgId = this.message.id;
+    this.delete.emit(msgId);
+    await this.messageSvc.deleteMessage(msgId);
+    this.toastSvc.show('Nachricht gelöscht', 'success', 3000, undefined, false);
   }
 }

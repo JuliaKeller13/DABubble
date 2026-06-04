@@ -5,6 +5,7 @@ export interface Message {
   content: string;
   sender_id: string;
   channel_id?: string;
+  recipient_id?: string;
   created_at?: string;
   parent_id?: string;
   reactions?: Record<string, string[]>;

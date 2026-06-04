@@ -104,6 +104,13 @@
 
           <div class="msg-container__edit-buttons">
             <button
+              class="msg-container__edit-btn msg-container__edit-btn--delete"
+              (click)="deleteMessage()"
+              type="button"
+            >
+              Nachricht löschen
+            </button>
+            <button
               class="msg-container__edit-btn msg-container__edit-btn--cancel"
               (click)="cancelEdit()"
               type="button"
@@ -310,6 +317,13 @@
               type="button"
             >
               Nachricht bearbeiten
+            </button>
+            <button
+              class="msg-container__dropdown-item msg-container__dropdown-item--delete"
+              (click)="deleteMessage(); showMoreMenu = false"
+              type="button"
+            >
+              Nachricht löschen
             </button>
           </div>
         }

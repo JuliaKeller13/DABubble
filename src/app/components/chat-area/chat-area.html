@@ -7,41 +7,77 @@
     >
       @if (activeChannel()) {
         <span class="chat-area__hash">#</span>
-      }
-      <h2 class="chat-area__title">{{ activeChannel()?.name || 'Kein Channel ausgewählt' }}</h2>
-      @if (activeChannel()) {
+        <h2 class="chat-area__title">{{ activeChannel()?.name }}</h2>
         <img src="img/icons/arrow_dropdown.svg" class="chat-area__arrow-icon" alt="Dropdown">
+      } @else if (activeDirectChatUser()) {
+        <div class="chat-area__header-avatar-wrapper">
+          <img 
+            [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
+            [alt]="activeDirectChatUser()?.display_name" 
+            class="chat-area__header-avatar"
+            referrerpolicy="no-referrer"
+          >
+          <span class="chat-area__status-dot" [class.chat-area__status-dot--online]="isUserOnline(activeDirectChatUser()!)"></span>
+        </div>
+        <h2 class="chat-area__title">{{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}</h2>
+      } @else {
+        <h2 class="chat-area__title">Kein Channel ausgewählt</h2>
       }
     </div>
 
-    <div class="chat-area__header-right">
-      <div class="chat-area__members-trigger" (click)="openChannelMembers()">
-        <div class="chat-area__avatar-group">
-          @for (member of visibleMembers; track $index) {
-            <img
-              class="chat-area__avatar"
-              [src]="member.avatar"
-              [alt]="member.name"
-              [title]="member.name"
-              referrerpolicy="no-referrer"
-            >
-          }
+    @if (activeChannel()) {
+      <div class="chat-area__header-right">
+        <div class="chat-area__members-trigger" (click)="openChannelMembers()">
+          <div class="chat-area__avatar-group">
+            @for (member of visibleMembers; track $index) {
+              <img
+                class="chat-area__avatar"
+                [src]="member.avatar"
+                [alt]="member.name"
+                [title]="member.name"
+                referrerpolicy="no-referrer"
+              >
+            }
+          </div>
+          <span class="chat-area__member-count">{{ memberCount }}</span>
         </div>
-        <span class="chat-area__member-count">{{ memberCount }}</span>
+        <button #addMemberBtn class="chat-area__add-member-btn" type="button" aria-label="Mitglied hinzufügen" (click)="onAddMember()">
+          <img src="img/icons/chatarea/addcontact.svg" class="chat-area__add-member-icon chat-area__add-member-icon--normal" alt="Add Member">
+          <img src="img/icons/chatarea/addcontact_hover.svg" class="chat-area__add-member-icon chat-area__add-member-icon--hover" alt="Add Member Hover">
+        </button>
       </div>
-      <button #addMemberBtn class="chat-area__add-member-btn" type="button" aria-label="Mitglied hinzufügen" (click)="onAddMember()">
-        <img src="img/icons/chatarea/addcontact.svg" class="chat-area__add-member-icon chat-area__add-member-icon--normal" alt="Add Member">
-        <img src="img/icons/chatarea/addcontact_hover.svg" class="chat-area__add-member-icon chat-area__add-member-icon--hover" alt="Add Member Hover">
-      </button>
-    </div>
+    }
   </div>
 
   <div class="chat-area__body" #scrollContainer>
     @if (messages().length === 0) {
       <div class="chat-area__empty-state">
-        <span class="chat-area__empty-hash">#</span>
-        <h3 class="chat-area__empty-title">Willkommen in #{{ activeChannel()?.name }}!</h3>
-        <p class="chat-area__empty-text">Das ist der Anfang des Channels #{{ activeChannel()?.name }}.</p>
+        @if (activeChannel()) {
+          <span class="chat-area__empty-hash">#</span>
+          <h3 class="chat-area__empty-title">Willkommen in #{{ activeChannel()?.name }}!</h3>
+          <p class="chat-area__empty-text">Das ist der Anfang des Channels #{{ activeChannel()?.name }}.</p>
+        } @else if (activeDirectChatUser()) {
+          <div class="chat-area__empty-header">
+            <img 
+              [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
+              [alt]="activeDirectChatUser()?.display_name" 
+              class="chat-area__empty-avatar"
+              referrerpolicy="no-referrer"
+            >
+            <h3 class="chat-area__empty-title">
+              {{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}
+            </h3>
+          </div>
+          @if (activeDirectChatUser()?.id === currentUserId) {
+            <p class="chat-area__empty-text">
+              <strong>Dieser Raum ist nur für dich da.</strong> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.
+            </p>
+          } @else {
+            <p class="chat-area__empty-text">
+              Diese Unterhaltung findet nur zwischen dir und <span class="chat-area__empty-highlight">@{{ activeDirectChatUser()?.display_name }}</span> statt.
+            </p>
+          }
+        }
       </div>
     } @else {
       @for (group of groupedMessages; track group.dateLabel) {
@@ -56,6 +92,7 @@
             [message]="msg"
             [currentUserId]="currentUserId"
             (threadClick)="onThreadClicked($event)"
+            (delete)="onMessageDeleted($event)"
           ></app-message>
         }
       }
@@ -74,7 +111,7 @@
       </div>
     }
     <app-message-input
-      [placeholder]="activeChannel() ? 'Nachricht an #' + activeChannel()!.name : 'Wähle einen Channel'"
+      [placeholder]="activeChannel() ? 'Nachricht an #' + activeChannel()!.name : (activeDirectChatUser() ? 'Nachricht an @' + activeDirectChatUser()!.display_name : 'Wähle einen Channel')"
       (sendMessage)="onSendMessage($event)"
       (typing)="onTypingStatusChange($event)"
     ></app-message-input>

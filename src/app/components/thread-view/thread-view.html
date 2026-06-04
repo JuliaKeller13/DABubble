@@ -18,7 +18,8 @@
         <app-message 
           [message]="parentMsg" 
           [currentUserId]="currentUserId" 
-          [isThreadMessage]="true">
+          [isThreadMessage]="true"
+          (delete)="onParentDeleted($event)">
         </app-message>
       </div>
 
@@ -35,7 +36,8 @@
           <app-message 
             [message]="reply" 
             [currentUserId]="currentUserId" 
-            [isThreadMessage]="true">
+            [isThreadMessage]="true"
+            (delete)="onReplyDeleted($event)">
           </app-message>
         }
       </div>

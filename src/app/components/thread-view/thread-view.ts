@@ -1,5 +1,6 @@
 import { Component, inject, signal, effect, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { MessageInputComponent } from '../message-input/message-input';
 import { MessageComponent } from '../message/message';
 import { ThreadService } from '../../services/thread.service';
@@ -24,6 +25,7 @@ export class ThreadViewComponent implements OnDestroy {
 
   replies = signal<Message[]>([]);
   private repliesSubscription: RealtimeChannel | null = null;
+  private messageDeletedSubscription: Subscription | null = null;
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
@@ -32,7 +34,16 @@ export class ThreadViewComponent implements OnDestroy {
     return this.authSvc.currentUser()?.id || '';
   }
 
+  // Listens for deleted messages and registers real-time effects for loading thread replies
   constructor() {
+    this.messageDeletedSubscription = this.messageSvc.messageDeleted.subscribe((id) => {
+      this.replies.update((prev) => prev.filter((r) => r.id !== id));
+      const parentMsg = this.threadSvc.activeMessage();
+      if (parentMsg && parentMsg.id === id) {
+        this.threadSvc.closeThread();
+      }
+    });
+
     // Watch active thread parent message and load replies dynamically
     effect(async () => {
       const parentMsg = this.threadSvc.activeMessage();
@@ -79,9 +90,13 @@ export class ThreadViewComponent implements OnDestroy {
     });
   }
 
+  // Clean up subscriptions when the component is destroyed
   ngOnDestroy() {
     if (this.repliesSubscription) {
       this.messageSvc.unsubscribe(this.repliesSubscription);
+    }
+    if (this.messageDeletedSubscription) {
+      this.messageDeletedSubscription.unsubscribe();
     }
   }
 
@@ -140,6 +155,16 @@ export class ThreadViewComponent implements OnDestroy {
   // Close the thread panel
   onClose() {
     this.threadSvc.closeThread();
+  }
+
+  // Closes the thread view if the parent message gets deleted
+  onParentDeleted(parentId: string) {
+    this.threadSvc.closeThread();
+  }
+
+  // Removes the deleted reply from the local replies list
+  onReplyDeleted(replyId: string) {
+    this.replies.update(prev => prev.filter(r => r.id !== replyId));
   }
 
   // Send a reply to the active thread

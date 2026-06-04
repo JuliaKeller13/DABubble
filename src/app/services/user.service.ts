@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { supabaseService } from './supabase.service';
 import { User } from '../interfaces/user.interface';
 
@@ -7,6 +7,13 @@ import { User } from '../interfaces/user.interface';
 })
 export class userService {
     private supabaseSvc = inject(supabaseService);
+    private activeDirectChatUserSignal = signal<User | null>(null);
+    readonly activeDirectChatUser = this.activeDirectChatUserSignal.asReadonly();
+
+    // Select active target user for direct messaging
+    selectDirectChatUser(user: User | null) {
+        this.activeDirectChatUserSignal.set(user);
+    }
 
     // Save or update user profile data in the database
     async upsertProfile(user: User): Promise<any> {

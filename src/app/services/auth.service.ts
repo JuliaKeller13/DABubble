@@ -270,7 +270,16 @@ export class AuthService {
   }
 
   async signup(name: string, email: string, password: string, avatarUrl: string): Promise<SignupResult> {
-    const { data, error } = await this.supabaseSvc.supabase.auth.signUp({ email, password });
+    const { data, error } = await this.supabaseSvc.supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          display_name: name,
+          full_name: name
+        }
+      }
+    });
     if (error || !data.user) return { error, data };
     const { error: profileError } = await this.supabaseSvc.supabase
       .from('profiles')
