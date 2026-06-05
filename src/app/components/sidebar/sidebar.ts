@@ -244,6 +244,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const user = this.users().find(u => u.id === id) || null;
     this.userSvc.selectDirectChatUser(user);
     this.channelSvc.selectChannel(null); 
+    this.channelSvc.setNewMessageMode(false);
 
     const currentUserId = this.currentUserId;
     if (currentUserId) {
@@ -339,6 +340,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
   toggleOpenClosed() {
     this.isClosed = !this.isClosed;
     this.toggleSidebar.emit(this.isClosed);
+  }
+
+  startNewMessage() {
+    this.channelSvc.setNewMessageMode(true);
+    this.userSvc.selectDirectChatUser(null);
+    if (window.innerWidth <= 1440) {
+      this.isClosed = true;
+      this.toggleSidebar.emit(true);
+    }
   }
 
   

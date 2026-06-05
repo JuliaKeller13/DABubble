@@ -7,9 +7,11 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 import { MessageInputComponent } from '../message-input/message-input';
 import { MessageComponent } from '../message/message';
 import { DialogChannelDetailsComponent } from '../dialog-channel-details/dialog-channel-details';
@@ -22,6 +24,7 @@ import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member
 import { userService } from '../../services/user.service';
 import { Message } from '../../interfaces/message.interface';
 import { User } from '../../interfaces/user.interface';
+import { Channel } from '../../interfaces/channel.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { ThreadService } from '../../services/thread.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
@@ -47,6 +50,7 @@ interface DateGroup {
     DialogChannelDetailsComponent,
     DialogChannelMembersComponent,
     MatDialogModule,
+    FormsModule,
   ],
   templateUrl: './chat-area.html',
   styleUrl: './chat-area.scss',
@@ -58,17 +62,23 @@ export class ChatAreaComponent implements OnDestroy {
 
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
-  private channelSvc = inject(channelService);
-  private userSvc = inject(userService);
+  public channelSvc = inject(channelService);
+  public userSvc = inject(userService);
   private dialog = inject(MatDialog);
   private messageSvc = inject(MessageService);
   private authSvc = inject(AuthService);
   private threadSvc = inject(ThreadService);
   private profileDialogSvc = inject(ProfileDialogService);
 
-  
   activeChannel = this.channelSvc.activeChannel;
   activeDirectChatUser = this.userSvc.activeDirectChatUser;
+
+  recipientQuery = '';
+  showSearchDropdown = false;
+  selectedRecipient: any | null = null;
+  selectedRecipientType: 'channel' | 'user' | null = null;
+  filteredChannels: Channel[] = [];
+  filteredUsers: User[] = [];
 
   
   isUserOnline(user: User): boolean {
@@ -116,6 +126,14 @@ export class ChatAreaComponent implements OnDestroy {
       const activeThreadMsg = this.threadSvc.activeMessage();
       if (activeThreadMsg && activeThreadMsg.id === id) {
         this.threadSvc.closeThread();
+      }
+    });
+
+    effect(() => {
+      const channel = this.activeChannel();
+      const targetUser = this.activeDirectChatUser();
+      if (channel || targetUser) {
+        this.clearSelectedRecipient();
       }
     });
 
@@ -316,8 +334,100 @@ export class ChatAreaComponent implements OnDestroy {
   }
 
   
+  async searchRecipients() {
+    const query = this.recipientQuery.trim();
+    if (!query) {
+      this.filteredChannels = [];
+      this.filteredUsers = [];
+      this.showSearchDropdown = false;
+      return;
+    }
+
+    this.showSearchDropdown = true;
+    
+    const allC = this.channelSvc.channels();
+    const allU = await this.userSvc.getAllUsers();
+    const filteredAllUsers = this.userSvc.filterDuplicateGuests(allU, this.currentUserId);
+
+    if (query.startsWith('#')) {
+      const search = query.substring(1).toLowerCase();
+      this.filteredChannels = allC.filter(c => c.name.toLowerCase().includes(search));
+      this.filteredUsers = [];
+    } else if (query.startsWith('@')) {
+      const search = query.substring(1).toLowerCase();
+      this.filteredUsers = filteredAllUsers.filter(u => u.display_name.toLowerCase().includes(search));
+      this.filteredChannels = [];
+    } else {
+      const search = query.toLowerCase();
+      this.filteredChannels = allC.filter(c => c.name.toLowerCase().includes(search));
+      this.filteredUsers = filteredAllUsers.filter(u => 
+        u.display_name.toLowerCase().includes(search) || 
+        (u.email && u.email.toLowerCase().includes(search))
+      );
+    }
+  }
+
+  selectRecipient(recipient: any, type: 'channel' | 'user') {
+    this.selectedRecipient = recipient;
+    this.selectedRecipientType = type;
+    this.recipientQuery = '';
+    this.showSearchDropdown = false;
+  }
+
+  clearSelectedRecipient() {
+    this.selectedRecipient = null;
+    this.selectedRecipientType = null;
+    this.recipientQuery = '';
+    this.showSearchDropdown = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.chat-area__new-msg-recipient-container')) {
+      this.showSearchDropdown = false;
+    }
+  }
+
   async onSendMessage(content: any) {
     if (typeof content !== 'string') return;
+
+    if (this.channelSvc.isNewMessageModeActive()) {
+      if (!this.selectedRecipient) {
+        console.warn('[onSendMessage] No recipient selected in new message mode');
+        return;
+      }
+
+      const userId = this.currentUserId;
+      if (!userId) {
+        console.warn('[onSendMessage] Current user ID is null/empty');
+        return;
+      }
+
+      if (this.selectedRecipientType === 'channel') {
+        const targetChannel = this.selectedRecipient;
+        const newMsg = await this.messageSvc.sendMessage(content, userId, targetChannel.id);
+        if (newMsg) {
+          this.channelSvc.selectChannel(targetChannel);
+          this.channelSvc.setNewMessageMode(false);
+          this.clearSelectedRecipient();
+        } else {
+          console.error('[onSendMessage] Failed to send message to channel');
+        }
+      } else if (this.selectedRecipientType === 'user') {
+        const targetUser = this.selectedRecipient;
+        const newMsg = await this.messageSvc.sendDirectMessage(content, userId, targetUser.id);
+        if (newMsg) {
+          this.userSvc.selectDirectChatUser(targetUser);
+          this.channelSvc.setNewMessageMode(false);
+          this.clearSelectedRecipient();
+        } else {
+          console.error('[onSendMessage] Failed to send direct message');
+        }
+      }
+      return;
+    }
+
     const channel = this.activeChannel();
     const dmUser = this.activeDirectChatUser();
 

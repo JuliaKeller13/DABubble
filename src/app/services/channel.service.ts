@@ -13,15 +13,26 @@ export class channelService {
   private channelsSignal = signal<Channel[]>([]);
   
   private activeChannelMembersSignal = signal<User[]>([]);
+  public isNewMessageModeActive = signal<boolean>(false);
 
   
   readonly activeChannel = this.activeChannelSignal.asReadonly();
   readonly channels = this.channelsSignal.asReadonly();
   readonly activeChannelMembers = this.activeChannelMembersSignal.asReadonly();
 
+  setNewMessageMode(active: boolean) {
+    this.isNewMessageModeActive.set(active);
+    if (active) {
+      this.selectChannel(null);
+    }
+  }
+
   
   async selectChannel(channel: Channel | null) {
     this.activeChannelSignal.set(channel);
+    if (channel) {
+      this.isNewMessageModeActive.set(false);
+    }
     if (channel && channel.id) {
       try {
         const members = await this.getChannelMembers(channel.id);

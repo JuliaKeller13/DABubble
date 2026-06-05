@@ -1,33 +1,96 @@
 <div class="chat-area">
-  <div class="chat-area__header">
-    <div 
-      class="chat-area__header-left" 
-      [class.chat-area__header-left--clickable]="activeChannel()"
-      (click)="activeChannel() ? openChannelDetails() : null"
-    >
-      @if (activeChannel()) {
-        <span class="chat-area__hash">#</span>
-        <h2 class="chat-area__title">{{ activeChannel()?.name }}</h2>
-        <img src="img/icons/arrow_dropdown.svg" class="chat-area__arrow-icon" alt="Dropdown">
-      } @else if (activeDirectChatUser()) {
-        <button class="chat-area__profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
-          <div class="chat-area__header-avatar-wrapper">
-            <img 
-              [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
-              [alt]="activeDirectChatUser()?.display_name" 
-              class="chat-area__header-avatar"
-              referrerpolicy="no-referrer"
+  <div class="chat-area__header" [class.chat-area__header--new-msg]="channelSvc.isNewMessageModeActive()">
+    @if (channelSvc.isNewMessageModeActive()) {
+      <div class="chat-area__header-left">
+        <h2 class="chat-area__title">Neue Nachricht</h2>
+      </div>
+
+      <div class="chat-area__new-msg-recipient-container">
+        <span class="chat-area__new-msg-recipient-label">An:</span>
+        <div class="chat-area__new-msg-recipient-chips">
+          @if (selectedRecipient) {
+            <div class="chat-area__recipient-chip" [class.chat-area__recipient-chip--channel]="selectedRecipientType === 'channel'">
+              @if (selectedRecipientType === 'channel') {
+                <span class="chat-area__chip-hash">#</span>
+                <span class="chat-area__chip-text">{{ selectedRecipient.name }}</span>
+              } @else {
+                <img [src]="selectedRecipient.avatar_url || 'img/avatars/avatar_default.svg'" class="chat-area__chip-avatar" alt="Avatar">
+                <span class="chat-area__chip-text">{{ selectedRecipient.display_name }}</span>
+              }
+              <button class="chat-area__chip-remove" (click)="clearSelectedRecipient()">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          } @else {
+            <input 
+              type="text" 
+              class="chat-area__new-msg-recipient-input" 
+              placeholder="#channel, oder @jemand oder eine Mail Adresse"
+              [(ngModel)]="recipientQuery"
+              (input)="searchRecipients()"
             >
-            <span class="chat-area__status-dot" [class.chat-area__status-dot--online]="isUserOnline(activeDirectChatUser()!)"></span>
+          }
+        </div>
+        
+        @if (showSearchDropdown && (filteredChannels.length > 0 || filteredUsers.length > 0)) {
+          <div class="chat-area__search-dropdown">
+            @if (filteredChannels.length > 0) {
+              <div class="chat-area__search-dropdown-group">
+                <div class="chat-area__search-dropdown-group-title">Channels</div>
+                @for (channel of filteredChannels; track channel.id) {
+                  <div class="chat-area__search-dropdown-item" (click)="selectRecipient(channel, 'channel')">
+                    <span class="chat-area__dropdown-item-hash">#</span>
+                    <span class="chat-area__dropdown-item-name">{{ channel.name }}</span>
+                  </div>
+                }
+              </div>
+            }
+            @if (filteredUsers.length > 0) {
+              <div class="chat-area__search-dropdown-group">
+                <div class="chat-area__search-dropdown-group-title">Mitglieder</div>
+                @for (user of filteredUsers; track user.id) {
+                  <div class="chat-area__search-dropdown-item" (click)="selectRecipient(user, 'user')">
+                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" class="chat-area__dropdown-item-avatar" alt="Avatar">
+                    <span class="chat-area__dropdown-item-name">{{ user.display_name }}</span>
+                  </div>
+                }
+              </div>
+            }
           </div>
-        </button>
-        <button class="chat-area__profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
-          <h2 class="chat-area__title">{{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}</h2>
-        </button>
-      } @else {
-        <h2 class="chat-area__title">Kein Channel ausgewählt</h2>
-      }
-    </div>
+        }
+      </div>
+    } @else {
+      <div 
+        class="chat-area__header-left" 
+        [class.chat-area__header-left--clickable]="activeChannel()"
+        (click)="activeChannel() ? openChannelDetails() : null"
+      >
+        @if (activeChannel()) {
+          <span class="chat-area__hash">#</span>
+          <h2 class="chat-area__title">{{ activeChannel()?.name }}</h2>
+          <img src="img/icons/arrow_dropdown.svg" class="chat-area__arrow-icon" alt="Dropdown">
+        } @else if (activeDirectChatUser()) {
+          <button class="chat-area__profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
+            <div class="chat-area__header-avatar-wrapper">
+              <img 
+                [src]="activeDirectChatUser()?.avatar_url || 'img/avatars/avatar_default.svg'" 
+                [alt]="activeDirectChatUser()?.display_name" 
+                class="chat-area__header-avatar"
+                referrerpolicy="no-referrer"
+              >
+              <span class="chat-area__status-dot" [class.chat-area__status-dot--online]="isUserOnline(activeDirectChatUser()!)"></span>
+            </div>
+          </button>
+          <button class="chat-area__profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
+            <h2 class="chat-area__title">{{ activeDirectChatUser()?.display_name }}{{ activeDirectChatUser()?.id === currentUserId ? ' (Du)' : '' }}</h2>
+          </button>
+        } @else {
+          <h2 class="chat-area__title">Kein Channel ausgewählt</h2>
+        }
+      </div>
+    }
 
     @if (activeChannel()) {
       <div class="chat-area__header-right">
@@ -54,7 +117,9 @@
   </div>
 
   <div class="chat-area__body" #scrollContainer>
-    @if (!activeChannel() && !activeDirectChatUser()) {
+    @if (channelSvc.isNewMessageModeActive()) {
+      <!-- Empty body for new message composition -->
+    } @else if (!activeChannel() && !activeDirectChatUser()) {
       <div class="chat-area__welcome-container">
         <div class="chat-area__welcome-header">
           <img src="img/logo/workspace_logo.svg" alt="Devspace Logo" class="chat-area__welcome-logo">
@@ -125,9 +190,9 @@
     }
   </div>
 
-  @if (activeChannel() || activeDirectChatUser()) {
+  @if (activeChannel() || activeDirectChatUser() || channelSvc.isNewMessageModeActive()) {
     <div class="chat-area__footer">
-      @if (typingUsers().length > 0) {
+      @if (typingUsers().length > 0 && !channelSvc.isNewMessageModeActive()) {
         <div class="chat-area__typing-indicator">
           <span>{{ getTypingText() }}</span>
           <div class="typing-dots">
@@ -138,7 +203,7 @@
         </div>
       }
       <app-message-input
-        [placeholder]="activeChannel() ? 'Nachricht an #' + activeChannel()!.name : (activeDirectChatUser() ? 'Nachricht an @' + activeDirectChatUser()!.display_name : 'Wähle einen Channel')"
+        [placeholder]="channelSvc.isNewMessageModeActive() ? 'Starte eine neue Nachricht' : (activeChannel() ? 'Nachricht an #' + activeChannel()!.name : 'Nachricht an @' + activeDirectChatUser()!.display_name)"
         (sendMessage)="onSendMessage($event)"
         (typing)="onTypingStatusChange($event)"
       ></app-message-input>
