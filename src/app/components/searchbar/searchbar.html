@@ -4,10 +4,105 @@
     class="searchbar-input" 
     placeholder="Devspace durchsuchen"
     aria-label="Devspace durchsuchen"
+    #searchInput
+    (input)="onSearch(searchInput.value)"
+    (focus)="onFocus()"
   >
   <img 
     src="img/icons/search.svg" 
     alt="Suche" 
     class="searchbar-icon"
   >
+
+  @if (showDropdown && (channelsResults.length > 0 || profilesResults.length > 0 || messagesResults.length > 0 || searchQuery.length > 0)) {
+    <div class="mention-popup search-popup">
+      <div class="mention-popup__list">
+        
+        @if (searchQuery.length === 0) {
+          <div class="mention-popup__empty">Tippe etwas ein, um zu suchen...</div>
+        } 
+        
+        @else if (searchQuery.length < 2 && !searchQuery.startsWith('#') && !searchQuery.startsWith('@')) {
+          <div class="mention-popup__empty">Tippe mindestens 2 Zeichen ein.</div>
+        } 
+        
+        @else {
+          @if (searchQuery.startsWith('#')) {
+            @for (channel of channelsResults; track channel.id) {
+              <div class="mention-popup__item" (click)="selectChannel(channel)">
+                <span class="mention-popup__hashtag">#</span>
+                <span class="mention-popup__name">{{ channel.name }}</span>
+              </div>
+            }
+            @if (channelsResults.length === 0) {
+              <div class="mention-popup__empty">Keine Channels gefunden</div>
+            }
+          }
+          
+          @else if (searchQuery.startsWith('@')) {
+            @for (user of profilesResults; track user.id) {
+              <div class="mention-popup__item" (click)="selectUser(user)">
+                <div class="mention-popup__avatar-container">
+                  <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" class="mention-popup__avatar" alt="Avatar">
+                  <span class="mention-popup__status-badge" [class.online]="isUserOnline(user)"></span>
+                </div>
+                <span class="mention-popup__name">
+                  {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
+                </span>
+              </div>
+            }
+            @if (profilesResults.length === 0) {
+              <div class="mention-popup__empty">Keine Mitglieder gefunden</div>
+            }
+          }
+          
+          @else {
+            @if (channelsResults.length > 0) {
+              <div class="search-popup__section-title">Kanäle</div>
+              @for (channel of channelsResults; track channel.id) {
+                <div class="mention-popup__item" (click)="selectChannel(channel)">
+                  <span class="mention-popup__hashtag">#</span>
+                  <span class="mention-popup__name">{{ channel.name }}</span>
+                </div>
+              }
+            }
+
+            @if (profilesResults.length > 0) {
+              <div class="search-popup__section-title">Personen</div>
+              @for (user of profilesResults; track user.id) {
+                <div class="mention-popup__item" (click)="selectUser(user)">
+                  <div class="mention-popup__avatar-container">
+                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" class="mention-popup__avatar" alt="Avatar">
+                    <span class="mention-popup__status-badge" [class.online]="isUserOnline(user)"></span>
+                  </div>
+                  <span class="mention-popup__name">
+                    {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
+                  </span>
+                </div>
+              }
+            }
+
+            @if (messagesResults.length > 0) {
+              <div class="search-popup__section-title">Nachrichten</div>
+              @for (msg of messagesResults; track msg.id) {
+                <div class="search-popup__message-item" (click)="selectMessage(msg)">
+                  <div class="search-popup__message-header">
+                    <img [src]="msg.sender?.avatar_url || 'img/avatars/avatar_default.svg'" class="search-popup__message-avatar" referrerpolicy="no-referrer">
+                    <span class="search-popup__message-sender">{{ msg.sender?.display_name || 'System' }}</span>
+                    <span class="search-popup__message-date">{{ formatMessageDate(msg.created_at) }}</span>
+                    <span class="search-popup__message-context">{{ getMessageContext(msg) }}</span>
+                  </div>
+                  <div class="search-popup__message-body">{{ msg.content }}</div>
+                </div>
+              }
+            }
+            
+            @if (channelsResults.length === 0 && profilesResults.length === 0 && messagesResults.length === 0) {
+              <div class="mention-popup__empty">Keine Ergebnisse gefunden</div>
+            }
+          }
+        }
+      </div>
+    </div>
+  }
 </div>

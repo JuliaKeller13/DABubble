@@ -39,6 +39,10 @@ export class MessageComponent implements OnInit {
     return this._message;
   }
 
+  get isHighlighted(): boolean {
+    return this.message?.id ? this.message.id === this.messageSvc.searchTargetMessageId : false;
+  }
+
   @Input({ required: true }) currentUserId!: string;
   @Input() isThreadMessage = false;
 

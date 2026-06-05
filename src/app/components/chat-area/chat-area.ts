@@ -156,7 +156,7 @@ export class ChatAreaComponent implements OnDestroy {
           // Fetch historical channel messages
           const dbMessages = await this.messageSvc.getChannelMessages(channel.id);
           this.messages.set(dbMessages);
-          this.scrollToBottom();
+          this.checkAndScrollToSearchTarget();
 
           // Create realtime subscription for live insertions, updates and typing broadcasts
           this.messagesSubscription = this.messageSvc.subscribeToChannelMessages(
@@ -187,7 +187,7 @@ export class ChatAreaComponent implements OnDestroy {
           // Fetch historical direct messages
           const dbMessages = await this.messageSvc.getDirectMessages(this.currentUserId, targetUser.id);
           this.messages.set(dbMessages);
-          this.scrollToBottom();
+          this.checkAndScrollToSearchTarget();
 
           // Create realtime subscription for DMs
           this.messagesSubscription = this.messageSvc.subscribeToDirectMessages(
@@ -290,6 +290,29 @@ export class ChatAreaComponent implements OnDestroy {
         element.scrollTop = element.scrollHeight;
       }
     }, 100);
+  }
+
+  // Checks if a search target message is set, scrolls to it, and clears the state
+  public checkAndScrollToSearchTarget() {
+    const targetId = this.messageSvc.searchTargetMessageId;
+    if (targetId) {
+      setTimeout(() => {
+        const element = document.getElementById('message-' + targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          this.scrollToBottom();
+        }
+        // Reset the search target message ID after 3 seconds so highlights fade and it resets
+        setTimeout(() => {
+          if (this.messageSvc.searchTargetMessageId === targetId) {
+            this.messageSvc.searchTargetMessageId = null;
+          }
+        }, 3000);
+      }, 300);
+    } else {
+      this.scrollToBottom();
+    }
   }
 
   // Send a new message to the active channel or direct chat user

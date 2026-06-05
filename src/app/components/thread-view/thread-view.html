@@ -16,6 +16,7 @@
       <!-- Parent message (marked as isThreadMessage to disable thread action toggles recursively) -->
       <div class="thread-view__parent">
         <app-message 
+          [id]="'message-' + parentMsg.id"
           [message]="parentMsg" 
           [currentUserId]="currentUserId" 
           [isThreadMessage]="true"
@@ -34,6 +35,7 @@
       <div class="thread-view__replies-list">
         @for (reply of replies(); track reply.id) {
           <app-message 
+            [id]="'message-' + reply.id"
             [message]="reply" 
             [currentUserId]="currentUserId" 
             [isThreadMessage]="true"

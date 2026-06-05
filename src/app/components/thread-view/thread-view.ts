@@ -58,7 +58,7 @@ export class ThreadViewComponent implements OnDestroy {
         try {
           const dbReplies = await this.messageSvc.getThreadReplies(parentMsg.id);
           this.replies.set(dbReplies);
-          this.scrollToBottom();
+          this.checkAndScrollToSearchTarget();
 
           // Subscribe to live replies of this thread parent and typing broadcasts
           this.repliesSubscription = this.messageSvc.subscribeToThreadReplies(
@@ -201,5 +201,28 @@ export class ThreadViewComponent implements OnDestroy {
         element.scrollTop = element.scrollHeight;
       }
     }, 100);
+  }
+
+  // Checks if a search target message is set, scrolls to it, and clears the state
+  public checkAndScrollToSearchTarget() {
+    const targetId = this.messageSvc.searchTargetMessageId;
+    if (targetId) {
+      setTimeout(() => {
+        const element = document.getElementById('message-' + targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          this.scrollToBottom();
+        }
+        // Reset the search target message ID after 3 seconds so highlights fade and it resets
+        setTimeout(() => {
+          if (this.messageSvc.searchTargetMessageId === targetId) {
+            this.messageSvc.searchTargetMessageId = null;
+          }
+        }, 3000);
+      }, 300);
+    } else {
+      this.scrollToBottom();
+    }
   }
 }

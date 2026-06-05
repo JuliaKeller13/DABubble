@@ -1,6 +1,15 @@
 @use '../../../styles/abstracts/mixins' as mx;
 @use '../../../styles/abstracts/variables' as vars;
 
+@keyframes message-flash {
+  0% {
+    background-color: rgba(121, 126, 243, 0.4);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 .msg-container {
   display: flex;
   gap: 16px;
@@ -9,6 +18,10 @@
   transition: background-color 0.2s ease;
   width: 100%;
   box-sizing: border-box;
+
+  &--highlighted {
+    animation: message-flash 2.5s ease-out forwards;
+  }
 
   &:hover {
     background-color: #f4f5fc;
@@ -86,7 +99,7 @@
     color: vars.$black;
 
     &--current {
-      color: vars.$black; /* Matches Figma black font color */
+      color: vars.$black;
     }
 
     &--button {
@@ -270,7 +283,7 @@
 
   &__footer {
     display: flex;
-    flex-direction: column; /* Stacked layout for replies and reactions */
+    flex-direction: column;
     align-items: flex-start;
     gap: 8px;
     width: 100%;
@@ -427,7 +440,7 @@
     z-index: vars.$z-index-base + 4;
     gap: 4px;
     box-sizing: border-box;
-    transform: translate3d(24px, 0, 0); /* Start 24px to the right for right-to-left slide */
+    transform: translate3d(24px, 0, 0);
     transition: opacity 0.15s ease-out, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
     &--right {
@@ -479,11 +492,11 @@
 
     &:hover {
       .icon-wrapper {
-        background-color: vars.$bg-color; /* var(--bg-color) hover background circle (40x40px) */
+        background-color: vars.$bg-color;
       }
 
-      /* Hover colors for add_reaction, comment, and more_vert (currentColor mapping) */
-      color: vars.$purple-3; /* #535AF1 */
+      
+      color: vars.$purple-3;
       
       svg {
         color: vars.$purple-3;
@@ -500,7 +513,7 @@
     height: auto;
     background-color: vars.$white;
     box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.08);
-    border-radius: 0 30px 30px 30px; /* top-left 0, others 30px */
+    border-radius: 0 30px 30px 30px;
     z-index: vars.$z-index-dropdown;
     display: flex;
     flex-direction: column;
@@ -518,17 +531,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px; /* Clean, bold font matching Figma */
+    font-size: 18px;
     font-weight: 600;
     color: vars.$black;
     cursor: pointer;
     transition: all 0.15s ease;
-    border-radius: 100px; /* Pill shape matching hover screenshot */
+    border-radius: 100px;
     flex-shrink: 0;
 
     &:hover {
-      background-color: vars.$bg-color; /* var(--bg-color) is #ECEEFE */
-      color: vars.$purple-3; /* var(--purple-3) is #535AF1 */
+      background-color: vars.$bg-color;
+      color: vars.$purple-3;
     }
 
     &--delete {

@@ -11,6 +11,7 @@ export class MessageService {
   private supabaseSvc = inject(supabaseService);
   private userSvc = inject(userService);
   public messageDeleted = new EventEmitter<string>();
+  public searchTargetMessageId: string | null = null;
 
   // Fetch all messages for a specific channel and join the sender profile
   async getChannelMessages(channelId: string): Promise<Message[]> {
