@@ -1,21 +1,18 @@
 <div class="message-input" (click)="onMessageInputClick()">
-  @if (showEmojiPicker) {
-    <div class="emoji-popup" (click)="$event.stopPropagation()">
-      <emoji-mart
-        title="Emoji auswählen"
-        [i18n]="emojiPickerI18n"
-        [isNative]="false"
-        [showPreview]="false"
-        [enableSearch]="true"
-        [emojiSize]="30"
-        [perLine]="9"
-        [style]="emojiPickerStyle"
-        set="google"
-        color="#444df2"
-        (emojiClick)="addEmoji($event)"
-      ></emoji-mart>
-    </div>
-  }
+  <div class="emoji-popup" [class.visible]="showEmojiPicker" (click)="$event.stopPropagation()">
+    <emoji-mart
+      title="Emoji auswählen"
+      [i18n]="emojiPickerI18n"
+      [isNative]="true"
+      [showPreview]="false"
+      [enableSearch]="true"
+      [emojiSize]="30"
+      [perLine]="9"
+      [style]="emojiPickerStyle"
+      color="#444df2"
+      (emojiClick)="addEmoji($event)"
+    ></emoji-mart>
+  </div>
 
   
   @if (activePopup === 'users') {

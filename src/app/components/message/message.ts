@@ -129,7 +129,18 @@ export class MessageComponent implements OnInit {
   async toggleReaction(emoji: string) {
     this.closeTransientPopups();
     if (!this.message.id) return;
-    await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
+
+    this.messageSvc.optimisticReaction.emit({
+      messageId: this.message.id,
+      emoji,
+      userId: this.currentUserId
+    });
+
+    try {
+      await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
+    } catch (err) {
+      console.error('Fehler beim Speichern der Reaktion in der Datenbank:', err);
+    }
   }
   
   onDocumentClick(event: MouseEvent) {

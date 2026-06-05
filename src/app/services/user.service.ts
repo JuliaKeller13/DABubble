@@ -9,6 +9,8 @@ export class userService {
     private supabaseSvc = inject(supabaseService);
     private activeDirectChatUserSignal = signal<User | null>(null);
     readonly activeDirectChatUser = this.activeDirectChatUserSignal.asReadonly();
+    
+    private usersCache = new Map<string, User>();
 
     
     filterDuplicateGuests(users: User[], currentUserId: string | null): User[] {
@@ -40,6 +42,8 @@ export class userService {
             console.error('Fehler beim Speichern des Profils:', error.message);
             throw error;
         }
+        
+        this.usersCache.set(user.id, user);
         return data;
     }
 
@@ -53,11 +57,18 @@ export class userService {
             console.error('Fehler beim Laden der User:', error.message);
             return [];
         }
-        return data as User[];
+        
+        const users = data as User[];
+        users.forEach((u) => this.usersCache.set(u.id, u));
+        return users;
     }
 
     
     async getUserById(id: string): Promise<User | null> {
+        if (this.usersCache.has(id)) {
+            return this.usersCache.get(id) || null;
+        }
+
         const { data, error } = await this.supabaseSvc.supabase
             .from('profiles')
             .select('*')
@@ -68,6 +79,9 @@ export class userService {
             console.error('Fehler beim Laden des Users:', error.message);
             return null;
         }
-        return data as User;
+        
+        const user = data as User;
+        this.usersCache.set(id, user);
+        return user;
     }
 }

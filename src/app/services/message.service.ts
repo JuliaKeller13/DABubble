@@ -11,6 +11,7 @@ export class MessageService {
   private supabaseSvc = inject(supabaseService);
   private userSvc = inject(userService);
   public messageDeleted = new EventEmitter<string>();
+  public optimisticReaction = new EventEmitter<{ messageId: string; emoji: string; userId: string }>();
   public searchTargetMessageId: string | null = null;
 
   

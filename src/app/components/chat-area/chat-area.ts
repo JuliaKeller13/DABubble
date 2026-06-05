@@ -101,6 +101,7 @@ export class ChatAreaComponent implements OnDestroy {
   messages = signal<Message[]>([]);
   private messagesSubscription: RealtimeChannel | null = null;
   private messageDeletedSubscription: Subscription | null = null;
+  private optimisticReactionSubscription: Subscription | null = null;
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
@@ -127,6 +128,26 @@ export class ChatAreaComponent implements OnDestroy {
       if (activeThreadMsg && activeThreadMsg.id === id) {
         this.threadSvc.closeThread();
       }
+    });
+
+    this.optimisticReactionSubscription = this.messageSvc.optimisticReaction.subscribe(({ messageId, emoji, userId }) => {
+      this.messages.update((prev) => prev.map((m) => {
+        if (m.id !== messageId) return m;
+        const reactions = { ...(m.reactions || {}) };
+        let userIds = reactions[emoji] ? [...reactions[emoji]] : [];
+        const index = userIds.indexOf(userId);
+        if (index > -1) {
+          userIds.splice(index, 1);
+        } else {
+          userIds.push(userId);
+        }
+        if (userIds.length === 0) {
+          delete reactions[emoji];
+        } else {
+          reactions[emoji] = userIds;
+        }
+        return { ...m, reactions };
+      }));
     });
 
     effect(() => {
@@ -245,6 +266,9 @@ export class ChatAreaComponent implements OnDestroy {
     }
     if (this.messageDeletedSubscription) {
       this.messageDeletedSubscription.unsubscribe();
+    }
+    if (this.optimisticReactionSubscription) {
+      this.optimisticReactionSubscription.unsubscribe();
     }
   }
 

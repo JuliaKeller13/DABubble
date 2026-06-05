@@ -26,6 +26,7 @@ export class ThreadViewComponent implements OnDestroy {
   replies = signal<Message[]>([]);
   private repliesSubscription: RealtimeChannel | null = null;
   private messageDeletedSubscription: Subscription | null = null;
+  private optimisticReactionSubscription: Subscription | null = null;
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
@@ -41,6 +42,44 @@ export class ThreadViewComponent implements OnDestroy {
       const parentMsg = this.threadSvc.activeMessage();
       if (parentMsg && parentMsg.id === id) {
         this.threadSvc.closeThread();
+      }
+    });
+
+    this.optimisticReactionSubscription = this.messageSvc.optimisticReaction.subscribe(({ messageId, emoji, userId }) => {
+      this.replies.update((prev) => prev.map((m) => {
+        if (m.id !== messageId) return m;
+        const reactions = { ...(m.reactions || {}) };
+        let userIds = reactions[emoji] ? [...reactions[emoji]] : [];
+        const index = userIds.indexOf(userId);
+        if (index > -1) {
+          userIds.splice(index, 1);
+        } else {
+          userIds.push(userId);
+        }
+        if (userIds.length === 0) {
+          delete reactions[emoji];
+        } else {
+          reactions[emoji] = userIds;
+        }
+        return { ...m, reactions };
+      }));
+
+      const parentMsg = this.threadSvc.activeMessage();
+      if (parentMsg && parentMsg.id === messageId) {
+        const reactions = { ...(parentMsg.reactions || {}) };
+        let userIds = reactions[emoji] ? [...reactions[emoji]] : [];
+        const index = userIds.indexOf(userId);
+        if (index > -1) {
+          userIds.splice(index, 1);
+        } else {
+          userIds.push(userId);
+        }
+        if (userIds.length === 0) {
+          delete reactions[emoji];
+        } else {
+          reactions[emoji] = userIds;
+        }
+        this.threadSvc.activeMessage.set({ ...parentMsg, reactions });
       }
     });
 
@@ -97,6 +136,9 @@ export class ThreadViewComponent implements OnDestroy {
     }
     if (this.messageDeletedSubscription) {
       this.messageDeletedSubscription.unsubscribe();
+    }
+    if (this.optimisticReactionSubscription) {
+      this.optimisticReactionSubscription.unsubscribe();
     }
   }
 
