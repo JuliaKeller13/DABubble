@@ -143,7 +143,7 @@
     @include mx.flex(column, nowrap, flex-start, stretch);
     gap: 8px;
 
-    /* Custom scrollbar */
+    
     &::-webkit-scrollbar {
       width: 6px;
     }

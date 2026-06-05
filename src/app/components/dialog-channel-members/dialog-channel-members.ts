@@ -43,27 +43,27 @@ export class DialogChannelMembersComponent implements OnInit {
 
   view: 'members' | 'add' = 'members';
 
-  // Check if a member is currently online
+  
   isUserOnline(member: ChannelMember): boolean {
     return this.authSvc.onlineUserIds().has(member.id);
   }
 
-  // Sets the initial sub-view (either members list or add member form) on component initialization
+  
   ngOnInit() {
     this.view = this.initialView;
   }
 
-  // Emits close event to close the dialog
+  
   onClose() {
     this.close.emit();
   }
 
-  // Switches the current sub-view to the add member form
+  
   onAddMember() {
     this.view = 'add';
   }
 
-  // Emits the member selection result and closes the dialog
+  
   onAddMemberClosed(result?: any) {
     if (result) {
       this.addMember.emit(result);

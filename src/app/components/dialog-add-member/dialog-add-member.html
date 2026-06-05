@@ -40,11 +40,11 @@
       </div>
     }
 
-    <!-- Inline chip-input container (visible if specific selection or mode 'add') -->
+    
     @if (selectionType === 'specific' || data.mode === 'add') {
       <div class="add-member__specific-selection">
         
-        <!-- Inline chip-input container -->
+        
         <div class="add-member__input-container" [class.add-member__input-container--focused]="isFocused" (click)="searchInput.focus()">
           @for (user of selectedUsersList; track user.id) {
             <div class="add-member__chip">
@@ -70,7 +70,7 @@
                  class="add-member__search-input">
         </div>
 
-        <!-- Suggestions Dropdown menu -->
+        
         @if (searchQuery.trim().length > 0) {
           <div class="add-member__suggestions-dropdown" (mousedown)="$event.preventDefault()">
             @if (filteredUsers.length > 0) {

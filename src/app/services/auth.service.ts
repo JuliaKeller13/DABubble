@@ -145,7 +145,7 @@ export class AuthService {
       return newProfile as UserProfile;
     }
 
-    // Fire-and-forget: nicht abwarten, sofort das Profil zurückgeben
+    
     this.supabaseSvc.supabase
       .from('profiles')
       .update({ status: 'online', display_name: displayName })

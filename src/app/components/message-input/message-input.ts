@@ -101,7 +101,7 @@ export class MessageInputComponent implements OnDestroy {
     return this.authSvc.onlineUserIds().has(userId);
   }
 
-  // Emits the entered message text and resets the input box
+  
   send() {
     if (!this.messageText.trim()) return;
     this.stopTyping();
@@ -110,7 +110,7 @@ export class MessageInputComponent implements OnDestroy {
     this.messageText = '';
   }
 
-  // Emits typing state based on keyboard inputs, debounce timeouts and trigger character checks
+  
   onInputChange() {
     if (!this.isCurrentlyTyping) {
       this.isCurrentlyTyping = true;
@@ -148,7 +148,7 @@ export class MessageInputComponent implements OnDestroy {
     this.typing.emit(false);
   }
 
-  // Clean up timers on component destruction
+  
   ngOnDestroy() {
     if (this.typingTimeout) {
       clearTimeout(this.typingTimeout);
@@ -158,7 +158,7 @@ export class MessageInputComponent implements OnDestroy {
     }
   }
 
-  // Listens to Enter key hits and submits unless Shift key is held down
+  
   onEnterPressed(event: Event) {
     const keyboardEvent = event as KeyboardEvent;
     if (!keyboardEvent.shiftKey) {
@@ -171,14 +171,14 @@ export class MessageInputComponent implements OnDestroy {
     this.closePopup();
   }
 
-  // Toggles the visibility of the emoji picker
+  
   toggleEmoji() {
     const shouldOpen = !this.showEmojiPicker;
     this.closeMentionPopup();
     this.showEmojiPicker = shouldOpen;
   }
 
-  // Toggles the visibility of the mention dropdown and cycles popup states
+  
   async toggleMention() {
     this.closeEmojiPicker();
 
@@ -231,7 +231,7 @@ export class MessageInputComponent implements OnDestroy {
       channelId = channel.id;
     }
 
-    // Return instantly from active channel members signal if populated
+    
     if (channelId && channelId === channel?.id && this.channelSvc.activeChannelMembers().length > 0) {
       const activeMembers = this.channelSvc.activeChannelMembers();
       const filteredMembers = this.userSvc.filterDuplicateGuests(activeMembers, this.currentUserId || null);
@@ -245,7 +245,7 @@ export class MessageInputComponent implements OnDestroy {
       return;
     }
 
-    // Return instantly if cached
+    
     if (channelId && MessageInputComponent.channelMembersCache.has(channelId)) {
       this.allPopupUsers = MessageInputComponent.channelMembersCache.get(channelId)!;
       this.popupUsers = [...this.allPopupUsers];
@@ -290,7 +290,7 @@ export class MessageInputComponent implements OnDestroy {
   }
 
   async loadChannels() {
-    // Return instantly from local channel signal cache if populated
+    
     const cachedChannels = this.channelSvc.channels();
     if (cachedChannels.length > 0) {
       this.allPopupChannels = cachedChannels
@@ -386,16 +386,16 @@ export class MessageInputComponent implements OnDestroy {
       let textBefore = this.messageText.substring(0, startPos);
       const textAfter = this.messageText.substring(endPos);
 
-      // Find the start of the current trigger tag word to replace it
+      
       const lastSpace = textBefore.lastIndexOf(' ');
       const triggerIndex = lastSpace + 1;
       
       textBefore = this.messageText.substring(0, triggerIndex);
 
-      // Insert mention with a space afterwards
+      
       this.messageText = textBefore + mentionText + ' ' + textAfter;
 
-      // Reset selection and keep focus
+      
       setTimeout(() => {
         textarea.focus();
         const newCursorPos = triggerIndex + mentionText.length + 1;
