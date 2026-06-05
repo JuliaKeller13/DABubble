@@ -43,7 +43,7 @@ export class Signup {
     acceptTerms: [false, Validators.requiredTrue],
   });
 
-  // Registers form component SVG icons on initialization
+  
   constructor() {
     this.iconRegistry.addSvgIcon('person', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/person.svg'));
     this.iconRegistry.addSvgIcon('mail', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/mail.svg'));
@@ -57,7 +57,7 @@ export class Signup {
     }
   }
 
-  // Validates form input fields before proceeding to the avatar choice step
+  
   async continueToChooseAvatar(event: Event): Promise<void> {
     if (this.form.invalid) {
       event.preventDefault();

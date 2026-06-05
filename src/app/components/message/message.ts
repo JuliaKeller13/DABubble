@@ -68,7 +68,7 @@ export class MessageComponent implements OnInit {
   private static allUsers: User[] = [];
   tokens: MessageToken[] = [];
 
-  // Toggles the visibility of the message options menu
+  
   toggleMoreOptions() {
     const shouldOpen = !this.showMoreMenu;
     this.closeTransientPopups();
@@ -87,15 +87,15 @@ export class MessageComponent implements OnInit {
     this.showHoverReactionPicker = shouldOpen;
   }
 
-  // Emojis offered in the quick reaction bar
+  
   quickEmojis = ['🚀', '✅', '👍', '❤️', '😂', '😮'];
 
-  // Retrieves the number of replies in this message thread
+  
   get replyCount(): number {
     return (this.message as any).reply_count || 0;
   }
 
-  // Get last reply time formatted (mocked or retrieved)
+  
   get formattedLastReplyTime(): string {
     const time = (this.message as any).last_reply_time;
     if (!time) return '';
@@ -105,12 +105,12 @@ export class MessageComponent implements OnInit {
     return `${hrs}:${mins}`;
   }
 
-  // Check if the current message belongs to the logged-in user
+  
   get isCurrentUser(): boolean {
     return this.message.sender_id === this.currentUserId;
   }
 
-  // Format the creation date to HH:MM Uhr format
+  
   get formattedTime(): string {
     if (!this.message.created_at) return '';
     const date = new Date(this.message.created_at);
@@ -119,7 +119,7 @@ export class MessageComponent implements OnInit {
     return `${hrs}:${mins} Uhr`;
   }
 
-  // Group and format active reactions on this message for display
+  
   get reactionList() {
     if (!this.message.reactions) return [];
     return Object.entries(this.message.reactions).map(([emoji, userIds]) => {
@@ -132,14 +132,14 @@ export class MessageComponent implements OnInit {
     });
   }
 
-  // Toggle reaction on the message using the current user's profile
+  
   async toggleReaction(emoji: string) {
     this.closeTransientPopups();
     if (!this.message.id) return;
     await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
   }
 
-  // Closes all popups when a click occurs outside the message component
+  
   onDocumentClick(event: MouseEvent) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.closeAllPopups();
@@ -152,13 +152,13 @@ export class MessageComponent implements OnInit {
 
   showEditEmojiPicker = false;
 
-  // Trigger opening the message thread view
+  
   onStartThread() {
     this.closeTransientPopups();
     this.threadClick.emit(this.message);
   }
 
-  // Opens the profile dialog of the sender of this message
+  
   openSenderProfile(): void {
     if (!this.message.sender) {
       return;
@@ -167,7 +167,7 @@ export class MessageComponent implements OnInit {
     this.profileDialogSvc.open(this.message.sender, { suppressOutsideCloseOnce: this.isCurrentUser });
   }
 
-  // Enable editing state for the message
+  
   startEdit() {
     this.closeTransientPopups();
     this.isEditing = true;
@@ -175,24 +175,24 @@ export class MessageComponent implements OnInit {
     this.showEditEmojiPicker = false;
   }
 
-  // Cancel the message editing action
+  
   cancelEdit() {
     this.isEditing = false;
     this.showEditEmojiPicker = false;
   }
 
-  // Toggle emoji picker in edit mode
+  
   toggleEditEmojiPicker() {
     this.showEditEmojiPicker = !this.showEditEmojiPicker;
   }
 
-  // Add selected emoji to editing content
+  
   addEmojiToEdit(emoji: string) {
     this.editContent += emoji;
     this.showEditEmojiPicker = false;
   }
 
-  // Listen to keydown events in the edit textarea
+  
   onEditKeyDown(event: any) {
     const keyboardEvent = event as KeyboardEvent;
     if (keyboardEvent.key === 'Enter' && !keyboardEvent.shiftKey) {
@@ -213,7 +213,7 @@ export class MessageComponent implements OnInit {
       }
     }
     
-    // Defer initial parse to prevent ExpressionChangedAfterItHasBeenCheckedError
+    
     setTimeout(() => {
       this.parseMessageContent();
       this.cdr.markForCheck();
@@ -336,7 +336,7 @@ export class MessageComponent implements OnInit {
     }
   }
 
-  // Save the updated message content to Supabase
+  
   async saveEdit() {
     if (!this.message.id || !this.editContent.trim()) return;
     try {
@@ -356,7 +356,7 @@ export class MessageComponent implements OnInit {
     }
   }
 
-  // Trigger delete confirmation for this message
+  
   async deleteMessage() {
     this.closeTransientPopups();
     if (!this.message.id) return;

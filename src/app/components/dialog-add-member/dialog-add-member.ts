@@ -29,12 +29,12 @@ export class dialogAddMemberComponent implements OnInit {
   @Input() isEmbedded = false;
   @Output() dialogClosed = new EventEmitter<any>();
 
-  // Check if a user is currently online using the real-time presence signal
+  
   isUserOnline(user: User): boolean {
     return this.authSvc.onlineUserIds().has(user.id);
   }
 
-  // Resolves the input parameters from either MatDialog injection or component bindings
+  
   public get data() {
     return this.injectedData || this.inputData || { channelName: '' };
   }
@@ -46,7 +46,7 @@ export class dialogAddMemberComponent implements OnInit {
   selectedUsersList: User[] = [];
   isFocused = false;
 
-  // Loads all workspace users and checks initial display mode on component initialization
+  
   async ngOnInit() {
     const allUsers = await this.userSvc.getAllUsers();
     const currentUserId = this.authSvc.currentUser()?.id || null;
@@ -70,7 +70,7 @@ export class dialogAddMemberComponent implements OnInit {
     this.filterUsers();
   }
 
-  // Filters users based on query and excludes already selected users
+  
   filterUsers(): void {
     const query = this.searchQuery.trim().toLowerCase();
     if (!query) {
@@ -86,7 +86,7 @@ export class dialogAddMemberComponent implements OnInit {
     }
   }
 
-  // Adds user from suggestion dropdown to chips list
+  
   selectUserFromDropdown(user: User): void {
     if (!this.selectedUsersList.some(u => u.id === user.id)) {
       this.selectedUsersList.push(user);
@@ -95,18 +95,18 @@ export class dialogAddMemberComponent implements OnInit {
     this.filterUsers();
   }
 
-  // Removes user chip
+  
   removeUserChip(userId: string): void {
     this.selectedUsersList = this.selectedUsersList.filter(u => u.id !== userId);
     this.filterUsers();
   }
 
-  // Checks if button should be disabled
+  
   isSubmitDisabled(): boolean {
     return this.selectionType === 'specific' && this.selectedUsersList.length === 0;
   }
 
-  // Closes dialog
+  
   closeDialog(): void {
     if (this.dialogRef) {
       this.dialogRef.close();
@@ -114,7 +114,7 @@ export class dialogAddMemberComponent implements OnInit {
     this.dialogClosed.emit();
   }
 
-  // Submits selection and closes the dialog
+  
   saveSelection(): void {
     if (this.isSubmitDisabled()) return;
 

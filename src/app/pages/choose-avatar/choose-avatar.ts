@@ -57,7 +57,7 @@ export class ChooseAvatar {
     this.router.navigate(['/signup']);
   }
 
-  // Performs final user registration request using temporary signup data
+  
   async completeSignup(): Promise<void> {
     if (!this.signupData) {
       this.toast.show('Bitte zuerst die Registrierungsdaten ausfuellen.', 'error');

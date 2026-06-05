@@ -25,7 +25,7 @@ export class ProfileMenuComponent {
 
   constructor(private elementRef: ElementRef) {}
 
-  // Toggles the visibility of the profile drop-down menu
+  
   toggleMenu(event: Event) {
     event.stopPropagation();
     if (this.isOpen) {
@@ -36,7 +36,7 @@ export class ProfileMenuComponent {
     }
   }
 
-  // Closes the profile menu with an optional fade-out delay on mobile viewports
+  
   closeMenu() {
     if (!this.isOpen || this.isClosing) return;
 
@@ -51,7 +51,7 @@ export class ProfileMenuComponent {
     }
   }
 
-  // Closes the menu when clicking outside of the component element
+  
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const clickedInside = this.elementRef.nativeElement.contains(event.target);
@@ -74,7 +74,7 @@ export class ProfileMenuComponent {
     }
   }
 
-  // Resets the menu state when the window viewport is resized
+  
   @HostListener('window:resize')
   onResize() {
     this.viewportWidth = window.innerWidth;
@@ -82,7 +82,7 @@ export class ProfileMenuComponent {
     this.isClosing = false;
   }
 
-  // Closes the menu and triggers opening the user profile details view
+  
   openProfile() {
     const profile = this.currentUserProfile();
 
@@ -107,13 +107,13 @@ export class ProfileMenuComponent {
     this.profileDialogSvc.close();
   }
 
-  // Checks if the current logged-in user is online
+  
   isOnline(): boolean {
     const profile = this.currentUserProfile();
     return profile ? this.authService.onlineUserIds().has(profile.id) : false;
   }
 
-  // Logs out the user, cleans up presence status, and redirects to login page
+  
   async logout() {
     this.closeMenu();
     await this.authService.logout();

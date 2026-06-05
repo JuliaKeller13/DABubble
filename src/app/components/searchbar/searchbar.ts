@@ -32,7 +32,7 @@ export class SearchBarComponent implements OnInit {
   profilesResults: User[] = [];
   messagesResults: Message[] = [];
   
-  // Local caches to guarantee instantaneous (0ms) searches
+  
   private allUsersCache: User[] = [];
   private allChannelsCache: Channel[] = [];
   private allMessagesCache: Message[] = [];
@@ -71,13 +71,13 @@ export class SearchBarComponent implements OnInit {
     return this.authSvc.onlineUserIds().has(user.id);
   }
 
-  // Pre-fetches and caches all users, channels, memberships and messages in parallel
+  
   async refreshAllCaches() {
     const currentUserId = this.currentUserId;
     if (!currentUserId) return;
 
     try {
-      // 1. Fetch channel memberships
+      
       const { data: memberData, error: memberError } = await this.supabaseSvc.supabase
         .from('channel_members')
         .select('channel_id')
@@ -89,7 +89,7 @@ export class SearchBarComponent implements OnInit {
       }
       this.myChannelIdsCache = myChannelIds;
 
-      // 2. Fetch users, channels and messages
+      
       const [users, channels, messages] = await Promise.all([
         this.userSvc.getAllUsers(),
         this.channelSvc.channels().length > 0 ? Promise.resolve(this.channelSvc.channels()) : this.channelSvc.getChannels(),
@@ -107,7 +107,7 @@ export class SearchBarComponent implements OnInit {
 
       if (messages && messages.data) {
         const userMap = this.userResultsMap;
-        // Filter messages the user has access to, and attach sender details
+        
         this.allMessagesCache = (messages.data as Message[])
           .filter((msg) => {
             if (msg.channel_id) {
@@ -153,7 +153,7 @@ export class SearchBarComponent implements OnInit {
       return;
     }
 
-    // 1. CHANNELS SEARCH (synchronous local filter)
+    
     if (lowerQuery.startsWith('@')) {
       this.channelsResults = [];
     } else {
@@ -172,7 +172,7 @@ export class SearchBarComponent implements OnInit {
       }
     }
 
-    // 2. PROFILES SEARCH (synchronous local filter)
+    
     if (lowerQuery.startsWith('#')) {
       this.profilesResults = [];
     } else {
@@ -194,7 +194,7 @@ export class SearchBarComponent implements OnInit {
       }
     }
 
-    // 3. MESSAGES SEARCH (synchronous local filter)
+    
     if (lowerQuery.startsWith('#') || lowerQuery.startsWith('@')) {
       this.messagesResults = [];
     } else {
