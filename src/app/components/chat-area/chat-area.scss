@@ -104,6 +104,10 @@
     @include mx.flex(row, nowrap, flex-start, flex-end);
     gap: 24px;
     margin-bottom: 20px;
+
+    .chat-area__empty-title {
+      margin-bottom: 0;
+    }
   }
 
   &__empty-avatar {
@@ -124,7 +128,7 @@
     font-size: 24px;
     font-weight: 700;
     color: vars.$black;
-    margin: 0;
+    margin: 0 0 12px 0;
     font-family: var(--font-main);
   }
 
