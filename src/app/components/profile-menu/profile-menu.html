@@ -39,10 +39,18 @@
 
     <div class="profile-menu-sheet__options">
       <button class="profile-menu-sheet__option" (click)="openProfile()">
+        <span
+          class="profile-menu-sheet__icon profile-menu-sheet__icon--profile"
+          aria-hidden="true"
+        ></span>
         <span class="profile-menu-sheet__text">Profil</span>
       </button>
 
       <button class="profile-menu-sheet__option" (click)="logout()">
+        <span
+          class="profile-menu-sheet__icon profile-menu-sheet__icon--logout"
+          aria-hidden="true"
+        ></span>
         <span class="profile-menu-sheet__text">Log out</span>
       </button>
     </div>

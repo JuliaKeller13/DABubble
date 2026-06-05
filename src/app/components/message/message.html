@@ -176,7 +176,7 @@
           <div class="msg-container__rx-add-wrapper">
             <button
               class="msg-container__rx-add-btn"
-              (click)="showReactionPicker = !showReactionPicker"
+              (click)="toggleReactionPicker()"
               type="button"
               aria-label="Reaktion hinzufügen"
             >
@@ -238,7 +238,7 @@
     <div class="msg-container__menu-btn-wrapper">
       <button
         class="msg-container__menu-btn msg-container__menu-btn--add-rx"
-        (click)="showHoverReactionPicker = !showHoverReactionPicker"
+        (click)="toggleHoverReactionPicker()"
         type="button"
         title="Reaktion hinzufügen"
       >
@@ -323,14 +323,14 @@
           <div class="msg-container__more-dropdown">
             <button
               class="msg-container__dropdown-item"
-              (click)="startEdit(); showMoreMenu = false"
+              (click)="startEdit()"
               type="button"
             >
               Nachricht bearbeiten
             </button>
             <button
               class="msg-container__dropdown-item msg-container__dropdown-item--delete"
-              (click)="deleteMessage(); showMoreMenu = false"
+              (click)="deleteMessage()"
               type="button"
             >
               Nachricht löschen

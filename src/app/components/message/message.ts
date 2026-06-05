@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject, ElementRef, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ElementRef, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Message } from '../../interfaces/message.interface';
@@ -23,6 +23,10 @@ interface MessageToken {
   imports: [CommonModule, FormsModule],
   templateUrl: './message.html',
   styleUrl: './message.scss',
+  host: {
+    '(document:click)': 'onDocumentClick($event)',
+    '(mouseleave)': 'onMouseLeave()',
+  },
 })
 export class MessageComponent implements OnInit {
   private _message!: Message;
@@ -62,7 +66,21 @@ export class MessageComponent implements OnInit {
 
   // Toggles the visibility of the message options menu
   toggleMoreOptions() {
-    this.showMoreMenu = !this.showMoreMenu;
+    const shouldOpen = !this.showMoreMenu;
+    this.closeTransientPopups();
+    this.showMoreMenu = shouldOpen;
+  }
+
+  toggleReactionPicker() {
+    const shouldOpen = !this.showReactionPicker;
+    this.closeTransientPopups();
+    this.showReactionPicker = shouldOpen;
+  }
+
+  toggleHoverReactionPicker() {
+    const shouldOpen = !this.showHoverReactionPicker;
+    this.closeTransientPopups();
+    this.showHoverReactionPicker = shouldOpen;
   }
 
   // Emojis offered in the quick reaction bar
@@ -112,27 +130,27 @@ export class MessageComponent implements OnInit {
 
   // Toggle reaction on the message using the current user's profile
   async toggleReaction(emoji: string) {
-    this.showReactionPicker = false;
-    this.showHoverReactionPicker = false;
+    this.closeTransientPopups();
     if (!this.message.id) return;
     await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
   }
 
   // Closes all popups when a click occurs outside the message component
-  @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
-      this.showReactionPicker = false;
-      this.showHoverReactionPicker = false;
-      this.showMoreMenu = false;
-      this.showEditEmojiPicker = false;
+      this.closeAllPopups();
     }
+  }
+
+  onMouseLeave() {
+    this.closeTransientPopups();
   }
 
   showEditEmojiPicker = false;
 
   // Trigger opening the message thread view
   onStartThread() {
+    this.closeTransientPopups();
     this.threadClick.emit(this.message);
   }
 
@@ -147,6 +165,7 @@ export class MessageComponent implements OnInit {
 
   // Enable editing state for the message
   startEdit() {
+    this.closeTransientPopups();
     this.isEditing = true;
     this.editContent = this.message.content;
     this.showEditEmojiPicker = false;
@@ -335,10 +354,22 @@ export class MessageComponent implements OnInit {
 
   // Trigger delete confirmation for this message
   async deleteMessage() {
+    this.closeTransientPopups();
     if (!this.message.id) return;
     const msgId = this.message.id;
     this.delete.emit(msgId);
     await this.messageSvc.deleteMessage(msgId);
     this.toastSvc.show('Nachricht gelöscht', 'success', 3000, undefined, false);
+  }
+
+  private closeTransientPopups() {
+    this.showReactionPicker = false;
+    this.showHoverReactionPicker = false;
+    this.showMoreMenu = false;
+  }
+
+  private closeAllPopups() {
+    this.closeTransientPopups();
+    this.showEditEmojiPicker = false;
   }
 }

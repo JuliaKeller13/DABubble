@@ -128,10 +128,28 @@
 
   &__icon,
   &__icon-svg {
+    display: none;
     width: 24px;
     height: 24px;
-    color: inherit;
+    background-color: currentColor;
     flex-shrink: 0;
+    transition: background-color 0.15s ease;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: contain;
+  }
+
+  &__icon--profile {
+    mask-image: url('/img/icons/account_workspace/account_circle.svg');
+    -webkit-mask-image: url('/img/icons/account_workspace/account_circle.svg');
+  }
+
+  &__icon--logout {
+    mask-image: url('/img/icons/account_workspace/logout.svg');
+    -webkit-mask-image: url('/img/icons/account_workspace/logout.svg');
   }
 
   &__text {
@@ -207,9 +225,6 @@
   }
   .profile-menu-overlay {
     @include mx.flex(column, nowrap, flex-end, stretch);
-
-    &--closing {
-    }
   }
   .profile-menu-sheet {
     @include mx.flex(column, nowrap, flex-start, center);
@@ -241,6 +256,18 @@
 
     &__options {
       width: 100%;
+    }
+
+    &__option {
+      justify-content: flex-start;
+      gap: 15px;
+    }
+
+    &__icon,
+    &__icon-svg {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
     }
   }
 }
