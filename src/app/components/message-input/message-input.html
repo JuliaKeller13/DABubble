@@ -1,4 +1,22 @@
-<div class="message-input">
+<div class="message-input" (click)="onMessageInputClick()">
+  @if (showEmojiPicker) {
+    <div class="emoji-popup" (click)="$event.stopPropagation()">
+      <emoji-mart
+        title="Emoji auswählen"
+        [i18n]="emojiPickerI18n"
+        [isNative]="false"
+        [showPreview]="false"
+        [enableSearch]="true"
+        [emojiSize]="30"
+        [perLine]="9"
+        [style]="emojiPickerStyle"
+        set="google"
+        color="#444df2"
+        (emojiClick)="addEmoji($event)"
+      ></emoji-mart>
+    </div>
+  }
+
   <!-- User Mentions Popup -->
   @if (activePopup === 'users') {
     <div class="mention-popup" (click)="$event.stopPropagation()">
@@ -45,6 +63,7 @@
   }
 
   <textarea 
+    #messageTextarea
     class="message-input__textarea" 
     [placeholder]="placeholder"
     [(ngModel)]="messageText"
@@ -54,10 +73,10 @@
   
   <div class="message-input__actions">
     <div class="message-input__actions-left">
-      <button class="message-input__btn" [class.active]="isEmojiActive" (click)="toggleEmoji()" type="button" aria-label="Add Emoji">
+      <button class="message-input__btn" [class.active]="isEmojiActive" (click)="$event.stopPropagation(); toggleEmoji()" type="button" aria-label="Add Emoji">
         <img src="img/icons/chatarea/sentiment_satisfied.svg" class="message-input__icon" alt="Smiley">
       </button>
-      <button class="message-input__btn" [class.active]="isMentionActive" (click)="toggleMention()" type="button" aria-label="Mention User">
+      <button class="message-input__btn" [class.active]="isMentionActive" (click)="$event.stopPropagation(); toggleMention()" type="button" aria-label="Mention User">
         <img src="img/icons/chatarea/alternate_email.svg" class="message-input__icon" alt="Mention">
       </button>
     </div>

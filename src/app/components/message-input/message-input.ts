@@ -1,22 +1,30 @@
-import { Component, Input, Output, EventEmitter, OnDestroy, inject, ElementRef, HostListener } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { ThreadService } from '../../services/thread.service';
 
+type PopupType = 'none' | 'users' | 'channels';
+
 @Component({
   selector: 'app-message-input',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PickerModule],
   templateUrl: './message-input.html',
-  styleUrl: './message-input.scss'
+  styleUrl: './message-input.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:click)': 'onDocumentClick($event)',
+    '(document:keydown.escape)': 'onEscapePressed()'
+  }
 })
 export class MessageInputComponent implements OnDestroy {
   @Input() placeholder: string = 'Nachricht an #Entwicklerteam';
   @Output() sendMessage = new EventEmitter<string>();
   @Output() typing = new EventEmitter<boolean>();
+  @ViewChild('messageTextarea') private messageTextarea?: ElementRef<HTMLTextAreaElement>;
 
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
@@ -25,10 +33,40 @@ export class MessageInputComponent implements OnDestroy {
   private elementRef = inject(ElementRef);
 
   messageText = '';
-  isEmojiActive = false;
-  isMentionActive = false;
+  showEmojiPicker = false;
+  readonly emojiPickerStyle = {
+    width: '100%',
+    maxWidth: '100%'
+  };
+  readonly emojiPickerI18n = {
+    search: 'Suchen',
+    emojilist: 'Emoji-Liste',
+    notfound: 'Keine Emojis gefunden',
+    clear: 'Zuruecksetzen',
+    categories: {
+      search: 'Suchergebnisse',
+      recent: 'Haeufig verwendet',
+      people: 'Smileys & Personen',
+      nature: 'Tiere & Natur',
+      foods: 'Essen & Trinken',
+      activity: 'Aktivitaeten',
+      places: 'Reisen & Orte',
+      objects: 'Objekte',
+      symbols: 'Symbole',
+      flags: 'Flaggen',
+      custom: 'Benutzerdefiniert'
+    },
+    skintones: {
+      1: 'Standard-Hautfarbe',
+      2: 'Helle Hautfarbe',
+      3: 'Mittelhelle Hautfarbe',
+      4: 'Mittlere Hautfarbe',
+      5: 'Mitteldunkle Hautfarbe',
+      6: 'Dunkle Hautfarbe'
+    }
+  };
 
-  activePopup: 'none' | 'users' | 'channels' = 'none';
+  activePopup: PopupType = 'none';
   popupUsers: { id: string; name: string; avatar: string }[] = [];
   popupChannels: { id: string; name: string }[] = [];
   isLoading = false;
@@ -39,9 +77,21 @@ export class MessageInputComponent implements OnDestroy {
   private static channelMembersCache = new Map<string, { id: string; name: string; avatar: string }[]>();
   private static allUsersCache: { id: string; name: string; avatar: string }[] = [];
 
-  private typingTimeout: any;
-  private typingInterval: any;
+  private typingTimeout: ReturnType<typeof setTimeout> | null = null;
+  private typingInterval: ReturnType<typeof setInterval> | null = null;
   private isCurrentlyTyping = false;
+
+  get isEmojiActive(): boolean {
+    return this.showEmojiPicker;
+  }
+
+  get isMentionActive(): boolean {
+    return this.activePopup !== 'none';
+  }
+
+  private get textareaElement(): HTMLTextAreaElement | null {
+    return this.messageTextarea?.nativeElement ?? null;
+  }
 
   get currentUserId(): string {
     return this.authSvc.currentUser()?.id || '';
@@ -109,7 +159,7 @@ export class MessageInputComponent implements OnDestroy {
   }
 
   // Listens to Enter key hits and submits unless Shift key is held down
-  onEnterPressed(event: any) {
+  onEnterPressed(event: Event) {
     const keyboardEvent = event as KeyboardEvent;
     if (!keyboardEvent.shiftKey) {
       keyboardEvent.preventDefault();
@@ -117,13 +167,21 @@ export class MessageInputComponent implements OnDestroy {
     }
   }
 
+  onMessageInputClick() {
+    this.closePopup();
+  }
+
   // Toggles the visibility of the emoji picker
   toggleEmoji() {
-    this.isEmojiActive = !this.isEmojiActive;
+    const shouldOpen = !this.showEmojiPicker;
+    this.closeMentionPopup();
+    this.showEmojiPicker = shouldOpen;
   }
 
   // Toggles the visibility of the mention dropdown and cycles popup states
   async toggleMention() {
+    this.closeEmojiPicker();
+
     if (this.activePopup === 'none') {
       this.activePopup = 'users';
       await this.loadUsers();
@@ -133,7 +191,33 @@ export class MessageInputComponent implements OnDestroy {
     } else {
       this.activePopup = 'none';
     }
-    this.isMentionActive = this.activePopup !== 'none';
+  }
+
+  addEmoji(event: { emoji?: { native?: string } }) {
+    const emoji = event.emoji?.native;
+    if (!emoji) {
+      return;
+    }
+
+    const textarea = this.textareaElement;
+    if (!textarea) {
+      this.messageText += emoji;
+      return;
+    }
+
+    const startPos = textarea.selectionStart ?? this.messageText.length;
+    const endPos = textarea.selectionEnd ?? startPos;
+
+    this.messageText =
+      this.messageText.substring(0, startPos) +
+      emoji +
+      this.messageText.substring(endPos);
+
+    const newCursorPos = startPos + emoji.length;
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
   }
 
   async loadUsers() {
@@ -239,7 +323,7 @@ export class MessageInputComponent implements OnDestroy {
   }
 
   checkForTriggerChar() {
-    const textarea = this.elementRef.nativeElement.querySelector('.message-input__textarea') as HTMLTextAreaElement;
+    const textarea = this.textareaElement;
     if (!textarea) return;
 
     const text = this.messageText;
@@ -252,12 +336,10 @@ export class MessageInputComponent implements OnDestroy {
 
       if (currentWord === '@') {
         this.activePopup = 'users';
-        this.isMentionActive = true;
-        this.loadUsers();
+        void this.loadUsers();
       } else if (currentWord === '#') {
         this.activePopup = 'channels';
-        this.isMentionActive = true;
-        this.loadChannels();
+        void this.loadChannels();
       } else if (this.activePopup !== 'none') {
         this.updatePopupVisibilityBasedOnText(text, selectionEnd);
       }
@@ -297,7 +379,7 @@ export class MessageInputComponent implements OnDestroy {
   }
 
   insertMention(mentionText: string) {
-    const textarea = this.elementRef.nativeElement.querySelector('.message-input__textarea') as HTMLTextAreaElement;
+    const textarea = this.textareaElement;
     if (textarea) {
       const startPos = textarea.selectionStart;
       const endPos = textarea.selectionEnd;
@@ -327,23 +409,31 @@ export class MessageInputComponent implements OnDestroy {
   }
 
   closePopup() {
-    this.activePopup = 'none';
-    this.isMentionActive = false;
+    this.closeMentionPopup();
+    this.closeEmojiPicker();
   }
 
-  @HostListener('document:click', ['$event'])
+  private closeMentionPopup() {
+    this.activePopup = 'none';
+  }
+
+  private closeEmojiPicker() {
+    this.showEmojiPicker = false;
+  }
+
   onDocumentClick(event: MouseEvent) {
-    if (this.activePopup !== 'none') {
-      const clickedInside = this.elementRef.nativeElement.contains(event.target);
-      if (!clickedInside) {
-        this.closePopup();
-      }
+    if (this.activePopup === 'none' && !this.showEmojiPicker) {
+      return;
+    }
+
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.closePopup();
     }
   }
 
-  @HostListener('keydown.escape', ['$event'])
-  onEscapePressed(event: any) {
-    if (this.activePopup !== 'none') {
+  onEscapePressed() {
+    if (this.activePopup !== 'none' || this.showEmojiPicker) {
       this.closePopup();
     }
   }

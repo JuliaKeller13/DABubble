@@ -68,6 +68,8 @@ $z-index-modal-content: 55;
 $z-index-toast: 60;
 $z-index-header-sidebar: 100;
 $z-index-mobile-modal: 110;
+$z-index-profile-overlay: 120;
+$z-index-profile-overlay-content: 121;
 
 // ==========================================================================
 // SHADOWS
@@ -75,4 +77,5 @@ $z-index-mobile-modal: 110;
 $shadow-dialog: 0px 6px 10px 0px #00000033;
 $shadow-btn: 0px 4px 6px rgba(0, 0, 0, 0.04);
 $shadow-btn-hover: 0px 6px 12px rgba(0, 0, 0, 0.08);
+$shadow-emoji-popup: 0px 18px 38px rgba($purple-1, 0.12), 0px 10px 24px rgba($black, 0.12);
 

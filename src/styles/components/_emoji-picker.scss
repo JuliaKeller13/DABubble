@@ -1,0 +1,195 @@
+@use '../abstracts/mixins' as mx;
+@use '../abstracts/variables' as vars;
+
+.emoji-popup .emoji-mart {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-main);
+  color: vars.$black;
+  border: none;
+  border-radius: inherit;
+  background-color: vars.$white;
+  box-shadow: none;
+}
+
+.emoji-popup .emoji-mart-bar {
+  border-color: transparent;
+  background-color: vars.$white;
+}
+
+.emoji-popup .emoji-mart-bar:first-child {
+  padding: 12px 20px 2px;
+}
+
+.emoji-popup .emoji-mart-anchors {
+  @include mx.flex(row, nowrap, space-between, center);
+  gap: 6px;
+  padding: 0;
+}
+
+.emoji-popup .emoji-mart-anchor {
+  @include mx.flex(row, nowrap, center, center);
+  cursor: pointer;
+  border-radius: 50%;
+  color: vars.$text-gray;
+  padding: 12px 6px 14px;
+  transition: color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+
+.emoji-popup .emoji-mart-anchor:hover,
+.emoji-popup .emoji-mart-anchor:focus,
+.emoji-popup .emoji-mart-anchor-selected {
+  color: vars.$purple-1;
+  background-color: rgba(vars.$bg-color, 0.9);
+}
+
+.emoji-popup .emoji-mart-anchor:hover {
+  transform: translateY(-1px);
+}
+
+.emoji-popup .emoji-mart-anchor:focus-visible {
+  outline: 2px solid rgba(vars.$purple-1, 0.22);
+  outline-offset: -2px;
+}
+
+.emoji-popup .emoji-mart-anchor-bar {
+  display: none;
+}
+
+.emoji-popup .emoji-mart-search {
+  @include mx.flex(row, nowrap, space-between, center);
+  margin-top: 0;
+  padding: 16px;
+}
+
+.emoji-popup .emoji-mart-search input {
+  height: 52px;
+  padding: 0 52px 0 20px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background-color: vars.$bg-color;
+  color: vars.$black;
+  font-family: var(--font-main);
+  font-size: var(--text-emoji-search-size);
+  font-weight: 500;
+  line-height: 1;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.emoji-popup .emoji-mart-search input::placeholder {
+  color: vars.$text-gray;
+}
+
+.emoji-popup .emoji-mart-search input:hover {
+  border-color: vars.$text-gray;
+}
+
+.emoji-popup .emoji-mart-search input:focus {
+  border-color: vars.$purple-3;
+  background-color: vars.$bg-color;
+  box-shadow: none;
+  outline: none;
+}
+
+.emoji-popup .emoji-mart-search input:focus::placeholder,
+.emoji-popup .emoji-mart-search input:not(:placeholder-shown)::placeholder {
+  color: transparent;
+}
+
+.emoji-popup .emoji-mart-search:has(input:focus) .emoji-mart-search-icon svg,
+.emoji-popup .emoji-mart-search:has(input:not(:placeholder-shown)) .emoji-mart-search-icon svg {
+  fill: vars.$black;
+}
+
+.emoji-popup .emoji-mart-search-icon {
+  top: 50%;
+  right: 40px;
+  width: 24px;
+  height: 24px;
+  @include mx.flex(row, nowrap, center, center);
+  padding: 4px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.emoji-popup .emoji-mart-search-icon svg {
+  fill: vars.$text-gray;
+}
+
+.emoji-popup .emoji-mart-scroll {
+  height: 330px;
+  padding: 0 4px 20px;
+  margin-bottom: 10px;
+  scrollbar-gutter: stable both-edges;
+  @include mx.scrollbar(6px, vars.$light-purple);
+}
+
+.emoji-popup .emoji-mart-category-label span {
+  padding: 16px 0 8px;
+  background-color: vars.$white;
+  color: vars.$purple-3;
+  font-family: var(--font-main);
+  font-size: var(--text-emoji-category-size);
+  font-weight: var(--text-emoji-category-weight);
+  letter-spacing: var(--text-emoji-category-letter-spacing);
+  text-transform: uppercase;
+}
+
+.emoji-popup .emoji-mart-category-list {
+  display: grid;
+  grid-template-columns: repeat(9, max-content);
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  column-gap: 6px;
+  row-gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.emoji-popup .emoji-mart-category-list li {
+  display: flex;
+  justify-content: center;
+  width: auto;
+}
+
+.emoji-popup .emoji-mart-category .emoji-mart-emoji {
+  border-radius: 14px;
+}
+
+.emoji-popup .emoji-mart-category .emoji-mart-emoji:hover:before {
+  inset: 0;
+  background-color: vars.$white;
+  border-radius: 14px;
+}
+
+.emoji-popup .emoji-mart-category .emoji-mart-emoji span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+  line-height: 1;
+  transform-origin: center center;
+  transition: transform 0.12s ease;
+}
+
+.emoji-popup .emoji-mart-category .emoji-mart-emoji:hover span {
+  transform: scale(1.08);
+}
+
+.emoji-popup .emoji-mart-no-results {
+  color: vars.$text-gray;
+}
+
+@include mx.mobile {
+  .emoji-popup .emoji-mart-scroll {
+    padding: 0 14px 20px;
+  }
+
+  .emoji-popup .emoji-mart-anchor-selected {
+    background-color: transparent;
+  }
+}

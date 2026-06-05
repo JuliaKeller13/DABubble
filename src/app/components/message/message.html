@@ -185,7 +185,7 @@
 
             <!-- Emoji dropdown picker -->
             @if (showReactionPicker) {
-              <div class="msg-container__picker">
+              <div class="msg-container__picker" [class.msg-container__picker--right]="isCurrentUser">
                 @for (emoji of quickEmojis; track emoji) {
                   <button
                     class="msg-container__picker-emoji"
