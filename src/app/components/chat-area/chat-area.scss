@@ -22,6 +22,29 @@
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
     clip-path: inset(0 0 -20px 0 round 30px 30px 0 0);
     flex-shrink: 0;
+
+    &--new-msg {
+      position: relative;
+      z-index: vars.$z-index-dropdown;
+      clip-path: none;
+      height: auto;
+      min-height: 165px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding-top: 25px;
+      padding-bottom: 25px;
+      gap: 15px;
+
+      @include mx.tablet-lg {
+        min-height: 135px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        gap: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
   }
 
 
@@ -409,6 +432,180 @@
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+.chat-area {
+  &__new-msg-recipient-container {
+    position: relative;
+    @include mx.flex(row, nowrap, flex-start, center);
+    margin: 10px 0 0 0;
+    width: 100%;
+    padding: 10px 25px;
+    background-color: vars.$white;
+    border: 1px solid vars.$light-purple;
+    border-radius: 30px;
+    box-sizing: border-box;
+    gap: 10px;
+
+    @include mx.tablet-lg {
+      margin: 5px 0 0 0;
+      padding: 8px 16px;
+    }
+  }
+
+  &__new-msg-recipient-label {
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 500;
+    color: vars.$black;
+    user-select: none;
+  }
+
+  &__new-msg-recipient-chips {
+    @include mx.flex(row, wrap, flex-start, center);
+    flex: 1;
+    gap: 8px;
+  }
+
+  &__new-msg-recipient-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 400;
+    color: vars.$black;
+    padding: 0;
+
+    &::placeholder {
+      color: vars.$text-gray;
+      font-size: 18px;
+      font-weight: 400;
+    }
+  }
+
+  &__recipient-chip {
+    @include mx.flex(row, nowrap, flex-start, center);
+    background-color: vars.$bg-color;
+    border: 1px solid vars.$light-purple;
+    border-radius: 20px;
+    padding: 4px 10px;
+    gap: 6px;
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: 500;
+    color: vars.$black;
+    transition: background-color 0.15s ease;
+
+    &--channel {
+      background-color: rgba(68, 77, 242, 0.08);
+      border-color: rgba(68, 77, 242, 0.2);
+      color: vars.$purple-3;
+      .chat-area__chip-hash {
+        font-weight: 700;
+      }
+    }
+  }
+
+  &__chip-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__chip-text {
+    white-space: nowrap;
+  }
+
+  &__chip-remove {
+    @include mx.flex(row, nowrap, center, center);
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background-color: vars.$white;
+    border: 1px solid vars.$light-purple;
+    border-radius: 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.12);
+    z-index: vars.$z-index-header-sidebar;
+    max-height: 250px;
+    overflow-y: auto;
+    @include mx.scrollbar(6px, vars.$light-purple);
+    box-sizing: border-box;
+    padding: 10px;
+  }
+
+  &__search-dropdown-group {
+    @include mx.flex(column, nowrap, flex-start, stretch);
+    gap: 4px;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__search-dropdown-group-title {
+    font-family: var(--font-main);
+    font-size: 14px;
+    font-weight: 600;
+    color: vars.$text-gray;
+    padding: 4px 12px;
+    user-select: none;
+  }
+
+  &__search-dropdown-item {
+    @include mx.flex(row, nowrap, flex-start, center);
+    padding: 8px 16px;
+    border-radius: 100px;
+    cursor: pointer;
+    gap: 12px;
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: 500;
+    color: vars.$black;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background-color: vars.$bg-color;
+      color: vars.$purple-1;
+    }
+  }
+
+  &__dropdown-item-hash {
+    font-weight: 700;
+    font-size: 18px;
+    color: vars.$black;
+  }
+
+  &__dropdown-item-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__dropdown-item-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 /* #region RESPONSIVE */
