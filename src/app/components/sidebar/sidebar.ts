@@ -88,11 +88,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.messageSvc.unsubscribe(this.incomingDMsSubscription);
     }
 
-    console.log('[Sidebar] Subscribing to DMs for user:', currentUserId);
     this.incomingDMsSubscription = this.messageSvc.subscribeToAllUserDirectMessages(
       currentUserId,
       (msg) => {
-        console.log('[Sidebar] Received DM in real-time subscription:', msg);
         const activeDMUser = this.userSvc.activeDirectChatUser();
 
         
@@ -102,14 +100,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
             this.setSafeLocalStorageItem(`chat_last_read:${currentUserId}:${msg.sender_id}`, new Date().toISOString());
           } else {
             
-            console.log('[Sidebar] Incrementing unread count for sender:', msg.sender_id);
             this.unreadUsers.update((prev) => {
               const count = prev[msg.sender_id] || 0;
               const updated = {
                 ...prev,
                 [msg.sender_id]: count + 1,
               };
-              console.log('[Sidebar] Updated unread counts:', updated);
               return updated;
             });
           }

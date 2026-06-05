@@ -489,19 +489,12 @@ export class MessageService {
           table: 'messages',
         },
         async (payload) => {
-          console.log('[Realtime DM] New message payload received:', payload);
           const rawMessage = payload.new as Message;
           if (!rawMessage || !rawMessage.id) return;
 
           
           const isDMInvolvingUs = rawMessage.recipient_id && 
             (rawMessage.sender_id === currentUserId || rawMessage.recipient_id === currentUserId);
-
-          console.log('[Realtime DM] Is DM involving us?', isDMInvolvingUs, {
-            recipient_id: rawMessage.recipient_id,
-            sender_id: rawMessage.sender_id,
-            currentUserId
-          });
 
           if (!isDMInvolvingUs) return;
 
@@ -515,9 +508,7 @@ export class MessageService {
           callback(rawMessage);
         }
       )
-      .subscribe((status) => {
-        console.log('[Realtime DM] Channel subscription status:', status);
-      });
+      .subscribe();
 
     return channel;
   }
