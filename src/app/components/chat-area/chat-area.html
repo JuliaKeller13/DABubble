@@ -135,9 +135,10 @@
     } @else if (messages().length === 0) {
       <div class="chat-area__empty-state">
         @if (activeChannel()) {
-          <span class="chat-area__empty-hash">#</span>
-          <h3 class="chat-area__empty-title">Willkommen in #{{ activeChannel()?.name }}!</h3>
-          <p class="chat-area__empty-text">Das ist der Anfang des Channels #{{ activeChannel()?.name }}.</p>
+          <h3 class="chat-area__empty-title"># {{ activeChannel()?.name }}</h3>
+          <p class="chat-area__empty-text">
+            Du hast diesen Channel heute erstellt. Das ist der Anfang des Channels <span class="chat-area__empty-highlight"># {{ activeChannel()?.name }}</span>.
+          </p>
         } @else if (activeDirectChatUser()) {
           <div class="chat-area__empty-header">
             <button class="chat-area__empty-profile-trigger" type="button" (click)="openActiveDirectChatProfile()">
