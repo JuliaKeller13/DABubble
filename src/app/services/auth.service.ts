@@ -144,7 +144,7 @@ export class AuthService {
       }
       return newProfile as UserProfile;
     }
-
+    
     this.supabaseSvc.supabase
       .from('profiles')
       .update({ status: 'online', display_name: displayName })

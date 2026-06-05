@@ -14,12 +14,12 @@ export class channelService {
   
   private activeChannelMembersSignal = signal<User[]>([]);
 
-  // Expose the active channel, channels list and members as read-only signals
+  
   readonly activeChannel = this.activeChannelSignal.asReadonly();
   readonly channels = this.channelsSignal.asReadonly();
   readonly activeChannelMembers = this.activeChannelMembersSignal.asReadonly();
 
-  // Update the active channel and load members proactively
+  
   async selectChannel(channel: Channel | null) {
     this.activeChannelSignal.set(channel);
     if (channel && channel.id) {
@@ -49,14 +49,14 @@ export class channelService {
     return [];
   }
 
-  // Load all channels into the reactive signal
+  
   async loadChannels(): Promise<Channel[]> {
     const fetched = await this.getChannels();
     this.channelsSignal.set(fetched);
     return fetched;
   }
 
-  // Fetch all channels from Supabase that the current user is a member of
+  
   async getChannels(): Promise<Channel[]> {
     const { data: { user }, error: userError } = await this.supabaseSvc.supabase.auth.getUser();
     if (userError || !user) {
@@ -92,7 +92,7 @@ export class channelService {
     return data as Channel[];
   }
 
-  // Insert new channel
+  
   async createChannel(channel: Channel): Promise<any> {
     const { data, error } = await this.supabaseSvc.supabase
       .from('channels')
@@ -113,12 +113,12 @@ export class channelService {
       await this.addMembersToChannel(active.id, [channel.created_by]);
     }
     
-    // Reload channels to update the signal
+    
     await this.loadChannels();
     return data;
   }
 
-  // Update channel properties in database and local signals
+  
   async updateChannel(id: string, updates: Partial<Channel>): Promise<any> {
     const { data, error } = await this.supabaseSvc.supabase
       .from('channels')
@@ -131,12 +131,12 @@ export class channelService {
       throw error;
     }
 
-    // Update the local channels signal array in place
+    
     this.channelsSignal.set(
       this.channelsSignal().map(c => c.id === id ? { ...c, ...updates } : c)
     );
 
-    // Update the active channel signal if it was the updated channel
+    
     const active = this.activeChannel();
     if (active && active.id === id) {
       this.activeChannelSignal.set({ ...active, ...updates });
@@ -145,7 +145,7 @@ export class channelService {
     return data;
   }
 
-  // Delete a channel from Supabase and update local signals
+  
   async deleteChannel(id: string): Promise<any> {
     const { data, error } = await this.supabaseSvc.supabase
       .from('channels')
@@ -158,12 +158,12 @@ export class channelService {
       throw error;
     }
 
-    // Filter out the deleted channel from local list signal
+    
     this.channelsSignal.set(
       this.channelsSignal().filter(c => c.id !== id)
     );
 
-    // If the deleted channel was active, switch to first remaining or null
+    
     const active = this.activeChannel();
     if (active && active.id === id) {
       const remaining = this.channels();
@@ -173,7 +173,7 @@ export class channelService {
     return data;
   }
 
-  // Add multiple members to a channel, filtering out existing ones to prevent duplicates
+  
   async addMembersToChannel(channelId: string, userIds: string[]): Promise<any> {
     if (userIds.length === 0) return [];
 
@@ -211,7 +211,7 @@ export class channelService {
     return data;
   }
 
-  // Remove a member from a channel
+  
   async removeMemberFromChannel(channelId: string, userId: string): Promise<any> {
     const { data, error } = await this.supabaseSvc.supabase
       .from('channel_members')
@@ -227,7 +227,7 @@ export class channelService {
     return data;
   }
 
-  // Get all members of a specific channel
+  
   async getChannelMembers(channelId: string): Promise<User[]> {
     const { data, error } = await this.supabaseSvc.supabase
       .from('channel_members')

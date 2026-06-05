@@ -10,7 +10,7 @@ export class userService {
     private activeDirectChatUserSignal = signal<User | null>(null);
     readonly activeDirectChatUser = this.activeDirectChatUserSignal.asReadonly();
 
-    // Helper method to filter out duplicate guest profiles
+    
     filterDuplicateGuests(users: User[], currentUserId: string | null): User[] {
         const guests = users.filter((u) => u.display_name === 'Gast');
         if (guests.length <= 1) return users;
@@ -19,12 +19,12 @@ export class userService {
         return users.filter((u) => u.display_name !== 'Gast' || u.id === guestToShow.id);
     }
 
-    // Select active target user for direct messaging
+    
     selectDirectChatUser(user: User | null) {
         this.activeDirectChatUserSignal.set(user);
     }
 
-    // Save or update user profile data in the database
+    
     async upsertProfile(user: User): Promise<any> {
         const { data, error } = await this.supabaseSvc.supabase
             .from('profiles')
@@ -43,7 +43,7 @@ export class userService {
         return data;
     }
 
-    // Get all registered user profiles from the database
+    
     async getAllUsers(): Promise<User[]> {
         const { data, error } = await this.supabaseSvc.supabase
             .from('profiles')
@@ -56,7 +56,7 @@ export class userService {
         return data as User[];
     }
 
-    // Fetch a single user profile by ID from the database
+    
     async getUserById(id: string): Promise<User | null> {
         const { data, error } = await this.supabaseSvc.supabase
             .from('profiles')

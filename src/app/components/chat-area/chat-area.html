@@ -114,6 +114,7 @@
 
         @for (msg of group.messages; track msg.id) {
           <app-message
+            [id]="'message-' + msg.id"
             [message]="msg"
             [currentUserId]="currentUserId"
             (threadClick)="onThreadClicked($event)"

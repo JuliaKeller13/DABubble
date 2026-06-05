@@ -20,12 +20,12 @@ export class dialogCreateChannelComponent {
   channelName = '';
   channelDescription = '';
 
-  // Close the dialog
+  
   closeDialog(): void {
     this.dialogRef.close();
   }
 
-  // Emit channel data to the parent component
+  
   saveChannel(): void {
     if (this.channelName.trim()) {
       this.channelSaved.emit({

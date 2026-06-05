@@ -11,11 +11,12 @@ export class MessageService {
   private supabaseSvc = inject(supabaseService);
   private userSvc = inject(userService);
   public messageDeleted = new EventEmitter<string>();
+  public searchTargetMessageId: string | null = null;
 
-  // Fetch all messages for a specific channel and join the sender profile
+  
   async getChannelMessages(channelId: string): Promise<Message[]> {
     try {
-      // Fetch messages first
+      
       const { data: messages, error } = await this.supabaseSvc.supabase
         .from('messages')
         .select('*')
@@ -27,7 +28,7 @@ export class MessageService {
         return [];
       }
 
-      // Fetch all user profiles to map them in memory (resilient to FK naming schema issues)
+      
       const allUsers = await this.userSvc.getAllUsers();
       const userMap = new Map(allUsers.map((u) => [u.id, u]));
 
@@ -41,7 +42,7 @@ export class MessageService {
     }
   }
 
-  // Insert a new message into Supabase
+  
   async sendMessage(
     content: string,
     senderId: string,
@@ -70,7 +71,7 @@ export class MessageService {
         throw error;
       }
 
-      // Map the sender profile to the returned message
+      
       const sender = await this.userSvc.getUserById(senderId);
       const newMessage = data as Message;
       if (newMessage && !newMessage.created_at) {
@@ -86,7 +87,7 @@ export class MessageService {
     }
   }
 
-  // Deletes a message from Supabase by its ID
+  
   async deleteMessage(msgId: string): Promise<void> {
     this.messageDeleted.emit(msgId);
     try {
@@ -99,7 +100,7 @@ export class MessageService {
     }
   }
 
-  // Fetch all direct messages between two users and join their sender profile
+  
   async getDirectMessages(currentUserId: string, targetUserId: string): Promise<Message[]> {
     try {
       const { data: messages, error } = await this.supabaseSvc.supabase
@@ -126,7 +127,7 @@ export class MessageService {
     }
   }
 
-  // Send a new direct message to a user
+  
   async sendDirectMessage(
     content: string,
     senderId: string,
@@ -163,7 +164,7 @@ export class MessageService {
     }
   }
 
-  // Subscribe to real-time additions, updates and deletions for direct messages between two users
+  
   subscribeToDirectMessages(
     currentUserId: string,
     targetUserId: string,
@@ -220,7 +221,7 @@ export class MessageService {
     return channel;
   }
 
-  // Subscribe to real-time additions and updates for a channel's messages
+  
   subscribeToChannelMessages(
     channelId: string,
     callback: (event: 'INSERT' | 'UPDATE' | 'DELETE', message: Message) => void,
@@ -248,7 +249,7 @@ export class MessageService {
 
           if (rawMessage.channel_id !== channelId) return;
 
-          // Fetch sender profile to attach to real-time message
+          
           if (rawMessage.sender_id) {
             const senderProfile = await this.userSvc.getUserById(rawMessage.sender_id);
             if (senderProfile) {
@@ -273,17 +274,17 @@ export class MessageService {
     return channel;
   }
 
-  // Unsubscribe from a realtime channel subscription
+  
   async unsubscribe(channel: RealtimeChannel): Promise<void> {
     if (channel) {
       await this.supabaseSvc.supabase.removeChannel(channel);
     }
   }
 
-  // Add or toggle a user's reaction (emoji) on a message
+  
   async toggleReaction(messageId: string, emoji: string, userId: string): Promise<void> {
     try {
-      // Get the existing reactions first
+      
       const { data, error } = await this.supabaseSvc.supabase
         .from('messages')
         .select('reactions')
@@ -299,10 +300,10 @@ export class MessageService {
       let userIds = reactions[emoji] || [];
 
       if (userIds.includes(userId)) {
-        // Toggle off: remove user ID
+        
         userIds = userIds.filter((id) => id !== userId);
       } else {
-        // Toggle on: add user ID
+        
         userIds.push(userId);
       }
 
@@ -325,7 +326,7 @@ export class MessageService {
     }
   }
 
-  // Fetch all replies for a thread by parent message ID
+  
   async getThreadReplies(parentMessageId: string): Promise<Message[]> {
     try {
       const { data: messages, error } = await this.supabaseSvc.supabase
@@ -349,7 +350,7 @@ export class MessageService {
     }
   }
 
-  // Subscribe to real-time additions, updates, and deletions for replies in a thread
+  
   subscribeToThreadReplies(
     parentMessageId: string,
     callback: (event: 'INSERT' | 'UPDATE' | 'DELETE', message: Message) => void,
@@ -395,7 +396,7 @@ export class MessageService {
     return channel;
   }
 
-  // Sends typing status broadcast to a Supabase channel
+  
   sendTypingStatus(channel: RealtimeChannel | null, userId: string, userName: string, isTyping: boolean) {
     if (channel) {
       channel.send({
@@ -406,7 +407,7 @@ export class MessageService {
     }
   }
 
-  // Subscribe to all incoming direct messages sent to the current user
+  
   subscribeToAllIncomingDirectMessages(
     currentUserId: string,
     callback: (message: Message) => void
@@ -440,7 +441,7 @@ export class MessageService {
     return channel;
   }
 
-  // Get unique user IDs of contacts we have message history with
+  
   async getActiveDMPartners(currentUserId: string): Promise<string[]> {
     try {
       const { data, error } = await this.supabaseSvc.supabase
@@ -472,7 +473,7 @@ export class MessageService {
     }
   }
 
-  // Subscribe to all direct messages involving the current user (sent or received)
+  
   subscribeToAllUserDirectMessages(
     currentUserId: string,
     callback: (message: Message) => void
@@ -492,7 +493,7 @@ export class MessageService {
           const rawMessage = payload.new as Message;
           if (!rawMessage || !rawMessage.id) return;
 
-          // Only trigger if it is a DM involving the current user
+          
           const isDMInvolvingUs = rawMessage.recipient_id && 
             (rawMessage.sender_id === currentUserId || rawMessage.recipient_id === currentUserId);
 
@@ -521,7 +522,7 @@ export class MessageService {
     return channel;
   }
 
-  // Fetch all direct messages involving the current user (sent or received)
+  
   async getAllUserDirectMessages(currentUserId: string): Promise<Message[]> {
     try {
       const { data, error } = await this.supabaseSvc.supabase
@@ -541,7 +542,7 @@ export class MessageService {
     }
   }
 
-  // Delete all direct messages between two users
+  
   async deleteDirectChatHistory(currentUserId: string, targetUserId: string): Promise<boolean> {
     try {
       const { error } = await this.supabaseSvc.supabase

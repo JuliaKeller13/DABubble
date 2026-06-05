@@ -39,6 +39,10 @@ export class MessageComponent implements OnInit {
     return this._message;
   }
 
+  get isHighlighted(): boolean {
+    return this.message?.id ? this.message.id === this.messageSvc.searchTargetMessageId : false;
+  }
+
   @Input({ required: true }) currentUserId!: string;
   @Input() isThreadMessage = false;
 
@@ -63,7 +67,7 @@ export class MessageComponent implements OnInit {
 
   private static allUsers: User[] = [];
   tokens: MessageToken[] = [];
-
+  
   toggleMoreOptions() {
     const shouldOpen = !this.showMoreMenu;
     this.closeTransientPopups();
@@ -81,13 +85,14 @@ export class MessageComponent implements OnInit {
     this.closeTransientPopups();
     this.showHoverReactionPicker = shouldOpen;
   }
-
+  
   quickEmojis = ['🚀', '✅', '👍', '❤️', '😂', '😮'];
 
+  
   get replyCount(): number {
     return (this.message as any).reply_count || 0;
   }
-
+  
   get formattedLastReplyTime(): string {
     const time = (this.message as any).last_reply_time;
     if (!time) return '';
@@ -96,11 +101,11 @@ export class MessageComponent implements OnInit {
     const mins = String(date.getMinutes()).padStart(2, '0');
     return `${hrs}:${mins}`;
   }
-
+  
   get isCurrentUser(): boolean {
     return this.message.sender_id === this.currentUserId;
   }
-
+  
   get formattedTime(): string {
     if (!this.message.created_at) return '';
     const date = new Date(this.message.created_at);
@@ -108,7 +113,7 @@ export class MessageComponent implements OnInit {
     const mins = String(date.getMinutes()).padStart(2, '0');
     return `${hrs}:${mins} Uhr`;
   }
-
+  
   get reactionList() {
     if (!this.message.reactions) return [];
     return Object.entries(this.message.reactions).map(([emoji, userIds]) => {
@@ -120,13 +125,13 @@ export class MessageComponent implements OnInit {
       };
     });
   }
-
+  
   async toggleReaction(emoji: string) {
     this.closeTransientPopups();
     if (!this.message.id) return;
     await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
   }
-
+  
   onDocumentClick(event: MouseEvent) {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.closeAllPopups();
@@ -149,12 +154,12 @@ export class MessageComponent implements OnInit {
   }
 
   showEditEmojiPicker = false;
-
+  
   onStartThread() {
     this.closeTransientPopups();
     this.threadClick.emit(this.message);
   }
-
+  
   openSenderProfile(): void {
     if (!this.message.sender) {
       return;
@@ -162,28 +167,30 @@ export class MessageComponent implements OnInit {
 
     this.profileDialogSvc.open(this.message.sender, { suppressOutsideCloseOnce: this.isCurrentUser });
   }
-
+  
   startEdit() {
     this.closeTransientPopups();
     this.isEditing = true;
     this.editContent = this.message.content;
     this.showEditEmojiPicker = false;
   }
-
+  
   cancelEdit() {
     this.isEditing = false;
     this.showEditEmojiPicker = false;
   }
-
+  
   toggleEditEmojiPicker() {
     this.showEditEmojiPicker = !this.showEditEmojiPicker;
   }
 
+  
   addEmojiToEdit(emoji: string) {
     this.editContent += emoji;
     this.showEditEmojiPicker = false;
   }
 
+  
   onEditKeyDown(event: any) {
     const keyboardEvent = event as KeyboardEvent;
     if (keyboardEvent.key === 'Enter' && !keyboardEvent.shiftKey) {
@@ -203,6 +210,7 @@ export class MessageComponent implements OnInit {
         console.error('Fehler beim Laden der User im MessageComponent-Init:', e);
       }
     }
+    
     
     setTimeout(() => {
       this.parseMessageContent();
@@ -326,6 +334,7 @@ export class MessageComponent implements OnInit {
     }
   }
 
+  
   async saveEdit() {
     if (!this.message.id || !this.editContent.trim()) return;
     try {
@@ -345,6 +354,7 @@ export class MessageComponent implements OnInit {
     }
   }
 
+  
   async deleteMessage() {
     this.closeTransientPopups();
     if (!this.message.id) return;

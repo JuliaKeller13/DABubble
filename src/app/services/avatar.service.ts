@@ -15,12 +15,12 @@ export class avatarService {
 
   private defaultAvatar = 'img/avatars/avatar_default.svg';
 
-  // Return all available avatars
+  
   getAvatars(): string[] {
     return this.avatars;
   }
 
-  // Return default avatar path
+  
   getDefaultAvatar(): string {
     return this.defaultAvatar;
   }

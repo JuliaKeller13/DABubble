@@ -18,53 +18,53 @@ export class MainComponent implements OnInit {
   isSidebarClosed = false;
   private isInitialLoad = true;
   
-  // Inject the shared thread service
+  
   public threadSvc = inject(ThreadService);
 
-  // Performs initial screen size checks on component initialization
+  
   ngOnInit() {
     this.checkScreenSize();
   }
 
-  // Reacts to browser viewport resize events
+  
   @HostListener('window:resize')
   onResize() {
     this.checkScreenSize();
   }
 
-  // Adjusts sidebar and thread visibility flags based on viewport width
+  
   private checkScreenSize() {
     const width = window.innerWidth;
 
     if (this.isInitialLoad) {
       this.isInitialLoad = false;
       if (width <= 1024) {
-        this.isSidebarClosed = false; // Show sidebar on mobile/tablet on initial load
+        this.isSidebarClosed = false; 
       } else if (width <= 1440) {
-        this.isSidebarClosed = true;  // Close sidebar on smaller desktops by default
+        this.isSidebarClosed = true;  
       } else {
-        this.isSidebarClosed = false; // Keep sidebar open on larger desktops
+        this.isSidebarClosed = false; 
       }
       this.threadSvc.closeThread();
       return;
     }
 
-    // On resize:
+    
     if (width <= 1024) {
-      // Do nothing on mobile/tablet resize to preserve current view
+      
       return;
     }
 
     if (width <= 1440) {
       this.isSidebarClosed = true;
-      this.threadSvc.closeThread(); // Close thread automatically on smaller viewports
+      this.threadSvc.closeThread(); 
     } else {
       this.isSidebarClosed = false;
-      this.threadSvc.closeThread(); // Keep thread closed by default
+      this.threadSvc.closeThread(); 
     }
   }
 
-  // Handles sidebar toggle actions and coordinates thread panel visibility
+  
   onSidebarToggle(isClosed: boolean) {
     this.isSidebarClosed = isClosed;
     if (window.innerWidth <= 1440) {
@@ -74,7 +74,7 @@ export class MainComponent implements OnInit {
     }
   }
 
-  // Handles header back button clicks
+  
   onHeaderBack() {
     if (this.threadSvc.isThreadOpen()) {
       this.threadSvc.closeThread();

@@ -1,5 +1,5 @@
-<div class="msg-container" [class.msg-container--right]="isCurrentUser" (click)="onMessageContainerClick($event)">
-  <!-- Avatar -->
+<div class="msg-container" [class.msg-container--right]="isCurrentUser" [class.msg-container--highlighted]="isHighlighted" (click)="onMessageContainerClick($event)">
+  
   <div class="msg-container__avatar-box">
     <img
       [src]="message.sender?.avatar_url || 'img/avatars/avatar_default.svg'"
@@ -11,9 +11,9 @@
     />
   </div>
 
-  <!-- Content Block -->
+  
   <div class="msg-container__content-block">
-    <!-- Header: Sender & Time -->
+    
     <div class="msg-container__meta">
       @if (isCurrentUser) {
         <span class="msg-container__time">{{ formattedTime }}</span>
@@ -28,7 +28,7 @@
       }
     </div>
 
-    <!-- Bubble / Edit mode -->
+    
     @if (isEditing) {
       <div class="msg-container__edit-box">
         <textarea
@@ -86,7 +86,7 @@
               </span>
             </button>
 
-            <!-- Emoji Picker Dropdown in Edit Mode -->
+            
             @if (showEditEmojiPicker) {
               <div class="msg-container__picker msg-container__picker--edit">
                 @for (emoji of quickEmojis; track emoji) {
@@ -143,9 +143,9 @@
       </div>
     }
 
-    <!-- Bottom Metadata: Replies & Reactions -->
+    
     <div class="msg-container__footer">
-      <!-- Replies link underneath (Only show if there are actual replies, matching Figma) -->
+      
       @if (replyCount > 0 && !isThreadMessage) {
         <div class="msg-container__thread-replies">
           <button class="msg-container__thread-link" (click)="onStartThread()" type="button">
@@ -157,7 +157,7 @@
         </div>
       }
 
-      <!-- Reactions block underneath (Only show if there are active reactions) -->
+      
       @if (reactionList.length > 0) {
         <div class="msg-container__reactions">
           @for (rx of reactionList; track rx.emoji) {
@@ -172,7 +172,7 @@
             </button>
           }
 
-          <!-- Add reaction button -->
+          
           <div class="msg-container__rx-add-wrapper">
             <button
               class="msg-container__rx-add-btn"
@@ -183,7 +183,7 @@
               <img src="img/icons/chatarea/sentiment_satisfied.svg" alt="Reaktion hinzufügen" />
             </button>
 
-            <!-- Emoji dropdown picker -->
+            
             @if (showReactionPicker) {
               <div class="msg-container__picker" [class.msg-container__picker--right]="isCurrentUser">
                 @for (emoji of quickEmojis; track emoji) {
@@ -203,9 +203,9 @@
     </div>
   </div>
 
-  <!-- Hover Menu Options (Floating panel on hover) -->
+  
   <div class="msg-container__hover-menu" [class.msg-container__hover-menu--right]="isCurrentUser">
-    <!-- Emoji Check Reaction -->
+    
     <button
       class="msg-container__menu-btn"
       (click)="toggleReaction('✅')"
@@ -222,7 +222,7 @@
       </span>
     </button>
 
-    <!-- Thumbs Up Reaction (capa.svg) -->
+    
     <button
       class="msg-container__menu-btn"
       (click)="toggleReaction('👍')"
@@ -234,7 +234,7 @@
       </span>
     </button>
 
-    <!-- Add Reaction Picker Toggle -->
+    
     <div class="msg-container__menu-btn-wrapper">
       <button
         class="msg-container__menu-btn msg-container__menu-btn--add-rx"
@@ -259,7 +259,7 @@
         </span>
       </button>
 
-      <!-- Quick emoji picker overlay when clicked from hover menu -->
+      
       @if (showHoverReactionPicker) {
         <div
           class="msg-container__picker msg-container__picker--hover-menu"
@@ -278,7 +278,7 @@
       }
     </div>
 
-    <!-- Start Thread (Comment) -->
+    
     @if (!isThreadMessage) {
       <button
         class="msg-container__menu-btn msg-container__menu-btn--comment"
@@ -292,7 +292,7 @@
       </button>
     }
 
-    <!-- More Actions (Three dots vertical menu) -->
+    
     @if (isCurrentUser) {
       <div class="msg-container__menu-btn-wrapper">
         <button
@@ -318,7 +318,7 @@
           </span>
         </button>
 
-        <!-- Dropdown with Edit options when three dots clicked -->
+        
         @if (showMoreMenu) {
           <div class="msg-container__more-dropdown">
             <button

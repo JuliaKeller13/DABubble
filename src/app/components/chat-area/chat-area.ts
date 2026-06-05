@@ -66,11 +66,11 @@ export class ChatAreaComponent implements OnDestroy {
   private threadSvc = inject(ThreadService);
   private profileDialogSvc = inject(ProfileDialogService);
 
-  // Expose active channel and active direct chat user from the shared services
+  
   activeChannel = this.channelSvc.activeChannel;
   activeDirectChatUser = this.userSvc.activeDirectChatUser;
 
-  // Check if a user is currently online
+  
   isUserOnline(user: User): boolean {
     return this.authSvc.onlineUserIds().has(user.id);
   }
@@ -94,22 +94,22 @@ export class ChatAreaComponent implements OnDestroy {
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
-  // Retrieve current user ID
+  
   get currentUserId(): string {
     return this.authSvc.currentUser()?.id || '';
   }
 
-  // Returns the first three members of the active channel to display as avatars
+  
   get visibleMembers(): ChannelMember[] {
     return this.members().slice(0, 3);
   }
 
-  // Returns the total number of members in the active channel
+  
   get memberCount(): number {
     return this.members().length;
   }
 
-  // Listens to active channel changes, loads members and handles messages subscription
+  
   constructor() {
     this.messageDeletedSubscription = this.messageSvc.messageDeleted.subscribe((id) => {
       this.messages.update((prev) => prev.filter((m) => m.id !== id));
@@ -119,7 +119,7 @@ export class ChatAreaComponent implements OnDestroy {
       }
     });
 
-    // Effect 1: Channel Members (reads from reactive activeChannelMembers signal in channelService)
+    
     effect(() => {
       const dbMembers = this.channelSvc.activeChannelMembers();
       const filteredMembers = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId);
@@ -132,7 +132,7 @@ export class ChatAreaComponent implements OnDestroy {
       );
     });
 
-    // Effect 2: Messages and Realtime Updates (both Channel and DM)
+    
     effect(async () => {
       const channel = this.activeChannel();
       const targetUser = this.activeDirectChatUser();
@@ -142,23 +142,23 @@ export class ChatAreaComponent implements OnDestroy {
         this.isChannelMembersOpen = false;
       }
 
-      // Cleanup previous subscription
+      
       if (this.messagesSubscription) {
         this.messageSvc.unsubscribe(this.messagesSubscription);
         this.messagesSubscription = null;
       }
 
-      // Reset typing users list when transitioning to a different chat room
+      
       this.typingUsers.set([]);
 
       if (channel && channel.id) {
         try {
-          // Fetch historical channel messages
+          
           const dbMessages = await this.messageSvc.getChannelMessages(channel.id);
           this.messages.set(dbMessages);
-          this.scrollToBottom();
+          this.checkAndScrollToSearchTarget();
 
-          // Create realtime subscription for live insertions, updates and typing broadcasts
+          
           this.messagesSubscription = this.messageSvc.subscribeToChannelMessages(
             channel.id,
             (event, msg) => {
@@ -184,12 +184,12 @@ export class ChatAreaComponent implements OnDestroy {
         }
       } else if (targetUser && targetUser.id) {
         try {
-          // Fetch historical direct messages
+          
           const dbMessages = await this.messageSvc.getDirectMessages(this.currentUserId, targetUser.id);
           this.messages.set(dbMessages);
-          this.scrollToBottom();
+          this.checkAndScrollToSearchTarget();
 
-          // Create realtime subscription for DMs
+          
           this.messagesSubscription = this.messageSvc.subscribeToDirectMessages(
             this.currentUserId,
             targetUser.id,
@@ -220,7 +220,7 @@ export class ChatAreaComponent implements OnDestroy {
     });
   }
 
-  // Clean up subscriptions on destroy
+  
   ngOnDestroy() {
     if (this.messagesSubscription) {
       this.messageSvc.unsubscribe(this.messagesSubscription);
@@ -230,12 +230,12 @@ export class ChatAreaComponent implements OnDestroy {
     }
   }
 
-  // Group messages dynamically by their formatted creation date label
-  // Group only root messages dynamically by their formatted creation date label
+  
+  
   get groupedMessages(): DateGroup[] {
     const groups: DateGroup[] = [];
 
-    // Filter root messages and map their reply counts and last reply times
+    
     const rootMessages = this.messages()
       .filter((msg) => !msg.parent_id)
       .map((msg) => {
@@ -259,7 +259,7 @@ export class ChatAreaComponent implements OnDestroy {
     return groups;
   }
 
-  // Generate date labels (Today, Yesterday, or localized weekdays)
+  
   private getDateLabel(dateStr?: string): string {
     if (!dateStr) return '';
     const date = new Date(dateStr);
@@ -278,11 +278,11 @@ export class ChatAreaComponent implements OnDestroy {
         month: 'long',
       };
       const formatted = date.toLocaleDateString('de-DE', options);
-      return formatted.replace('.', ''); // Removes the dot after the day number (e.g. "14. January" -> "14 January")
+      return formatted.replace('.', ''); 
     }
   }
 
-  // Push scroll viewport position to the bottom of the message feed
+  
   private scrollToBottom() {
     setTimeout(() => {
       if (this.scrollContainer) {
@@ -292,7 +292,30 @@ export class ChatAreaComponent implements OnDestroy {
     }, 100);
   }
 
-  // Send a new message to the active channel or direct chat user
+  
+  public checkAndScrollToSearchTarget() {
+    const targetId = this.messageSvc.searchTargetMessageId;
+    if (targetId) {
+      setTimeout(() => {
+        const element = document.getElementById('message-' + targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          this.scrollToBottom();
+        }
+        
+        setTimeout(() => {
+          if (this.messageSvc.searchTargetMessageId === targetId) {
+            this.messageSvc.searchTargetMessageId = null;
+          }
+        }, 3000);
+      }, 300);
+    } else {
+      this.scrollToBottom();
+    }
+  }
+
+  
   async onSendMessage(content: any) {
     if (typeof content !== 'string') return;
     const channel = this.activeChannel();
@@ -329,12 +352,12 @@ export class ChatAreaComponent implements OnDestroy {
     }
   }
 
-  // Triggers opening the thread view for a message
+  
   onThreadClicked(message: Message) {
     this.threadSvc.openThread(message);
   }
 
-  // Handles message deletion by updating the local messages list and closing thread if active
+  
   onMessageDeleted(messageId: string) {
     this.messages.update((prev) => prev.filter((m) => m.id !== messageId));
     const activeThreadMsg = this.threadSvc.activeMessage();
@@ -343,11 +366,11 @@ export class ChatAreaComponent implements OnDestroy {
     }
   }
 
-  // Handles real-time typing events from other users
+  
   handleTypingBroadcast(payload: { userId: string; userName: string; isTyping: boolean }) {
     if (payload.userId === this.currentUserId) return;
 
-    // Clear existing timeout for this user
+    
     const existingTimeout = this.typingTimeouts.get(payload.userId);
     if (existingTimeout) {
       clearTimeout(existingTimeout);
@@ -355,25 +378,25 @@ export class ChatAreaComponent implements OnDestroy {
     }
 
     if (payload.isTyping) {
-      // Add user if not already in the typing list
+      
       this.typingUsers.update((users) => {
         if (users.some((u) => u.userId === payload.userId)) return users;
         return [...users, { userId: payload.userId, userName: payload.userName }];
       });
 
-      // Automatically remove user after 5 seconds of inactivity as a safeguard
+      
       const timeout = setTimeout(() => {
         this.typingUsers.update((users) => users.filter((u) => u.userId !== payload.userId));
         this.typingTimeouts.delete(payload.userId);
       }, 5000);
       this.typingTimeouts.set(payload.userId, timeout);
     } else {
-      // Remove user from typing list
+      
       this.typingUsers.update((users) => users.filter((u) => u.userId !== payload.userId));
     }
   }
 
-  // Emits typing state over the active realtime channel broadcast
+  
   onTypingStatusChange(isTyping: boolean) {
     const profile = this.authSvc.currentUserProfile();
     if (profile && this.messagesSubscription) {
@@ -386,7 +409,7 @@ export class ChatAreaComponent implements OnDestroy {
     }
   }
 
-  // Builds the localized typing text string
+  
   getTypingText(): string {
     const users = this.typingUsers();
     if (users.length === 0) return '';
@@ -395,12 +418,12 @@ export class ChatAreaComponent implements OnDestroy {
     return 'Mehrere Personen schreiben...';
   }
 
-  // Opens the channel details dialog view
+  
   openChannelDetails() {
     this.isChannelDetailsOpen = true;
   }
 
-  // Closes the channel details dialog view
+  
   closeChannelDetails() {
     this.isChannelDetailsOpen = false;
   }
@@ -408,26 +431,26 @@ export class ChatAreaComponent implements OnDestroy {
   channelMembersInitialView: 'members' | 'add' = 'members';
   channelMembersPosition: 'right-110' | 'right-50' = 'right-110';
 
-  // Opens the channel members list dialog
+  
   openChannelMembers() {
     this.isChannelMembersOpen = true;
     this.channelMembersInitialView = 'members';
     this.channelMembersPosition = 'right-110';
   }
 
-  // Closes the channel members dialog
+  
   closeChannelMembers() {
     this.isChannelMembersOpen = false;
   }
 
-  // Opens the members dialog directly on the add-member sub-view
+  
   async onAddMember() {
     this.isChannelMembersOpen = true;
     this.channelMembersInitialView = 'add';
     this.channelMembersPosition = 'right-50';
   }
 
-  // Adds selected members to the channel and refreshes the member list
+  
   async onMembersAdded(memberResult: any) {
     if (!memberResult) return;
 
@@ -447,7 +470,7 @@ export class ChatAreaComponent implements OnDestroy {
       if (memberIds.length > 0) {
         await this.channelSvc.addMembersToChannel(active.id, memberIds);
 
-        // Reload active channel members signal (automatically updates members in chat-area)
+        
         await this.channelSvc.refreshActiveChannelMembers();
       }
     } catch (error) {
@@ -455,13 +478,13 @@ export class ChatAreaComponent implements OnDestroy {
     }
   }
 
-  // Refreshes the channel members list after a member has been removed
+  
   async onMemberRemoved(memberId: string) {
     const active = this.activeChannel();
     if (!active || !active.id) return;
 
     try {
-      // Reload active channel members signal (automatically updates members in chat-area)
+      
       await this.channelSvc.refreshActiveChannelMembers();
     } catch (error) {
       console.error('Error reloading members list after removal:', error);
