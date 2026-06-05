@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
@@ -25,6 +25,10 @@ export class SearchBarComponent implements OnInit {
   private threadSvc = inject(ThreadService);
   private supabaseSvc = inject(supabaseService);
   private elementRef = inject(ElementRef);
+
+  @Input() placeholder: string = 'Devspace durchsuchen';
+  @Input() isSidebarSearch: boolean = false;
+  @Output() itemSelected = new EventEmitter<void>();
 
   searchQuery = '';
   showDropdown = false;
@@ -210,6 +214,7 @@ export class SearchBarComponent implements OnInit {
     this.userSvc.selectDirectChatUser(null);
     this.threadSvc.closeThread();
     this.showDropdown = false;
+    this.itemSelected.emit();
   }
 
   async selectUser(user: User) {
@@ -224,6 +229,7 @@ export class SearchBarComponent implements OnInit {
     }
     
     this.showDropdown = false;
+    this.itemSelected.emit();
   }
 
   async selectMessage(msg: Message) {
@@ -275,6 +281,7 @@ export class SearchBarComponent implements OnInit {
     }
 
     this.showDropdown = false;
+    this.itemSelected.emit();
   }
 
   formatMessageDate(dateStr?: string): string {

@@ -13,6 +13,7 @@ import { MatDialog, MatDialogModule, MatDialogConfig } from '@angular/material/d
 import { dialogCreateChannelComponent } from '../dialog-create-channel/dialog-create-channel';
 import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member';
 import { ToastService } from '../../services/toast.service';
+import { SearchBarComponent } from '../searchbar/searchbar';
 
 
 export function getResponsiveDialogConfig(config: MatDialogConfig, type: 'full-screen' | 'bottom-sheet'): MatDialogConfig {
@@ -44,7 +45,7 @@ export function getResponsiveDialogConfig(config: MatDialogConfig, type: 'full-s
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, SearchBarComponent],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss'
 })
@@ -419,6 +420,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  onSearchItemSelected() {
+    if (window.innerWidth <= 1440) {
+      this.isClosed = true;
+      this.toggleSidebar.emit(true);
+    }
   }
 
 }

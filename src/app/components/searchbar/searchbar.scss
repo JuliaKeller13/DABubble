@@ -249,3 +249,32 @@
     border-radius: 20px;
   }
 }
+
+.searchbar-container--sidebar {
+  max-width: 100%;
+
+  .searchbar-input {
+    height: 50px;
+    padding: 0 54px 0 24px;
+    font-size: 16px;
+    border: 1px solid var(--light-purple);
+    border-radius: 100px;
+    background-color: var(--white);
+
+    &:focus {
+      border-color: var(--purple-2);
+    }
+  }
+
+  .searchbar-icon {
+    right: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .mention-popup {
+    top: 60px;
+    max-width: 100%;
+    border-radius: 20px;
+  }
+}

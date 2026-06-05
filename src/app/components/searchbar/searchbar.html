@@ -1,9 +1,9 @@
-<div class="searchbar-container">
+<div class="searchbar-container" [class.searchbar-container--sidebar]="isSidebarSearch">
   <input 
     type="text" 
     class="searchbar-input" 
-    placeholder="Devspace durchsuchen"
-    aria-label="Devspace durchsuchen"
+    [placeholder]="placeholder"
+    [attr.aria-label]="placeholder"
     #searchInput
     (input)="onSearch(searchInput.value)"
     (focus)="onFocus()"

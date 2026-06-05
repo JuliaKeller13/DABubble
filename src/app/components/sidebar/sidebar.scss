@@ -464,6 +464,10 @@
     opacity: 0.6;
     transition: opacity 0.15s ease;
   }
+
+  &__search-responsive {
+    display: none;
+  }
 }
 
 /* #region RESPONSIVE */
@@ -495,6 +499,12 @@
 
     &__header {
       margin-bottom: 0;
+    }
+
+    &__search-responsive {
+      display: block;
+      margin-bottom: 20px;
+      margin-top: 8px;
     }
 
     &__header-left {
