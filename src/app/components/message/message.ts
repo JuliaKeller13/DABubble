@@ -130,28 +130,11 @@ export class MessageComponent implements OnInit {
     this.closeTransientPopups();
     if (!this.message.id) return;
 
-    if (!this.message.reactions) {
-      this.message.reactions = {};
-    }
-
-    const reactionsCopy = { ...this.message.reactions };
-    let userIds = reactionsCopy[emoji] ? [...reactionsCopy[emoji]] : [];
-
-    const index = userIds.indexOf(this.currentUserId);
-    if (index > -1) {
-      userIds.splice(index, 1);
-    } else {
-      userIds.push(this.currentUserId);
-    }
-
-    if (userIds.length === 0) {
-      delete reactionsCopy[emoji];
-    } else {
-      reactionsCopy[emoji] = userIds;
-    }
-
-    this.message.reactions = reactionsCopy;
-    this.cdr.markForCheck();
+    this.messageSvc.optimisticReaction.emit({
+      messageId: this.message.id,
+      emoji,
+      userId: this.currentUserId
+    });
 
     try {
       await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
