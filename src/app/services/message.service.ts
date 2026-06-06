@@ -11,6 +11,7 @@ export class MessageService {
   private supabaseSvc = inject(supabaseService);
   private userSvc = inject(userService);
   public messageDeleted = new EventEmitter<string>();
+  public directChatCleared = new EventEmitter<{ currentUserId: string; targetUserId: string }>();
   public optimisticReaction = new EventEmitter<{ messageId: string; emoji: string; userId: string }>();
   public searchTargetMessageId: string | null = null;
 
@@ -546,6 +547,7 @@ export class MessageService {
         console.error('Error deleting direct chat history:', error.message);
         return false;
       }
+      this.directChatCleared.emit({ currentUserId, targetUserId });
       return true;
     } catch (err) {
       console.error('Failed to delete direct chat history:', err);

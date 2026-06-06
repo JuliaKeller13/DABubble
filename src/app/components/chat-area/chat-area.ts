@@ -28,6 +28,7 @@ import { Channel } from '../../interfaces/channel.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { ThreadService } from '../../services/thread.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
+import { ToastService } from '../../services/toast.service';
 
 interface ChannelMember {
   id: string;
@@ -69,6 +70,7 @@ export class ChatAreaComponent implements OnDestroy {
   private authSvc = inject(AuthService);
   private threadSvc = inject(ThreadService);
   private profileDialogSvc = inject(ProfileDialogService);
+  private toastSvc = inject(ToastService);
 
   activeChannel = this.channelSvc.activeChannel;
   activeDirectChatUser = this.userSvc.activeDirectChatUser;
@@ -79,6 +81,14 @@ export class ChatAreaComponent implements OnDestroy {
   selectedRecipientType: 'channel' | 'user' | null = null;
   filteredChannels: Channel[] = [];
   filteredUsers: User[] = [];
+
+  isHeaderMenuOpen = signal(false);
+  isClearConfirmOpen = signal(false);
+  isDragging = false;
+  touchStartY = 0;
+  currentTranslateY = 0;
+  isAnimationActive = false;
+  isClosing = false;
 
   
   isUserOnline(user: User): boolean {
@@ -102,6 +112,7 @@ export class ChatAreaComponent implements OnDestroy {
   private messagesSubscription: RealtimeChannel | null = null;
   private messageDeletedSubscription: Subscription | null = null;
   private optimisticReactionSubscription: Subscription | null = null;
+  private directChatClearedSubscription: Subscription | null = null;
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
@@ -127,6 +138,13 @@ export class ChatAreaComponent implements OnDestroy {
       const activeThreadMsg = this.threadSvc.activeMessage();
       if (activeThreadMsg && activeThreadMsg.id === id) {
         this.threadSvc.closeThread();
+      }
+    });
+
+    this.directChatClearedSubscription = this.messageSvc.directChatCleared.subscribe(({ targetUserId }) => {
+      const activeUser = this.activeDirectChatUser();
+      if (activeUser && activeUser.id === targetUserId) {
+        this.messages.set([]);
       }
     });
 
@@ -270,6 +288,9 @@ export class ChatAreaComponent implements OnDestroy {
     if (this.optimisticReactionSubscription) {
       this.optimisticReactionSubscription.unsubscribe();
     }
+    if (this.directChatClearedSubscription) {
+      this.directChatClearedSubscription.unsubscribe();
+    }
   }
 
   
@@ -408,6 +429,11 @@ export class ChatAreaComponent implements OnDestroy {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
+    
+    if (this.isHeaderMenuOpen() && !target.closest('.chat-area__menu-container')) {
+      this.closeHeaderMenu();
+    }
+
     if (!target.closest('.chat-area__new-msg-recipient-container')) {
       this.showSearchDropdown = false;
     }
@@ -623,5 +649,107 @@ export class ChatAreaComponent implements OnDestroy {
     } catch (error) {
       console.error('Error reloading members list after removal:', error);
     }
+  }
+
+  toggleHeaderMenu() {
+    this.isHeaderMenuOpen.update((prev) => !prev);
+  }
+
+  closeHeaderMenu() {
+    this.isHeaderMenuOpen.set(false);
+  }
+
+  async hideActiveChat() {
+    this.closeHeaderMenu();
+    const targetUser = this.activeDirectChatUser();
+    const currentUserId = this.currentUserId;
+    if (targetUser && currentUserId) {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        localStorage.setItem(`chat_closed:${currentUserId}:${targetUser.id}`, new Date().toISOString());
+      }
+      this.userSvc.selectDirectChatUser(null);
+      const fetchedChannels = await this.channelSvc.loadChannels();
+      if (fetchedChannels.length > 0) {
+        this.channelSvc.selectChannel(fetchedChannels[0]);
+      }
+    }
+  }
+
+  openClearConfirm() {
+    this.closeHeaderMenu();
+    this.isClearConfirmOpen.set(true);
+    this.isAnimationActive = true;
+    setTimeout(() => {
+      this.isAnimationActive = false;
+    }, 300);
+  }
+
+  cancelClearHistory() {
+    this.isClearConfirmOpen.set(false);
+    this.isAnimationActive = false;
+    this.isClosing = false;
+  }
+
+  closeWithSlideDown() {
+    if (typeof window !== 'undefined' && window.innerWidth <= 1200) {
+      this.isClosing = true;
+      setTimeout(() => {
+        this.cancelClearHistory();
+      }, 200);
+    } else {
+      this.cancelClearHistory();
+    }
+  }
+
+  onTouchStart(event: TouchEvent) {
+    this.touchStartY = event.touches[0].clientY;
+    this.isDragging = true;
+  }
+
+  onTouchMove(event: TouchEvent) {
+    if (!this.isDragging) return;
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+    const currentY = event.touches[0].clientY;
+    const deltaY = currentY - this.touchStartY;
+    if (deltaY > 0) {
+      this.currentTranslateY = deltaY;
+    } else {
+      this.currentTranslateY = 0;
+    }
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    if (this.currentTranslateY > 80) {
+      this.cancelClearHistory();
+    }
+    this.currentTranslateY = 0;
+  }
+
+  async confirmClearHistory() {
+    const targetUser = this.activeDirectChatUser();
+    const currentUserId = this.currentUserId;
+    if (targetUser && currentUserId) {
+      const success = await this.messageSvc.deleteDirectChatHistory(currentUserId, targetUser.id);
+      if (success) {
+        this.messages.set([]);
+        this.toastSvc.show('Chatverlauf gelöscht', 'success', 3000, undefined, false);
+        
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem(`chat_closed:${currentUserId}:${targetUser.id}`, new Date().toISOString());
+        }
+        this.userSvc.selectDirectChatUser(null);
+        const fetchedChannels = await this.channelSvc.loadChannels();
+        if (fetchedChannels.length > 0) {
+          this.channelSvc.selectChannel(fetchedChannels[0]);
+        }
+      } else {
+        this.toastSvc.show('Fehler beim Löschen des Chatverlaufs', 'error', 3000, undefined, false);
+      }
+    }
+    this.isClearConfirmOpen.set(false);
   }
 }

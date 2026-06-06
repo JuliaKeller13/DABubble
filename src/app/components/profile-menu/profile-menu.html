@@ -34,8 +34,18 @@
     class="profile-menu-sheet"
     [class.profile-menu-sheet--closing]="isClosing"
     (click)="$event.stopPropagation()"
+    [style.transform]="isClosing ? 'translateX(-50%) translateY(100%)' : (isDragging ? 'translateX(-50%) translateY(' + currentTranslateY + 'px)' : '')"
+    [style.transition]="isDragging ? 'none' : 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)'"
+    [style.animation]="isAnimationActive ? '' : 'none'"
   >
-    <div class="profile-menu-sheet__handle" (click)="closeMenu()"></div>
+    <div
+      class="profile-menu-sheet__handle"
+      (click)="closeMenu()"
+      (touchstart)="onTouchStart($event)"
+      (touchmove)="onTouchMove($event)"
+      (touchend)="onTouchEnd($event)"
+      (touchcancel)="onTouchEnd($event)"
+    ></div>
 
     <div class="profile-menu-sheet__options">
       <button class="profile-menu-sheet__option" (click)="openProfile()">

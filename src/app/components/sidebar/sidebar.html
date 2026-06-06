@@ -123,8 +123,8 @@
                   {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
                 </span>
                 
-                <button class="sidebar__delete-chat-btn" (click)="deleteChat(user.id, $event)" aria-label="Chat löschen">
-                  <svg class="sidebar__delete-chat-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button class="sidebar__close-chat-btn" (click)="closeChat(user.id, $event)" aria-label="Chat ausblenden">
+                  <svg class="sidebar__close-chat-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"/>
                     <line x1="6" y1="6" x2="18" y2="18"/>
                   </svg>

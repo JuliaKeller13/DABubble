@@ -291,7 +291,7 @@
       background-color: var(--bg-color);
       color: var(--purple-1);
 
-      .sidebar__delete-chat-btn {
+      .sidebar__close-chat-btn {
         opacity: 1;
         pointer-events: auto;
       }
@@ -430,12 +430,12 @@
     margin: 8px 20px;
   }
 
-  &__delete-chat-btn {
+  &__close-chat-btn {
     @include mx.flex(row, nowrap, center, center);
     background-color: var(--white, #ffffff);
     border: none;
     cursor: pointer;
-    color: #ed1c24; 
+    color: var(--text-gray, #686868); 
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -445,18 +445,18 @@
     transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 
     &:hover {
-      background-color: var(--white, #ffffff) !important;
-      color: #c1121f !important;
+      background-color: var(--bg-color, #f4f4f4) !important;
+      color: var(--purple-1, #444df2) !important;
       opacity: 1 !important;
       transform: scale(1.05);
 
-      .sidebar__delete-chat-icon {
+      .sidebar__close-chat-icon {
         opacity: 1 !important;
       }
     }
   }
 
-  &__delete-chat-icon {
+  &__close-chat-icon {
     width: 16px;
     height: 16px;
     stroke: currentColor;

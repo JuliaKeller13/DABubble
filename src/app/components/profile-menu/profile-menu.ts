@@ -22,10 +22,14 @@ export class ProfileMenuComponent {
   isOpen = false;
   isClosing = false;
   viewportWidth = typeof window === 'undefined' ? 1280 : window.innerWidth;
+  
+  touchStartY = 0;
+  isDragging = false;
+  currentTranslateY = 0;
+  isAnimationActive = false;
 
   constructor(private elementRef: ElementRef) {}
 
-  
   toggleMenu(event: Event) {
     event.stopPropagation();
     if (this.isOpen) {
@@ -33,15 +37,19 @@ export class ProfileMenuComponent {
     } else {
       this.isOpen = true;
       this.isClosing = false;
+      this.isAnimationActive = true;
+      setTimeout(() => {
+        this.isAnimationActive = false;
+      }, 300);
     }
   }
 
-  
   closeMenu() {
     if (!this.isOpen || this.isClosing) return;
 
     if (window.innerWidth <= 1024) {
       this.isClosing = true;
+      this.isAnimationActive = false;
       setTimeout(() => {
         this.isOpen = false;
         this.isClosing = false;
@@ -49,6 +57,34 @@ export class ProfileMenuComponent {
     } else {
       this.isOpen = false;
     }
+  }
+
+  onTouchStart(event: TouchEvent) {
+    this.touchStartY = event.touches[0].clientY;
+    this.isDragging = true;
+  }
+
+  onTouchMove(event: TouchEvent) {
+    if (!this.isDragging) return;
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+    const currentY = event.touches[0].clientY;
+    const deltaY = currentY - this.touchStartY;
+    if (deltaY > 0) {
+      this.currentTranslateY = deltaY;
+    } else {
+      this.currentTranslateY = 0;
+    }
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    if (!this.isDragging) return;
+    this.isDragging = false;
+    if (this.currentTranslateY > 80) {
+      this.closeMenu();
+    }
+    this.currentTranslateY = 0;
   }
 
   

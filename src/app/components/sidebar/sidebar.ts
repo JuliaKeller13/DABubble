@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
 import { Channel } from '../../interfaces/channel.interface';
 import { User } from '../../interfaces/user.interface';
 import { channelService } from '../../services/channel.service';
@@ -71,6 +71,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   usersWithoutHistory = signal<User[]>([]);
   unreadUsers = signal<Record<string, number>>({});
   private incomingDMsSubscription: RealtimeChannel | null = null;
+  private directChatClearedSubscription: Subscription | null = null;
 
   
   constructor() {
@@ -121,12 +122,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
   
   async ngOnInit() {
     await this.loadData();
+    this.directChatClearedSubscription = this.messageSvc.directChatCleared.subscribe(() => {
+      this.loadData();
+    });
   }
 
   
   ngOnDestroy() {
     if (this.incomingDMsSubscription) {
       this.messageSvc.unsubscribe(this.incomingDMsSubscription);
+    }
+    if (this.directChatClearedSubscription) {
+      this.directChatClearedSubscription.unsubscribe();
     }
   }
 
@@ -268,15 +275,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   
-  async deleteChat(userId: string, event: Event) {
+  async closeChat(userId: string, event: Event) {
     event.stopPropagation(); 
     const currentUserId = this.currentUserId;
     if (!currentUserId) return;
 
     try {
-      
-      await this.messageSvc.deleteDirectChatHistory(currentUserId, userId);
-
       
       this.setSafeLocalStorageItem(`chat_closed:${currentUserId}:${userId}`, new Date().toISOString());
 
@@ -302,9 +306,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
       
       await this.loadData();
-      this.toastSvc.show('Chat gelöscht', 'success', 3000, undefined, false);
     } catch (err) {
-      console.error('Failed to delete chat:', err);
+      console.error('Failed to close chat:', err);
     }
   }
 

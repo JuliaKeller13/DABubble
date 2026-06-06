@@ -114,6 +114,20 @@
         </button>
       </div>
     }
+
+    @if (activeDirectChatUser()) {
+      <div class="chat-area__header-right">
+        <div class="chat-area__menu-container">
+          <button class="chat-area__menu-btn" type="button" aria-label="Optionen" (click)="toggleHeaderMenu()" title="Optionen">
+            <svg class="chat-area__menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="5" r="2"></circle>
+              <circle cx="12" cy="12" r="2"></circle>
+              <circle cx="12" cy="19" r="2"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+    }
   </div>
 
   <div class="chat-area__body" #scrollContainer>
@@ -217,5 +231,43 @@
 
   @if (isChannelMembersOpen) {
     <app-dialog-channel-members [isSidebarClosed]="isSidebarClosed" [members]="members()" [channelName]="activeChannel()?.name || ''" [initialView]="channelMembersInitialView" [positionClass]="channelMembersPosition" (close)="closeChannelMembers()" (addMember)="onMembersAdded($event)" (memberRemoved)="onMemberRemoved($event)"></app-dialog-channel-members>
+  }
+
+  @if (isClearConfirmOpen()) {
+    <div class="chat-area__confirm-backdrop" (click)="closeWithSlideDown()"></div>
+    <div class="chat-area__confirm-dialog" (click)="$event.stopPropagation()"
+         [style.transform]="isClosing ? 'translateX(-50%) translateY(100%)' : (isDragging ? 'translateX(-50%) translateY(' + currentTranslateY + 'px)' : '')"
+         [style.transition]="isDragging ? 'none' : 'transform 0.2s ease-out'"
+         [style.animation]="isAnimationActive ? '' : 'none'">
+        <div class="chat-area__drag-handle" 
+             (click)="closeWithSlideDown()"
+             (touchstart)="onTouchStart($event)" 
+             (touchmove)="onTouchMove($event)" 
+             (touchend)="onTouchEnd($event)"
+             (touchcancel)="onTouchEnd($event)"></div>
+        <h3 class="chat-area__confirm-title text-title-20">Chatverlauf löschen?</h3>
+        <p class="chat-area__confirm-text text-body-16">
+          Möchtest du den gesamten Chatverlauf mit <strong>{{ activeDirectChatUser()?.display_name }}</strong> wirklich löschen? Alle Nachrichten werden unwiderruflich gelöscht.
+        </p>
+        <div class="chat-area__confirm-actions">
+          <button class="chat-area__confirm-btn btn-secondary text-profile-action" type="button" (click)="cancelClearHistory()">
+            Abbrechen
+          </button>
+          <button class="chat-area__confirm-btn btn-danger text-profile-action" type="button" (click)="confirmClearHistory()">
+            Löschen
+          </button>
+        </div>
+      </div>
+  }
+
+  @if (isHeaderMenuOpen()) {
+    <div class="chat-area__header-dropdown" (click)="$event.stopPropagation()">
+      <button class="chat-area__dropdown-item" type="button" (click)="hideActiveChat()">
+        <span>Chat ausblenden</span>
+      </button>
+      <button class="chat-area__dropdown-item chat-area__dropdown-item--danger" type="button" (click)="openClearConfirm()">
+        <span>Verlauf löschen</span>
+      </button>
+    </div>
   }
 </div>
