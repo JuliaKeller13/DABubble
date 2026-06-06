@@ -22,10 +22,14 @@
           type="text" 
           placeholder="z.B. Kooperationsprojekte" 
           [(ngModel)]="channelName"
+          (input)="nameExistsError = false; errorMessage = ''"
           name="channelName"
           class="create-channel__input"
           required>
       </div>
+      @if (nameExistsError) {
+        <span class="create-channel__error-msg">{{ errorMessage }}</span>
+      }
     </div>
 
     <div class="create-channel__field">

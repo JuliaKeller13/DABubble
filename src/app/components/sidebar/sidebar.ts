@@ -380,6 +380,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
       const memberResult = await firstValueFrom(addMemberRef.afterClosed());
       if (memberResult) {
+        dialogRef.close();
         try {
           const currentUserId = this.authSvc.currentUser()?.id;
           
@@ -414,9 +415,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
           }
 
           await this.loadData();
-          dialogRef.close();
+          this.toastSvc.show('Channel erfolgreich erstellt.', 'success', 3000, undefined, false);
         } catch (error) {
           console.error('Failed to create channel:', error);
+          this.toastSvc.show('Channel konnte nicht erstellt werden.', 'error', 3000, undefined, false);
         }
       }
     });
