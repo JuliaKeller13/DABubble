@@ -321,6 +321,15 @@
 		&--self {
 			padding: 45px 20px;
 		}
+
+		&__confirm-actions {
+			@include flex(column, nowrap, stretch, stretch);
+		}
+
+		&__action-btn,
+		.btn-danger {
+			width: 100%;
+		}
 	}
 }
 
@@ -346,8 +355,5 @@
 			padding: 24px 20px;
 		}
 
-		&__confirm-actions {
-			@include flex(column, nowrap, stretch, stretch);
-		}
 	}
 }
