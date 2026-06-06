@@ -13,12 +13,18 @@ export class userService {
     private usersCache = new Map<string, User>();
 
     
-    filterDuplicateGuests(users: User[], currentUserId: string | null): User[] {
-        const guests = users.filter((u) => u.display_name === 'Gast');
-        if (guests.length <= 1) return users;
+    filterDuplicateGuests(users: User[], currentUserId: string | null, activePartnerIds?: string[]): User[] {
+        const filtered = users.filter((u) => u.id !== 'dabubble-team-local-id' && u.display_name !== 'DABubble-Team');
+        const guests = filtered.filter((u) => u.display_name === 'Gast');
+        if (guests.length <= 1) return filtered;
         const currentGuest = currentUserId ? guests.find((u) => u.id === currentUserId) : null;
         const guestToShow = currentGuest || guests[0];
-        return users.filter((u) => u.display_name !== 'Gast' || u.id === guestToShow.id);
+        return filtered.filter((u) => {
+            if (u.display_name !== 'Gast') return true;
+            if (u.id === guestToShow.id) return true;
+            if (activePartnerIds && activePartnerIds.includes(u.id)) return true;
+            return false;
+        });
     }
 
     
@@ -65,6 +71,15 @@ export class userService {
 
     
     async getUserById(id: string): Promise<User | null> {
+        if (id === 'dabubble-team-local-id') {
+            return {
+                id: 'dabubble-team-local-id',
+                display_name: 'DABubble-Team',
+                email: 'team@dabubble.local',
+                avatar_url: 'img/logo/Logo.svg',
+                status: 'online'
+            };
+        }
         if (this.usersCache.has(id)) {
             return this.usersCache.get(id) || null;
         }

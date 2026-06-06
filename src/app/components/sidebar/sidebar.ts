@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { Channel } from '../../interfaces/channel.interface';
 import { User } from '../../interfaces/user.interface';
+import { Message } from '../../interfaces/message.interface';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
@@ -152,28 +153,27 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
 
     const allFetchedUsers = await this.userSvc.getAllUsers();
-    const fetchedUsers = this.userSvc.filterDuplicateGuests(allFetchedUsers, currentUserId);
-    this.users.set(fetchedUsers);
+    
+    const partnerIdsSet = new Set<string>();
+    const unreadMap: Record<string, number> = {};
+    const latestMessageTimeMap = new Map<string, number>();
+    let allDMs: Message[] = [];
+    let isGuest = false;
 
     if (currentUserId) {
-      
-      const allDMs = await this.messageSvc.getAllUserDirectMessages(currentUserId);
+      isGuest = !!(this.authSvc.currentUser()?.is_anonymous || this.authSvc.currentUserProfile()?.display_name === 'Gast');
+      allDMs = await this.messageSvc.getAllUserDirectMessages(currentUserId);
       const activeDMUser = this.userSvc.activeDirectChatUser();
-
-      const unreadMap: Record<string, number> = {};
-      const latestMessageTimeMap = new Map<string, number>();
 
       allDMs.forEach((msg) => {
         const partnerId = msg.sender_id === currentUserId ? msg.recipient_id : msg.sender_id;
         if (partnerId) {
-          
           const msgTime = new Date(msg.created_at || '').getTime();
           const currentLatest = latestMessageTimeMap.get(partnerId) || 0;
           if (msgTime > currentLatest) {
             latestMessageTimeMap.set(partnerId, msgTime);
           }
 
-          
           if (msg.recipient_id === currentUserId) {
             if (activeDMUser?.id !== partnerId) {
               const lastReadStr = this.getSafeLocalStorageItem(`chat_last_read:${currentUserId}:${partnerId}`);
@@ -186,12 +186,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+      if (isGuest) {
+        if (activeDMUser?.id !== 'dabubble-team-local-id') {
+          const lastReadStr = this.getSafeLocalStorageItem(`chat_last_read:${currentUserId}:dabubble-team-local-id`);
+          if (!lastReadStr) {
+            unreadMap['dabubble-team-local-id'] = 1;
+          }
+        }
+      }
+
       this.unreadUsers.set(unreadMap);
 
-      
-      const partnerIdsSet = new Set<string>();
       latestMessageTimeMap.forEach((latestMsgTime, partnerId) => {
-        
         if (partnerId === currentUserId) return;
 
         const closedStr = this.getSafeLocalStorageItem(`chat_closed:${currentUserId}:${partnerId}`);
@@ -201,10 +208,27 @@ export class SidebarComponent implements OnInit, OnDestroy {
           partnerIdsSet.add(partnerId);
         }
       });
+    }
 
+    const fetchedUsers = this.userSvc.filterDuplicateGuests(allFetchedUsers, currentUserId, Array.from(partnerIdsSet));
+    this.users.set(fetchedUsers);
 
-
+    if (currentUserId) {
       const withHistory = fetchedUsers.filter((user) => partnerIdsSet.has(user.id));
+      if (isGuest) {
+        const closedStr = this.getSafeLocalStorageItem(`chat_closed:${currentUserId}:dabubble-team-local-id`);
+        if (!closedStr) {
+          if (!withHistory.some(u => u.id === 'dabubble-team-local-id')) {
+            withHistory.unshift({
+              id: 'dabubble-team-local-id',
+              display_name: 'DABubble-Team',
+              email: 'team@dabubble.local',
+              avatar_url: 'img/logo/Logo.svg',
+              status: 'online'
+            });
+          }
+        }
+      }
       const withoutHistory = fetchedUsers.filter((user) => !partnerIdsSet.has(user.id));
 
       this.usersWithHistory.set(withHistory);
@@ -223,6 +247,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   
   isUserOnline(user: User): boolean {
+    if (user.id === 'dabubble-team-local-id') return true;
     return this.authSvc.onlineUserIds().has(user.id);
   }
 
@@ -245,7 +270,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
 
 
-    const user = this.users().find(u => u.id === id) || null;
+    let user = this.users().find(u => u.id === id) || null;
+    if (!user && id === 'dabubble-team-local-id') {
+      user = {
+        id: 'dabubble-team-local-id',
+        display_name: 'DABubble-Team',
+        email: 'team@dabubble.local',
+        avatar_url: 'img/logo/Logo.svg',
+        status: 'online'
+      };
+    }
     this.userSvc.selectDirectChatUser(user);
     this.channelSvc.selectChannel(null); 
     this.channelSvc.setNewMessageMode(false);

@@ -104,6 +104,25 @@ export class MessageService {
 
   
   async getDirectMessages(currentUserId: string, targetUserId: string): Promise<Message[]> {
+    if (targetUserId === 'dabubble-team-local-id') {
+      return [
+        {
+          id: 'dabubble-team-welcome-message-id',
+          content: 'Hallo und herzlich willkommen bei DABubble!\n\nSchön, dass du uns als Gast besuchst. Bitte beachte, dass die hier sichtbaren Kanäle und Nachrichten primär als Testobjekte dienen.\n\nDennoch ist diese Anwendung so gestaltet, dass du sie auch als Gast bereits im vollen Umfang nutzen und ausprobieren kannst: Erstelle eigene Kanäle, schreibe Nachrichten, reagiere auf Beiträge und starte Threads.\n\nFalls du später ein dauerhaftes Konto erstellen möchtest, kannst du dich jederzeit kostenlos registrieren, um deine eigenen Daten zu sichern.\n\nViel Spaß beim Testen und Erkunden wünscht dir\ndein DABubble-Team!',
+          sender_id: 'dabubble-team-local-id',
+          recipient_id: currentUserId,
+          created_at: new Date().toISOString(),
+          reactions: {},
+          sender: {
+            id: 'dabubble-team-local-id',
+            display_name: 'DABubble-Team',
+            email: 'team@dabubble.local',
+            avatar_url: 'img/logo/Logo.svg',
+            status: 'online'
+          }
+        }
+      ];
+    }
     try {
       const { data: messages, error } = await this.supabaseSvc.supabase
         .from('messages')
@@ -173,6 +192,14 @@ export class MessageService {
     callback: (event: 'INSERT' | 'UPDATE' | 'DELETE', message: Message) => void,
     broadcastCallback?: (payload: { userId: string; userName: string; isTyping: boolean }) => void
   ): RealtimeChannel {
+    if (targetUserId === 'dabubble-team-local-id') {
+      return {
+        isMock: true,
+        unsubscribe: () => {},
+        subscribe: () => { return { onDestroy: () => {} } },
+        on: () => { return { subscribe: () => {} } }
+      } as any;
+    }
     const sortedIds = [currentUserId, targetUserId].sort();
     const channel = this.supabaseSvc.supabase.channel(`direct:${sortedIds[0]}_${sortedIds[1]}`);
 
@@ -278,6 +305,9 @@ export class MessageService {
 
   
   async unsubscribe(channel: RealtimeChannel): Promise<void> {
+    if (channel && (channel as any).isMock) {
+      return;
+    }
     if (channel) {
       await this.supabaseSvc.supabase.removeChannel(channel);
     }

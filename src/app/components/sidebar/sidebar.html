@@ -119,7 +119,7 @@
                     <span class="sidebar__unread-badge">{{ unreadUsers()[user.id] }}</span>
                   }
                 </div>
-                <span class="sidebar__item-name">
+                <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
                   {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
                 </span>
                 
@@ -150,7 +150,7 @@
                     <span class="sidebar__unread-badge">{{ unreadUsers()[user.id] }}</span>
                   }
                 </div>
-                <span class="sidebar__item-name">
+                <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
                   {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
                 </span>
               </div>

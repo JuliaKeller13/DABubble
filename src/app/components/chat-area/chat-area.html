@@ -218,7 +218,8 @@
         </div>
       }
       <app-message-input
-        [placeholder]="channelSvc.isNewMessageModeActive() ? 'Starte eine neue Nachricht' : (activeChannel() ? 'Nachricht an #' + activeChannel()!.name : 'Nachricht an @' + activeDirectChatUser()!.display_name)"
+        [placeholder]="activeDirectChatUser()?.id === 'dabubble-team-local-id' ? 'Dies ist ein Informationskanal. Du kannst hierauf nicht antworten.' : (channelSvc.isNewMessageModeActive() ? 'Starte eine neue Nachricht' : (activeChannel() ? 'Nachricht an #' + activeChannel()!.name : 'Nachricht an @' + activeDirectChatUser()!.display_name))"
+        [disabled]="activeDirectChatUser()?.id === 'dabubble-team-local-id'"
         (sendMessage)="onSendMessage($event)"
         (typing)="onTypingStatusChange($event)"
       ></app-message-input>

@@ -34,6 +34,7 @@ export class MessageInputComponent implements OnDestroy {
   renderedScrollTop = 0;
 
   @Input() placeholder: string = 'Nachricht an #Entwicklerteam';
+  @Input() disabled: boolean = false;
   @Output() sendMessage = new EventEmitter<string>();
   @Output() typing = new EventEmitter<boolean>();
   @ViewChild('messageTextarea') private messageTextarea?: ElementRef<HTMLTextAreaElement>;

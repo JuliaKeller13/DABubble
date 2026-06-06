@@ -1,4 +1,4 @@
-<div class="message-input" (click)="onMessageInputClick()">
+<div class="message-input" [class.message-input--disabled]="disabled" (click)="onMessageInputClick()">
   <div class="emoji-popup" [class.visible]="showEmojiPicker" (click)="$event.stopPropagation()">
     <emoji-mart
       title="Emoji auswählen"
@@ -93,15 +93,16 @@
       (input)="onInputChange()"
       (scroll)="onTextareaScroll()"
       (keydown.enter)="onEnterPressed($event)"
+      [disabled]="disabled"
     ></textarea>
   </div>
   
   <div class="message-input__actions">
     <div class="message-input__actions-left">
-      <button class="message-input__btn" [class.active]="isEmojiActive" (click)="$event.stopPropagation(); toggleEmoji()" type="button" aria-label="Add Emoji">
+      <button class="message-input__btn" [class.active]="isEmojiActive" (click)="$event.stopPropagation(); toggleEmoji()" type="button" aria-label="Add Emoji" [disabled]="disabled">
         <img src="img/icons/chatarea/sentiment_satisfied.svg" class="message-input__icon" alt="Smiley">
       </button>
-      <button class="message-input__btn" [class.active]="isMentionActive" (click)="$event.stopPropagation(); toggleMention()" type="button" aria-label="Mention User">
+      <button class="message-input__btn" [class.active]="isMentionActive" (click)="$event.stopPropagation(); toggleMention()" type="button" aria-label="Mention User" [disabled]="disabled">
         <img src="img/icons/chatarea/alternate_email.svg" class="message-input__icon" alt="Mention">
       </button>
     </div>
@@ -113,6 +114,7 @@
         (click)="send()" 
         type="button" 
         aria-label="Send Message"
+        [disabled]="disabled"
       >
         <img src="img/icons/chatarea/send.svg" class="message-input__send-icon" alt="Send">
       </button>

@@ -148,6 +148,25 @@
     width: 22px;
     height: 19px;
   }
+
+  &--disabled {
+    background-color: var(--bg-color) !important;
+    border-color: var(--light-purple) !important;
+    cursor: not-allowed;
+
+    .message-input__textarea {
+      cursor: not-allowed;
+      color: var(--text-gray) !important;
+      pointer-events: none;
+    }
+
+    .message-input__btn,
+    .message-input__send-btn {
+      pointer-events: none;
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
 }
 
 /* #region RESPONSIVE */

@@ -499,6 +499,9 @@ export class ChatAreaComponent implements OnDestroy {
         console.error('[onSendMessage] Failed to send message to database');
       }
     } else if (dmUser && dmUser.id) {
+      if (dmUser.id === 'dabubble-team-local-id') {
+        return;
+      }
       const newMsg = await this.messageSvc.sendDirectMessage(content, userId, dmUser.id);
       if (newMsg) {
         this.messages.update((prev) => {
