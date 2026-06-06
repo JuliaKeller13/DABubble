@@ -103,6 +103,29 @@ export class MessageService {
   }
 
   
+  private async getChatClearedAt(
+    currentUserId: string,
+    targetUserId: string,
+  ): Promise<string | null> {
+    try {
+      const { data, error } = await this.supabaseSvc.supabase
+        .from('direct_chat_deletions')
+        .select('cleared_at')
+        .eq('user_id', currentUserId)
+        .eq('other_user_id', targetUserId)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching chat cleared_at:', error.message);
+        return null;
+      }
+      return data?.cleared_at ?? null;
+    } catch (err) {
+      console.error('Failed to fetch chat cleared_at:', err);
+      return null;
+    }
+  }
+
   async getDirectMessages(currentUserId: string, targetUserId: string): Promise<Message[]> {
     if (targetUserId === 'dabubble-team-local-id') {
       return [
@@ -124,11 +147,19 @@ export class MessageService {
       ];
     }
     try {
-      const { data: messages, error } = await this.supabaseSvc.supabase
+      const clearedAt = await this.getChatClearedAt(currentUserId, targetUserId);
+
+      let query = this.supabaseSvc.supabase
         .from('messages')
         .select('*')
         .or(`and(sender_id.eq.${currentUserId},recipient_id.eq.${targetUserId}),and(sender_id.eq.${targetUserId},recipient_id.eq.${currentUserId})`)
         .order('created_at', { ascending: true });
+
+      if (clearedAt) {
+        query = query.gt('created_at', clearedAt);
+      }
+
+      const { data: messages, error } = await query;
 
       if (error) {
         console.error('Error fetching direct messages:', error.message);
@@ -643,22 +674,30 @@ export class MessageService {
       .join('');
   }
 
-  
   async deleteDirectChatHistory(currentUserId: string, targetUserId: string): Promise<boolean> {
     try {
+      const clearedAt = new Date().toISOString();
+
       const { error } = await this.supabaseSvc.supabase
-        .from('messages')
-        .delete()
-        .or(`and(sender_id.eq.${currentUserId},recipient_id.eq.${targetUserId}),and(sender_id.eq.${targetUserId},recipient_id.eq.${currentUserId})`);
+        .from('direct_chat_deletions')
+        .upsert(
+          {
+            user_id: currentUserId,
+            other_user_id: targetUserId,
+            cleared_at: clearedAt,
+          },
+          { onConflict: 'user_id,other_user_id' },
+        );
 
       if (error) {
-        console.error('Error deleting direct chat history:', error.message);
+        console.error('Error saving chat deletion timestamp:', error.message);
         return false;
       }
+
       this.directChatCleared.emit({ currentUserId, targetUserId });
       return true;
     } catch (err) {
-      console.error('Failed to delete direct chat history:', err);
+      console.error('Failed to soft-delete direct chat history:', err);
       return false;
     }
   }
