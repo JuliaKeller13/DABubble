@@ -104,6 +104,19 @@ export class channelService {
   }
 
   
+  async isChannelNameDuplicate(name: string): Promise<boolean> {
+    const { data, error } = await this.supabaseSvc.supabase
+      .from('channels')
+      .select('id')
+      .eq('name', name.trim());
+
+    if (error) {
+      console.error('Error checking duplicate channel name:', error.message);
+      return false;
+    }
+    return !!data && data.length > 0;
+  }
+
   async createChannel(channel: Channel): Promise<any> {
     const { data, error } = await this.supabaseSvc.supabase
       .from('channels')

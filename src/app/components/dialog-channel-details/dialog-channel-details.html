@@ -82,7 +82,7 @@
 
   <div class="dialog-card__footer">
     @if (activeChannel()?.created_by === currentUserId) {
-      <button class="btn-danger" (click)="onDeleteChannel()">Channel löschen</button>
+      <button class="btn-danger dialog-card__delete-btn" (click)="onDeleteChannel()">Channel löschen</button>
     }
     <button class="dialog-card__leave-btn" (click)="onLeaveChannel()">Channel verlassen</button>
   </div>

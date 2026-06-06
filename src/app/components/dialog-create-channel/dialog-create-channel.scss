@@ -54,6 +54,14 @@
     gap: 8px;
   }
 
+  &__error-msg {
+    color: var(--red-text);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 4px;
+    padding-left: 10px;
+  }
+
   &__label {
     font-size: 16px;
     font-weight: 700;
