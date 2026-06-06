@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.window"]
+  },
+  "fmt": {
+    "semiColons": true,
+    "singleQuote": true
+  }
+}
