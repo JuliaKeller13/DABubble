@@ -4,16 +4,48 @@
   @include mx.flex(row, nowrap, center, center);
   height: 100vh;
   width: 100%;
-  background: linear-gradient(to bottom, var(--purple-2) 0%, var(--purple-1) 100%);
-  background-position: center;
-  background-size: cover;
+  background: var(--white);
   position: relative;
+  overflow: hidden;
+
+  &__background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, var(--purple-2) 0%, var(--purple-1) 100%);
+    background-position: center;
+    background-size: cover;
+    z-index: 1;
+    transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+
+    &--fade {
+      opacity: 0;
+    }
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+    max-width: 1920px;
+    height: 100%;
+    z-index: 2;
+    @include mx.flex(row, nowrap, center, center);
+  }
 
   &__logo-wrapper {
     @include mx.flex(row, nowrap, center, center);
     gap: 0;
     animation: logoWrapperExpand 300ms ease-out forwards;
-    animation-delay: 500ms;
+    animation-delay: 1000ms;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &__logo-icon-box {
@@ -24,6 +56,7 @@
   &__logo-img {
     width: 120px;
     height: auto;
+    transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &__logo-text-box {
@@ -31,7 +64,7 @@
     width: 0;
     white-space: nowrap;
     animation: logoTextReveal 300ms ease-out forwards;
-    animation-delay: 500ms;
+    animation-delay: 1000ms;
   }
 
   &__logo-text {
@@ -39,18 +72,51 @@
     font-weight: 800;
     font-size: 80px;
     color: var(--white);
-    padding-left: 16px;
+    padding-left: 0;
+    letter-spacing: 0.21em;
     display: inline-block;
     width: 440px;
     clip-path: inset(0 100% 0 0);
     animation: logoTextWipe 500ms ease-out forwards;
-    animation-delay: 800ms;
+    animation-delay: 1300ms;
+    transition: color 800ms cubic-bezier(0.4, 0, 0.2, 1), font-size 800ms cubic-bezier(0.4, 0, 0.2, 1), letter-spacing 800ms cubic-bezier(0.4, 0, 0.2, 1), width 800ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+// --------------------------------------------------------------------------
+// SLIDING ANIMATION OVERRIDES (CLEAN SPECIFICITY)
+// --------------------------------------------------------------------------
+.intro.intro--sliding {
+  .intro__logo-wrapper {
+    top: 25px;
+    left: 20px;
+    transform: translate(0, 0);
+    gap: 16px;
+    animation: none; // stops keyframe expand animation
+  }
+
+  .intro__logo-img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .intro__logo-text-box {
+    width: auto;
+    animation: none; // stops keyframe reveal animation
+  }
+
+  .intro__logo-text {
+    font-size: 24px;
+    width: auto;
+    color: var(--black);
+    animation: none; // stops keyframe wipe animation
+    clip-path: none; // disables text wipe clipping
   }
 }
 
 @keyframes logoWrapperExpand {
   0% { gap: 0; }
-  100% { gap: 16px; }
+  100% { gap: 27px; }
 }
 
 @keyframes logoTextReveal {
@@ -71,7 +137,8 @@
     }
 
     .intro__logo-img {
-      width: 45px;
+      width: 50px;
+      height: 50px;
     }
 
     .intro__logo-text-box {
@@ -79,20 +146,49 @@
     }
 
     .intro__logo-text {
-      font-size: 26px;
+      font-size: 17px;
       width: auto;
       white-space: nowrap;
     }
   }
 
+  // Mobile sliding override
+  .intro.intro--sliding {
+    .intro__logo-wrapper {
+      top: 95px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      gap: 11px;
+      animation: none;
+    }
+
+    .intro__logo-img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .intro__logo-text-box {
+      width: auto;
+      animation: none;
+    }
+
+    .intro__logo-text {
+      font-size: 17px;
+      width: auto;
+      color: var(--black);
+      animation: none;
+      clip-path: none;
+    }
+  }
+
   @keyframes logoWrapperExpandMobile {
     0% { gap: 0; }
-    100% { gap: 8px; }
+    100% { gap: 11px; }
   }
 
   @keyframes logoTextRevealMobile {
     0% { width: 0; }
-    100% { width: 120px; }
+    100% { width: 112px; }
   }
 }
 /* #endregion */
