@@ -23,7 +23,7 @@
           <div class="mention-popup__loading">Mitglieder werden geladen...</div>
         } @else {
           @for (user of popupUsers; track user.id) {
-            <div class="mention-popup__item" (click)="insertMention('@' + user.name)">
+            <div class="mention-popup__item" (click)="insertUserMention(user)">
               <div class="mention-popup__avatar-container">
                 <img [src]="user.avatar" class="mention-popup__avatar" alt="Avatar">
                 <span class="mention-popup__status-badge" [class.online]="isUserOnlineById(user.id)"></span>

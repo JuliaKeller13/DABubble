@@ -132,16 +132,21 @@
 
   <div class="chat-area__body" #scrollContainer>
     @if (channelSvc.isNewMessageModeActive()) {
-      <!-- Empty body for new message composition -->
     } @else if (!activeChannel() && !activeDirectChatUser()) {
       <div class="chat-area__welcome-container">
         <div class="chat-area__welcome-header">
           <img src="img/logo/workspace_logo.svg" alt="Devspace Logo" class="chat-area__welcome-logo">
           <h3 class="chat-area__welcome-title">Willkommen im Devspace!</h3>
         </div>
-        <p class="chat-area__welcome-text">
-          Hier beginnt deine Zusammenarbeit. Du bist aktuell noch keinem Channel zugewiesen oder hast keinen Chat ausgewählt.
-        </p>
+        @if (channelSvc.channels().length > 0) {
+          <p class="chat-area__welcome-text">
+            Bereit für den Austausch? Wähle einen Channel oder eine Direktnachricht in der Sidebar aus, um loszulegen.
+          </p>
+        } @else {
+          <p class="chat-area__welcome-text">
+            Hier beginnt deine Zusammenarbeit. Du bist aktuell noch keinem Channel zugewiesen oder hast keinen Chat ausgewählt.
+          </p>
+        }
         <p class="chat-area__welcome-hint">
           Nutze die Sidebar links, um eine Direktnachricht zu starten, einem Channel beizutreten oder einen neuen Channel zu erstellen.
         </p>

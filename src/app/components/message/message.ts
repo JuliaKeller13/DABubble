@@ -320,6 +320,14 @@ export class MessageComponent implements OnInit {
 
     users.forEach(u => {
       if (u.display_name) {
+        const zeroWidthId = this.messageSvc.encodeToZeroWidth(u.id);
+        
+        searchTerms.push({
+          text: '@' + u.display_name + '\u200B' + zeroWidthId,
+          type: 'mention',
+          id: u.id
+        });
+
         searchTerms.push({
           text: '@' + u.display_name,
           type: 'mention',
@@ -357,9 +365,13 @@ export class MessageComponent implements OnInit {
           });
         }
 
+        const displayText = matchingTerm.type === 'mention' 
+          ? matchingTerm.text.replace(/[\u200B\u200C\u200D]/g, '')
+          : matchingTerm.text;
+
         result.push({
           type: matchingTerm.type,
-          text: matchingTerm.text,
+          text: displayText,
           channelId: matchingTerm.type === 'channel' ? matchingTerm.id : undefined,
           userId: matchingTerm.type === 'mention' ? matchingTerm.id : undefined
         });

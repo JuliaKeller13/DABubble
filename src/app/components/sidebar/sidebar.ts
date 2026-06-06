@@ -71,15 +71,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
   usersWithHistory = signal<User[]>([]);
   usersWithoutHistory = signal<User[]>([]);
   unreadUsers = signal<Record<string, number>>({});
+  unreadChannels = signal<Record<string, number>>({});
   private incomingDMsSubscription: RealtimeChannel | null = null;
+  private globalMessagesSubscription: RealtimeChannel | null = null;
   private directChatClearedSubscription: Subscription | null = null;
 
   
   constructor() {
     effect(() => {
       const currentUser = this.authSvc.currentUser();
+      const profile = this.authSvc.currentUserProfile();
       if (currentUser && currentUser.id) {
         this.subscribeToDMs(currentUser.id);
+        this.subscribeToGlobalMessages(currentUser.id, profile?.display_name);
         this.loadData();
       }
     });
@@ -120,6 +124,23 @@ export class SidebarComponent implements OnInit, OnDestroy {
     );
   }
 
+  subscribeToGlobalMessages(currentUserId: string, displayName: string | undefined) {
+    if (this.globalMessagesSubscription) {
+      this.messageSvc.unsubscribe(this.globalMessagesSubscription);
+      this.globalMessagesSubscription = null;
+    }
+
+    if (!displayName) return;
+
+    this.globalMessagesSubscription = this.messageSvc.subscribeToAllChannelMentions(
+      currentUserId,
+      displayName,
+      () => {
+        this.loadData();
+      }
+    );
+  }
+
   
   async ngOnInit() {
     await this.loadData();
@@ -133,26 +154,85 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (this.incomingDMsSubscription) {
       this.messageSvc.unsubscribe(this.incomingDMsSubscription);
     }
+    if (this.globalMessagesSubscription) {
+      this.messageSvc.unsubscribe(this.globalMessagesSubscription);
+    }
     if (this.directChatClearedSubscription) {
       this.directChatClearedSubscription.unsubscribe();
     }
   }
 
   
+  private isUserMentionedInText(content: string, currentUserId: string, displayName: string, allUsers: User[]): boolean {
+    if (!content) return false;
+
+    const zeroWidthId = this.messageSvc.encodeToZeroWidth(currentUserId);
+    const ourMention = `@${displayName}\u200B${zeroWidthId}`;
+    if (content.includes(ourMention)) {
+      return true;
+    }
+
+    const otherUsers = allUsers.filter(u => u.display_name === displayName && u.id !== currentUserId);
+    const hasOtherZeroWidthMention = otherUsers.some(other => {
+      const otherZeroWidthId = this.messageSvc.encodeToZeroWidth(other.id);
+      return content.includes(`@${displayName}\u200B${otherZeroWidthId}`);
+    });
+    if (hasOtherZeroWidthMention) {
+      return false;
+    }
+
+    return content.includes(`@${displayName}`);
+  }
+
   async loadData() {
     const currentUserId = this.currentUserId;
     const fetchedChannels = await this.channelSvc.loadChannels();
+    const allFetchedUsers = await this.userSvc.getAllUsers();
     
     const active = this.activeChannel();
     if (active && !fetchedChannels.some(c => c.id === active.id)) {
       this.channelSvc.selectChannel(null);
     }
     
-    if (fetchedChannels.length > 0 && !this.activeChannel() && !this.userSvc.activeDirectChatUser()) {
-      this.channelSvc.selectChannel(fetchedChannels[0]);
+    const isResponsive = typeof window !== 'undefined' && window.innerWidth <= 1440;
+    if (isResponsive) {
+      if (fetchedChannels.length > 0 && !this.activeChannel() && !this.userSvc.activeDirectChatUser()) {
+        this.channelSvc.selectChannel(fetchedChannels[0]);
+      }
     }
 
-    const allFetchedUsers = await this.userSvc.getAllUsers();
+    const activeChan = this.activeChannel();
+    if (currentUserId && activeChan?.id) {
+      this.setSafeLocalStorageItem(`channel_last_read:${currentUserId}:${activeChan.id}`, new Date().toISOString());
+    }
+
+    const profile = this.authSvc.currentUserProfile();
+    const displayName = profile?.display_name;
+    const unreadChanMap: Record<string, number> = {};
+    if (currentUserId && displayName) {
+      const mentions = await this.messageSvc.getChannelMentions(displayName);
+      const activeChannelId = this.activeChannel()?.id;
+
+      mentions.forEach((msg) => {
+        const chanId = msg.channel_id;
+        if (!chanId) return;
+
+        if (activeChannelId === chanId) return;
+
+        if (!this.isUserMentionedInText(msg.content || '', currentUserId, displayName, allFetchedUsers)) {
+          return;
+        }
+
+        const lastReadStr = this.getSafeLocalStorageItem(`channel_last_read:${currentUserId}:${chanId}`);
+        const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : 0;
+        const msgTime = new Date(msg.created_at || '').getTime();
+
+        if (msgTime > lastReadTime) {
+          unreadChanMap[chanId] = (unreadChanMap[chanId] || 0) + 1;
+        }
+      });
+    }
+    this.unreadChannels.set(unreadChanMap);
     
     const partnerIdsSet = new Set<string>();
     const unreadMap: Record<string, number> = {};
@@ -235,6 +315,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.usersWithoutHistory.set(withoutHistory);
     } else {
       this.unreadUsers.set({});
+      this.unreadChannels.set({});
       this.usersWithHistory.set([]);
       this.usersWithoutHistory.set(fetchedUsers);
     }
@@ -257,6 +338,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const channel = this.channels().find(c => c.id === id) || null;
     this.channelSvc.selectChannel(channel);
     this.userSvc.selectDirectChatUser(null); 
+
+    const currentUserId = this.currentUserId;
+    if (currentUserId) {
+      this.setSafeLocalStorageItem(`channel_last_read:${currentUserId}:${id}`, new Date().toISOString());
+      this.unreadChannels.update((prev) => {
+        const copy = { ...prev };
+        delete copy[id];
+        return copy;
+      });
+    }
 
     if (window.innerWidth <= 1440) {
       this.isClosed = true;

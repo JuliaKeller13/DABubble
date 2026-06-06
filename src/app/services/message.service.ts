@@ -545,6 +545,35 @@ export class MessageService {
     return channel;
   }
 
+  subscribeToAllChannelMentions(
+    currentUserId: string,
+    displayName: string,
+    callback: () => void
+  ): RealtimeChannel {
+    const channel = this.supabaseSvc.supabase.channel(`channel_mentions:${currentUserId}`);
+
+    channel
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+        },
+        async (payload) => {
+          const rawMessage = payload.new as Message;
+          if (!rawMessage || !rawMessage.id || !rawMessage.channel_id) return;
+
+          if (rawMessage.content && rawMessage.content.includes(`@${displayName}`)) {
+            callback();
+          }
+        }
+      )
+      .subscribe();
+
+    return channel;
+  }
+
   
   async getAllUserDirectMessages(currentUserId: string): Promise<Message[]> {
     try {
@@ -563,6 +592,55 @@ export class MessageService {
       console.error('Failed to get all user direct messages:', err);
       return [];
     }
+  }
+
+  async getChannelMentions(displayName: string): Promise<Message[]> {
+    try {
+      const { data, error } = await this.supabaseSvc.supabase
+        .from('messages')
+        .select('id, channel_id, created_at, content')
+        .not('channel_id', 'is', null)
+        .ilike('content', `%@${displayName}%`);
+
+      if (error) {
+        console.error('Error fetching channel mentions:', error.message);
+        return [];
+      }
+      return data as Message[];
+    } catch (err) {
+      console.error('Failed to get channel mentions:', err);
+      return [];
+    }
+  }
+
+  encodeToZeroWidth(str: string): string {
+    return str
+      .split('')
+      .map((char) => {
+        const binary = char.charCodeAt(0).toString(2).padStart(8, '0');
+        return binary
+          .split('')
+          .map((bit) => (bit === '0' ? '\u200C' : '\u200D'))
+          .join('');
+      })
+      .join('\u200B');
+  }
+
+  decodeFromZeroWidth(zeroWidthStr: string): string {
+    const clean = zeroWidthStr.replace(/[^\u200B\u200C\u200D]/g, '');
+    if (!clean) return '';
+
+    return clean
+      .split('\u200B')
+      .map((binarySeq) => {
+        const binary = binarySeq
+          .split('')
+          .map((char) => (char === '\u200C' ? '0' : '1'))
+          .join('');
+        if (!binary) return '';
+        return String.fromCharCode(parseInt(binary, 2));
+      })
+      .join('');
   }
 
   

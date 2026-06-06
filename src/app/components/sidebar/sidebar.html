@@ -71,7 +71,10 @@
                 [class.text-body-bold-18]="channel.id === activeChannel()?.id"
                 (click)="selectChannel(channel.id)">
                 <span class="sidebar__hash text-title-20">#</span>
-                <span class="sidebar__item-name">{{ channel.name }}</span>
+                <span class="sidebar__item-name" [class.sidebar__item-name--unread]="channel.id && unreadChannels()[channel.id || '']">{{ channel.name }}</span>
+                @if (channel.id && unreadChannels()[channel.id || '']) {
+                  <span class="sidebar__unread-badge-channel">{{ unreadChannels()[channel.id || ''] }}</span>
+                }
               </div>
             }
             <div class="sidebar__item sidebar__item--add-channel text-body-18" (click)="openCreateChannelDialog()">

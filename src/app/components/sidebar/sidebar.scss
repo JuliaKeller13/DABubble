@@ -431,6 +431,26 @@
     animation: unreadPulse 2s infinite ease-in-out;
   }
 
+  &__unread-badge-channel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ed1c24;
+    color: vars.$white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-main);
+    border: 2px solid var(--white);
+    box-sizing: border-box;
+    margin-left: auto;
+    flex-shrink: 0;
+    z-index: 2;
+    animation: unreadPulse 2s infinite ease-in-out;
+  }
+
   &__divider {
     height: 1px;
     background-color: rgba(0, 0, 0, 0.08);

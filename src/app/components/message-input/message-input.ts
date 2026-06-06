@@ -7,6 +7,7 @@ import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { ThreadService } from '../../services/thread.service';
+import { MessageService } from '../../services/message.service';
 
 type PopupType = 'none' | 'users' | 'channels';
 
@@ -43,6 +44,7 @@ export class MessageInputComponent implements OnDestroy {
   private userSvc = inject(userService);
   private authSvc = inject(AuthService);
   private threadSvc = inject(ThreadService);
+  private messageSvc = inject(MessageService);
   private elementRef = inject(ElementRef);
 
   messageTextParts: MessageInputPart[] = [];
@@ -475,6 +477,12 @@ export class MessageInputComponent implements OnDestroy {
     }
 
     this.closePopup();
+  }
+
+  insertUserMention(user: { id: string; name: string }) {
+    const zeroWidthId = this.messageSvc.encodeToZeroWidth(user.id);
+    const mentionText = `@${user.name}\u200B${zeroWidthId}`;
+    this.insertMention(mentionText);
   }
 
   closePopup() {
