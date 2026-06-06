@@ -41,12 +41,41 @@ export class AuthService {
   private presenceChannel: RealtimeChannel | null = null;
   private onlineUserIdsSignal = signal<Set<string>>(new Set());
   private isInitializedSignal = signal(false);
+  private passwordVisibilitySignal = signal<Record<string, boolean>>({});
 
   readonly onlineUserIds = this.onlineUserIdsSignal.asReadonly();
   readonly currentUser = this.currentUserSignal.asReadonly();
   readonly currentUserProfile = this.currentUserProfileSignal.asReadonly();
   readonly isAuthenticated = computed(() => this.currentUserSignal() !== null);
   readonly isInitialized = this.isInitializedSignal.asReadonly();
+
+  showPassword(field = 'password'): boolean {
+    return this.passwordVisibilitySignal()[field] ?? false;
+  }
+
+  togglePassword(field = 'password'): void {
+    this.passwordVisibilitySignal.update((visibility) => ({
+      ...visibility,
+      [field]: !(visibility[field] ?? false),
+    }));
+  }
+
+  resetPasswordVisibility(...fields: string[]): void {
+    if (fields.length === 0) {
+      this.passwordVisibilitySignal.set({});
+      return;
+    }
+
+    this.passwordVisibilitySignal.update((visibility) => {
+      const nextVisibility = { ...visibility };
+
+      for (const field of fields) {
+        delete nextVisibility[field];
+      }
+
+      return nextVisibility;
+    });
+  }
 
   constructor() {
     this.supabaseSvc.supabase.auth.getSession()

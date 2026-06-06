@@ -29,12 +29,13 @@ export class LoginComponent {
   private readonly successToastDuration = 1500;
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
-  private authService = inject(AuthService);
+  readonly authService = inject(AuthService);
   private toast = inject(ToastService);
   private iconRegistry = inject(MatIconRegistry);
   private sanitizer = inject(DomSanitizer);
 
   constructor() {
+    this.authService.resetPasswordVisibility('password');
     this.iconRegistry.addSvgIcon('mail', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/mail.svg'));
     this.iconRegistry.addSvgIcon('lock', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/lock.svg'));
   }

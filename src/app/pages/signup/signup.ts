@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
 import { SignupStateService } from '../../services/signup-state.service';
+import { AuthService } from '../../services/auth.service';
 import { buildPasswordValidators, PASSWORD_MIN_LENGTH } from '../../validators/password.validators';
 
 @Component({
@@ -33,6 +34,7 @@ export class Signup {
   private iconRegistry = inject(MatIconRegistry);
   private sanitizer = inject(DomSanitizer);
   private signupState = inject(SignupStateService);
+  readonly authService = inject(AuthService);
 
   loading = signal(false);
 
@@ -45,6 +47,7 @@ export class Signup {
 
   
   constructor() {
+    this.authService.resetPasswordVisibility('password');
     this.iconRegistry.addSvgIcon('person', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/person.svg'));
     this.iconRegistry.addSvgIcon('mail', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/mail.svg'));
     this.iconRegistry.addSvgIcon('lock', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/lock.svg'));

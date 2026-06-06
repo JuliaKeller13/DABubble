@@ -44,9 +44,21 @@
           <input
             matInput
             formControlName="password"
-            type="password"
+            [type]="authService.showPassword() ? 'text' : 'password'"
             placeholder="Passwort"
             (input)="clearLoginError()"
+          />
+          <img
+            matSuffix
+            [src]="authService.showPassword() ? 'img/icons/form/visibility.svg' : 'img/icons/form/visibility_off.svg'"
+            alt="Passwortsichtbarkeit umschalten"
+            aria-label="Passwortsichtbarkeit umschalten"
+            role="button"
+            tabindex="0"
+            (click)="authService.togglePassword()"
+            (keydown.enter)="authService.togglePassword()"
+            (keydown.space)="authService.togglePassword(); $event.preventDefault()"
+            style="cursor: pointer"
           />
           @if (form.get('password')?.touched && form.get('password')?.hasError('required')) {
             <mat-error>Bitte geben Sie ein Passwort ein.</mat-error>

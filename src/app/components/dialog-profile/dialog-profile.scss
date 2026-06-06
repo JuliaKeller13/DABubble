@@ -225,17 +225,27 @@
 
 	&__delete-btn {
 		@include button-reset;
-		color: $red-text;
-		transition: color 0.15s ease;
+		padding: 12px 24px;
+		min-height: 50px;
+		border-radius: 100px;
+		background-color: transparent;
+		color: $black;
+		font-size: 18px;
+		font-weight: 600;
+		line-height: 1.2;
+		box-sizing: border-box;
+		transition: all 0.15s ease;
 
 		&:hover,
 		&:focus-visible {
+			background-color: $light-red;
 			color: $red-text;
 			outline: none;
 		}
 
 		&:disabled {
 			color: $light-purple;
+			background-color: transparent;
 			cursor: not-allowed;
 		}
 	}

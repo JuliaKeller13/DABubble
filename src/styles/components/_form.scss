@@ -29,7 +29,7 @@
 
     .mat-mdc-text-field-wrapper {
       background-color: $bg-color;
-      padding-inline: 24px;
+      padding-inline: 32px;
       transition: background-color 150ms ease-in-out;
       border-radius: 100px;
     }
@@ -52,6 +52,10 @@
 
     .mat-mdc-form-field-icon-prefix {
       padding: 0;
+
+      > .mat-icon {
+        padding: 0;
+      }
     }
 
     mat-icon[matPrefix],

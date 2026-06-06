@@ -27,7 +27,7 @@ export class PasswordReset {
   readonly passwordMinLength = PASSWORD_MIN_LENGTH;
 
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly authService = inject(AuthService);
+  readonly authService = inject(AuthService);
   private readonly toast = inject(ToastService);
   private readonly router = inject(Router);
   private readonly iconRegistry = inject(MatIconRegistry);
@@ -46,6 +46,7 @@ export class PasswordReset {
   );
 
   constructor() {
+    this.authService.resetPasswordVisibility('password', 'confirmPassword');
     this.iconRegistry.addSvgIcon('lock', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/lock.svg'));
   }
 
