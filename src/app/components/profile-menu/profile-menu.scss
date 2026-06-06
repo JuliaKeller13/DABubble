@@ -126,30 +126,21 @@
     }
   }
 
-  &__icon,
-  &__icon-svg {
+  &__icon {
     display: none;
     width: 24px;
     height: 24px;
     background-color: currentColor;
     flex-shrink: 0;
     transition: background-color 0.15s ease;
+    mask-image: var(--profile-menu-icon);
     mask-repeat: no-repeat;
     mask-position: center;
     mask-size: contain;
+    -webkit-mask-image: var(--profile-menu-icon);
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
     -webkit-mask-size: contain;
-  }
-
-  &__icon--profile {
-    mask-image: url('/img/icons/account_workspace/account_circle.svg');
-    -webkit-mask-image: url('/img/icons/account_workspace/account_circle.svg');
-  }
-
-  &__icon--logout {
-    mask-image: url('/img/icons/account_workspace/logout.svg');
-    -webkit-mask-image: url('/img/icons/account_workspace/logout.svg');
   }
 
   &__text {
@@ -272,8 +263,7 @@
       gap: 15px;
     }
 
-    &__icon,
-    &__icon-svg {
+    &__icon {
       display: inline-block;
       width: 30px;
       height: 30px;
@@ -287,5 +277,3 @@
   }
 }
 /* #endregion */
-
-

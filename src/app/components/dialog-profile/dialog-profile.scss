@@ -6,15 +6,21 @@
 }
 
 .dialog-profile {
+	--dialog-profile-side-space: 40px;
 	width: min(500px, calc(100vw - 32px));
+	max-height: calc(100dvh - 32px);
 	background: $white;
 	border-radius: 30px;
 	box-shadow: $shadow-dialog;
 	padding: 40px;
 	box-sizing: border-box;
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 
 	&--self {
+		--dialog-profile-side-space: 45px;
 		padding: 40px 45px;
 	}
 
@@ -69,8 +75,16 @@
 
 	&__body {
 		@include flex(column, nowrap, flex-start, stretch);
+		flex: 1 1 auto;
+		min-height: 0;
+		width: calc(100% + (var(--dialog-profile-side-space) / 2));
 		gap: 40px;
 		margin-top: 40px;
+		margin-right: calc(var(--dialog-profile-side-space) / -2);
+		padding-right: calc(var(--dialog-profile-side-space) / 2);
+		box-sizing: border-box;
+		overflow-y: auto;
+		scrollbar-gutter: stable;
 	}
 
 	&__avatar-wrap {
@@ -316,9 +330,11 @@
 
 @include mobile-md {
 	.dialog-profile {
+		--dialog-profile-side-space: 20px;
 		padding: 45px 20px;
 
 		&--self {
+			--dialog-profile-side-space: 20px;
 			padding: 45px 20px;
 		}
 
@@ -335,9 +351,11 @@
 
 @include mobile-sm {
 	.dialog-profile {
+		--dialog-profile-side-space: 20px;
 		padding: 24px 20px;
 
 		&--self {
+			--dialog-profile-side-space: 20px;
 			padding: 24px 20px;
 		}
 

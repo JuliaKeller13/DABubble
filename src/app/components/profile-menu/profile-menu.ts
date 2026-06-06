@@ -14,6 +14,10 @@ import { DialogProfileComponent } from '../dialog-profile/dialog-profile';
 export class ProfileMenuComponent {
   private router = inject(Router);
   readonly profileDialogSvc = inject(ProfileDialogService);
+  readonly menuIconMasks = {
+    profile: "url('img/icons/account_workspace/account_circle.svg')",
+    logout: "url('img/icons/account_workspace/logout.svg')",
+  };
   authService = inject(AuthService);
 
   currentUserProfile = this.authService.currentUserProfile;

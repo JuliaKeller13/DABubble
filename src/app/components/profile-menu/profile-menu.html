@@ -50,7 +50,8 @@
     <div class="profile-menu-sheet__options">
       <button class="profile-menu-sheet__option" (click)="openProfile()">
         <span
-          class="profile-menu-sheet__icon profile-menu-sheet__icon--profile"
+          class="profile-menu-sheet__icon"
+          [style.--profile-menu-icon]="menuIconMasks.profile"
           aria-hidden="true"
         ></span>
         <span class="profile-menu-sheet__text">Profil</span>
@@ -58,7 +59,8 @@
 
       <button class="profile-menu-sheet__option" (click)="logout()">
         <span
-          class="profile-menu-sheet__icon profile-menu-sheet__icon--logout"
+          class="profile-menu-sheet__icon"
+          [style.--profile-menu-icon]="menuIconMasks.logout"
           aria-hidden="true"
         ></span>
         <span class="profile-menu-sheet__text">Log out</span>
