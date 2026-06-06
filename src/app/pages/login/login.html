@@ -6,10 +6,11 @@
       [showSignup]="true"
       [isTransparent]="true"
       [loginHeader]="true"
+      [class.invisible]="showIntro()"
       class="desktop-header-only"
     ></app-header>
 
-    <div class="mobile-header-only">
+    <div class="mobile-header-only" [class.invisible]="showIntro()">
       <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="login-logo" />
     </div>
 
@@ -105,3 +106,7 @@
     <app-footer></app-footer>
   </div>
 </main>
+
+@if (showIntro()) {
+  <app-intro (finished)="onIntroFinished()"></app-intro>
+}

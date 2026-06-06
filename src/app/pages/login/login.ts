@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,6 +9,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
 import { ToastService } from '../../services/toast.service';
+import { IntroComponent } from '../intro/intro';
 
 @Component({
   selector: 'app-login',
@@ -20,12 +21,25 @@ import { ToastService } from '../../services/toast.service';
     MatIconModule,
     HeaderComponent,
     FooterComponent,
-    RouterLink
+    RouterLink,
+    IntroComponent
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  showIntro = signal(false);
+
+  ngOnInit(): void {
+    if (typeof window !== 'undefined' && !sessionStorage.getItem('introShown')) {
+      this.showIntro.set(true);
+      sessionStorage.setItem('introShown', 'true');
+    }
+  }
+
+  onIntroFinished(): void {
+    this.showIntro.set(false);
+  }
   private readonly successToastDuration = 1500;
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);

@@ -4,8 +4,11 @@
   @include mx.flex(row, nowrap, center, center);
   height: 100vh;
   width: 100%;
-  background: var(--white);
-  position: relative;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
   overflow: hidden;
 
   &__background-overlay {
@@ -36,96 +39,56 @@
   }
 
   &__logo-wrapper {
-    @include mx.flex(row, nowrap, center, center);
-    gap: 0;
-    animation: logoWrapperExpand 300ms ease-out forwards;
-    animation-delay: 1000ms;
+    width: 243px;
+    height: 70px;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(2.5);
     z-index: 2;
     transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    clip-path: inset(0 71.2% 0 0);
+    animation: logoReveal 500ms ease-out both;
+    animation-delay: 1800ms;
   }
 
-  &__logo-icon-box {
-    @include mx.flex(row, nowrap, center, center);
-    flex-shrink: 0;
-  }
+  &__logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1);
 
-  &__logo-img {
-    width: 120px;
-    height: auto;
-    transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
+    &--white {
+      z-index: 2;
+      opacity: 1;
+    }
 
-  &__logo-text-box {
-    @include mx.flex(row, nowrap, flex-start, center);
-    width: 0;
-    white-space: nowrap;
-    animation: logoTextReveal 300ms ease-out forwards;
-    animation-delay: 1000ms;
-  }
-
-  &__logo-text {
-    font-family: var(--font-main), sans-serif;
-    font-weight: 800;
-    font-size: 80px;
-    color: var(--white);
-    padding-left: 0;
-    letter-spacing: 0.21em;
-    display: inline-block;
-    width: 440px;
-    clip-path: inset(0 100% 0 0);
-    animation: logoTextWipe 500ms ease-out forwards;
-    animation-delay: 1300ms;
-    transition: color 800ms cubic-bezier(0.4, 0, 0.2, 1), font-size 800ms cubic-bezier(0.4, 0, 0.2, 1), letter-spacing 800ms cubic-bezier(0.4, 0, 0.2, 1), width 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    &--black {
+      z-index: 1;
+    }
   }
 }
 
-// --------------------------------------------------------------------------
-// SLIDING ANIMATION OVERRIDES (CLEAN SPECIFICITY)
-// --------------------------------------------------------------------------
 .intro.intro--sliding {
   .intro__logo-wrapper {
-    top: 25px;
-    left: 20px;
-    transform: translate(0, 0);
-    gap: 16px;
-    animation: none; // stops keyframe expand animation
+    top: 60px;
+    left: 141.5px;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    animation: none;
+    clip-path: none;
   }
 
-  .intro__logo-img {
-    width: 70px;
-    height: 70px;
-  }
-
-  .intro__logo-text-box {
-    width: auto;
-    animation: none; // stops keyframe reveal animation
-  }
-
-  .intro__logo-text {
-    font-size: 24px;
-    width: auto;
-    color: var(--black);
-    animation: none; // stops keyframe wipe animation
-    clip-path: none; // disables text wipe clipping
+  .intro__logo--white {
+    opacity: 0;
   }
 }
 
-@keyframes logoWrapperExpand {
-  0% { gap: 0; }
-  100% { gap: 27px; }
-}
-
-@keyframes logoTextReveal {
-  0% { width: 0; }
-  100% { width: 440px; }
-}
-
-@keyframes logoTextWipe {
-  0% { clip-path: inset(0 100% 0 0); }
+@keyframes logoReveal {
+  0% { clip-path: inset(0 71.2% 0 0); }
   100% { clip-path: inset(0 0% 0 0); }
 }
 
@@ -133,62 +96,18 @@
 @media (max-width: 768px) {
   .intro {
     .intro__logo-wrapper {
-      animation-name: logoWrapperExpandMobile;
-    }
-
-    .intro__logo-img {
-      width: 50px;
-      height: 50px;
-    }
-
-    .intro__logo-text-box {
-      animation-name: logoTextRevealMobile;
-    }
-
-    .intro__logo-text {
-      font-size: 17px;
-      width: auto;
-      white-space: nowrap;
+      transform: translate(-50%, -50%) scale(1.2);
     }
   }
 
-  // Mobile sliding override
   .intro.intro--sliding {
     .intro__logo-wrapper {
       top: 95px;
       left: 50%;
-      transform: translate(-50%, -50%);
-      gap: 11px;
-      animation: none;
-    }
-
-    .intro__logo-img {
-      width: 50px;
-      height: 50px;
-    }
-
-    .intro__logo-text-box {
-      width: auto;
-      animation: none;
-    }
-
-    .intro__logo-text {
-      font-size: 17px;
-      width: auto;
-      color: var(--black);
+      transform: translate(-50%, -50%) scale(0.7143);
       animation: none;
       clip-path: none;
     }
-  }
-
-  @keyframes logoWrapperExpandMobile {
-    0% { gap: 0; }
-    100% { gap: 11px; }
-  }
-
-  @keyframes logoTextRevealMobile {
-    0% { width: 0; }
-    100% { width: 112px; }
   }
 }
 /* #endregion */

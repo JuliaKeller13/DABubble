@@ -67,14 +67,32 @@ main {
   width: 100%;
 }
 
-.mobile-header-only,
+.mobile-header-only {
+  display: none;
+  transition: opacity 300ms ease-out, visibility 300ms ease-out;
+
+  &.invisible {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
 .mobile-register-only {
   display: none;
 }
 
 .desktop-header-only {
   display: block;
+  transition: opacity 300ms ease-out, visibility 300ms ease-out;
+
+  &.invisible {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
+
 
 /* #region RESPONSIVE */
 @media (max-width: 768px) {
