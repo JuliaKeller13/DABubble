@@ -13,6 +13,37 @@
   box-sizing: border-box;
   transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
+  &__editor {
+    position: relative;
+    width: 100%;
+    height: 60px;
+  }
+
+  &__rendered {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--black);
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow: hidden;
+    line-height: 1.35;
+  }
+
+  &__rendered-content {
+    min-height: 100%;
+    will-change: transform;
+  }
+
+  &__rendered-emoji {
+    display: inline-flex;
+    vertical-align: text-bottom;
+    margin: 0 1px;
+  }
+
   &__textarea {
     width: 100%;
     height: 60px;
@@ -22,10 +53,21 @@
     font-family: var(--font-main);
     font-size: 18px;
     font-weight: 400;
-    color: var(--black);
+    color: transparent;
+    caret-color: var(--black);
     padding: 0;
     box-sizing: border-box;
     background-color: transparent;
+    position: relative;
+    z-index: 1;
+    line-height: 1.35;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::selection {
+      color: transparent;
+      background-color: rgba(vars.$purple-1, 0.18);
+    }
 
     &::placeholder {
       color: var(--text-gray);
@@ -62,7 +104,7 @@
     height: 20px;
   }
 
-  &__textarea:focus ~ &__actions {
+  &__editor:focus-within + &__actions {
     .message-input__icon {
       filter: brightness(0);
     }
@@ -114,6 +156,14 @@
     width: 100%;
     height: 120px;
     padding: 15px;
+
+    &__editor {
+      height: 45px;
+    }
+
+    &__rendered {
+      font-size: 16px;
+    }
 
     &__textarea {
       height: 45px;

@@ -95,7 +95,7 @@
                     (click)="addEmojiToEdit(emoji)"
                     type="button"
                   >
-                    {{ emoji }}
+                    <ngx-emoji [emoji]="toEmojiKey(emoji)" [set]="emojiSet" [size]="20"></ngx-emoji>
                   </button>
                 }
               </div>
@@ -132,7 +132,20 @@
         <p class="msg-container__text">
           @for (token of tokens; track $index) {
             @if (token.type === 'text') {
-              <span>{{ token.text }}</span>
+              <span>
+                @for (part of token.parts ?? []; track $index) {
+                  @if (part.type === 'emoji') {
+                    <ngx-emoji
+                      class="msg-container__inline-emoji"
+                      [emoji]="part.unified!"
+                      [set]="emojiSet"
+                      [size]="24"
+                    ></ngx-emoji>
+                  } @else {
+                    <span>{{ part.text }}</span>
+                  }
+                }
+              </span>
             } @else if (token.type === 'channel') {
               <a class="msg-container__link msg-container__link--channel" (click)="onChannelClick(token.channelId!)">{{ token.text }}</a>
             } @else if (token.type === 'mention') {
@@ -167,7 +180,12 @@
               (click)="toggleReaction(rx.emoji)"
               type="button"
             >
-              <span class="msg-container__rx-emoji">{{ rx.emoji }}</span>
+              <ngx-emoji
+                class="msg-container__rx-emoji"
+                [emoji]="toEmojiKey(rx.emoji)"
+                [set]="emojiSet"
+                [size]="20"
+              ></ngx-emoji>
               <span class="msg-container__rx-count">{{ rx.count }}</span>
             </button>
           }
@@ -192,7 +210,7 @@
                     (click)="toggleReaction(emoji)"
                     type="button"
                   >
-                    {{ emoji }}
+                    <ngx-emoji [emoji]="toEmojiKey(emoji)" [set]="emojiSet" [size]="20"></ngx-emoji>
                   </button>
                 }
               </div>
@@ -213,12 +231,7 @@
       title="Mit Haken reagieren"
     >
       <span class="icon-wrapper">
-        <img
-          src="img/icons/chatarea/chat_icons/emoji_check.svg"
-          alt="Checkmark"
-          width="20"
-          height="20"
-        />
+        <ngx-emoji [emoji]="toEmojiKey('✅')" [set]="emojiSet" [size]="20"></ngx-emoji>
       </span>
     </button>
 
@@ -230,7 +243,7 @@
       title="Mit Daumen nach oben reagieren"
     >
       <span class="icon-wrapper">
-        <img src="img/icons/chatarea/chat_icons/capa.svg" alt="Thumbs Up" width="20" height="20" />
+        <ngx-emoji [emoji]="toEmojiKey('👍')" [set]="emojiSet" [size]="20"></ngx-emoji>
       </span>
     </button>
 
@@ -271,7 +284,7 @@
               (click)="toggleReaction(emoji)"
               type="button"
             >
-              {{ emoji }}
+              <ngx-emoji [emoji]="toEmojiKey(emoji)" [set]="emojiSet" [size]="20"></ngx-emoji>
             </button>
           }
         </div>

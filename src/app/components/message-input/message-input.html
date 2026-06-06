@@ -3,7 +3,8 @@
     <emoji-mart
       title="Emoji auswählen"
       [i18n]="emojiPickerI18n"
-      [isNative]="true"
+      [isNative]="false"
+      set="apple"
       [showPreview]="false"
       [enableSearch]="true"
       [emojiSize]="30"
@@ -59,14 +60,41 @@
     </div>
   }
 
-  <textarea 
-    #messageTextarea
-    class="message-input__textarea" 
-    [placeholder]="placeholder"
-    [(ngModel)]="messageText"
-    (input)="onInputChange()"
-    (keydown.enter)="onEnterPressed($event)"
-  ></textarea>
+  <div class="message-input__editor">
+    @if (messageText.length > 0) {
+      <div class="message-input__rendered" aria-hidden="true">
+        <div
+          class="message-input__rendered-content"
+          [style.transform]="'translateY(-' + renderedScrollTop + 'px)'"
+        >
+          @for (part of messageTextParts; track $index) {
+            @if (part.type === 'emoji') {
+              <ngx-emoji
+                class="message-input__rendered-emoji"
+                [emoji]="part.unified!"
+                [set]="emojiSet"
+                [size]="20"
+              ></ngx-emoji>
+            } @else if (part.type === 'newline') {
+              <br />
+            } @else {
+              <span>{{ part.text }}</span>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <textarea 
+      #messageTextarea
+      class="message-input__textarea" 
+      [placeholder]="placeholder"
+      [(ngModel)]="messageText"
+      (input)="onInputChange()"
+      (scroll)="onTextareaScroll()"
+      (keydown.enter)="onEnterPressed($event)"
+    ></textarea>
+  </div>
   
   <div class="message-input__actions">
     <div class="message-input__actions-left">

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, inject, ElementRef, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { Message } from '../../interfaces/message.interface';
 import { MessageService } from '../../services/message.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
@@ -15,12 +16,19 @@ interface MessageToken {
   text: string;
   channelId?: string;
   userId?: string;
+  parts?: MessageTextPart[];
+}
+
+interface MessageTextPart {
+  type: 'text' | 'emoji';
+  text?: string;
+  unified?: string;
 }
 
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EmojiComponent],
   templateUrl: './message.html',
   styleUrl: './message.scss',
   host: {
@@ -30,6 +38,8 @@ interface MessageToken {
 })
 export class MessageComponent implements OnInit {
   private _message!: Message;
+  private readonly emojiRegex = /\p{Extended_Pictographic}/u;
+  private readonly regionalFlagRegex = /^[\u{1F1E6}-\u{1F1FF}]{2}$/u;
 
   @Input({ required: true }) set message(val: Message) {
     this._message = val;
@@ -87,6 +97,7 @@ export class MessageComponent implements OnInit {
   }
   
   quickEmojis = ['🚀', '✅', '👍', '❤️', '😂', '😮'];
+  readonly emojiSet = 'apple';
 
   
   get replyCount(): number {
@@ -124,6 +135,42 @@ export class MessageComponent implements OnInit {
         userIds,
       };
     });
+  }
+
+  private buildTextParts(text: string): MessageTextPart[] {
+    if (!text) {
+      return [];
+    }
+
+    const parts: MessageTextPart[] = [];
+    let buffer = '';
+
+    for (const segment of this.splitIntoGraphemes(text)) {
+      if (this.isEmojiSegment(segment)) {
+        if (buffer) {
+          parts.push({ type: 'text', text: buffer });
+          buffer = '';
+        }
+
+        parts.push({
+          type: 'emoji',
+          unified: this.toUnified(segment),
+        });
+        continue;
+      }
+
+      buffer += segment;
+    }
+
+    if (buffer) {
+      parts.push({ type: 'text', text: buffer });
+    }
+
+    return parts;
+  }
+
+  toEmojiKey(emoji: string): string {
+    return this.toUnified(emoji);
   }
   
   async toggleReaction(emoji: string) {
@@ -302,9 +349,11 @@ export class MessageComponent implements OnInit {
 
       if (matchingTerm && earliestMatchIndex !== -1) {
         if (earliestMatchIndex > 0) {
+          const textPart = remainingText.substring(0, earliestMatchIndex);
           result.push({
             type: 'text',
-            text: remainingText.substring(0, earliestMatchIndex)
+            text: textPart,
+            parts: this.buildTextParts(textPart)
           });
         }
 
@@ -317,9 +366,11 @@ export class MessageComponent implements OnInit {
 
         remainingText = remainingText.substring(earliestMatchIndex + matchingTerm.text.length);
       } else {
+        const textPart = remainingText;
         result.push({
           type: 'text',
-          text: remainingText
+          text: textPart,
+          parts: this.buildTextParts(textPart)
         });
         break;
       }
@@ -384,5 +435,25 @@ export class MessageComponent implements OnInit {
   private closeAllPopups() {
     this.closeTransientPopups();
     this.showEditEmojiPicker = false;
+  }
+
+  private splitIntoGraphemes(text: string): string[] {
+    if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
+      const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+      return Array.from(segmenter.segment(text), ({ segment }) => segment);
+    }
+
+    return Array.from(text);
+  }
+
+  private isEmojiSegment(segment: string): boolean {
+    return this.regionalFlagRegex.test(segment) || this.emojiRegex.test(segment);
+  }
+
+  private toUnified(emoji: string): string {
+    return Array.from(emoji)
+      .map(char => char.codePointAt(0)?.toString(16).toUpperCase() ?? '')
+      .filter(Boolean)
+      .join('-');
   }
 }

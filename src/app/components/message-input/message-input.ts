@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, On
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
@@ -9,9 +10,15 @@ import { ThreadService } from '../../services/thread.service';
 
 type PopupType = 'none' | 'users' | 'channels';
 
+interface MessageInputPart {
+  type: 'text' | 'emoji' | 'newline';
+  text?: string;
+  unified?: string;
+}
+
 @Component({
   selector: 'app-message-input',
-  imports: [CommonModule, FormsModule, PickerModule],
+  imports: [CommonModule, FormsModule, PickerModule, EmojiComponent],
   templateUrl: './message-input.html',
   styleUrl: './message-input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,6 +28,11 @@ type PopupType = 'none' | 'users' | 'channels';
   }
 })
 export class MessageInputComponent implements OnDestroy {
+  private readonly emojiRegex = /\p{Extended_Pictographic}/u;
+  private readonly regionalFlagRegex = /^[\u{1F1E6}-\u{1F1FF}]{2}$/u;
+  private _messageText = '';
+  renderedScrollTop = 0;
+
   @Input() placeholder: string = 'Nachricht an #Entwicklerteam';
   @Output() sendMessage = new EventEmitter<string>();
   @Output() typing = new EventEmitter<boolean>();
@@ -32,7 +44,17 @@ export class MessageInputComponent implements OnDestroy {
   private threadSvc = inject(ThreadService);
   private elementRef = inject(ElementRef);
 
-  messageText = '';
+  messageTextParts: MessageInputPart[] = [];
+  get messageText(): string {
+    return this._messageText;
+  }
+
+  set messageText(value: string) {
+    this._messageText = value;
+    this.messageTextParts = this.buildMessageTextParts(value);
+  }
+
+  readonly emojiSet = 'apple';
   showEmojiPicker = false;
   readonly emojiPickerStyle = {
     width: '100%',
@@ -89,6 +111,44 @@ export class MessageInputComponent implements OnDestroy {
     return this.activePopup !== 'none';
   }
 
+  private buildMessageTextParts(text: string): MessageInputPart[] {
+    if (!text) {
+      return [];
+    }
+
+    const parts: MessageInputPart[] = [];
+    let buffer = '';
+
+    for (const segment of this.splitIntoGraphemes(text)) {
+      if (segment === '\n') {
+        if (buffer) {
+          parts.push({ type: 'text', text: buffer });
+          buffer = '';
+        }
+        parts.push({ type: 'newline' });
+        continue;
+      }
+
+      if (this.isEmojiSegment(segment)) {
+        if (buffer) {
+          parts.push({ type: 'text', text: buffer });
+          buffer = '';
+        }
+
+        parts.push({ type: 'emoji', unified: this.toUnified(segment) });
+        continue;
+      }
+
+      buffer += segment;
+    }
+
+    if (buffer) {
+      parts.push({ type: 'text', text: buffer });
+    }
+
+    return parts;
+  }
+
   private get textareaElement(): HTMLTextAreaElement | null {
     return this.messageTextarea?.nativeElement ?? null;
   }
@@ -108,6 +168,7 @@ export class MessageInputComponent implements OnDestroy {
 
     this.sendMessage.emit(this.messageText);
     this.messageText = '';
+    this.renderedScrollTop = 0;
   }
 
   
@@ -127,6 +188,11 @@ export class MessageInputComponent implements OnDestroy {
     }, 3000);
 
     this.checkForTriggerChar();
+    this.syncRenderedScroll();
+  }
+
+  onTextareaScroll() {
+    this.syncRenderedScroll();
   }
 
   private startTypingHeartbeat() {
@@ -217,6 +283,7 @@ export class MessageInputComponent implements OnDestroy {
     setTimeout(() => {
       textarea.focus();
       textarea.setSelectionRange(newCursorPos, newCursorPos);
+      this.syncRenderedScroll();
     }, 0);
   }
 
@@ -400,6 +467,7 @@ export class MessageInputComponent implements OnDestroy {
         textarea.focus();
         const newCursorPos = triggerIndex + mentionText.length + 1;
         textarea.setSelectionRange(newCursorPos, newCursorPos);
+        this.syncRenderedScroll();
       }, 0);
     } else {
       this.messageText += (this.messageText ? ' ' : '') + mentionText + ' ';
@@ -436,5 +504,29 @@ export class MessageInputComponent implements OnDestroy {
     if (this.activePopup !== 'none' || this.showEmojiPicker) {
       this.closePopup();
     }
+  }
+
+  private splitIntoGraphemes(text: string): string[] {
+    if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
+      const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+      return Array.from(segmenter.segment(text), ({ segment }) => segment);
+    }
+
+    return Array.from(text);
+  }
+
+  private isEmojiSegment(segment: string): boolean {
+    return this.regionalFlagRegex.test(segment) || this.emojiRegex.test(segment);
+  }
+
+  private toUnified(emoji: string): string {
+    return Array.from(emoji)
+      .map(char => char.codePointAt(0)?.toString(16).toUpperCase() ?? '')
+      .filter(Boolean)
+      .join('-');
+  }
+
+  private syncRenderedScroll() {
+    this.renderedScrollTop = this.textareaElement?.scrollTop ?? 0;
   }
 }
