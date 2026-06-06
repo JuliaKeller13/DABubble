@@ -1,8 +1,7 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
+@use '../../../styles/abstracts' as *;
 
 main {
-  @include mx.flex(row, nowrap, center, flex-start);
+  @include flex(row, nowrap, center, flex-start);
 }
 
 .page-container {
@@ -14,11 +13,15 @@ main {
 }
 
 .datenschutz-layout {
-  @include mx.flex(column, nowrap, flex-start, stretch);
+  @include flex(column, nowrap, flex-start, stretch);
   gap: 32px;
   width: 100%;
-  padding: 120px 290px 48px 290px;
+  padding: 120px clamp(15px, -40px + 17.1875vw, 290px) clamp(40px, 38px + 0.625vw, 50px);
   box-sizing: border-box;
+
+  @include tablet-lg {
+    background: $white;
+  }
 }
 
 .datenschutz-header {
@@ -28,12 +31,12 @@ main {
 }
 
 .datenschutz-content {
-  @include mx.flex(column, nowrap, flex-start, stretch);
+  @include flex(column, nowrap, flex-start, stretch);
   gap: 32px;
 }
 
 .datenschutz-section {
-  @include mx.flex(column, nowrap, flex-start, stretch);
+  @include flex(column, nowrap, flex-start, stretch);
   gap: 8px;
 
   h2 {
@@ -43,20 +46,6 @@ main {
   p {
     margin: 0;
     line-height: 1.5;
-    color: vars.$black;
+    color: $black;
   }
 }
-
-/* #region RESPONSIVE */
-@include mx.tablet-lg {
-  .datenschutz-layout {
-    padding: 100px 100px 48px 100px;
-  }
-}
-
-@include mx.mobile {
-  .datenschutz-layout {
-    padding: 80px 24px 48px 24px;
-  }
-}
-/* #endregion */
