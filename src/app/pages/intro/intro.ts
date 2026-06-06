@@ -1,5 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, signal, output } from '@angular/core';
 
 @Component({
   selector: 'app-intro',
@@ -8,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrl: './intro.scss'
 })
 export class IntroComponent implements OnInit {
-  private router = inject(Router);
+  finished = output<void>();
 
   isSliding = signal(false);
   backgroundFaded = signal(false);
@@ -19,8 +18,8 @@ export class IntroComponent implements OnInit {
       this.backgroundFaded.set(true);
 
       setTimeout(() => {
-        this.router.navigate(['/login']);
+        this.finished.emit();
       }, 850);
-    }, 2800);
+    }, 3100);
   }
 }

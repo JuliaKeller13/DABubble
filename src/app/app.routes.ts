@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { IntroComponent } from './pages/intro/intro';
 import { LoginComponent } from './pages/login/login';
 import { ImpressumComponent } from './pages/impressum/impressum';
 import { DatenschutzComponent } from './pages/datenschutz/datenschutz';
@@ -11,8 +10,8 @@ import { PasswordReset } from './pages/password-reset/password-reset';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'intro', pathMatch: 'full' },
-  { path: 'intro', component: IntroComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'intro', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'impressum', component: ImpressumComponent },
   { path: 'datenschutz', component: DatenschutzComponent },
