@@ -1,5 +1,5 @@
 @use '../../../styles/abstracts' as *;
-@use '../../../styles/components/button' as *;
+@use '../../../styles/components' as *;
 
 main {
   @include flex(row, nowrap, center, center);
@@ -69,7 +69,6 @@ main {
 
 .mobile-header-only {
   display: none;
-  transition: opacity 300ms ease-out, visibility 300ms ease-out;
 
   &.invisible {
     opacity: 0;
@@ -84,7 +83,6 @@ main {
 
 .desktop-header-only {
   display: block;
-  transition: opacity 300ms ease-out, visibility 300ms ease-out;
 
   &.invisible {
     opacity: 0;

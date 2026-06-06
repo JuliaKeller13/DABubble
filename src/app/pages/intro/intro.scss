@@ -74,12 +74,12 @@
 
 .intro.intro--sliding {
   .intro__logo-wrapper {
-    top: 60px;
+    top: 62px;
     left: 141.5px;
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
     animation: none;
-    clip-path: none;
+    clip-path: inset(0 0 0 0);
   }
 
   .intro__logo--white {
@@ -106,7 +106,7 @@
       left: 50%;
       transform: translate(-50%, -50%) scale(0.7143);
       animation: none;
-      clip-path: none;
+      clip-path: inset(0 0 0 0);
     }
   }
 }
