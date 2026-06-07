@@ -532,8 +532,8 @@
 
     &--delete {
       &:hover {
-        background-color: $light-red !important;
-        color: $red-text !important;
+        background-color: $light-red;
+        color: $red-text;
       }
     }
   }
