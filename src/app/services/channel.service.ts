@@ -62,8 +62,19 @@ export class channelService {
   }
 
   
-  async loadChannels(): Promise<Channel[]> {
+  private channelsListCache: Channel[] = [];
+
+  clearCache() {
+    this.channelsListCache = [];
+  }
+
+  async loadChannels(forceRefresh = false): Promise<Channel[]> {
+    if (!forceRefresh && this.channelsListCache.length > 0) {
+      this.channelsSignal.set(this.channelsListCache);
+      return this.channelsListCache;
+    }
     const fetched = await this.getChannels();
+    this.channelsListCache = fetched;
     this.channelsSignal.set(fetched);
     return fetched;
   }
@@ -139,6 +150,8 @@ export class channelService {
     }
     
     
+    // Clear cache to force next reload
+    this.clearCache();
     await this.loadChannels();
     return data;
   }
@@ -157,6 +170,9 @@ export class channelService {
     }
 
     
+    // Update cache
+    this.channelsListCache = this.channelsListCache.map(c => c.id === id ? { ...c, ...updates } : c);
+
     this.channelsSignal.set(
       this.channelsSignal().map(c => c.id === id ? { ...c, ...updates } : c)
     );
@@ -184,6 +200,9 @@ export class channelService {
     }
 
     
+    // Update cache
+    this.channelsListCache = this.channelsListCache.filter(c => c.id !== id);
+
     this.channelsSignal.set(
       this.channelsSignal().filter(c => c.id !== id)
     );
@@ -249,6 +268,9 @@ export class channelService {
       console.error('Error removing member from channel:', error.message);
       throw error;
     }
+
+    // Clear cache since membership changed
+    this.clearCache();
     return data;
   }
 

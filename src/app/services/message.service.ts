@@ -760,4 +760,31 @@ export class messageService {
       return false;
     }
   }
+
+  async getDirectChatDeletions(currentUserId: string): Promise<Record<string, string>> {
+    try {
+      const { data, error } = await this.supabaseSvc.supabase
+        .from('direct_chat_deletions')
+        .select('other_user_id, cleared_at')
+        .eq('user_id', currentUserId);
+
+      if (error) {
+        console.error('Error fetching direct chat deletions:', error.message);
+        return {};
+      }
+
+      const result: Record<string, string> = {};
+      if (data) {
+        data.forEach((row: any) => {
+          if (row.other_user_id && row.cleared_at) {
+            result[row.other_user_id] = row.cleared_at;
+          }
+        });
+      }
+      return result;
+    } catch (err) {
+      console.error('Failed to get direct chat deletions:', err);
+      return {};
+    }
+  }
 }

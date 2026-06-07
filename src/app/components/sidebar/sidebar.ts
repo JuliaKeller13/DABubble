@@ -180,7 +180,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   async loadData() {
-    this.isSidebarLoading.set(true);
+    const isInitial = this.channels().length === 0 &&
+                      this.usersWithHistory().length === 0 &&
+                      this.usersWithoutHistory().length === 0;
+    if (isInitial) {
+      this.isSidebarLoading.set(true);
+    }
     try {
       const currentUserId = this.currentUserId;
       const fetchedChannels = await this.channelSvc.loadChannels();
@@ -238,6 +243,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
       if (currentUserId) {
         isGuest = !!(this.authSvc.currentUser()?.is_anonymous || this.authSvc.currentUserProfile()?.display_name === 'Gast');
+        const dbDeletions = await this.messageSvc.getDirectChatDeletions(currentUserId);
         allDMs = await this.messageSvc.getAllUserDirectMessages(currentUserId);
         const activeDMUser = this.userSvc.activeDirectChatUser();
 
@@ -278,7 +284,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
           if (partnerId === currentUserId) return;
 
           const closedStr = this.getSafeLocalStorageItem(`chat_closed:${currentUserId}:${partnerId}`);
-          const closedTime = closedStr ? new Date(closedStr).getTime() : 0;
+          const localClosedTime = closedStr ? new Date(closedStr).getTime() : 0;
+          const dbClosedStr = dbDeletions[partnerId];
+          const dbClosedTime = dbClosedStr ? new Date(dbClosedStr).getTime() : 0;
+          const closedTime = Math.max(localClosedTime, dbClosedTime);
 
           if (latestMsgTime > closedTime) {
             partnerIdsSet.add(partnerId);
