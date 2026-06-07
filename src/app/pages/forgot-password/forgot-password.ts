@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,11 +7,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-forgot-password',
+  standalone: true,
   imports: [
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -24,9 +25,15 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.scss',
 })
-export class ForgotPassword {
+export class ForgotPassword implements OnInit {
+  ngOnInit(): void {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  }
+
   private readonly fb = inject(NonNullableFormBuilder);
-  private readonly authService = inject(AuthService);
+  private readonly authService = inject(authService);
   private readonly toast = inject(ToastService);
   private readonly router = inject(Router);
   private readonly iconRegistry = inject(MatIconRegistry);

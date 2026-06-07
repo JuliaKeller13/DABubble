@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
 import { channelService } from '../../services/channel.service';
 
@@ -28,7 +28,7 @@ export class DialogChannelMembersComponent implements OnInit {
   @Output() addMember = new EventEmitter<any>();
   @Output() memberRemoved = new EventEmitter<string>();
 
-  private authSvc = inject(AuthService);
+  private authSvc = inject(authService);
   private profileDialogSvc = inject(ProfileDialogService);
   private channelSvc = inject(channelService);
 

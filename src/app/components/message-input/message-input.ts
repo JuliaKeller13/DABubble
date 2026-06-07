@@ -5,9 +5,9 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { ThreadService } from '../../services/thread.service';
-import { MessageService } from '../../services/message.service';
+import { messageService } from '../../services/message.service';
 
 type PopupType = 'none' | 'users' | 'channels';
 
@@ -42,9 +42,9 @@ export class MessageInputComponent implements OnDestroy {
 
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
-  private authSvc = inject(AuthService);
+  private authSvc = inject(authService);
   private threadSvc = inject(ThreadService);
-  private messageSvc = inject(MessageService);
+  private messageSvc = inject(messageService);
   private elementRef = inject(ElementRef);
 
   messageTextParts: MessageInputPart[] = [];

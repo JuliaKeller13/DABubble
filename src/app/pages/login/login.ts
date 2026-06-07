@@ -1,5 +1,5 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
   }
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
-  readonly authService = inject(AuthService);
+  readonly authService = inject(authService);
   private toast = inject(ToastService);
   private iconRegistry = inject(MatIconRegistry);
   private sanitizer = inject(DomSanitizer);

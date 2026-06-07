@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/materia
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { userService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { channelService } from '../../services/channel.service';
 import { User } from '../../interfaces/user.interface';
 
@@ -22,7 +22,7 @@ export class dialogAddMemberComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<dialogAddMemberComponent>, { optional: true });
   private injectedData = inject<{ channelName: string, mode?: 'create' | 'add' }>(MAT_DIALOG_DATA, { optional: true });
   private userSvc = inject(userService);
-  private authSvc = inject(AuthService);
+  private authSvc = inject(authService);
   private channelSvc = inject(channelService);
 
   @Input() inputData?: { channelName: string, mode?: 'create' | 'add' };

@@ -12,7 +12,7 @@ type SupabaseIdentityData = {
   photoURL?: unknown;
 };
 
-type AuthServiceResult = {
+type authServiceResult = {
   error: AuthError | null;
 };
 
@@ -24,7 +24,7 @@ type SignupResult = {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class authService {
   private supabaseSvc = inject(supabaseService);
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
@@ -245,7 +245,7 @@ export class AuthService {
     });
   }
 
-  async requestPasswordReset(email: string): Promise<AuthServiceResult> {
+  async requestPasswordReset(email: string): Promise<authServiceResult> {
     const redirectTo = typeof window === 'undefined'
       ? undefined
       : new URL('password-reset', document.baseURI).href;
@@ -258,7 +258,7 @@ export class AuthService {
     return { error };
   }
 
-  async updatePassword(password: string): Promise<AuthServiceResult> {
+  async updatePassword(password: string): Promise<authServiceResult> {
     const { error } = await this.supabaseSvc.supabase.auth.updateUser({
       password,
     });

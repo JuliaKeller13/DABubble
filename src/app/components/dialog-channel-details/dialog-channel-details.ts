@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class DialogChannelDetailsComponent implements OnInit {
 
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
-  private authSvc = inject(AuthService);
+  private authSvc = inject(authService);
   private profileDialogSvc = inject(ProfileDialogService);
   private router = inject(Router);
 

@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
 import { DialogProfileComponent } from '../dialog-profile/dialog-profile';
 
@@ -18,7 +18,7 @@ export class ProfileMenuComponent {
     profile: "url('img/icons/account_workspace/account_circle.svg')",
     logout: "url('img/icons/account_workspace/logout.svg')",
   };
-  authService = inject(AuthService);
+  authService = inject(authService);
 
   currentUserProfile = this.authService.currentUserProfile;
   selectedProfile = this.profileDialogSvc.selectedProfile;
