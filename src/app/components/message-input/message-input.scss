@@ -29,7 +29,6 @@
     color: var(--black);
     white-space: pre-wrap;
     word-break: break-word;
-    overflow: hidden;
     line-height: 1.35;
   }
 
@@ -62,7 +61,6 @@
     z-index: 1;
     line-height: 1.35;
     overflow-y: auto;
-    overflow-x: hidden;
 
     &::selection {
       color: transparent;
@@ -150,13 +148,13 @@
   }
 
   &--disabled {
-    background-color: var(--bg-color) !important;
-    border-color: var(--light-purple) !important;
+    background-color: var(--bg-color);
+    border-color: var(--light-purple);
     cursor: not-allowed;
 
     .message-input__textarea {
       cursor: not-allowed;
-      color: var(--text-gray) !important;
+      color: var(--text-gray);
       pointer-events: none;
     }
 
@@ -292,7 +290,7 @@
     color: var(--black);
     font-weight: 500;
     white-space: nowrap;
-    overflow: hidden;
+    overflow: clip;
     text-overflow: ellipsis;
   }
 

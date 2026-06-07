@@ -114,7 +114,7 @@
     }
 
     &--disabled {
-      color: vars.$light-purple !important;
+      color: vars.$light-purple;
       cursor: not-allowed;
 
       &:hover::after {
@@ -450,8 +450,8 @@
       }
 
       &--disabled {
-        background-color: rgba(0, 0, 0, 0.04) !important;
-        color: vars.$light-purple !important;
+        background-color: rgba(0, 0, 0, 0.04);
+        color: vars.$light-purple;
         cursor: not-allowed;
       }
 

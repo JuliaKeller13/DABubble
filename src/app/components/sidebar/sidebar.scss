@@ -367,13 +367,13 @@
 
   &__item-name {
     white-space: nowrap;
-    overflow: hidden;
+    overflow: clip;
     text-overflow: ellipsis;
     transition: font-weight 0.15s ease, color 0.15s ease;
 
     &--unread {
-      font-weight: 800 !important;
-      color: var(--purple-1) !important;
+      font-weight: 800;
+      color: var(--purple-1);
     }
   }
 
@@ -487,13 +487,13 @@
     transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 
     &:hover {
-      background-color: var(--bg-color, #f4f4f4) !important;
-      color: var(--purple-1, #444df2) !important;
-      opacity: 1 !important;
+      background-color: var(--bg-color, #f4f4f4);
+      color: var(--purple-1, #444df2);
+      opacity: 1;
       transform: scale(1.05);
 
       .sidebar__close-chat-icon {
-        opacity: 1 !important;
+        opacity: 1;
       }
     }
   }
