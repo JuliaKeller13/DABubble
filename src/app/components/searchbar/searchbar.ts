@@ -109,6 +109,7 @@ export class SearchBarComponent implements OnInit {
 
       if (messages && messages.data) {
         const userMap = this.userResultsMap;
+        const channelMap = new Map(channels.map((c) => [c.id, c]));
         
         this.allMessagesCache = (messages.data as Message[])
           .filter((msg) => {
@@ -120,10 +121,25 @@ export class SearchBarComponent implements OnInit {
             }
             return false;
           })
-          .map((msg) => ({
-            ...msg,
-            sender: userMap.get(msg.sender_id)
-          }));
+          .map((msg) => {
+            let searchableContent = msg.content || '';
+            const userRegex = /<@([a-f0-9-]{36})>/gi;
+            searchableContent = searchableContent.replace(userRegex, (match, userId) => {
+              const u = userMap.get(userId);
+              return u ? `@${u.display_name}` : '@Gelöschter User';
+            });
+            const channelRegex = /<#([a-f0-9-]{36})>/gi;
+            searchableContent = searchableContent.replace(channelRegex, (match, chanId) => {
+              const c = channelMap.get(chanId);
+              return c ? `#${c.name}` : '#Gelöschter Channel';
+            });
+
+            return {
+              ...msg,
+              content: searchableContent,
+              sender: userMap.get(msg.sender_id)
+            };
+          });
       }
     } catch (e) {
       console.error('Failed refreshing searchbar caches:', e);

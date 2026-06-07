@@ -229,7 +229,11 @@ export class MessageComponent implements OnInit {
   startEdit() {
     this.closeTransientPopups();
     this.isEditing = true;
-    this.editContent = this.message.content;
+    this.editContent = this.messageSvc.markupToZeroWidth(
+      this.message.content,
+      MessageComponent.allUsers,
+      this.channelSvc.channels()
+    );
     this.showEditEmojiPicker = false;
   }
   
@@ -304,87 +308,37 @@ export class MessageComponent implements OnInit {
   }
 
   private executeParsing(content: string) {
-    const channels = this.channelSvc.channels();
-    const users = MessageComponent.allUsers;
-    const searchTerms: { text: string; type: 'channel' | 'mention'; id: string }[] = [];
-
-    channels.forEach(ch => {
-      if (ch.name) {
-        searchTerms.push({
-          text: '#' + ch.name,
-          type: 'channel',
-          id: ch.id || ''
-        });
-      }
-    });
-
-    users.forEach(u => {
-      if (u.display_name) {
-        const zeroWidthId = this.messageSvc.encodeToZeroWidth(u.id);
-        
-        searchTerms.push({
-          text: '@' + u.display_name + '\u200B' + zeroWidthId,
-          type: 'mention',
-          id: u.id
-        });
-
-        searchTerms.push({
-          text: '@' + u.display_name,
-          type: 'mention',
-          id: u.id
-        });
-      }
-    });
-
-    searchTerms.sort((a, b) => b.text.length - a.text.length);
-
+    const regex = /(<@[a-f0-9-]{36}>|<#[a-f0-9-]{36}>)/gi;
+    const parts = content.split(regex);
     const result: MessageToken[] = [];
-    let remainingText = content;
 
-    while (remainingText.length > 0) {
-      let earliestMatchIndex = -1;
-      let matchingTerm: typeof searchTerms[0] | null = null;
+    for (const part of parts) {
+      if (!part) continue;
 
-      for (const term of searchTerms) {
-        const index = remainingText.indexOf(term.text);
-        if (index !== -1) {
-          if (earliestMatchIndex === -1 || index < earliestMatchIndex) {
-            earliestMatchIndex = index;
-            matchingTerm = term;
-          }
-        }
-      }
-
-      if (matchingTerm && earliestMatchIndex !== -1) {
-        if (earliestMatchIndex > 0) {
-          const textPart = remainingText.substring(0, earliestMatchIndex);
-          result.push({
-            type: 'text',
-            text: textPart,
-            parts: this.buildTextParts(textPart)
-          });
-        }
-
-        const displayText = matchingTerm.type === 'mention' 
-          ? matchingTerm.text.replace(/[\u200B\u200C\u200D]/g, '')
-          : matchingTerm.text;
-
+      if (part.startsWith('<@') && part.endsWith('>')) {
+        const userId = part.slice(2, -1);
+        const user = MessageComponent.allUsers.find(u => u.id === userId);
+        const displayName = user ? user.display_name : 'Gelöschter User';
         result.push({
-          type: matchingTerm.type,
-          text: displayText,
-          channelId: matchingTerm.type === 'channel' ? matchingTerm.id : undefined,
-          userId: matchingTerm.type === 'mention' ? matchingTerm.id : undefined
+          type: 'mention',
+          text: `@${displayName}`,
+          userId: userId
         });
-
-        remainingText = remainingText.substring(earliestMatchIndex + matchingTerm.text.length);
+      } else if (part.startsWith('<#') && part.endsWith('>')) {
+        const channelId = part.slice(2, -1);
+        const channel = this.channelSvc.channels().find(c => c.id === channelId);
+        const name = channel ? channel.name : 'Gelöschter Channel';
+        result.push({
+          type: 'channel',
+          text: `#${name}`,
+          channelId: channelId
+        });
       } else {
-        const textPart = remainingText;
         result.push({
           type: 'text',
-          text: textPart,
-          parts: this.buildTextParts(textPart)
+          text: part,
+          parts: this.buildTextParts(part)
         });
-        break;
       }
     }
 
@@ -412,13 +366,14 @@ export class MessageComponent implements OnInit {
   async saveEdit() {
     if (!this.message.id || !this.editContent.trim()) return;
     try {
+      const parsedEditContent = this.messageSvc.zeroWidthToMarkup(this.editContent);
       const { error } = await this.messageSvc['supabaseSvc'].supabase
         .from('messages')
-        .update({ content: this.editContent })
+        .update({ content: parsedEditContent })
         .eq('id', this.message.id);
 
       if (!error) {
-        this.message.content = this.editContent;
+        this.message.content = parsedEditContent;
         this.parseMessageContent();
         this.isEditing = false;
         this.showEditEmojiPicker = false;
