@@ -1,6 +1,11 @@
 @use '../../../styles/abstracts/mixins' as mx;
 
 .intro {
+  --logo-scale: 2.5;
+  --logo-offset-x: 86.5px;
+  --logo-initial-transform: translate(calc(-50% + var(--logo-offset-x) * var(--logo-scale)), -50%) scale(var(--logo-scale));
+  --logo-final-transform: translate(-50%, -50%) scale(var(--logo-scale));
+
   @include mx.flex(row, nowrap, center, center);
   height: 100vh;
   width: 100%;
@@ -44,12 +49,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(2.5);
+    transform: var(--logo-initial-transform);
     z-index: 2;
     transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
     clip-path: inset(0 71.2% 0 0);
-    animation: logoReveal 500ms ease-out both;
-    animation-delay: 1800ms;
+    animation: introAnimation 800ms both;
+    animation-delay: 500ms;
   }
 
   &__logo {
@@ -87,16 +92,30 @@
   }
 }
 
-@keyframes logoReveal {
-  0% { clip-path: inset(0 71.2% 0 0); }
-  100% { clip-path: inset(0 0% 0 0); }
+@keyframes introAnimation {
+  0% {
+    transform: var(--logo-initial-transform);
+    clip-path: inset(0 71.2% 0 0);
+    animation-timing-function: ease-out;
+  }
+  37.5% {
+    transform: var(--logo-final-transform);
+    clip-path: inset(0 71.2% 0 0);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: var(--logo-final-transform);
+    clip-path: inset(0 0% 0 0);
+  }
 }
 
 /* #region RESPONSIVE */
 @media (max-width: 768px) {
   .intro {
+    --logo-scale: 1.2;
+
     .intro__logo-wrapper {
-      transform: translate(-50%, -50%) scale(1.2);
+      transform: var(--logo-initial-transform);
     }
   }
 
