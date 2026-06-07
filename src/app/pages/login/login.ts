@@ -31,6 +31,9 @@ export class LoginComponent implements OnInit {
   showIntro = signal(false);
 
   ngOnInit(): void {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
     if (typeof window !== 'undefined' && !sessionStorage.getItem('introShown')) {
       this.showIntro.set(true);
       sessionStorage.setItem('introShown', 'true');

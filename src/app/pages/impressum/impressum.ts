@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { HeaderComponent } from '../../components/header/header';
 
@@ -8,9 +8,14 @@ import { HeaderComponent } from '../../components/header/header';
   templateUrl: './impressum.html',
   styleUrl: './impressum.scss'
 })
-export class ImpressumComponent {
+export class ImpressumComponent implements OnInit {
   private location = inject(Location);
 
+  ngOnInit(): void {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  }
   
   goBack(): void {
     this.location.back();

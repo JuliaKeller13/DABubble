@@ -2,8 +2,18 @@
   <div class="page-container">
     <app-header [showSearch]="false" [showProfile]="false"></app-header>
     <div class="datenschutz-layout">
-      <div class="datenschutz-header">
-        <h1 class="text-headline-blue">Datenschutz</h1>
+      <div class="datenschutz-title-group">
+        <button class="btn-back-with-text" (click)="goBack()">
+          <div class="back-arrow-wrapper">
+            <img class="btn-back__icon" src="img/icons/arrow_back.svg" alt="">
+            <img class="btn-back__icon-hover" src="img/icons/arrow_back_hover.svg" alt="">
+          </div>
+          <span class="back-text">Zurück</span>
+        </button>
+
+        <div class="datenschutz-header">
+          <h1 class="text-headline-blue">Datenschutz</h1>
+        </div>
       </div>
 
       <div class="datenschutz-content">
