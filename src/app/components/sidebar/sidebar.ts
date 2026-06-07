@@ -78,11 +78,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private globalMessagesSubscription: RealtimeChannel | null = null;
   private directChatClearedSubscription: Subscription | null = null;
   private routerSubscription: Subscription | null = null;
+  private sessionStartTime = new Date().getTime();
 
   
   constructor() {
     effect(() => {
       const currentUser = this.authSvc.currentUser();
+      const currentUserProfile = this.authSvc.currentUserProfile();
       if (currentUser && currentUser.id) {
         this.subscribeToDMs(currentUser.id);
         this.subscribeToGlobalMessages(currentUser.id);
@@ -225,7 +227,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           }
 
           const lastReadStr = this.getSafeLocalStorageItem(`channel_last_read:${currentUserId}:${chanId}`);
-          const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : 0;
+          const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : this.sessionStartTime;
           const msgTime = new Date(msg.created_at || '').getTime();
 
           if (msgTime > lastReadTime) {
@@ -259,7 +261,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
             if (msg.recipient_id === currentUserId) {
               if (activeDMUser?.id !== partnerId) {
                 const lastReadStr = this.getSafeLocalStorageItem(`chat_last_read:${currentUserId}:${partnerId}`);
-                const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : 0;
+                const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : this.sessionStartTime;
 
                 if (msgTime > lastReadTime) {
                   unreadMap[partnerId] = (unreadMap[partnerId] || 0) + 1;
@@ -489,12 +491,33 @@ export class SidebarComponent implements OnInit, OnDestroy {
         if (channel) {
           this.channelSvc.selectChannel(channel);
           this.userSvc.selectDirectChatUser(null);
+          
+          const currentUserId = this.currentUserId;
+          if (currentUserId) {
+            this.setSafeLocalStorageItem(`channel_last_read:${currentUserId}:${channelId}`, new Date().toISOString());
+            this.unreadChannels.update((prev) => {
+              const copy = { ...prev };
+              delete copy[channelId];
+              return copy;
+            });
+          }
         }
       }
     } else if (url.includes('/main/dm/')) {
       const parts = url.split('/main/dm/');
       const userId = parts[1]?.split('?')[0];
       if (userId) {
+        const currentUserId = this.currentUserId;
+        if (currentUserId) {
+          this.setSafeLocalStorageItem(`chat_last_read:${currentUserId}:${userId}`, new Date().toISOString());
+          this.setSafeLocalStorageItem(`chat_closed:${currentUserId}:${userId}`, '');
+          this.unreadUsers.update((prev) => {
+            const copy = { ...prev };
+            delete copy[userId];
+            return copy;
+          });
+        }
+
         if (userId === 'dabubble-team-local-id') {
           const teamUser = {
             id: 'dabubble-team-local-id',
