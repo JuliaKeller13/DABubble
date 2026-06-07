@@ -111,6 +111,7 @@ export class ChatAreaComponent implements OnDestroy {
   private messageDeletedSubscription: Subscription | null = null;
   private optimisticReactionSubscription: Subscription | null = null;
   private directChatClearedSubscription: Subscription | null = null;
+  private searchTargetSubscription: Subscription | null = null;
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
@@ -144,6 +145,10 @@ export class ChatAreaComponent implements OnDestroy {
       if (activeUser && activeUser.id === targetUserId) {
         this.messages.set([]);
       }
+    });
+
+    this.searchTargetSubscription = this.messageSvc.searchTargetSelected.subscribe((messageId) => {
+      this.checkAndScrollToSearchTarget();
     });
 
     this.optimisticReactionSubscription = this.messageSvc.optimisticReaction.subscribe(({ messageId, emoji, userId }) => {
@@ -288,6 +293,9 @@ export class ChatAreaComponent implements OnDestroy {
     }
     if (this.directChatClearedSubscription) {
       this.directChatClearedSubscription.unsubscribe();
+    }
+    if (this.searchTargetSubscription) {
+      this.searchTargetSubscription.unsubscribe();
     }
   }
 

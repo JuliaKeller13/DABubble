@@ -18,6 +18,7 @@ export class MessageService {
   public directChatCleared = new EventEmitter<{ currentUserId: string; targetUserId: string }>();
   public optimisticReaction = new EventEmitter<{ messageId: string; emoji: string; userId: string }>();
   public searchTargetMessageId: string | null = null;
+  public searchTargetSelected = new EventEmitter<string>();
 
   
   async getChannelMessages(channelId: string): Promise<Message[]> {

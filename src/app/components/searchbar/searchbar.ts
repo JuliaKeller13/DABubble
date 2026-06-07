@@ -217,8 +217,9 @@ export class SearchBarComponent implements OnInit {
       this.messagesResults = [];
     } else {
       const allMessages = this.allMessagesCache;
+      const normalizedQuery = this.normalizeForSearch(query);
       this.messagesResults = allMessages.filter(msg => 
-        msg.content && msg.content.toLowerCase().includes(lowerQuery)
+        msg.content && this.normalizeForSearch(msg.content).includes(normalizedQuery)
       ).slice(0, 5);
     }
   }
@@ -248,6 +249,9 @@ export class SearchBarComponent implements OnInit {
 
   async selectMessage(msg: Message) {
     this.messageSvc.searchTargetMessageId = msg.id || null;
+    if (msg.id) {
+      this.messageSvc.searchTargetSelected.emit(msg.id);
+    }
 
     if (msg.channel_id) {
       const channel = this.channelSvc.channels().find(c => c.id === msg.channel_id) || {
@@ -317,5 +321,13 @@ export class SearchBarComponent implements OnInit {
       return partner ? `DM mit @${partner.display_name}` : 'Direktnachricht';
     }
     return '';
+  }
+
+  private normalizeForSearch(str: string): string {
+    return str
+      .toLowerCase()
+      .replace(/[,.?!;:()]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 }
