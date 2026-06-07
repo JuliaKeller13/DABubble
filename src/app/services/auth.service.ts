@@ -163,6 +163,7 @@ export class authService {
         console.error('Error creating profile:', createError);
         return null;
       }
+      this.userSvc.clearCache();
       return newProfile as UserProfile;
     }
     
@@ -301,6 +302,8 @@ export class authService {
       return null;
     }
 
+    this.userSvc.clearCache();
+
     const mergedProfile = {
       ...currentProfile,
       ...updatedProfile,
@@ -355,6 +358,7 @@ export class authService {
     const { error: profileError } = await this.supabaseSvc.supabase
       .from('profiles')
       .upsert({ id: data.user.id, display_name: name, email: trimmedEmail, avatar_url: avatarUrl, status: 'online' });
+    this.userSvc.clearCache();
     return { error: error || profileError, data };
   }
 

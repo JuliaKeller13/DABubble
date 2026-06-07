@@ -11,6 +11,11 @@ export class userService {
     readonly activeDirectChatUser = this.activeDirectChatUserSignal.asReadonly();
     
     private usersCache = new Map<string, User>();
+    private usersListCache: User[] | null = null;
+
+    clearCache() {
+        this.usersListCache = null;
+    }
 
     
     filterDuplicateGuests(users: User[], currentUserId: string | null, activePartnerIds?: string[]): User[] {
@@ -50,11 +55,15 @@ export class userService {
         }
         
         this.usersCache.set(user.id, user);
+        this.usersListCache = null;
         return data;
     }
 
     
-    async getAllUsers(): Promise<User[]> {
+    async getAllUsers(forceRefresh = false): Promise<User[]> {
+        if (this.usersListCache && !forceRefresh) {
+            return this.usersListCache;
+        }
         const { data, error } = await this.supabaseSvc.supabase
             .from('profiles')
             .select('*');
@@ -66,6 +75,7 @@ export class userService {
         
         const users = data as User[];
         users.forEach((u) => this.usersCache.set(u.id, u));
+        this.usersListCache = users;
         return users;
     }
 
