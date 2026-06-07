@@ -4,8 +4,8 @@ import { Subscription } from 'rxjs';
 import { MessageInputComponent } from '../message-input/message-input';
 import { MessageComponent } from '../message/message';
 import { ThreadService } from '../../services/thread.service';
-import { MessageService } from '../../services/message.service';
-import { AuthService } from '../../services/auth.service';
+import { messageService } from '../../services/message.service';
+import { authService } from '../../services/auth.service';
 import { Message } from '../../interfaces/message.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -18,8 +18,8 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 })
 export class ThreadViewComponent implements OnDestroy {
   public threadSvc = inject(ThreadService);
-  private messageSvc = inject(MessageService);
-  private authSvc = inject(AuthService);
+  private messageSvc = inject(messageService);
+  private authSvc = inject(authService);
 
   @ViewChild('repliesContainer') private repliesContainer!: ElementRef;
 

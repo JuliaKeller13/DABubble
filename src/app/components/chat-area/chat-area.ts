@@ -18,8 +18,8 @@ import { MessageComponent } from '../message/message';
 import { DialogChannelDetailsComponent } from '../dialog-channel-details/dialog-channel-details';
 import { DialogChannelMembersComponent } from '../dialog-channel-members/dialog-channel-members';
 import { channelService } from '../../services/channel.service';
-import { MessageService } from '../../services/message.service';
-import { AuthService } from '../../services/auth.service';
+import { messageService } from '../../services/message.service';
+import { authService } from '../../services/auth.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { userService } from '../../services/user.service';
 import { Message } from '../../interfaces/message.interface';
@@ -65,8 +65,8 @@ export class ChatAreaComponent implements OnDestroy {
 
   public channelSvc = inject(channelService);
   public userSvc = inject(userService);
-  private messageSvc = inject(MessageService);
-  private authSvc = inject(AuthService);
+  private messageSvc = inject(messageService);
+  private authSvc = inject(authService);
   private threadSvc = inject(ThreadService);
   private profileDialogSvc = inject(ProfileDialogService);
   private toastSvc = inject(ToastService);

@@ -1,7 +1,9 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { User } from '../interfaces/user.interface';
-import { AuthService } from './auth.service';
+import { authService } from './auth.service';
 import { userService } from './user.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DialogProfileComponent } from '../components/dialog-profile/dialog-profile';
 
 type ProfileDialogOpenOptions = {
   suppressOutsideCloseOnce?: boolean;
@@ -11,7 +13,8 @@ type ProfileDialogOpenOptions = {
   providedIn: 'root',
 })
 export class ProfileDialogService {
-  private readonly authService = inject(AuthService);
+  private readonly dialog = inject(MatDialog);
+  private readonly authService = inject(authService);
   private readonly userSvc = inject(userService);
   private readonly selectedProfileSignal = signal<User | null>(null);
   private suppressNextOutsideClose = false;

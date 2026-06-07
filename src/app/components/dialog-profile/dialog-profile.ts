@@ -9,7 +9,7 @@ import {
 	signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { User } from '../../interfaces/user.interface';
 import { userService } from '../../services/user.service';
 import { channelService } from '../../services/channel.service';
@@ -27,7 +27,7 @@ import { ToastService } from '../../services/toast.service';
 	}
 })
 export class DialogProfileComponent {
-	private readonly authService = inject(AuthService);
+	private readonly authService = inject(authService);
 	private readonly userSvc = inject(userService);
 	private readonly channelSvc = inject(channelService);
 	private readonly profileDialogSvc = inject(ProfileDialogService);

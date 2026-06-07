@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { Message } from '../../interfaces/message.interface';
-import { MessageService } from '../../services/message.service';
+import { messageService } from '../../services/message.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
 import { ToastService } from '../../services/toast.service';
 import { channelService } from '../../services/channel.service';
@@ -61,7 +61,7 @@ export class MessageComponent implements OnInit {
   @Output() editClick = new EventEmitter<Message>();
   @Output() delete = new EventEmitter<string>();
 
-  private messageSvc = inject(MessageService);
+  private messageSvc = inject(messageService);
   private elementRef = inject(ElementRef);
   private profileDialogSvc = inject(ProfileDialogService);
   private toastSvc = inject(ToastService);

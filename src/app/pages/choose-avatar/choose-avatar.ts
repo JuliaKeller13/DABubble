@@ -2,7 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { SignupData, SignupStateService } from '../../services/signup-state.service';
 
@@ -16,7 +16,7 @@ export class ChooseAvatar {
   private readonly successToastDuration = 1500;
   private readonly existingUserErrorCodes = new Set(['user_already_exists']);
   private router = inject(Router);
-  private authService = inject(AuthService);
+  private authService = inject(authService);
   private toast = inject(ToastService);
   private signupState = inject(SignupStateService);
 

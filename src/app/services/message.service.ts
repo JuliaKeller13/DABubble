@@ -10,7 +10,7 @@ import { Channel } from '../interfaces/channel.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class MessageService {
+export class messageService {
   private supabaseSvc = inject(supabaseService);
   private userSvc = inject(userService);
   private channelSvc = inject(channelService);

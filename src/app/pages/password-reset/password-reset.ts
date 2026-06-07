@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
-import { AuthService } from '../../services/auth.service';
+import { authService } from '../../services/auth.service';
 import { ToastService } from '../../services/toast.service';
 import { buildPasswordValidators, PASSWORD_MIN_LENGTH, passwordsMatchValidator } from '../../validators/password.validators';
 
@@ -23,11 +23,17 @@ import { buildPasswordValidators, PASSWORD_MIN_LENGTH, passwordsMatchValidator }
   templateUrl: './password-reset.html',
   styleUrl: './password-reset.scss',
 })
-export class PasswordReset {
+export class PasswordReset implements OnInit {
+  ngOnInit(): void {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 0);
+  }
+
   readonly passwordMinLength = PASSWORD_MIN_LENGTH;
 
   private readonly fb = inject(NonNullableFormBuilder);
-  readonly authService = inject(AuthService);
+  readonly authService = inject(authService);
   private readonly toast = inject(ToastService);
   private readonly router = inject(Router);
   private readonly iconRegistry = inject(MatIconRegistry);
