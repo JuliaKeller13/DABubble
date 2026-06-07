@@ -1,26 +1,55 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './pages/login/login';
-import { ImpressumComponent } from './pages/impressum/impressum';
-import { DatenschutzComponent } from './pages/datenschutz/datenschutz';
-import { MainComponent } from './pages/main/main';
-import { Signup } from './pages/signup/signup';
-import { ChooseAvatar } from './pages/choose-avatar/choose-avatar';
-import { ForgotPassword } from './pages/forgot-password/forgot-password';
-import { PasswordReset } from './pages/password-reset/password-reset';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'intro', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'impressum', component: ImpressumComponent },
-  { path: 'datenschutz', component: DatenschutzComponent },
-  { path: 'main', component: MainComponent, canActivate: [authGuard] },
-  { path: 'main/channel/:channelId', component: MainComponent, canActivate: [authGuard] },
-  { path: 'main/dm/:userId', component: MainComponent, canActivate: [authGuard] },
-  { path: 'main/new-message', component: MainComponent, canActivate: [authGuard] },
-  { path: 'signup', component: Signup },
-  { path: 'choose-avatar', component: ChooseAvatar },
-  { path: 'forgot-password', component: ForgotPassword },
-  { path: 'password-reset', component: PasswordReset },
+  { 
+    path: 'login', 
+    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent) 
+  },
+  { 
+    path: 'impressum', 
+    loadComponent: () => import('./pages/impressum/impressum').then(m => m.ImpressumComponent) 
+  },
+  { 
+    path: 'datenschutz', 
+    loadComponent: () => import('./pages/datenschutz/datenschutz').then(m => m.DatenschutzComponent) 
+  },
+  { 
+    path: 'main', 
+    loadComponent: () => import('./pages/main/main').then(m => m.MainComponent), 
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'main/channel/:channelId', 
+    loadComponent: () => import('./pages/main/main').then(m => m.MainComponent), 
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'main/dm/:userId', 
+    loadComponent: () => import('./pages/main/main').then(m => m.MainComponent), 
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'main/new-message', 
+    loadComponent: () => import('./pages/main/main').then(m => m.MainComponent), 
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'signup', 
+    loadComponent: () => import('./pages/signup/signup').then(m => m.Signup) 
+  },
+  { 
+    path: 'choose-avatar', 
+    loadComponent: () => import('./pages/choose-avatar/choose-avatar').then(m => m.ChooseAvatar) 
+  },
+  { 
+    path: 'forgot-password', 
+    loadComponent: () => import('./pages/forgot-password/forgot-password').then(m => m.ForgotPassword) 
+  },
+  { 
+    path: 'password-reset', 
+    loadComponent: () => import('./pages/password-reset/password-reset').then(m => m.PasswordReset) 
+  },
 ];
