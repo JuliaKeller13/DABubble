@@ -74,6 +74,7 @@ export class authService {
       .then(({ data, error }) => {
         if (error) {
           console.warn('Authentication session error. Clearing state:', error.message);
+          this.clearStaleTokens();
           this.supabaseSvc.supabase.auth.signOut();
           this.clearAuthUrlHash();
         } else {
@@ -85,6 +86,7 @@ export class authService {
       })
       .catch((err) => {
         console.error('Failed to get session:', err);
+        this.clearStaleTokens();
         this.supabaseSvc.supabase.auth.signOut();
         this.clearAuthUrlHash();
       })
@@ -93,6 +95,13 @@ export class authService {
       });
 
     this.supabaseSvc.supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'TOKEN_REFRESHED' && !session) {
+        console.warn('Token refresh failed (no session returned). Signing out.');
+        this.clearStaleTokens();
+        this.supabaseSvc.supabase.auth.signOut();
+        return;
+      }
+
       if (event === 'SIGNED_OUT') {
         this.clearAuthUrlHash();
       } else if (session) {
@@ -100,6 +109,18 @@ export class authService {
       }
       this.handleUserChange(session?.user ?? null);
     });
+  }
+
+  private clearStaleTokens(): void {
+    if (typeof window === 'undefined') return;
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('sb-')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
   }
 
   private clearAuthUrlHash() {
