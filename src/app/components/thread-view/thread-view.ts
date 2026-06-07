@@ -27,6 +27,7 @@ export class ThreadViewComponent implements OnDestroy {
   private repliesSubscription: RealtimeChannel | null = null;
   private messageDeletedSubscription: Subscription | null = null;
   private optimisticReactionSubscription: Subscription | null = null;
+  private searchTargetSubscription: Subscription | null = null;
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
   private typingTimeouts = new Map<string, any>();
 
@@ -43,6 +44,10 @@ export class ThreadViewComponent implements OnDestroy {
       if (parentMsg && parentMsg.id === id) {
         this.threadSvc.closeThread();
       }
+    });
+
+    this.searchTargetSubscription = this.messageSvc.searchTargetSelected.subscribe((messageId) => {
+      this.checkAndScrollToSearchTarget();
     });
 
     this.optimisticReactionSubscription = this.messageSvc.optimisticReaction.subscribe(({ messageId, emoji, userId }) => {
@@ -139,6 +144,9 @@ export class ThreadViewComponent implements OnDestroy {
     }
     if (this.optimisticReactionSubscription) {
       this.optimisticReactionSubscription.unsubscribe();
+    }
+    if (this.searchTargetSubscription) {
+      this.searchTargetSubscription.unsubscribe();
     }
   }
 
