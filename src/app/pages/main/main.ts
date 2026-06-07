@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit, inject  } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { HeaderComponent } from "../../components/header/header";
 import { SidebarComponent } from "../../components/sidebar/sidebar";
 import { ChatAreaComponent } from "../../components/chat-area/chat-area";
@@ -18,8 +19,8 @@ export class MainComponent implements OnInit {
   isSidebarClosed = false;
   private isInitialLoad = true;
   
-  
   public threadSvc = inject(ThreadService);
+  private router = inject(Router);
 
   
   ngOnInit() {
@@ -35,11 +36,14 @@ export class MainComponent implements OnInit {
   
   private checkScreenSize() {
     const width = window.innerWidth;
+    const isChatActive = this.router.url.includes('/main/channel/') || 
+                         this.router.url.includes('/main/dm/') || 
+                         this.router.url.includes('/main/new-message');
 
     if (this.isInitialLoad) {
       this.isInitialLoad = false;
       if (width <= 1024) {
-        this.isSidebarClosed = false; 
+        this.isSidebarClosed = isChatActive; 
       } else if (width <= 1440) {
         this.isSidebarClosed = true;  
       } else {

@@ -109,54 +109,60 @@
 
         @if (isDMsExpanded) {
           <div class="sidebar__list">
-            
-            @for (user of usersWithHistory(); track user.id) {
-              <div class="sidebar__item sidebar__item--user text-body-18" 
-                   [class.sidebar__item--active]="user.id === userSvc.activeDirectChatUser()?.id"
-                   [class.text-body-bold-18]="user.id === userSvc.activeDirectChatUser()?.id"
-                   (click)="selectUser(user.id)">
-                <div class="sidebar__avatar-wrapper">
-                  <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="sidebar__avatar" referrerpolicy="no-referrer">
-                  <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="isUserOnline(user)"></span>
-                  @if (unreadUsers()[user.id]) {
-                    <span class="sidebar__unread-badge">{{ unreadUsers()[user.id] }}</span>
-                  }
-                </div>
-                <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
-                  {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
-                </span>
-                
-                <button class="sidebar__close-chat-btn" (click)="closeChat(user.id, $event)" aria-label="Chat ausblenden">
-                  <svg class="sidebar__close-chat-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
-                </button>
+            @if (isSidebarLoading()) {
+              <div class="sidebar__loading-users">
+                <div class="sidebar__spinner-small"></div>
               </div>
-            }
-
-            
-            @if (usersWithHistory().length > 0) {
-              <div class="sidebar__divider"></div>
-            }
-
-            
-            @for (user of usersWithoutHistory(); track user.id) {
-              <div class="sidebar__item sidebar__item--user text-body-18" 
-                   [class.sidebar__item--active]="user.id === userSvc.activeDirectChatUser()?.id"
-                   [class.text-body-bold-18]="user.id === userSvc.activeDirectChatUser()?.id"
-                   (click)="selectUser(user.id)">
-                <div class="sidebar__avatar-wrapper">
-                  <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="sidebar__avatar" referrerpolicy="no-referrer">
-                  <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="isUserOnline(user)"></span>
-                  @if (unreadUsers()[user.id]) {
-                    <span class="sidebar__unread-badge">{{ unreadUsers()[user.id] }}</span>
-                  }
+            } @else {
+              
+              @for (user of usersWithHistory(); track user.id) {
+                <div class="sidebar__item sidebar__item--user text-body-18" 
+                     [class.sidebar__item--active]="user.id === userSvc.activeDirectChatUser()?.id"
+                     [class.text-body-bold-18]="user.id === userSvc.activeDirectChatUser()?.id"
+                     (click)="selectUser(user.id)">
+                  <div class="sidebar__avatar-wrapper">
+                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="sidebar__avatar" referrerpolicy="no-referrer">
+                    <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="isUserOnline(user)"></span>
+                    @if (unreadUsers()[user.id]) {
+                      <span class="sidebar__unread-badge">{{ unreadUsers()[user.id] }}</span>
+                    }
+                  </div>
+                  <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
+                    {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
+                  </span>
+                  
+                  <button class="sidebar__close-chat-btn" (click)="closeChat(user.id, $event)" aria-label="Chat ausblenden">
+                    <svg class="sidebar__close-chat-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"/>
+                      <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
                 </div>
-                <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
-                  {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
-                </span>
-              </div>
+              }
+
+              
+              @if (usersWithHistory().length > 0) {
+                <div class="sidebar__divider"></div>
+              }
+
+              
+              @for (user of usersWithoutHistory(); track user.id) {
+                <div class="sidebar__item sidebar__item--user text-body-18" 
+                     [class.sidebar__item--active]="user.id === userSvc.activeDirectChatUser()?.id"
+                     [class.text-body-bold-18]="user.id === userSvc.activeDirectChatUser()?.id"
+                     (click)="selectUser(user.id)">
+                  <div class="sidebar__avatar-wrapper">
+                    <img [src]="user.avatar_url || 'img/avatars/avatar_default.svg'" [alt]="user.display_name" class="sidebar__avatar" referrerpolicy="no-referrer">
+                    <span class="sidebar__status-dot" [class.sidebar__status-dot--online]="isUserOnline(user)"></span>
+                    @if (unreadUsers()[user.id]) {
+                      <span class="sidebar__unread-badge">{{ unreadUsers()[user.id] }}</span>
+                    }
+                  </div>
+                  <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
+                    {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
+                  </span>
+                </div>
+              }
             }
           </div>
         }

@@ -73,6 +73,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   usersWithoutHistory = signal<User[]>([]);
   unreadUsers = signal<Record<string, number>>({});
   unreadChannels = signal<Record<string, number>>({});
+  isSidebarLoading = signal<boolean>(true);
   private incomingDMsSubscription: RealtimeChannel | null = null;
   private globalMessagesSubscription: RealtimeChannel | null = null;
   private directChatClearedSubscription: Subscription | null = null;
@@ -179,137 +180,145 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   async loadData() {
-    const currentUserId = this.currentUserId;
-    const fetchedChannels = await this.channelSvc.loadChannels();
-    const allFetchedUsers = await this.userSvc.getAllUsers();
-    
-    const active = this.activeChannel();
-    if (active && !fetchedChannels.some(c => c.id === active.id)) {
-      this.channelSvc.selectChannel(null);
-    }
-    
-    const isResponsive = typeof window !== 'undefined' && window.innerWidth <= 1440;
-    if (isResponsive) {
-      if (fetchedChannels.length > 0 && !this.activeChannel() && !this.userSvc.activeDirectChatUser() && !this.channelSvc.isNewMessageModeActive()) {
-        this.router.navigate(['/main/channel', fetchedChannels[0].id]);
+    this.isSidebarLoading.set(true);
+    try {
+      const currentUserId = this.currentUserId;
+      const fetchedChannels = await this.channelSvc.loadChannels();
+      const allFetchedUsers = await this.userSvc.getAllUsers();
+      
+      const active = this.activeChannel();
+      if (active && !fetchedChannels.some(c => c.id === active.id)) {
+        this.channelSvc.selectChannel(null);
       }
-    }
-
-    const activeChan = this.activeChannel();
-    if (currentUserId && activeChan?.id) {
-      this.setSafeLocalStorageItem(`channel_last_read:${currentUserId}:${activeChan.id}`, new Date().toISOString());
-    }
-
-    const unreadChanMap: Record<string, number> = {};
-    if (currentUserId) {
-      const mentions = await this.messageSvc.getChannelMentions(currentUserId);
-      const activeChannelId = this.activeChannel()?.id;
-
-      mentions.forEach((msg) => {
-        const chanId = msg.channel_id;
-        if (!chanId) return;
-
-        if (activeChannelId === chanId) return;
-
-        if (!this.isUserMentionedInText(msg.content || '', currentUserId)) {
-          return;
+      
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 1024;
+      const isResponsive = typeof window !== 'undefined' && window.innerWidth <= 1440;
+      if (isResponsive && !isMobile) {
+        if (fetchedChannels.length > 0 && !this.activeChannel() && !this.userSvc.activeDirectChatUser() && !this.channelSvc.isNewMessageModeActive()) {
+          this.router.navigate(['/main/channel', fetchedChannels[0].id]);
         }
+      }
 
-        const lastReadStr = this.getSafeLocalStorageItem(`channel_last_read:${currentUserId}:${chanId}`);
-        const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : 0;
-        const msgTime = new Date(msg.created_at || '').getTime();
+      const activeChan = this.activeChannel();
+      if (currentUserId && activeChan?.id) {
+        this.setSafeLocalStorageItem(`channel_last_read:${currentUserId}:${activeChan.id}`, new Date().toISOString());
+      }
 
-        if (msgTime > lastReadTime) {
-          unreadChanMap[chanId] = (unreadChanMap[chanId] || 0) + 1;
-        }
-      });
-    }
-    this.unreadChannels.set(unreadChanMap);
-    
-    const partnerIdsSet = new Set<string>();
-    const unreadMap: Record<string, number> = {};
-    const latestMessageTimeMap = new Map<string, number>();
-    let allDMs: Message[] = [];
-    let isGuest = false;
+      const unreadChanMap: Record<string, number> = {};
+      if (currentUserId) {
+        const mentions = await this.messageSvc.getChannelMentions(currentUserId);
+        const activeChannelId = this.activeChannel()?.id;
 
-    if (currentUserId) {
-      isGuest = !!(this.authSvc.currentUser()?.is_anonymous || this.authSvc.currentUserProfile()?.display_name === 'Gast');
-      allDMs = await this.messageSvc.getAllUserDirectMessages(currentUserId);
-      const activeDMUser = this.userSvc.activeDirectChatUser();
+        mentions.forEach((msg) => {
+          const chanId = msg.channel_id;
+          if (!chanId) return;
 
-      allDMs.forEach((msg) => {
-        const partnerId = msg.sender_id === currentUserId ? msg.recipient_id : msg.sender_id;
-        if (partnerId) {
-          const msgTime = new Date(msg.created_at || '').getTime();
-          const currentLatest = latestMessageTimeMap.get(partnerId) || 0;
-          if (msgTime > currentLatest) {
-            latestMessageTimeMap.set(partnerId, msgTime);
+          if (activeChannelId === chanId) return;
+
+          if (!this.isUserMentionedInText(msg.content || '', currentUserId)) {
+            return;
           }
 
-          if (msg.recipient_id === currentUserId) {
-            if (activeDMUser?.id !== partnerId) {
-              const lastReadStr = this.getSafeLocalStorageItem(`chat_last_read:${currentUserId}:${partnerId}`);
-              const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : 0;
+          const lastReadStr = this.getSafeLocalStorageItem(`channel_last_read:${currentUserId}:${chanId}`);
+          const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : 0;
+          const msgTime = new Date(msg.created_at || '').getTime();
 
-              if (msgTime > lastReadTime) {
-                unreadMap[partnerId] = (unreadMap[partnerId] || 0) + 1;
+          if (msgTime > lastReadTime) {
+            unreadChanMap[chanId] = (unreadChanMap[chanId] || 0) + 1;
+          }
+        });
+      }
+      this.unreadChannels.set(unreadChanMap);
+      
+      const partnerIdsSet = new Set<string>();
+      const unreadMap: Record<string, number> = {};
+      const latestMessageTimeMap = new Map<string, number>();
+      let allDMs: Message[] = [];
+      let isGuest = false;
+
+      if (currentUserId) {
+        isGuest = !!(this.authSvc.currentUser()?.is_anonymous || this.authSvc.currentUserProfile()?.display_name === 'Gast');
+        allDMs = await this.messageSvc.getAllUserDirectMessages(currentUserId);
+        const activeDMUser = this.userSvc.activeDirectChatUser();
+
+        allDMs.forEach((msg) => {
+          const partnerId = msg.sender_id === currentUserId ? msg.recipient_id : msg.sender_id;
+          if (partnerId) {
+            const msgTime = new Date(msg.created_at || '').getTime();
+            const currentLatest = latestMessageTimeMap.get(partnerId) || 0;
+            if (msgTime > currentLatest) {
+              latestMessageTimeMap.set(partnerId, msgTime);
+            }
+
+            if (msg.recipient_id === currentUserId) {
+              if (activeDMUser?.id !== partnerId) {
+                const lastReadStr = this.getSafeLocalStorageItem(`chat_last_read:${currentUserId}:${partnerId}`);
+                const lastReadTime = lastReadStr ? new Date(lastReadStr).getTime() : 0;
+
+                if (msgTime > lastReadTime) {
+                  unreadMap[partnerId] = (unreadMap[partnerId] || 0) + 1;
+                }
               }
             }
           }
-        }
-      });
+        });
 
-      if (isGuest) {
-        if (activeDMUser?.id !== 'dabubble-team-local-id') {
-          const lastReadStr = this.getSafeLocalStorageItem(`chat_last_read:${currentUserId}:dabubble-team-local-id`);
-          if (!lastReadStr) {
-            unreadMap['dabubble-team-local-id'] = 1;
+        if (isGuest) {
+          if (activeDMUser?.id !== 'dabubble-team-local-id') {
+            const lastReadStr = this.getSafeLocalStorageItem(`chat_last_read:${currentUserId}:dabubble-team-local-id`);
+            if (!lastReadStr) {
+              unreadMap['dabubble-team-local-id'] = 1;
+            }
           }
         }
+
+        this.unreadUsers.set(unreadMap);
+
+        latestMessageTimeMap.forEach((latestMsgTime, partnerId) => {
+          if (partnerId === currentUserId) return;
+
+          const closedStr = this.getSafeLocalStorageItem(`chat_closed:${currentUserId}:${partnerId}`);
+          const closedTime = closedStr ? new Date(closedStr).getTime() : 0;
+
+          if (latestMsgTime > closedTime) {
+            partnerIdsSet.add(partnerId);
+          }
+        });
       }
 
-      this.unreadUsers.set(unreadMap);
+      const fetchedUsers = this.userSvc.filterDuplicateGuests(allFetchedUsers, currentUserId, Array.from(partnerIdsSet));
+      this.users.set(fetchedUsers);
 
-      latestMessageTimeMap.forEach((latestMsgTime, partnerId) => {
-        if (partnerId === currentUserId) return;
-
-        const closedStr = this.getSafeLocalStorageItem(`chat_closed:${currentUserId}:${partnerId}`);
-        const closedTime = closedStr ? new Date(closedStr).getTime() : 0;
-
-        if (latestMsgTime > closedTime) {
-          partnerIdsSet.add(partnerId);
-        }
-      });
-    }
-
-    const fetchedUsers = this.userSvc.filterDuplicateGuests(allFetchedUsers, currentUserId, Array.from(partnerIdsSet));
-    this.users.set(fetchedUsers);
-
-    if (currentUserId) {
-      const withHistory = fetchedUsers.filter((user) => partnerIdsSet.has(user.id));
-      if (isGuest) {
-        const closedStr = this.getSafeLocalStorageItem(`chat_closed:${currentUserId}:dabubble-team-local-id`);
-        if (!closedStr) {
-          if (!withHistory.some(u => u.id === 'dabubble-team-local-id')) {
-            withHistory.unshift({
-              id: 'dabubble-team-local-id',
-              display_name: 'DABubble-Team',
-              email: 'team@dabubble.local',
-              avatar_url: 'img/logo/Logo.svg',
-              status: 'online'
-            });
+      if (currentUserId) {
+        const withHistory = fetchedUsers.filter((user) => partnerIdsSet.has(user.id));
+        if (isGuest) {
+          const closedStr = this.getSafeLocalStorageItem(`chat_closed:${currentUserId}:dabubble-team-local-id`);
+          if (!closedStr) {
+            if (!withHistory.some(u => u.id === 'dabubble-team-local-id')) {
+              withHistory.unshift({
+                id: 'dabubble-team-local-id',
+                display_name: 'DABubble-Team',
+                email: 'team@dabubble.local',
+                avatar_url: 'img/logo/Logo.svg',
+                status: 'online'
+              });
+            }
           }
         }
-      }
-      const withoutHistory = fetchedUsers.filter((user) => !partnerIdsSet.has(user.id));
+        const withoutHistory = fetchedUsers.filter((user) => !partnerIdsSet.has(user.id));
 
-      this.usersWithHistory.set(withHistory);
-      this.usersWithoutHistory.set(withoutHistory);
-    } else {
-      this.unreadUsers.set({});
-      this.unreadChannels.set({});
-      this.usersWithHistory.set([]);
-      this.usersWithoutHistory.set(fetchedUsers);
+        this.usersWithHistory.set(withHistory);
+        this.usersWithoutHistory.set(withoutHistory);
+      } else {
+        this.unreadUsers.set({});
+        this.unreadChannels.set({});
+        this.usersWithHistory.set([]);
+        this.usersWithoutHistory.set(fetchedUsers);
+      }
+    } catch (error) {
+      console.error('Error loading sidebar data:', error);
+    } finally {
+      this.isSidebarLoading.set(false);
     }
   }
 
@@ -328,8 +337,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
   selectChannel(id: string | undefined) {
     if (!id) return;
     const active = this.activeChannel();
+    const isResponsive = typeof window !== 'undefined' && window.innerWidth <= 1440;
     if (active && active.id === id) {
-      this.router.navigate(['/main']);
+      if (!isResponsive) {
+        this.router.navigate(['/main']);
+      }
     } else {
       this.router.navigate(['/main/channel', id]);
     }
@@ -344,7 +356,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (window.innerWidth <= 1440) {
+    if (isResponsive) {
       this.isClosed = true;
       this.toggleSidebar.emit(true);
     }
@@ -355,8 +367,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (!id) return;
 
     const activeUser = this.userSvc.activeDirectChatUser();
+    const isResponsive = typeof window !== 'undefined' && window.innerWidth <= 1440;
     if (activeUser && activeUser.id === id) {
-      this.router.navigate(['/main']);
+      if (!isResponsive) {
+        this.router.navigate(['/main']);
+      }
     } else {
       this.router.navigate(['/main/dm', id]);
     }
@@ -375,7 +390,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     this.loadData(); 
 
-    if (window.innerWidth <= 1440) {
+    if (isResponsive) {
       this.isClosed = true;
       this.toggleSidebar.emit(true);
     }
