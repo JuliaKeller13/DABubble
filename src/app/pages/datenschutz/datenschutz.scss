@@ -1,4 +1,5 @@
 @use '../../../styles/abstracts' as *;
+@use 'sass:color';
 
 main {
   @include flex(row, nowrap, center, flex-start);
@@ -21,6 +22,72 @@ main {
 
   @include tablet-lg {
     background: $white;
+  }
+}
+
+.datenschutz-title-group {
+  @include flex(column, nowrap, flex-start, stretch);
+  gap: 12px;
+}
+
+.btn-back-with-text {
+  @include flex(row, nowrap, center, center);
+  align-self: flex-start;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin-left: -16px;
+  border-radius: 20px;
+  transition: all 150ms ease-in-out;
+  outline: none;
+  color: $text-gray;
+  font-family: 'Nunito Variable', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+
+  .back-arrow-wrapper {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    
+    .btn-back__icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+      opacity: 0.6;
+      transition: opacity 150ms ease-in-out;
+    }
+
+    .btn-back__icon-hover {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .back-text {
+    transition: color 150ms ease-in-out;
+  }
+
+  &:hover {
+    background-color: $bg-color;
+    color: $purple-1;
+
+    .back-arrow-wrapper {
+      .btn-back__icon {
+        display: none;
+      }
+
+      .btn-back__icon-hover {
+        display: block;
+      }
+    }
+  }
+
+  &:active {
+    background-color: color.adjust($bg-color, $lightness: -5%);
   }
 }
 
