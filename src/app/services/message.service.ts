@@ -1,8 +1,11 @@
 import { Injectable, inject, EventEmitter } from '@angular/core';
 import { supabaseService } from './supabase.service';
 import { userService } from './user.service';
+import { channelService } from './channel.service';
 import { Message } from '../interfaces/message.interface';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { User } from '../interfaces/user.interface';
+import { Channel } from '../interfaces/channel.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +13,7 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 export class MessageService {
   private supabaseSvc = inject(supabaseService);
   private userSvc = inject(userService);
+  private channelSvc = inject(channelService);
   public messageDeleted = new EventEmitter<string>();
   public directChatCleared = new EventEmitter<{ currentUserId: string; targetUserId: string }>();
   public optimisticReaction = new EventEmitter<{ messageId: string; emoji: string; userId: string }>();
@@ -52,8 +56,9 @@ export class MessageService {
     parentMessageId?: string,
   ): Promise<Message | null> {
     try {
+      const parsedContent = this.zeroWidthToMarkup(content);
       const payload: any = {
-        content,
+        content: parsedContent,
         sender_id: senderId,
         channel_id: channelId,
       };
@@ -186,10 +191,11 @@ export class MessageService {
     recipientId: string,
   ): Promise<Message | null> {
     try {
+      const parsedContent = this.zeroWidthToMarkup(content);
       const { data, error } = await this.supabaseSvc.supabase
         .from('messages')
         .insert({
-          content,
+          content: parsedContent,
           sender_id: senderId,
           recipient_id: recipientId,
         })
@@ -578,7 +584,6 @@ export class MessageService {
 
   subscribeToAllChannelMentions(
     currentUserId: string,
-    displayName: string,
     callback: () => void
   ): RealtimeChannel {
     const channel = this.supabaseSvc.supabase.channel(`channel_mentions:${currentUserId}`);
@@ -595,7 +600,7 @@ export class MessageService {
           const rawMessage = payload.new as Message;
           if (!rawMessage || !rawMessage.id || !rawMessage.channel_id) return;
 
-          if (rawMessage.content && rawMessage.content.includes(`@${displayName}`)) {
+          if (rawMessage.content && rawMessage.content.includes(`<@${currentUserId}>`)) {
             callback();
           }
         }
@@ -625,13 +630,13 @@ export class MessageService {
     }
   }
 
-  async getChannelMentions(displayName: string): Promise<Message[]> {
+  async getChannelMentions(userId: string): Promise<Message[]> {
     try {
       const { data, error } = await this.supabaseSvc.supabase
         .from('messages')
         .select('id, channel_id, created_at, content')
         .not('channel_id', 'is', null)
-        .ilike('content', `%@${displayName}%`);
+        .like('content', `%<@${userId}>%`);
 
       if (error) {
         console.error('Error fetching channel mentions:', error.message);
@@ -642,6 +647,59 @@ export class MessageService {
       console.error('Failed to get channel mentions:', err);
       return [];
     }
+  }
+
+  zeroWidthToMarkup(text: string): string {
+    if (!text) return '';
+    let result = text;
+
+    // 1. Convert user mentions: @Name\u200BzeroWidthId -> <@userId>
+    const userMentionRegex = /@([^\u200B]+)\u200B([\u200B\u200C\u200D]+)/g;
+    result = result.replace(userMentionRegex, (match, name, zeroWidthId) => {
+      const userId = this.decodeFromZeroWidth(zeroWidthId);
+      if (userId) {
+        return `<@${userId}>`;
+      }
+      return match;
+    });
+
+    const channels = this.channelSvc.channels();
+    channels.forEach((ch) => {
+      if (ch.id && ch.name) {
+        const escapedName = ch.name.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        const channelRegex = new RegExp(`(^|\\s)#${escapedName}\\b`, 'g');
+        result = result.replace(channelRegex, `$1<#${ch.id}>`);
+      }
+    });
+
+    return result;
+  }
+
+  markupToZeroWidth(text: string, users: User[], channels: Channel[]): string {
+    if (!text) return '';
+    let result = text;
+
+    const userRegex = /<@([a-f0-9-]{36})>/gi;
+    result = result.replace(userRegex, (match, userId) => {
+      if (!userId) return match;
+      const user = users.find((u) => u.id === userId);
+      if (user) {
+        const zeroWidthId = this.encodeToZeroWidth(userId);
+        return `@${user.display_name}\u200B${zeroWidthId}`;
+      }
+      return '@Gelöschter User';
+    });
+
+    const channelRegex = /<#([a-f0-9-]{36})>/gi;
+    result = result.replace(channelRegex, (match, channelId) => {
+      const channel = channels.find((c) => c.id === channelId);
+      if (channel) {
+        return `#${channel.name}`;
+      }
+      return '#Gelöschter Channel';
+    });
+
+    return result;
   }
 
   encodeToZeroWidth(str: string): string {

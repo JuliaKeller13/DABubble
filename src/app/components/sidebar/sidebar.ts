@@ -77,10 +77,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor() {
     effect(() => {
       const currentUser = this.authSvc.currentUser();
-      const profile = this.authSvc.currentUserProfile();
       if (currentUser && currentUser.id) {
         this.subscribeToDMs(currentUser.id);
-        this.subscribeToGlobalMessages(currentUser.id, profile?.display_name);
+        this.subscribeToGlobalMessages(currentUser.id);
         this.loadData();
       }
     });
@@ -121,17 +120,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
     );
   }
 
-  subscribeToGlobalMessages(currentUserId: string, displayName: string | undefined) {
+  subscribeToGlobalMessages(currentUserId: string) {
     if (this.globalMessagesSubscription) {
       this.messageSvc.unsubscribe(this.globalMessagesSubscription);
       this.globalMessagesSubscription = null;
     }
 
-    if (!displayName) return;
-
     this.globalMessagesSubscription = this.messageSvc.subscribeToAllChannelMentions(
       currentUserId,
-      displayName,
       () => {
         this.loadData();
       }
@@ -160,25 +156,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   
-  private isUserMentionedInText(content: string, currentUserId: string, displayName: string, allUsers: User[]): boolean {
+  private isUserMentionedInText(content: string, currentUserId: string): boolean {
     if (!content) return false;
-
-    const zeroWidthId = this.messageSvc.encodeToZeroWidth(currentUserId);
-    const ourMention = `@${displayName}\u200B${zeroWidthId}`;
-    if (content.includes(ourMention)) {
-      return true;
-    }
-
-    const otherUsers = allUsers.filter(u => u.display_name === displayName && u.id !== currentUserId);
-    const hasOtherZeroWidthMention = otherUsers.some(other => {
-      const otherZeroWidthId = this.messageSvc.encodeToZeroWidth(other.id);
-      return content.includes(`@${displayName}\u200B${otherZeroWidthId}`);
-    });
-    if (hasOtherZeroWidthMention) {
-      return false;
-    }
-
-    return content.includes(`@${displayName}`);
+    return content.includes(`<@${currentUserId}>`);
   }
 
   async loadData() {
@@ -203,11 +183,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.setSafeLocalStorageItem(`channel_last_read:${currentUserId}:${activeChan.id}`, new Date().toISOString());
     }
 
-    const profile = this.authSvc.currentUserProfile();
-    const displayName = profile?.display_name;
     const unreadChanMap: Record<string, number> = {};
-    if (currentUserId && displayName) {
-      const mentions = await this.messageSvc.getChannelMentions(displayName);
+    if (currentUserId) {
+      const mentions = await this.messageSvc.getChannelMentions(currentUserId);
       const activeChannelId = this.activeChannel()?.id;
 
       mentions.forEach((msg) => {
@@ -216,7 +194,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
         if (activeChannelId === chanId) return;
 
-        if (!this.isUserMentionedInText(msg.content || '', currentUserId, displayName, allFetchedUsers)) {
+        if (!this.isUserMentionedInText(msg.content || '', currentUserId)) {
           return;
         }
 
