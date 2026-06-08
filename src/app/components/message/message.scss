@@ -353,31 +353,37 @@
     display: inline-block;
   }
 
-  &__rx-add-btn {
+  &__add-rx-btn {
     @include flex(row, nowrap, center, center);
-    background-color: $white;
-    border: 1px solid $light-purple;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
+    background: none;
+    border: none;
     cursor: pointer;
-    transition: all 0.2s ease;
     padding: 0;
+    width: 40px;
+    height: 40px;
+    color: $black;
+    transition: all 0.15s ease;
 
-    img {
-      width: 16px;
-      height: 16px;
-      opacity: 0.6;
+    .icon-wrapper {
+      width: 40px;
+      height: 40px;
+      @include flex(row, nowrap, center, center);
+      border-radius: 50%;
+      transition: background-color 0.15s ease;
+      box-sizing: border-box;
+    }
+
+    .msg-container__add-rx-icon {
+      width: 20px;
+      height: 20px;
     }
 
     &:hover {
-      border-color: $purple-2;
-      background-color: $white;
-      transform: scale(1.05);
-
-      img {
-        opacity: 1;
+      .icon-wrapper {
+        background-color: $bg-color;
       }
+
+      color: $purple-1;
     }
   }
 
@@ -478,6 +484,11 @@
         @include flex(row, nowrap, center, center);
         line-height: 1;
       }
+
+      .msg-container__add-rx-icon {
+        width: 20px;
+        height: 20px;
+      }
     }
 
     &:hover {
@@ -491,6 +502,15 @@
         color: $purple-3;
       }
     }
+
+  }
+
+  &__add-rx-icon {
+    display: block;
+    background-color: currentColor;
+    transform: translate(1px, -1px);
+    mask: url('/img/icons/chatarea/chat_icons/add_reaction.svg') center / contain no-repeat;
+    -webkit-mask: url('/img/icons/chatarea/chat_icons/add_reaction.svg') center / contain no-repeat;
   }
 
   &__more-dropdown {

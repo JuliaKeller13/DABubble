@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { EmojiPickerPopupComponent } from '../emoji-picker-popup/emoji-picker-popup';
 import { Message } from '../../interfaces/message.interface';
 import { messageService } from '../../services/message.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
@@ -11,6 +12,7 @@ import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { ThreadService } from '../../services/thread.service';
 import { User } from '../../interfaces/user.interface';
+import { EmojiRecentService } from '../../services/emoji-recent.service';
 
 interface MessageToken {
   type: 'text' | 'channel' | 'mention';
@@ -26,10 +28,17 @@ interface MessageTextPart {
   unified?: string;
 }
 
+interface ReactionListItem {
+  emoji: string;
+  count: number;
+  userReacted: boolean;
+  userIds: string[];
+}
+
 @Component({
   selector: 'app-message',
   standalone: true,
-  imports: [CommonModule, FormsModule, EmojiComponent],
+  imports: [CommonModule, FormsModule, EmojiComponent, EmojiPickerPopupComponent],
   templateUrl: './message.html',
   styleUrl: './message.scss',
   host: {
@@ -41,9 +50,11 @@ export class MessageComponent implements OnInit {
   private _message!: Message;
   private readonly emojiRegex = /\p{Extended_Pictographic}/u;
   private readonly regionalFlagRegex = /^[\u{1F1E6}-\u{1F1FF}]{2}$/u;
+  private reactionOrder: string[] = [];
 
   @Input({ required: true }) set message(val: Message) {
     this._message = val;
+    this.syncReactionOrder();
     this.parseMessageContent();
   }
   get message(): Message {
@@ -68,11 +79,11 @@ export class MessageComponent implements OnInit {
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
   private threadSvc = inject(ThreadService);
+  private emojiRecentSvc = inject(EmojiRecentService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
 
-  showReactionPicker = false;
-  showHoverReactionPicker = false;
+  activeReactionPicker: 'footer' | 'hover' | null = null;
   showMoreMenu = false;
   isEditing = false;
   editContent = '';
@@ -86,20 +97,19 @@ export class MessageComponent implements OnInit {
     this.showMoreMenu = shouldOpen;
   }
 
-  toggleReactionPicker() {
-    const shouldOpen = !this.showReactionPicker;
+  toggleReactionPicker(kind: 'footer' | 'hover') {
+    const shouldOpen = this.activeReactionPicker !== kind;
     this.closeTransientPopups();
-    this.showReactionPicker = shouldOpen;
-  }
-
-  toggleHoverReactionPicker() {
-    const shouldOpen = !this.showHoverReactionPicker;
-    this.closeTransientPopups();
-    this.showHoverReactionPicker = shouldOpen;
+    this.activeReactionPicker = shouldOpen ? kind : null;
   }
   
   quickEmojis = ['🚀', '✅', '👍', '❤️', '😂', '😮'];
   readonly emojiSet = 'apple';
+  readonly fallbackHoverReactionEmojis = ['✅', '👍'];
+
+  get hoverReactionEmojis(): string[] {
+    return this.emojiRecentSvc.getRecentReactionEmojis(this.currentUserId, 2, this.fallbackHoverReactionEmojis);
+  }
 
   
   get replyCount(): number {
@@ -127,16 +137,16 @@ export class MessageComponent implements OnInit {
     return `${hrs}:${mins} Uhr`;
   }
   
-  get reactionList() {
-    if (!this.message.reactions) return [];
-    return Object.entries(this.message.reactions).map(([emoji, userIds]) => {
-      return {
-        emoji,
-        count: userIds.length,
-        userReacted: userIds.includes(this.currentUserId),
-        userIds,
-      };
-    });
+  get reactionList(): ReactionListItem[] {
+    return this.buildReactionList();
+  }
+
+  isReactionPickerOpen(kind: 'footer' | 'hover'): boolean {
+    return this.activeReactionPicker === kind;
+  }
+
+  onReactionPickerSelect(emoji: string): void {
+    void this.toggleReaction(emoji);
   }
 
   private buildTextParts(text: string): MessageTextPart[] {
@@ -160,6 +170,7 @@ export class MessageComponent implements OnInit {
   async toggleReaction(emoji: string) {
     this.closeTransientPopups();
     if (!this.message.id) return;
+    this.emojiRecentSvc.recordRecentNativeEmoji(this.currentUserId, emoji);
     this.messageSvc.optimisticReaction.emit({ messageId: this.message.id, emoji, userId: this.currentUserId });
     try {
       await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
@@ -180,8 +191,12 @@ export class MessageComponent implements OnInit {
       return;
     }
 
-    if (this.showReactionPicker && !target.closest('.msg-container__rx-add-wrapper')) {
-      this.showReactionPicker = false;
+    if (
+      this.activeReactionPicker !== null &&
+      !target.closest('.msg-container__reaction-picker-anchor') &&
+      !target.closest('.emoji-popup')
+    ) {
+      this.activeReactionPicker = null;
     }
   }
 
@@ -335,9 +350,39 @@ export class MessageComponent implements OnInit {
   }
 
   private closeTransientPopups() {
-    this.showReactionPicker = false;
-    this.showHoverReactionPicker = false;
+    this.activeReactionPicker = null;
     this.showMoreMenu = false;
+  }
+
+  private buildReactionList(): ReactionListItem[] {
+    if (!this.message.reactions) {
+      this.reactionOrder = [];
+      return [];
+    }
+    this.syncReactionOrder();
+    return this.visibleReactionKeys().map((emoji) => this.createReactionItem(emoji));
+  }
+
+  private visibleReactionKeys(): string[] {
+    return this.reactionOrder.filter((emoji) => Array.isArray(this.message.reactions?.[emoji]));
+  }
+
+  private createReactionItem(emoji: string): ReactionListItem {
+    const userIds = this.message.reactions?.[emoji] ?? [];
+    return {
+      emoji,
+      count: userIds.length,
+      userReacted: userIds.includes(this.currentUserId),
+      userIds,
+    };
+  }
+
+  private syncReactionOrder(): void {
+    const nextKeys = Object.keys(this.message?.reactions ?? {});
+    this.reactionOrder = [
+      ...this.reactionOrder.filter((emoji) => nextKeys.includes(emoji)),
+      ...nextKeys.filter((emoji) => !this.reactionOrder.includes(emoji)),
+    ];
   }
 
   private closeAllPopups() {

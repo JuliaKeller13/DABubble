@@ -11,13 +11,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { authService } from '../../services/auth.service';
 import { ThreadService } from '../../services/thread.service';
 import { messageService } from '../../services/message.service';
+import { EmojiPickerPopupComponent } from '../emoji-picker-popup/emoji-picker-popup';
 import { MessageInputPopupHelper, PopupChannel, PopupUser } from './message-input-popup.helper';
 
 interface MessageInputPart {
@@ -28,7 +28,7 @@ interface MessageInputPart {
 
 @Component({
   selector: 'app-message-input',
-  imports: [CommonModule, FormsModule, PickerModule, EmojiComponent],
+  imports: [CommonModule, FormsModule, EmojiComponent, EmojiPickerPopupComponent],
   templateUrl: './message-input.html',
   styleUrl: './message-input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -74,16 +74,6 @@ export class MessageInputComponent implements OnDestroy {
 
   readonly emojiSet = 'apple';
   showEmojiPicker = false;
-  readonly emojiPickerStyle = { width: '100%', maxWidth: '100%' };
-  readonly emojiPickerI18n = {
-    search: 'Suchen', emojilist: 'Emoji-Liste', notfound: 'Keine Emojis gefunden', clear: 'Zuruecksetzen',
-    categories: {
-      search: 'Suchergebnisse', recent: 'Haeufig verwendet', people: 'Smileys & Personen',
-      nature: 'Tiere & Natur', foods: 'Essen & Trinken', activity: 'Aktivitaeten',
-      places: 'Reisen & Orte', objects: 'Objekte', symbols: 'Symbole', flags: 'Flaggen', custom: 'Benutzerdefiniert',
-    },
-    skintones: { 1: 'Standard-Hautfarbe', 2: 'Helle Hautfarbe', 3: 'Mittelhelle Hautfarbe', 4: 'Mittlere Hautfarbe', 5: 'Mitteldunkle Hautfarbe', 6: 'Dunkle Hautfarbe' },
-  };
 
   private typingTimeout: ReturnType<typeof setTimeout> | null = null;
   private typingInterval: ReturnType<typeof setInterval> | null = null;
@@ -147,7 +137,10 @@ export class MessageInputComponent implements OnDestroy {
     if (!keyboardEvent.shiftKey) { keyboardEvent.preventDefault(); this.send(); }
   }
 
-  onMessageInputClick(): void { this.popup.closePopup(); }
+  onMessageInputClick(): void {
+    this.popup.closePopup();
+    this.showEmojiPicker = false;
+  }
 
   toggleEmoji(): void {
     const shouldOpen = !this.showEmojiPicker;
@@ -160,18 +153,27 @@ export class MessageInputComponent implements OnDestroy {
     await this.popup.toggleMention();
   }
 
-  addEmoji(event: { emoji?: { native?: string } }): void {
-    const emoji = event.emoji?.native;
+  onEmojiSelected(emoji: string): void {
     if (!emoji) return;
+    this.showEmojiPicker = false;
     const textarea = this.textareaElement;
     if (!textarea) { this.messageText += emoji; return; }
+    this.insertEmojiAtCursor(textarea, emoji);
+  }
+
+  private insertEmojiAtCursor(textarea: HTMLTextAreaElement, emoji: string): void {
     const start = textarea.selectionStart ?? this.messageText.length;
-    this.messageText = this.messageText.substring(0, start) + emoji + this.messageText.substring(textarea.selectionEnd ?? start);
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(start + emoji.length, start + emoji.length);
-      this.syncRenderedScroll();
-    }, 0);
+    const end = textarea.selectionEnd ?? start;
+    const before = this.messageText.substring(0, start);
+    const after = this.messageText.substring(end);
+    this.messageText = `${before}${emoji}${after}`;
+    setTimeout(() => this.restoreCursor(textarea, start + emoji.length), 0);
+  }
+
+  private restoreCursor(textarea: HTMLTextAreaElement, position: number): void {
+    textarea.focus();
+    textarea.setSelectionRange(position, position);
+    this.syncRenderedScroll();
   }
 
   insertUserMention(user: PopupUser): void { this.popup.insertUserMention(user); }

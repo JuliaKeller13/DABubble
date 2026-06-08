@@ -1,19 +1,12 @@
 <div class="message-input" [class.message-input--disabled]="disabled" (click)="onMessageInputClick()">
-  <div class="emoji-popup" [class.visible]="showEmojiPicker" (click)="$event.stopPropagation()">
-    <emoji-mart
-      title="Emoji auswählen"
-      [i18n]="emojiPickerI18n"
-      [isNative]="false"
-      set="apple"
-      [showPreview]="false"
-      [enableSearch]="true"
-      [emojiSize]="30"
-      [perLine]="9"
-      [style]="emojiPickerStyle"
-      color="#444df2"
-      (emojiClick)="addEmoji($event)"
-    ></emoji-mart>
-  </div>
+  @if (showEmojiPicker) {
+    <app-emoji-picker-popup
+      [userId]="currentUserId"
+      [variant]="'input'"
+      [color]="'#444df2'"
+      (emojiSelected)="onEmojiSelected($event)"
+    ></app-emoji-picker-popup>
+  }
 
   
   @if (activePopup === 'users') {

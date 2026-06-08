@@ -1,0 +1,25 @@
+<div
+  class="emoji-popup"
+  [class.emoji-popup--input]="variant() === 'input'"
+  [class.emoji-popup--chat]="variant() !== 'input'"
+  [class.emoji-popup--footer]="variant() === 'message-footer'"
+  [class.emoji-popup--hover]="variant() === 'message-hover'"
+  [class.emoji-popup--align-right]="alignRight()"
+  (click)="$event.stopPropagation()"
+>
+  <emoji-mart
+    title="Emoji auswählen"
+    [i18n]="emojiPickerI18n"
+    [isNative]="false"
+    set="apple"
+    [showPreview]="false"
+    [enableSearch]="true"
+    [emojiSize]="30"
+    [perLine]="9"
+    [recent]="recentEmojiIds()"
+    [enableFrequentEmojiSort]="true"
+    [style]="emojiPickerStyle"
+    [color]="color()"
+    (emojiClick)="handleEmojiClick($event)"
+  ></emoji-mart>
+</div>
