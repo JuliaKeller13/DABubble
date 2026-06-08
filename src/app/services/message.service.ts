@@ -30,17 +30,13 @@ export class messageService {
   async getChannelMessages(channelId: string): Promise<Message[]> {
     try {
       const { data: messages, error } = await this.supabaseSvc.supabase
-        .from('messages')
-        .select('*')
-        .eq('channel_id', channelId)
-        .order('created_at', { ascending: true });
-      if (error) { console.error('Error fetching messages:', error.message); return []; }
+        .from('messages').select('*').eq('channel_id', channelId).order('created_at', { ascending: true });
+      if (error) return console.error('Error fetching messages:', error.message), [];
       const allUsers = await this.userSvc.getAllUsers();
       const userMap = new Map(allUsers.map((u) => [u.id, u]));
       return (messages as Message[]).map((msg) => ({ ...msg, sender: userMap.get(msg.sender_id) }));
     } catch (err) {
-      console.error('Failed to get channel messages:', err);
-      return [];
+      return console.error('Failed to get channel messages:', err), [];
     }
   }
 
@@ -79,16 +75,14 @@ export class messageService {
 
   async toggleReaction(messageId: string, emoji: string, userId: string): Promise<void> {
     try {
-      const { data, error } = await this.supabaseSvc.supabase
-        .from('messages').select('reactions').eq('id', messageId).single();
-      if (error) { console.error('Error fetching reaction for toggle:', error.message); return; }
+      const { data, error } = await this.supabaseSvc.supabase.from('messages').select('reactions').eq('id', messageId).single();
+      if (error) return console.error('Error fetching reaction for toggle:', error.message);
       const reactions = (data?.reactions as Record<string, string[]>) || {};
-      let userIds = reactions[emoji] || [];
-      userIds = userIds.includes(userId) ? userIds.filter((id) => id !== userId) : [...userIds, userId];
-      if (userIds.length === 0) delete reactions[emoji]; else reactions[emoji] = userIds;
-      const { error: updateError } = await this.supabaseSvc.supabase
-        .from('messages').update({ reactions }).eq('id', messageId);
-      if (updateError) console.error('Error updating reaction:', updateError.message);
+      const uIds = reactions[emoji] || [];
+      reactions[emoji] = uIds.includes(userId) ? uIds.filter((id) => id !== userId) : [...uIds, userId];
+      if (reactions[emoji].length === 0) delete reactions[emoji];
+      const { error: ue } = await this.supabaseSvc.supabase.from('messages').update({ reactions }).eq('id', messageId);
+      if (ue) console.error('Error updating reaction:', ue.message);
     } catch (err) {
       console.error('Failed to toggle reaction:', err);
     }

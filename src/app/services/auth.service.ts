@@ -54,27 +54,31 @@ export class authService {
   }
 
   constructor() {
-    this.supabaseSvc.supabase.auth
-      .getSession()
+    this.initSession();
+    this.initAuthStateChange();
+  }
+
+  private initSession(): void {
+    this.supabaseSvc.supabase.auth.getSession()
       .then(({ data, error }) => {
-        if (error) {
-          console.warn('Authentication session error. Clearing state:', error.message);
-          this.clearStaleTokens();
-          this.supabaseSvc.supabase.auth.signOut();
-          this.clearAuthUrlHash();
-        } else {
+        if (error) this.handleSessionError(error.message);
+        else {
           if (data.session) this.clearAuthUrlHash();
           this.handleUserChange(data.session?.user ?? null);
         }
       })
-      .catch((err) => {
-        console.error('Failed to get session:', err);
-        this.clearStaleTokens();
-        this.supabaseSvc.supabase.auth.signOut();
-        this.clearAuthUrlHash();
-      })
+      .catch((err) => { console.error('Failed to get session:', err); this.handleSessionError(''); })
       .finally(() => this.isInitializedSignal.set(true));
+  }
 
+  private handleSessionError(msg: string): void {
+    if (msg) console.warn('Authentication session error. Clearing state:', msg);
+    this.clearStaleTokens();
+    this.supabaseSvc.supabase.auth.signOut();
+    this.clearAuthUrlHash();
+  }
+
+  private initAuthStateChange(): void {
     this.supabaseSvc.supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'TOKEN_REFRESHED' && !session) {
         console.warn('Token refresh failed (no session returned). Signing out.');
@@ -82,8 +86,7 @@ export class authService {
         this.supabaseSvc.supabase.auth.signOut();
         return;
       }
-      if (event === 'SIGNED_OUT') this.clearAuthUrlHash();
-      else if (session) this.clearAuthUrlHash();
+      if (event === 'SIGNED_OUT' || session) this.clearAuthUrlHash();
       this.handleUserChange(session?.user ?? null);
     });
   }
@@ -202,21 +205,16 @@ export class authService {
   }
 
   async updateCurrentUserProfile(displayName: string, avatarUrl: string): Promise<UserProfile | null> {
-    const currentUser = this.currentUser();
-    const currentProfile = this.currentUserProfile();
-    const trimmedName = displayName.trim();
-    const trimmedAvatarUrl = avatarUrl.trim();
-    if (!currentUser || !currentProfile || !trimmedName || !trimmedAvatarUrl) return null;
-    const { error: authError } = await this.supabaseSvc.supabase.auth.updateUser({
-      data: { display_name: trimmedName, full_name: trimmedName, avatar_url: trimmedAvatarUrl },
-    });
-    if (authError) { console.error('Error updating auth user metadata:', authError); return null; }
-    const { data: updatedProfile, error: profileError } = await this.supabaseSvc.supabase
-      .from('profiles').update({ display_name: trimmedName, avatar_url: trimmedAvatarUrl })
-      .eq('id', currentProfile.id).select().single();
-    if (profileError) { console.error('Error updating profile:', profileError); return null; }
+    const cp = this.currentUserProfile();
+    const tName = displayName.trim();
+    const tAvatar = avatarUrl.trim();
+    if (!this.currentUser() || !cp || !tName || !tAvatar) return null;
+    const { error: ae } = await this.supabaseSvc.supabase.auth.updateUser({ data: { display_name: tName, full_name: tName, avatar_url: tAvatar } });
+    if (ae) return console.error('Error updating auth user metadata:', ae), null;
+    const { data: up, error: pe } = await this.supabaseSvc.supabase.from('profiles').update({ display_name: tName, avatar_url: tAvatar }).eq('id', cp.id).select().single();
+    if (pe) return console.error('Error updating profile:', pe), null;
     this.userSvc.clearCache();
-    const merged = { ...currentProfile, ...updatedProfile } as UserProfile;
+    const merged = { ...cp, ...up } as UserProfile;
     this.currentUserProfileSignal.set(merged);
     return merged;
   }

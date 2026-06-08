@@ -25,26 +25,12 @@ export class SignupStateService {
   }
 
   private readFromStorage(): SignupData | null {
-    if (typeof window === 'undefined') {
-      return null;
-    }
-
+    if (typeof window === 'undefined') return null;
     const raw = window.sessionStorage.getItem(SIGNUP_STATE_STORAGE_KEY);
-    if (!raw) {
-      return null;
-    }
-
+    if (!raw) return null;
     try {
-      const parsed = JSON.parse(raw) as Partial<SignupData>;
-      if (!parsed.name || !parsed.email || !parsed.password) {
-        return null;
-      }
-
-      return {
-        name: parsed.name,
-        email: parsed.email,
-        password: parsed.password,
-      };
+      const p = JSON.parse(raw) as Partial<SignupData>;
+      return (p.name && p.email && p.password) ? { name: p.name, email: p.email, password: p.password } : null;
     } catch {
       return null;
     }

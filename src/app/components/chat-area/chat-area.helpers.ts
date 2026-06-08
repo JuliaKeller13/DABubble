@@ -14,21 +14,28 @@ export function buildGroupedMessages(messages: Message[]): DateGroup[] {
   const groups: DateGroup[] = [];
   const rootMessages = messages
     .filter((msg) => !msg.parent_id)
-    .map((msg) => {
-      const replies = messages.filter((m) => m.parent_id === msg.id);
-      return {
-        ...msg,
-        reply_count: replies.length,
-        last_reply_time: replies.length > 0 ? replies[replies.length - 1].created_at : undefined,
-      } as Message;
-    });
-  rootMessages.forEach((msg) => {
-    const label = getDateLabel(msg.created_at);
-    let group = groups.find((g) => g.dateLabel === label);
-    if (!group) { group = { dateLabel: label, messages: [] }; groups.push(group); }
-    group.messages.push(msg);
-  });
+    .map((msg) => enrichMessage(msg, messages));
+  rootMessages.forEach((msg) => addMessageToGroup(msg, groups));
   return groups;
+}
+
+function enrichMessage(msg: Message, messages: Message[]): Message {
+  const replies = messages.filter((m) => m.parent_id === msg.id);
+  return {
+    ...msg,
+    reply_count: replies.length,
+    last_reply_time: replies.length > 0 ? replies[replies.length - 1].created_at : undefined,
+  } as Message;
+}
+
+function addMessageToGroup(msg: Message, groups: DateGroup[]): void {
+  const label = getDateLabel(msg.created_at);
+  let group = groups.find((g) => g.dateLabel === label);
+  if (!group) {
+    group = { dateLabel: label, messages: [] };
+    groups.push(group);
+  }
+  group.messages.push(msg);
 }
 
 export function getDateLabel(dateStr?: string): string {

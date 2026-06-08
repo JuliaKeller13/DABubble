@@ -90,14 +90,30 @@ export class ChatAreaComponent implements OnDestroy {
   }
 
   private setupEventSubscriptions(): void {
+    this.subscribeToMessageDeleted();
+    this.subscribeToDirectChatCleared();
+    this.subscribeToSearchTarget();
+    this.subscribeToOptimisticReaction();
+  }
+
+  private subscribeToMessageDeleted(): void {
     this.messageDeletedSubscription = this.messageSvc.messageDeleted.subscribe((id) => {
       this.messages.update((prev) => prev.filter((m) => m.id !== id));
       if (this.threadSvc.activeMessage()?.id === id) this.threadSvc.closeThread();
     });
+  }
+
+  private subscribeToDirectChatCleared(): void {
     this.directChatClearedSubscription = this.messageSvc.directChatCleared.subscribe(({ targetUserId }) => {
       if (this.activeDirectChatUser()?.id === targetUserId) this.messages.set([]);
     });
+  }
+
+  private subscribeToSearchTarget(): void {
     this.searchTargetSubscription = this.messageSvc.searchTargetSelected.subscribe(() => this.scrollToSearchTarget());
+  }
+
+  private subscribeToOptimisticReaction(): void {
     this.optimisticReactionSubscription = this.messageSvc.optimisticReaction.subscribe(({ messageId, emoji, userId }) => {
       this.messages.update((prev) => prev.map((m) => {
         if (m.id !== messageId) return m;
@@ -224,19 +240,32 @@ export class ChatAreaComponent implements OnDestroy {
     if (typeof content !== 'string') return;
     if (this.channelSvc.isNewMessageModeActive()) {
       await sendNewModeMessage(content, this.selectedRecipient, this.selectedRecipientType, this.currentUserId, this.messageSvc, this.router);
-      this.clearSelectedRecipient();
-      return;
+      return this.clearSelectedRecipient();
     }
-    const channel = this.activeChannel();
-    const dmUser = this.activeDirectChatUser();
     const userId = this.currentUserId;
     if (!userId) return;
+    const channel = this.activeChannel();
+    const dmUser = this.activeDirectChatUser();
     if (channel?.id) {
-      const newMsg = await this.messageSvc.sendMessage(content, userId, channel.id);
-      if (newMsg) { this.messages.update((prev) => prev.some((m) => m.id === newMsg.id) ? prev : [...prev, newMsg]); this.scrollToBottom(); }
+      await this.sendChannelMsg(content, userId, channel.id);
     } else if (dmUser?.id && dmUser.id !== 'dabubble-team-local-id') {
-      const newMsg = await this.messageSvc.sendDirectMessage(content, userId, dmUser.id);
-      if (newMsg) { this.messages.update((prev) => prev.some((m) => m.id === newMsg.id) ? prev : [...prev, newMsg]); this.scrollToBottom(); }
+      await this.sendDMMsg(content, userId, dmUser.id);
+    }
+  }
+
+  private async sendChannelMsg(content: string, userId: string, channelId: string): Promise<void> {
+    const newMsg = await this.messageSvc.sendMessage(content, userId, channelId);
+    if (newMsg) {
+      this.messages.update((prev) => prev.some((m) => m.id === newMsg.id) ? prev : [...prev, newMsg]);
+      this.scrollToBottom();
+    }
+  }
+
+  private async sendDMMsg(content: string, userId: string, dmUserId: string): Promise<void> {
+    const newMsg = await this.messageSvc.sendDirectMessage(content, userId, dmUserId);
+    if (newMsg) {
+      this.messages.update((prev) => prev.some((m) => m.id === newMsg.id) ? prev : [...prev, newMsg]);
+      this.scrollToBottom();
     }
   }
 
@@ -328,15 +357,19 @@ export class ChatAreaComponent implements OnDestroy {
     if (targetUser && currentUserId) {
       const success = await this.messageSvc.deleteDirectChatHistory(currentUserId, targetUser.id);
       if (success) {
-        this.messages.set([]);
-        this.toastSvc.show('Chatverlauf gelöscht', 'success', 3000, undefined, false);
-        localStorage.setItem(`chat_closed:${currentUserId}:${targetUser.id}`, new Date().toISOString());
-        const channels = await this.channelSvc.loadChannels();
-        this.router.navigate(channels.length > 0 ? ['/main/channel', channels[0].id] : ['/main']);
+        await this.handleHistoryCleared(currentUserId, targetUser.id);
       } else {
         this.toastSvc.show('Fehler beim Löschen des Chatverlaufs', 'error', 3000, undefined, false);
       }
     }
     this.isClearConfirmOpen.set(false);
+  }
+
+  private async handleHistoryCleared(currentUserId: string, targetUserId: string): Promise<void> {
+    this.messages.set([]);
+    this.toastSvc.show('Chatverlauf gelöscht', 'success', 3000, undefined, false);
+    localStorage.setItem(`chat_closed:${currentUserId}:${targetUserId}`, new Date().toISOString());
+    const channels = await this.channelSvc.loadChannels();
+    this.router.navigate(channels.length > 0 ? ['/main/channel', channels[0].id] : ['/main']);
   }
 }

@@ -31,20 +31,15 @@ export class channelService {
   
   async selectChannel(channel: Channel | null) {
     this.activeChannelSignal.set(channel);
-    if (channel) {
-      this.isNewMessageModeActive.set(false);
-    }
-    if (channel && channel.id) {
+    if (channel) this.isNewMessageModeActive.set(false);
+    if (channel?.id) {
       try {
-        const members = await this.getChannelMembers(channel.id);
-        this.activeChannelMembersSignal.set(members);
+        this.activeChannelMembersSignal.set(await this.getChannelMembers(channel.id));
       } catch (e) {
         console.error('Error loading channel members in selectChannel:', e);
         this.activeChannelMembersSignal.set([]);
       }
-    } else {
-      this.activeChannelMembersSignal.set([]);
-    }
+    } else this.activeChannelMembersSignal.set([]);
   }
 
   async refreshActiveChannelMembers(): Promise<User[]> {
@@ -81,37 +76,21 @@ export class channelService {
 
   
   async getChannels(): Promise<Channel[]> {
-    const { data: { user }, error: userError } = await this.supabaseSvc.supabase.auth.getUser();
-    if (userError || !user) {
-      console.warn('No authenticated user found while fetching channels');
-      return [];
-    }
+    const { data: { user }, error } = await this.supabaseSvc.supabase.auth.getUser();
+    if (error || !user) return console.warn('No auth user fetching channels'), [];
+    const ids = await this.getMemberChannelIds(user.id);
+    return ids.length > 0 ? this.getChannelsByIds(ids) : [];
+  }
 
-    const { data: memberData, error: memberError } = await this.supabaseSvc.supabase
-      .from('channel_members')
-      .select('channel_id')
-      .eq('user_id', user.id);
+  private async getMemberChannelIds(userId: string): Promise<string[]> {
+    const { data, error } = await this.supabaseSvc.supabase.from('channel_members').select('channel_id').eq('user_id', userId);
+    if (error) return console.error('Error fetching channel memberships:', error.message), [];
+    return (data || []).map((m: any) => m.channel_id);
+  }
 
-    if (memberError) {
-      console.error('Error fetching channel memberships:', memberError.message);
-      return [];
-    }
-
-    if (!memberData || memberData.length === 0) {
-      return [];
-    }
-
-    const channelIds = memberData.map(item => item.channel_id);
-
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('channels')
-      .select('*')
-      .in('id', channelIds);
-
-    if (error) {
-      console.error('Error fetching channels:', error.message);
-      return [];
-    }
+  private async getChannelsByIds(ids: string[]): Promise<Channel[]> {
+    const { data, error } = await this.supabaseSvc.supabase.from('channels').select('*').in('id', ids);
+    if (error) return console.error('Error fetching channels:', error.message), [];
     return data as Channel[];
   }
 
@@ -130,27 +109,13 @@ export class channelService {
   }
 
   async createChannel(channel: Channel): Promise<any> {
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('channels')
-      .insert({
-        name: channel.name,
-        description: channel.description,
-        created_by: channel.created_by
-      })
-      .select();
-
-    if (error) {
-      console.error('Error creating channel:', error.message);
-      throw error;
-    }
-
+    const { data, error } = await this.supabaseSvc.supabase.from('channels')
+      .insert({ name: channel.name, description: channel.description, created_by: channel.created_by }).select();
+    if (error) throw (console.error('Error creating channel:', error.message), error);
     const active = data?.[0];
-    if (active && active.id && channel.created_by) {
+    if (active?.id && channel.created_by) {
       await this.addMembersToChannel(active.id, [channel.created_by]);
     }
-    
-    
-    // Clear cache to force next reload
     this.clearCache();
     await this.loadChannels();
     return data;
@@ -158,136 +123,55 @@ export class channelService {
 
   
   async updateChannel(id: string, updates: Partial<Channel>): Promise<any> {
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('channels')
-      .update(updates)
-      .eq('id', id)
-      .select();
-
-    if (error) {
-      console.error('Error updating channel:', error.message);
-      throw error;
-    }
-
-    
-    // Update cache
+    const { data, error } = await this.supabaseSvc.supabase.from('channels').update(updates).eq('id', id).select();
+    if (error) throw (console.error('Error updating channel:', error.message), error);
     this.channelsListCache = this.channelsListCache.map(c => c.id === id ? { ...c, ...updates } : c);
-
-    this.channelsSignal.set(
-      this.channelsSignal().map(c => c.id === id ? { ...c, ...updates } : c)
-    );
-
-    
+    this.channelsSignal.set(this.channelsSignal().map(c => c.id === id ? { ...c, ...updates } : c));
     const active = this.activeChannel();
-    if (active && active.id === id) {
-      this.activeChannelSignal.set({ ...active, ...updates });
-    }
-
+    if (active?.id === id) this.activeChannelSignal.set({ ...active, ...updates });
     return data;
   }
 
   
   async deleteChannel(id: string): Promise<any> {
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('channels')
-      .delete()
-      .eq('id', id)
-      .select();
-
-    if (error) {
-      console.error('Error deleting channel:', error.message);
-      throw error;
-    }
-
-    
-    // Update cache
+    const { data, error } = await this.supabaseSvc.supabase.from('channels').delete().eq('id', id).select();
+    if (error) throw (console.error('Error deleting channel:', error.message), error);
     this.channelsListCache = this.channelsListCache.filter(c => c.id !== id);
-
-    this.channelsSignal.set(
-      this.channelsSignal().filter(c => c.id !== id)
-    );
-
-    
+    this.channelsSignal.set(this.channelsSignal().filter(c => c.id !== id));
     const active = this.activeChannel();
-    if (active && active.id === id) {
+    if (active?.id === id) {
       const remaining = this.channels();
       this.activeChannelSignal.set(remaining.length > 0 ? remaining[0] : null);
     }
-
     return data;
   }
 
   
   async addMembersToChannel(channelId: string, userIds: string[]): Promise<any> {
     if (userIds.length === 0) return [];
-
-    const { data: existing, error: fetchError } = await this.supabaseSvc.supabase
-      .from('channel_members')
-      .select('user_id')
-      .eq('channel_id', channelId);
-
-    if (fetchError) {
-      console.error('Error fetching existing channel members:', fetchError.message);
-      throw fetchError;
-    }
-
+    const { data: existing, error: fe } = await this.supabaseSvc.supabase.from('channel_members').select('user_id').eq('channel_id', channelId);
+    if (fe) throw (console.error('Error fetching existing channel members:', fe.message), fe);
     const existingUserIds = new Set((existing || []).map(row => row.user_id));
-    const newUserIds = userIds.filter(id => !existingUserIds.has(id));
-
-    if (newUserIds.length === 0) {
-      return [];
-    }
-
-    const rows = newUserIds.map(userId => ({
-      channel_id: channelId,
-      user_id: userId
-    }));
-
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('channel_members')
-      .insert(rows)
-      .select();
-
-    if (error) {
-      console.error('Error adding members to channel:', error.message);
-      throw error;
-    }
+    const newIds = userIds.filter(id => !existingUserIds.has(id));
+    if (newIds.length === 0) return [];
+    const { data, error } = await this.supabaseSvc.supabase.from('channel_members').insert(newIds.map(uId => ({ channel_id: channelId, user_id: uId }))).select();
+    if (error) throw (console.error('Error adding members to channel:', error.message), error);
     return data;
   }
 
   
   async removeMemberFromChannel(channelId: string, userId: string): Promise<any> {
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('channel_members')
-      .delete()
-      .eq('channel_id', channelId)
-      .eq('user_id', userId)
-      .select();
-
-    if (error) {
-      console.error('Error removing member from channel:', error.message);
-      throw error;
-    }
-
-    // Clear cache since membership changed
+    const { data, error } = await this.supabaseSvc.supabase.from('channel_members').delete().eq('channel_id', channelId).eq('user_id', userId).select();
+    if (error) throw (console.error('Error removing member from channel:', error.message), error);
     this.clearCache();
     return data;
   }
 
   
   async getChannelMembers(channelId: string): Promise<User[]> {
-    const { data, error } = await this.supabaseSvc.supabase
-      .from('channel_members')
-      .select('profiles(*)')
-      .eq('channel_id', channelId);
-
-    if (error) {
-      console.error('Error fetching channel members:', error.message);
-      return [];
-    }
-
-    const membersList = (data as any[]) || [];
-    return membersList
+    const { data, error } = await this.supabaseSvc.supabase.from('channel_members').select('profiles(*)').eq('channel_id', channelId);
+    if (error) return console.error('Error fetching channel members:', error.message), [];
+    return ((data as any[]) || [])
       .map(item => item.profiles)
       .filter((p): p is User => p !== null && p !== undefined);
   }

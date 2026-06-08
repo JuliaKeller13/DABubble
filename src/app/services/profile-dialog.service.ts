@@ -35,13 +35,11 @@ export class ProfileDialogService {
 
   async openById(userId: string, options?: ProfileDialogOpenOptions): Promise<void> {
     const currentProfile = this.authService.currentUserProfile();
-
     if (currentProfile?.id === userId) {
       this.selectedProfileSignal.set(currentProfile);
       this.suppressNextOutsideClose = !!options?.suppressOutsideCloseOnce;
       return;
     }
-
     const profile = await this.userSvc.getUserById(userId);
     if (profile) {
       this.selectedProfileSignal.set(profile);
