@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmojiPickerPopupComponent } from '../emoji-picker-popup/emoji-picker-popup';
 import { EmojiPickerOverlayService } from '../../services/emoji-picker-overlay.service';
@@ -20,5 +20,15 @@ export class EmojiPickerHostComponent {
 
   onEmojiSelected(emoji: string): void {
     this.pickerSvc.select(emoji);
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.pickerSvc.close();
+  }
+
+  @HostListener('document:scroll')
+  onScroll(): void {
+    this.pickerSvc.close();
   }
 }
