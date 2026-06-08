@@ -229,6 +229,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private handleDMRoute(url: string): void {
     const userId = url.split('/main/dm/')[1]?.split('?')[0];
     if (!userId) return;
+    this.channelSvc.setNewMessageMode(false);
     if (this.currentUserId) {
       this.sidebarDataSvc.setSafeLocalStorageItem(`chat_last_read:${this.currentUserId}:${userId}`, new Date().toISOString());
       this.sidebarDataSvc.setSafeLocalStorageItem(`chat_closed:${this.currentUserId}:${userId}`, '');
