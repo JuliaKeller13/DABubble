@@ -1,4 +1,5 @@
 @use '../../../styles/abstracts/' as *;
+@use '../../../styles/base';
 
 .sidebar {
   position: relative;
@@ -29,7 +30,9 @@
     border-radius: 30px;
     padding: 30px 20px;
     box-sizing: border-box;
-    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    transition:
+      width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.2s ease;
   }
 
   &__toggle {
@@ -44,7 +47,10 @@
     padding: 24px 8px;
     box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.2);
     cursor: pointer;
-    transition: color 0.2s ease, left 0.2s ease, border-radius 0.2s ease;
+    transition:
+      color 0.2s ease,
+      left 0.2s ease,
+      border-radius 0.2s ease;
     outline: none;
     color: var(--black);
     gap: 15px;
@@ -117,26 +123,32 @@
   }
 
   &__new-msg-btn {
-    @include flex(row, nowrap, center, center);
-    @include button-reset;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: transparent;
-    color: $black;
-    transition: background-color 0.15s ease;
+    @include desktop {
+      @include flex(row, nowrap, center, center);
+      @include button-reset;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: transparent;
+      color: $black;
+      transition: background-color 0.15s ease, color 0.15s ease;
 
-    &:hover {
-      background-color: $bg-color;
+      &:hover {
+        background-color: $bg-color;
+        color: $purple-1;
+      }
     }
   }
 
   &__new-msg-btn-icon {
-    display: block;
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    filter: brightness(0) saturate(100%);
+    @include desktop {
+      display: block;
+      width: 24px;
+      height: 24px;
+      background-color: currentColor;
+      mask: url('/img/icons/responsive/edit_square.svg') center / contain no-repeat;
+      -webkit-mask: url('/img/icons/responsive/edit_square.svg') center / contain no-repeat;
+    }
   }
 
   &__content {
@@ -370,7 +382,9 @@
     white-space: nowrap;
     overflow: clip;
     text-overflow: ellipsis;
-    transition: font-weight 0.15s ease, color 0.15s ease;
+    transition:
+      font-weight 0.15s ease,
+      color 0.15s ease;
 
     &--unread {
       font-weight: 800;
@@ -478,14 +492,18 @@
     background-color: var(--white, #ffffff);
     border: none;
     cursor: pointer;
-    color: var(--text-gray, #686868); 
+    color: var(--text-gray, #686868);
     width: 28px;
     height: 28px;
     border-radius: 50%;
     margin-left: auto;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    transition:
+      opacity 0.15s ease,
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease;
 
     &:hover {
       background-color: var(--bg-color, #f4f4f4);
