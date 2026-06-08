@@ -11,13 +11,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { authService } from '../../services/auth.service';
 import { ThreadService } from '../../services/thread.service';
 import { messageService } from '../../services/message.service';
+import { EmojiPickerOverlayService } from '../../services/emoji-picker-overlay.service';
 import { MessageInputPopupHelper, PopupChannel, PopupUser } from './message-input-popup.helper';
 
 interface MessageInputPart {
@@ -28,7 +28,7 @@ interface MessageInputPart {
 
 @Component({
   selector: 'app-message-input',
-  imports: [CommonModule, FormsModule, PickerModule, EmojiComponent],
+  imports: [CommonModule, FormsModule, EmojiComponent],
   templateUrl: './message-input.html',
   styleUrl: './message-input.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,10 +38,12 @@ interface MessageInputPart {
   },
 })
 export class MessageInputComponent implements OnDestroy {
+  private static nextPickerId = 0;
   private readonly emojiRegex = /\p{Extended_Pictographic}/u;
   private readonly regionalFlagRegex = /^[\u{1F1E6}-\u{1F1FF}]{2}$/u;
   private _messageText = '';
   renderedScrollTop = 0;
+  readonly pickerOwner = `message-input:${MessageInputComponent.nextPickerId++}`;
 
   @Input() placeholder: string = 'Nachricht an #Entwicklerteam';
   @Input() disabled: boolean = false;
@@ -54,6 +56,7 @@ export class MessageInputComponent implements OnDestroy {
   private authSvc = inject(authService);
   private threadSvc = inject(ThreadService);
   private messageSvc = inject(messageService);
+  private pickerSvc = inject(EmojiPickerOverlayService);
   private elementRef = inject(ElementRef);
 
   readonly popup = new MessageInputPopupHelper(
@@ -73,28 +76,16 @@ export class MessageInputComponent implements OnDestroy {
   }
 
   readonly emojiSet = 'apple';
-  showEmojiPicker = false;
-  readonly emojiPickerStyle = { width: '100%', maxWidth: '100%' };
-  readonly emojiPickerI18n = {
-    search: 'Suchen', emojilist: 'Emoji-Liste', notfound: 'Keine Emojis gefunden', clear: 'Zuruecksetzen',
-    categories: {
-      search: 'Suchergebnisse', recent: 'Haeufig verwendet', people: 'Smileys & Personen',
-      nature: 'Tiere & Natur', foods: 'Essen & Trinken', activity: 'Aktivitaeten',
-      places: 'Reisen & Orte', objects: 'Objekte', symbols: 'Symbole', flags: 'Flaggen', custom: 'Benutzerdefiniert',
-    },
-    skintones: { 1: 'Standard-Hautfarbe', 2: 'Helle Hautfarbe', 3: 'Mittelhelle Hautfarbe', 4: 'Mittlere Hautfarbe', 5: 'Mitteldunkle Hautfarbe', 6: 'Dunkle Hautfarbe' },
-  };
 
   private typingTimeout: ReturnType<typeof setTimeout> | null = null;
   private typingInterval: ReturnType<typeof setInterval> | null = null;
   private isCurrentlyTyping = false;
 
-  // ── Delegatoren für Template-Bindungen ────────────────────────────────────
   get activePopup() { return this.popup.activePopup; }
   get popupUsers(): PopupUser[] { return this.popup.popupUsers; }
   get popupChannels(): PopupChannel[] { return this.popup.popupChannels; }
   get isLoading() { return this.popup.isLoading; }
-  get isEmojiActive(): boolean { return this.showEmojiPicker; }
+  get isEmojiActive(): boolean { return this.pickerSvc.isOpen(this.pickerOwner); }
   get isMentionActive(): boolean { return this.popup.isMentionActive; }
 
   get currentUserId(): string { return this.authSvc.currentUser()?.id || ''; }
@@ -147,31 +138,41 @@ export class MessageInputComponent implements OnDestroy {
     if (!keyboardEvent.shiftKey) { keyboardEvent.preventDefault(); this.send(); }
   }
 
-  onMessageInputClick(): void { this.popup.closePopup(); }
-
-  toggleEmoji(): void {
-    const shouldOpen = !this.showEmojiPicker;
+  onMessageInputClick(): void {
     this.popup.closePopup();
-    this.showEmojiPicker = shouldOpen;
+    this.pickerSvc.close(this.pickerOwner);
+  }
+
+  toggleEmoji(trigger: HTMLElement): void {
+    this.popup.closePopup();
+    this.pickerSvc.toggle(trigger, this.getPickerConfig());
   }
 
   async toggleMention(): Promise<void> {
-    this.showEmojiPicker = false;
+    this.pickerSvc.close(this.pickerOwner);
     await this.popup.toggleMention();
   }
 
-  addEmoji(event: { emoji?: { native?: string } }): void {
-    const emoji = event.emoji?.native;
+  onEmojiSelected(emoji: string): void {
     if (!emoji) return;
     const textarea = this.textareaElement;
     if (!textarea) { this.messageText += emoji; return; }
+    this.insertEmojiAtCursor(textarea, emoji);
+  }
+
+  private insertEmojiAtCursor(textarea: HTMLTextAreaElement, emoji: string): void {
     const start = textarea.selectionStart ?? this.messageText.length;
-    this.messageText = this.messageText.substring(0, start) + emoji + this.messageText.substring(textarea.selectionEnd ?? start);
-    setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(start + emoji.length, start + emoji.length);
-      this.syncRenderedScroll();
-    }, 0);
+    const end = textarea.selectionEnd ?? start;
+    const before = this.messageText.substring(0, start);
+    const after = this.messageText.substring(end);
+    this.messageText = `${before}${emoji}${after}`;
+    setTimeout(() => this.restoreCursor(textarea, start + emoji.length), 0);
+  }
+
+  private restoreCursor(textarea: HTMLTextAreaElement, position: number): void {
+    textarea.focus();
+    textarea.setSelectionRange(position, position);
+    this.syncRenderedScroll();
   }
 
   insertUserMention(user: PopupUser): void { this.popup.insertUserMention(user); }
@@ -180,18 +181,22 @@ export class MessageInputComponent implements OnDestroy {
   insertMention(text: string): void { this.popup.insertMention(text); }
 
   onDocumentClick(event: MouseEvent): void {
-    if (this.popup.activePopup === 'none' && !this.showEmojiPicker) return;
+    if (this.popup.activePopup === 'none' && !this.isEmojiActive) return;
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.popup.closePopup();
-      this.showEmojiPicker = false;
+      this.pickerSvc.close(this.pickerOwner);
     }
   }
 
   onEscapePressed(): void {
-    if (this.popup.activePopup !== 'none' || this.showEmojiPicker) {
+    if (this.popup.activePopup !== 'none' || this.isEmojiActive) {
       this.popup.closePopup();
-      this.showEmojiPicker = false;
+      this.pickerSvc.close(this.pickerOwner);
     }
+  }
+
+  private getPickerConfig() {
+    return { owner: this.pickerOwner, userId: this.currentUserId, variant: 'input' as const, alignRight: false, color: '#444df2', onSelect: (emoji: string) => this.onEmojiSelected(emoji) };
   }
 
   private buildMessageTextParts(text: string): MessageInputPart[] {

@@ -11,6 +11,8 @@ import { channelService } from '../../services/channel.service';
 import { userService } from '../../services/user.service';
 import { ThreadService } from '../../services/thread.service';
 import { User } from '../../interfaces/user.interface';
+import { EmojiRecentService } from '../../services/emoji-recent.service';
+import { EmojiPickerOverlayService } from '../../services/emoji-picker-overlay.service';
 
 interface MessageToken {
   type: 'text' | 'channel' | 'mention';
@@ -26,6 +28,15 @@ interface MessageTextPart {
   unified?: string;
 }
 
+interface ReactionListItem {
+  emoji: string;
+  count: number;
+  userReacted: boolean;
+  userIds: string[];
+  tooltipNames: string;
+  tooltipAction: string;
+}
+
 @Component({
   selector: 'app-message',
   standalone: true,
@@ -38,12 +49,17 @@ interface MessageTextPart {
   },
 })
 export class MessageComponent implements OnInit {
+  private static nextPickerId = 0;
+  private static allUsersPromise: Promise<User[]> | null = null;
   private _message!: Message;
   private readonly emojiRegex = /\p{Extended_Pictographic}/u;
   private readonly regionalFlagRegex = /^[\u{1F1E6}-\u{1F1FF}]{2}$/u;
+  private reactionOrder: string[] = [];
+  private readonly pickerScope = `message:${MessageComponent.nextPickerId++}`;
 
   @Input({ required: true }) set message(val: Message) {
     this._message = val;
+    this.syncReactionOrder();
     this.parseMessageContent();
   }
   get message(): Message {
@@ -68,11 +84,11 @@ export class MessageComponent implements OnInit {
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
   private threadSvc = inject(ThreadService);
+  private emojiRecentSvc = inject(EmojiRecentService);
+  private pickerSvc = inject(EmojiPickerOverlayService);
   private cdr = inject(ChangeDetectorRef);
   private router = inject(Router);
 
-  showReactionPicker = false;
-  showHoverReactionPicker = false;
   showMoreMenu = false;
   isEditing = false;
   editContent = '';
@@ -86,20 +102,18 @@ export class MessageComponent implements OnInit {
     this.showMoreMenu = shouldOpen;
   }
 
-  toggleReactionPicker() {
-    const shouldOpen = !this.showReactionPicker;
+  toggleReactionPicker(kind: 'footer' | 'hover', trigger: HTMLElement) {
     this.closeTransientPopups();
-    this.showReactionPicker = shouldOpen;
-  }
-
-  toggleHoverReactionPicker() {
-    const shouldOpen = !this.showHoverReactionPicker;
-    this.closeTransientPopups();
-    this.showHoverReactionPicker = shouldOpen;
+    this.pickerSvc.toggle(trigger, this.getPickerConfig(kind));
   }
   
   quickEmojis = ['🚀', '✅', '👍', '❤️', '😂', '😮'];
   readonly emojiSet = 'apple';
+  readonly fallbackHoverReactionEmojis = ['✅', '👍'];
+
+  get hoverReactionEmojis(): string[] {
+    return this.emojiRecentSvc.getRecentReactionEmojis(this.currentUserId, 2, this.fallbackHoverReactionEmojis);
+  }
 
   
   get replyCount(): number {
@@ -127,16 +141,16 @@ export class MessageComponent implements OnInit {
     return `${hrs}:${mins} Uhr`;
   }
   
-  get reactionList() {
-    if (!this.message.reactions) return [];
-    return Object.entries(this.message.reactions).map(([emoji, userIds]) => {
-      return {
-        emoji,
-        count: userIds.length,
-        userReacted: userIds.includes(this.currentUserId),
-        userIds,
-      };
-    });
+  get reactionList(): ReactionListItem[] {
+    return this.buildReactionList();
+  }
+
+  isReactionPickerOpen(kind: 'footer' | 'hover'): boolean {
+    return this.pickerSvc.isOpen(this.pickerOwner(kind));
+  }
+
+  onReactionPickerSelect(emoji: string): void {
+    void this.toggleReaction(emoji);
   }
 
   private buildTextParts(text: string): MessageTextPart[] {
@@ -160,6 +174,7 @@ export class MessageComponent implements OnInit {
   async toggleReaction(emoji: string) {
     this.closeTransientPopups();
     if (!this.message.id) return;
+    this.emojiRecentSvc.recordRecentNativeEmoji(this.currentUserId, emoji);
     this.messageSvc.optimisticReaction.emit({ messageId: this.message.id, emoji, userId: this.currentUserId });
     try {
       await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
@@ -180,13 +195,11 @@ export class MessageComponent implements OnInit {
       return;
     }
 
-    if (this.showReactionPicker && !target.closest('.msg-container__rx-add-wrapper')) {
-      this.showReactionPicker = false;
-    }
+    if (this.hasOpenPicker() && !target.closest('.msg-container__reaction-picker-anchor')) this.closeReactionPickers();
   }
 
   onMouseLeave() {
-    this.closeTransientPopups();
+    if (!this.hasOpenPicker()) this.closeTransientPopups();
   }
 
   showEditEmojiPicker = false;
@@ -242,33 +255,32 @@ export class MessageComponent implements OnInit {
     }
   }
 
-  async ngOnInit() {
-    if (MessageComponent.allUsers.length === 0) {
-      await this.userSvc.getAllUsers()
-        .then(u => MessageComponent.allUsers = u)
-        .catch(e => console.error('Fehler beim Laden der User im MessageComponent-Init:', e));
-    }
-    setTimeout(() => { this.parseMessageContent(); this.cdr.markForCheck(); }, 0);
+  ngOnInit() {
+    void this.ensureUsersLoaded();
   }
 
   parseMessageContent() {
     const content = this.message?.content || '';
-    if (!content) {
-      this.tokens = [];
-      return this.cdr.markForCheck();
-    }
-    if (MessageComponent.allUsers.length > 0) {
-      this.executeParsing(content);
-    } else {
-      this.loadUsersAndParse(content);
-    }
+    if (!content) return this.resetTokens();
+    if (MessageComponent.allUsers.length > 0) return this.executeParsing(content);
+    void this.ensureUsersLoaded().then(() => this.executeParsing(content));
   }
 
-  private loadUsersAndParse(content: string): void {
-    this.userSvc.getAllUsers()
-      .then(users => MessageComponent.allUsers = users)
-      .catch(e => console.error('Fehler beim Laden der User für Message-Parsing:', e))
-      .finally(() => setTimeout(() => { this.executeParsing(content); this.cdr.markForCheck(); }, 0));
+  private resetTokens(): void {
+    this.tokens = [];
+    this.cdr.markForCheck();
+  }
+
+  private ensureUsersLoaded(): Promise<User[]> {
+    if (MessageComponent.allUsers.length > 0) return Promise.resolve(MessageComponent.allUsers);
+    if (!MessageComponent.allUsersPromise) MessageComponent.allUsersPromise = this.loadAllUsers();
+    return MessageComponent.allUsersPromise;
+  }
+
+  private loadAllUsers(): Promise<User[]> {
+    return this.userSvc.getAllUsers().then((users) => MessageComponent.allUsers = users)
+      .catch((error) => (console.error('Fehler beim Laden der User in MessageComponent:', error), []))
+      .finally(() => MessageComponent.allUsersPromise = null);
   }
 
   private executeParsing(content: string) {
@@ -335,9 +347,98 @@ export class MessageComponent implements OnInit {
   }
 
   private closeTransientPopups() {
-    this.showReactionPicker = false;
-    this.showHoverReactionPicker = false;
+    this.closeReactionPickers();
     this.showMoreMenu = false;
+  }
+
+  private closeReactionPickers(): void {
+    this.pickerSvc.close(this.pickerOwner('footer'));
+    this.pickerSvc.close(this.pickerOwner('hover'));
+  }
+
+  private hasOpenPicker(): boolean {
+    return this.isReactionPickerOpen('footer') || this.isReactionPickerOpen('hover');
+  }
+
+  private buildReactionList(): ReactionListItem[] {
+    if (!this.message.reactions) {
+      this.reactionOrder = [];
+      return [];
+    }
+    this.syncReactionOrder();
+    return this.visibleReactionKeys().map((emoji) => this.createReactionItem(emoji));
+  }
+
+  private visibleReactionKeys(): string[] {
+    return this.reactionOrder.filter((emoji) => Array.isArray(this.message.reactions?.[emoji]));
+  }
+
+  private createReactionItem(emoji: string): ReactionListItem {
+    const userIds = this.message.reactions?.[emoji] ?? [];
+    const tooltip = this.buildReactionTooltip(userIds);
+    return {
+      emoji,
+      count: userIds.length,
+      userReacted: userIds.includes(this.currentUserId),
+      userIds,
+      tooltipNames: tooltip.names,
+      tooltipAction: tooltip.action,
+    };
+  }
+
+  private buildReactionTooltip(userIds: string[]): { names: string; action: string } {
+    const names = [...new Set(userIds.map((id) => {
+      return id === this.currentUserId ? 'Du' : this.resolveReactionUserName(id);
+    }).filter(Boolean))];
+    const len = names.length;
+
+    if (len === 1) {
+      return {
+        names: names[0],
+        action: names[0] === 'Du' ? 'hast reagiert' : 'hat reagiert',
+      };
+    }
+
+    if (len === 2) {
+      return {
+        names: `${names[0]} und ${names[1]}`,
+        action: 'haben reagiert',
+      };
+    }
+
+    return {
+      names: `${names[0]}, ${names[1]} und ${len - 2} weitere Person${len === 3 ? '' : 'en'}`,
+      action: 'haben reagiert',
+    };
+  }
+
+  private resolveReactionUserName(userId: string): string {
+    if (userId === this.currentUserId) {
+      return 'Du';
+    }
+
+    if (this.message.sender?.id === userId) {
+      return this.message.sender.display_name;
+    }
+
+    const user = MessageComponent.allUsers.find((entry) => entry.id === userId);
+    return user?.display_name || 'Unbekannt';
+  }
+
+  private syncReactionOrder(): void {
+    const nextKeys = Object.keys(this.message?.reactions ?? {});
+    this.reactionOrder = [
+      ...this.reactionOrder.filter((emoji) => nextKeys.includes(emoji)),
+      ...nextKeys.filter((emoji) => !this.reactionOrder.includes(emoji)),
+    ];
+  }
+
+  private pickerOwner(kind: 'footer' | 'hover'): string {
+    return `${this.pickerScope}:${kind}`;
+  }
+
+  private getPickerConfig(kind: 'footer' | 'hover') {
+    return { owner: this.pickerOwner(kind), userId: this.currentUserId, variant: kind === 'footer' ? 'message-footer' as const : 'message-hover' as const, alignRight: this.isCurrentUser, color: '#444df2', onSelect: (emoji: string) => this.onReactionPickerSelect(emoji) };
   }
 
   private closeAllPopups() {

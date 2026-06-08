@@ -24,4 +24,32 @@ export class avatarService {
   getDefaultAvatar(): string {
     return this.defaultAvatar;
   }
+
+  normalizeAvatarUrl(avatarUrl: string): string {
+    const trimmedUrl = avatarUrl.trim();
+    const parsedUrl = this.tryParseUrl(trimmedUrl);
+    if (!trimmedUrl || !parsedUrl || !this.isGoogleAvatarUrl(parsedUrl)) return trimmedUrl;
+    return this.upgradeGoogleAvatarSize(trimmedUrl, parsedUrl);
+  }
+
+  private tryParseUrl(avatarUrl: string): URL | null {
+    try {
+      return new URL(avatarUrl);
+    } catch {
+      return null;
+    }
+  }
+
+  private isGoogleAvatarUrl(parsedUrl: URL): boolean {
+    return parsedUrl.hostname.includes('googleusercontent.com');
+  }
+
+  private upgradeGoogleAvatarSize(avatarUrl: string, parsedUrl: URL): string {
+    if (!parsedUrl.searchParams.has('sz')) {
+      return avatarUrl.replace(/=s\d+(-c)?$/, '=s512-c');
+    }
+
+    parsedUrl.searchParams.set('sz', '512');
+    return parsedUrl.toString();
+  }
 }

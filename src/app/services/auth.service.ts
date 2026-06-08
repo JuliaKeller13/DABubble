@@ -5,6 +5,7 @@ import { User as UserProfile } from '../interfaces/user.interface';
 import { channelService } from './channel.service';
 import { userService } from './user.service';
 import { PresenceService } from './presence.service';
+import { avatarService } from './avatar.service';
 
 type SupabaseIdentityData = {
   avatar_url?: unknown;
@@ -24,6 +25,7 @@ export class authService {
   private channelSvc = inject(channelService);
   private userSvc = inject(userService);
   private presenceSvc = inject(PresenceService);
+  private avatarSvc = inject(avatarService);
 
   private currentUserSignal = signal<User | null>(null);
   private currentUserProfileSignal = signal<UserProfile | null>(null);
@@ -138,10 +140,17 @@ export class authService {
       .from('profiles').select('*').eq('id', user.id).maybeSingle();
     if (fetchError) { console.error('Error loading profile:', fetchError); return null; }
     if (!existing) return this.createProfile(user.id, displayName, email, avatarUrl);
-    this.supabaseSvc.supabase
-      .from('profiles').update({ status: 'online', display_name: displayName }).eq('id', user.id)
-      .then(() => {});
-    return { ...existing, status: 'online', display_name: displayName } as UserProfile;
+    return this.syncExistingProfile(user.id, existing as UserProfile, displayName, avatarUrl);
+  }
+
+  private syncExistingProfile(
+    userId: string, existing: UserProfile, displayName: string, avatarUrl: string | null,
+  ): UserProfile {
+    const storedAvatar = typeof existing.avatar_url === 'string' ? this.avatarSvc.normalizeAvatarUrl(existing.avatar_url) : null;
+    const nextAvatarUrl = avatarUrl || storedAvatar || existing.avatar_url || null;
+    const profilePatch = { status: 'online', display_name: displayName, ...(nextAvatarUrl !== (existing.avatar_url || null) ? { avatar_url: nextAvatarUrl } : {}) };
+    this.supabaseSvc.supabase.from('profiles').update(profilePatch).eq('id', userId).then(() => {});
+    return { ...existing, ...profilePatch } as UserProfile;
   }
 
   private async createProfile(
@@ -183,7 +192,7 @@ export class authService {
         .map((i) => i?.identity_data as SupabaseIdentityData | undefined)
         .flatMap((d) => [d?.avatar_url, d?.picture, d?.picture_url, d?.photoURL])
         .find((c) => typeof c === 'string' && c.trim().length > 0);
-    return typeof avatarUrl === 'string' ? avatarUrl : '';
+    return typeof avatarUrl === 'string' ? this.avatarSvc.normalizeAvatarUrl(avatarUrl) : '';
   }
 
   async loginWithEmail(email: string, password: string): Promise<AuthResponse> {
@@ -207,7 +216,7 @@ export class authService {
   async updateCurrentUserProfile(displayName: string, avatarUrl: string): Promise<UserProfile | null> {
     const cp = this.currentUserProfile();
     const tName = displayName.trim();
-    const tAvatar = avatarUrl.trim();
+    const tAvatar = this.avatarSvc.normalizeAvatarUrl(avatarUrl.trim());
     if (!this.currentUser() || !cp || !tName || !tAvatar) return null;
     const { error: ae } = await this.supabaseSvc.supabase.auth.updateUser({ data: { display_name: tName, full_name: tName, avatar_url: tAvatar } });
     if (ae) return console.error('Error updating auth user metadata:', ae), null;

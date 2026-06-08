@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { supabaseService } from './supabase.service';
 import { Channel } from '../interfaces/channel.interface';
 import { User } from '../interfaces/user.interface';
+import { avatarService } from './avatar.service';
 
 
 @Injectable({
@@ -9,6 +10,7 @@ import { User } from '../interfaces/user.interface';
 })
 export class channelService {
   private supabaseSvc = inject(supabaseService);
+  private avatarSvc = inject(avatarService);
   private activeChannelSignal = signal<Channel | null>(null);
   private channelsSignal = signal<Channel[]>([]);
   
@@ -173,6 +175,7 @@ export class channelService {
     if (error) return console.error('Error fetching channel members:', error.message), [];
     return ((data as any[]) || [])
       .map(item => item.profiles)
-      .filter((p): p is User => p !== null && p !== undefined);
+      .filter((p): p is User => p !== null && p !== undefined)
+      .map((profile) => ({ ...profile, avatar_url: this.avatarSvc.normalizeAvatarUrl(profile.avatar_url || '') || profile.avatar_url }));
   }
 }

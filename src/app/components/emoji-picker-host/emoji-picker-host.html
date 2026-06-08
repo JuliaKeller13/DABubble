@@ -1,0 +1,18 @@
+@if (pickerSvc.mounted()) {
+  <div
+    class="emoji-picker-host"
+    data-emoji-picker-host
+    [class.emoji-picker-host--visible]="pickerSvc.state().visible"
+    [style.top.px]="pickerSvc.state().top"
+    [style.left.px]="pickerSvc.state().left"
+    (click)="$event.stopPropagation()"
+  >
+    <app-emoji-picker-popup
+      [userId]="pickerSvc.state().userId"
+      [variant]="pickerSvc.state().variant"
+      [alignRight]="pickerSvc.state().alignRight"
+      [color]="pickerSvc.state().color"
+      (emojiSelected)="onEmojiSelected($event)"
+    ></app-emoji-picker-popup>
+  </div>
+}

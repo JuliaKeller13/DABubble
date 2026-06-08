@@ -67,7 +67,7 @@
     color: $white;
     border-color: transparent;
     box-shadow: 0px 4px 8px rgba($black, 0.1);
-    
+
     img,
     svg {
       filter: brightness(0) invert(1);
@@ -86,7 +86,7 @@
     color: $light-purple;
     border-color: $light-purple;
     opacity: 0.7;
-    
+
     img,
     svg {
       filter: none;
@@ -176,12 +176,12 @@
 
   &:hover {
     box-shadow: 6px 6px 16px rgba($purple-1, 0.12);
-    
+
     .btn-workspace-icon {
       color: $purple-1;
       transform: scale(1.1);
     }
-    
+
     .btn-workspace-text {
       color: $purple-1;
     }
@@ -246,6 +246,39 @@
   }
 }
 
+button.btn-fab-mobile {
+  @include tablet-lg {
+    @include flex(row, nowrap, center, center);
+    position: fixed;
+    right: 30px;
+    bottom: 40px;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: $purple-1;
+    color: $white;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    z-index: $z-index-sticky;
+    transition: background-color 0.15s ease;
+
+    > .btn-fab-mobile__icon {
+      display: block;
+      width: 24px;
+      height: 24px;
+      transform: translateY(-2px);
+      background-color: currentColor;
+      mask: url('/img/icons/responsive/edit_square.svg') center / contain no-repeat;
+      -webkit-mask: url('/img/icons/responsive/edit_square.svg') center / contain no-repeat;
+    }
+
+    &:hover {
+      background: $purple-2;
+    }
+  }
+}
+
 .btn-google {
   @extend .btn;
   border-radius: 100px;
@@ -272,7 +305,7 @@
     font-weight: 500;
     border: 1px solid $text-grey;
   }
-  
+
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;

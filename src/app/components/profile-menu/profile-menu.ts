@@ -30,7 +30,6 @@ export class ProfileMenuComponent {
   touchStartY = 0;
   isDragging = false;
   currentTranslateY = 0;
-  isAnimationActive = false;
 
   constructor(private elementRef: ElementRef) {}
 
@@ -41,10 +40,6 @@ export class ProfileMenuComponent {
     } else {
       this.isOpen = true;
       this.isClosing = false;
-      this.isAnimationActive = true;
-      setTimeout(() => {
-        this.isAnimationActive = false;
-      }, 300);
     }
   }
 
@@ -53,7 +48,6 @@ export class ProfileMenuComponent {
 
     if (window.innerWidth <= 1024) {
       this.isClosing = true;
-      this.isAnimationActive = false;
       setTimeout(() => {
         this.isOpen = false;
         this.isClosing = false;

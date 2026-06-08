@@ -1,0 +1,114 @@
+@use '../../../styles/abstracts' as *;
+
+.emoji-popup {
+  position: relative;
+  padding: 0;
+  background-color: $white;
+  border: 1px solid $light-purple;
+  z-index: $z-index-header-sidebar;
+  border-radius: 30px;
+  box-sizing: border-box;
+  overflow: clip;
+  animation: popupFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  emoji-mart {
+    display: block;
+    width: 100%;
+    border-radius: inherit;
+  }
+
+  :deep(.emoji-mart-bar) {
+    padding: 0 8px 8px;
+  }
+
+  :deep(.emoji-mart-anchors) {
+    gap: 2px;
+  }
+
+  :deep(.emoji-mart-anchor) {
+    min-width: 30px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+  }
+
+  :deep(.emoji-mart-anchor svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  &--input {
+    width: min(500px, calc(100dvw - 32px));
+    max-width: calc(100dvw - 32px);
+  }
+
+  &--chat {
+    width: min(370px, calc(100dvw - 32px));
+    max-width: calc(100dvw - 32px);
+  }
+
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 420px) {
+  .emoji-popup {
+    :deep(.emoji-mart-bar) {
+      padding: 0 6px 6px;
+    }
+
+    :deep(.emoji-mart-anchors) {
+      gap: 0;
+    }
+
+    :deep(.emoji-mart-anchor) {
+      min-width: 26px;
+      width: 26px;
+      height: 26px;
+    }
+
+    :deep(.emoji-mart-anchor svg) {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
+
+@include mobile {
+  .emoji-popup {
+    &--input,
+    &--chat {
+      width: min(500px, calc(100dvw - 20px));
+      max-width: calc(100dvw - 20px);
+    }
+
+    :deep(.emoji-mart-bar) {
+      padding: 0 6px 6px;
+    }
+
+    :deep(.emoji-mart-anchors) {
+      gap: 0;
+    }
+
+    :deep(.emoji-mart-anchor) {
+      min-width: 26px;
+      width: 26px;
+      height: 26px;
+    }
+
+    :deep(.emoji-mart-anchor svg) {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
