@@ -14,7 +14,7 @@
   gap: 16px;
   padding: 24px 24px 24px 35px;
   position: relative;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   width: 100%;
   box-sizing: border-box;
 
@@ -23,7 +23,11 @@
   }
 
   &:hover {
-    background-color: #f4f5fc;
+    background-color: $bg-color;
+
+    &:not(.msg-container--right) .msg-container__bubble {
+      background-color: $white;
+    }
 
     .msg-container__hover-menu {
       opacity: 1;
@@ -141,7 +145,7 @@
     border-radius: 0 30px 30px 30px;
     max-width: 80%;
     word-break: break-word;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    transition: background-color 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   &__text {
