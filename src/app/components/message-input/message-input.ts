@@ -165,13 +165,11 @@ export class MessageInputComponent implements OnDestroy {
     if (!emoji) return;
     const textarea = this.textareaElement;
     if (!textarea) { this.messageText += emoji; return; }
-    const startPos = textarea.selectionStart ?? this.messageText.length;
-    const endPos = textarea.selectionEnd ?? startPos;
-    this.messageText = this.messageText.substring(0, startPos) + emoji + this.messageText.substring(endPos);
-    const newCursorPos = startPos + emoji.length;
+    const start = textarea.selectionStart ?? this.messageText.length;
+    this.messageText = this.messageText.substring(0, start) + emoji + this.messageText.substring(textarea.selectionEnd ?? start);
     setTimeout(() => {
       textarea.focus();
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      textarea.setSelectionRange(start + emoji.length, start + emoji.length);
       this.syncRenderedScroll();
     }, 0);
   }
@@ -200,18 +198,11 @@ export class MessageInputComponent implements OnDestroy {
     if (!text) return [];
     const parts: MessageInputPart[] = [];
     let buffer = '';
-    for (const segment of this.splitIntoGraphemes(text)) {
-      if (segment === '\n') {
-        if (buffer) { parts.push({ type: 'text', text: buffer }); buffer = ''; }
-        parts.push({ type: 'newline' });
-        continue;
-      }
-      if (this.isEmojiSegment(segment)) {
-        if (buffer) { parts.push({ type: 'text', text: buffer }); buffer = ''; }
-        parts.push({ type: 'emoji', unified: this.toUnified(segment) });
-        continue;
-      }
-      buffer += segment;
+    for (const seg of this.splitIntoGraphemes(text)) {
+      if (seg !== '\n' && !this.isEmojiSegment(seg)) { buffer += seg; continue; }
+      if (buffer) parts.push({ type: 'text', text: buffer });
+      buffer = '';
+      parts.push(seg === '\n' ? { type: 'newline' } : { type: 'emoji', unified: this.toUnified(seg) });
     }
     if (buffer) parts.push({ type: 'text', text: buffer });
     return parts;

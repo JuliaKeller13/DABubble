@@ -41,19 +41,11 @@ export class userService {
     async upsertProfile(user: User): Promise<any> {
         const { data, error } = await this.supabaseSvc.supabase
             .from('profiles')
-            .upsert({
-                id: user.id,
-                display_name: user.display_name,
-                email: user.email,
-                avatar_url: user.avatar_url,
-                status: user.status
-            });
-
+            .upsert({ id: user.id, display_name: user.display_name, email: user.email, avatar_url: user.avatar_url, status: user.status });
         if (error) {
             console.error('Fehler beim Speichern des Profils:', error.message);
             throw error;
         }
-        
         this.usersCache.set(user.id, user);
         this.usersListCache = null;
         return data;
@@ -61,18 +53,12 @@ export class userService {
 
     
     async getAllUsers(forceRefresh = false): Promise<User[]> {
-        if (this.usersListCache && !forceRefresh) {
-            return this.usersListCache;
-        }
-        const { data, error } = await this.supabaseSvc.supabase
-            .from('profiles')
-            .select('*');
-
+        if (this.usersListCache && !forceRefresh) return this.usersListCache;
+        const { data, error } = await this.supabaseSvc.supabase.from('profiles').select('*');
         if (error) {
             console.error('Fehler beim Laden der User:', error.message);
             return [];
         }
-        
         const users = data as User[];
         users.forEach((u) => this.usersCache.set(u.id, u));
         this.usersListCache = users;
@@ -80,31 +66,18 @@ export class userService {
     }
 
     
+    private getLocalTeamUser(): User {
+        return { id: 'dabubble-team-local-id', display_name: 'DABubble-Team', email: 'team@dabubble.local', avatar_url: 'img/logo/Logo.svg', status: 'online' };
+    }
+
     async getUserById(id: string): Promise<User | null> {
-        if (id === 'dabubble-team-local-id') {
-            return {
-                id: 'dabubble-team-local-id',
-                display_name: 'DABubble-Team',
-                email: 'team@dabubble.local',
-                avatar_url: 'img/logo/Logo.svg',
-                status: 'online'
-            };
-        }
-        if (this.usersCache.has(id)) {
-            return this.usersCache.get(id) || null;
-        }
-
-        const { data, error } = await this.supabaseSvc.supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', id)
-            .single();
-
+        if (id === 'dabubble-team-local-id') return this.getLocalTeamUser();
+        if (this.usersCache.has(id)) return this.usersCache.get(id) || null;
+        const { data, error } = await this.supabaseSvc.supabase.from('profiles').select('*').eq('id', id).single();
         if (error) {
             console.error('Fehler beim Laden des Users:', error.message);
             return null;
         }
-        
         const user = data as User;
         this.usersCache.set(id, user);
         return user;

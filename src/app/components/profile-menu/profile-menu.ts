@@ -94,23 +94,16 @@ export class ProfileMenuComponent {
   
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    const clickedInside = this.elementRef.nativeElement.contains(event.target);
-    if (!clickedInside) {
-      if (this.showMobileSelfProfileDialog()) {
-        return;
-      }
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.handleOutsideClick();
+    }
+  }
 
-      if (this.isOpen) {
-        this.closeMenu();
-      }
-
-      if (this.showDesktopSelfProfileDialog()) {
-        if (this.profileDialogSvc.consumeOutsideCloseSuppression()) {
-          return;
-        }
-
-        this.closeProfileDialog();
-      }
+  private handleOutsideClick(): void {
+    if (this.showMobileSelfProfileDialog()) return;
+    if (this.isOpen) this.closeMenu();
+    if (this.showDesktopSelfProfileDialog() && !this.profileDialogSvc.consumeOutsideCloseSuppression()) {
+      this.closeProfileDialog();
     }
   }
 

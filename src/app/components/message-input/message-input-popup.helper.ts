@@ -55,75 +55,80 @@ export class MessageInputPopupHelper {
   }
 
   async loadUsers(): Promise<void> {
-    const channel = this.channelSvc.activeChannel();
-    const activeMsg = this.threadSvc.activeMessage();
-    const channelId = (activeMsg?.channel_id) || (channel?.id) || '';
-
-    if (channelId && channelId === channel?.id && this.channelSvc.activeChannelMembers().length > 0) {
-      const filtered = this.userSvc.filterDuplicateGuests(this.channelSvc.activeChannelMembers(), this.currentUserId || null);
-      this.allPopupUsers = filtered.map((u) => ({ id: u.id, name: u.display_name, avatar: u.avatar_url || 'img/avatars/avatar_default.svg' }));
-      MessageInputPopupHelper.channelMembersCache.set(channelId, this.allPopupUsers);
-      this.popupUsers = [...this.allPopupUsers];
-      return;
-    }
-    if (channelId && MessageInputPopupHelper.channelMembersCache.has(channelId)) {
-      this.allPopupUsers = MessageInputPopupHelper.channelMembersCache.get(channelId)!;
-      this.popupUsers = [...this.allPopupUsers];
-      return;
-    }
-    if (!channelId && MessageInputPopupHelper.allUsersCache.length > 0) {
-      this.allPopupUsers = MessageInputPopupHelper.allUsersCache;
-      this.popupUsers = [...this.allPopupUsers];
-      return;
-    }
+    const channelId = (this.threadSvc.activeMessage()?.channel_id) || (this.channelSvc.activeChannel()?.id) || '';
+    if (this.loadUsersFromCache(channelId)) return;
     await this.fetchUsersFromDb(channelId);
+  }
+
+  private loadUsersFromCache(channelId: string): boolean {
+    const activeMembers = this.channelSvc.activeChannelMembers();
+    if (channelId && channelId === this.channelSvc.activeChannel()?.id && activeMembers.length > 0) {
+      this.allPopupUsers = this.mapUsers(activeMembers);
+      MessageInputPopupHelper.channelMembersCache.set(channelId, this.allPopupUsers);
+    } else if (channelId && MessageInputPopupHelper.channelMembersCache.has(channelId)) {
+      this.allPopupUsers = MessageInputPopupHelper.channelMembersCache.get(channelId)!;
+    } else if (!channelId && MessageInputPopupHelper.allUsersCache.length > 0) {
+      this.allPopupUsers = MessageInputPopupHelper.allUsersCache;
+    } else return false;
+    this.popupUsers = [...this.allPopupUsers];
+    return true;
+  }
+
+  private mapUsers(users: any[]): PopupUser[] {
+    const filtered = this.userSvc.filterDuplicateGuests(users, this.currentUserId || null);
+    return filtered.map((u) => ({ id: u.id, name: u.display_name, avatar: u.avatar_url || 'img/avatars/avatar_default.svg' }));
   }
 
   private async fetchUsersFromDb(channelId: string): Promise<void> {
     this.isLoading = true;
     try {
-      if (channelId) {
-        const dbMembers = await this.channelSvc.getChannelMembers(channelId);
-        const filtered = this.userSvc.filterDuplicateGuests(dbMembers, this.currentUserId || null);
-        const mapped = filtered.map((u) => ({ id: u.id, name: u.display_name, avatar: u.avatar_url || 'img/avatars/avatar_default.svg' }));
-        MessageInputPopupHelper.channelMembersCache.set(channelId, mapped);
-        this.allPopupUsers = mapped;
-      } else {
-        const allUsers = await this.userSvc.getAllUsers();
-        const filtered = this.userSvc.filterDuplicateGuests(allUsers, this.currentUserId || null);
-        const mapped = filtered.map((u) => ({ id: u.id, name: u.display_name, avatar: u.avatar_url || 'img/avatars/avatar_default.svg' }));
-        MessageInputPopupHelper.allUsersCache = mapped;
-        this.allPopupUsers = mapped;
-      }
+      this.allPopupUsers = await this.queryUsers(channelId);
       this.popupUsers = [...this.allPopupUsers];
     } catch (e) {
       console.error('Fehler beim Laden der Popup-User:', e);
-      this.allPopupUsers = [];
-      this.popupUsers = [];
+      this.allPopupUsers = this.popupUsers = [];
     } finally {
       this.isLoading = false;
     }
   }
 
-  async loadChannels(): Promise<void> {
-    const cachedChannels = this.channelSvc.channels();
-    if (cachedChannels.length > 0) {
-      this.allPopupChannels = cachedChannels.filter((c) => !!c.id).map((c) => ({ id: c.id!, name: c.name }));
-      this.popupChannels = [...this.allPopupChannels];
-      return;
+  private async queryUsers(channelId: string): Promise<PopupUser[]> {
+    if (channelId) {
+      const dbMembers = await this.channelSvc.getChannelMembers(channelId);
+      const mapped = this.mapUsers(dbMembers);
+      MessageInputPopupHelper.channelMembersCache.set(channelId, mapped);
+      return mapped;
     }
+    const allUsers = await this.userSvc.getAllUsers();
+    const mappedAll = this.mapUsers(allUsers);
+    MessageInputPopupHelper.allUsersCache = mappedAll;
+    return mappedAll;
+  }
+
+  async loadChannels(): Promise<void> {
+    const cached = this.channelSvc.channels();
+    if (cached.length > 0) {
+      this.allPopupChannels = this.popupChannels = this.mapChannels(cached);
+    } else {
+      await this.fetchChannelsFromDb();
+    }
+  }
+
+  private async fetchChannelsFromDb(): Promise<void> {
     this.isLoading = true;
     try {
       const fetched = await this.channelSvc.getChannels();
-      this.allPopupChannels = fetched.filter((c) => !!c.id).map((c) => ({ id: c.id!, name: c.name }));
-      this.popupChannels = [...this.allPopupChannels];
+      this.allPopupChannels = this.popupChannels = this.mapChannels(fetched);
     } catch (e) {
       console.error('Fehler beim Laden der Popup-Channels:', e);
-      this.allPopupChannels = [];
-      this.popupChannels = [];
+      this.allPopupChannels = this.popupChannels = [];
     } finally {
       this.isLoading = false;
     }
+  }
+
+  private mapChannels(chans: any[]): PopupChannel[] {
+    return chans.filter((c) => !!c.id).map((c) => ({ id: c.id!, name: c.name }));
   }
 
   checkForTriggerChar(): void {
@@ -173,21 +178,24 @@ export class MessageInputPopupHelper {
     const textarea = this.getTextarea();
     const text = this.getMessageText();
     if (textarea) {
-      const startPos = textarea.selectionStart;
-      const endPos = textarea.selectionEnd;
-      const textBefore = text.substring(0, text.substring(0, startPos).lastIndexOf(' ') + 1);
-      const textAfter = text.substring(endPos);
-      this.setMessageText(textBefore + mentionText + ' ' + textAfter);
-      setTimeout(() => {
-        textarea.focus();
-        const newPos = textBefore.length + mentionText.length + 1;
-        textarea.setSelectionRange(newPos, newPos);
-        this.syncScroll();
-      }, 0);
+      this.insertAtCursor(textarea, text, mentionText);
     } else {
       this.setMessageText(text ? `${text} ${mentionText} ` : `${mentionText} `);
     }
     this.closePopup();
+  }
+
+  private insertAtCursor(textarea: HTMLTextAreaElement, text: string, mentionText: string): void {
+    const startPos = textarea.selectionStart;
+    const textBefore = text.substring(0, text.substring(0, startPos).lastIndexOf(' ') + 1);
+    const textAfter = text.substring(textarea.selectionEnd);
+    this.setMessageText(textBefore + mentionText + ' ' + textAfter);
+    setTimeout(() => {
+      textarea.focus();
+      const newPos = textBefore.length + mentionText.length + 1;
+      textarea.setSelectionRange(newPos, newPos);
+      this.syncScroll();
+    }, 0);
   }
 
   closePopup(): void {

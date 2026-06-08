@@ -140,34 +140,16 @@ export class MessageComponent implements OnInit {
   }
 
   private buildTextParts(text: string): MessageTextPart[] {
-    if (!text) {
-      return [];
-    }
-
+    if (!text) return [];
     const parts: MessageTextPart[] = [];
     let buffer = '';
-
-    for (const segment of this.splitIntoGraphemes(text)) {
-      if (this.isEmojiSegment(segment)) {
-        if (buffer) {
-          parts.push({ type: 'text', text: buffer });
-          buffer = '';
-        }
-
-        parts.push({
-          type: 'emoji',
-          unified: this.toUnified(segment),
-        });
-        continue;
-      }
-
-      buffer += segment;
+    for (const seg of this.splitIntoGraphemes(text)) {
+      if (!this.isEmojiSegment(seg)) { buffer += seg; continue; }
+      if (buffer) parts.push({ type: 'text', text: buffer });
+      buffer = '';
+      parts.push({ type: 'emoji', unified: this.toUnified(seg) });
     }
-
-    if (buffer) {
-      parts.push({ type: 'text', text: buffer });
-    }
-
+    if (buffer) parts.push({ type: 'text', text: buffer });
     return parts;
   }
 
@@ -178,13 +160,7 @@ export class MessageComponent implements OnInit {
   async toggleReaction(emoji: string) {
     this.closeTransientPopups();
     if (!this.message.id) return;
-
-    this.messageSvc.optimisticReaction.emit({
-      messageId: this.message.id,
-      emoji,
-      userId: this.currentUserId
-    });
-
+    this.messageSvc.optimisticReaction.emit({ messageId: this.message.id, emoji, userId: this.currentUserId });
     try {
       await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
     } catch (err) {
@@ -268,84 +244,54 @@ export class MessageComponent implements OnInit {
 
   async ngOnInit() {
     if (MessageComponent.allUsers.length === 0) {
-      try {
-        MessageComponent.allUsers = await this.userSvc.getAllUsers();
-      } catch (e) {
-        console.error('Fehler beim Laden der User im MessageComponent-Init:', e);
-      }
+      await this.userSvc.getAllUsers()
+        .then(u => MessageComponent.allUsers = u)
+        .catch(e => console.error('Fehler beim Laden der User im MessageComponent-Init:', e));
     }
-    
-    
-    setTimeout(() => {
-      this.parseMessageContent();
-      this.cdr.markForCheck();
-    }, 0);
+    setTimeout(() => { this.parseMessageContent(); this.cdr.markForCheck(); }, 0);
   }
 
   parseMessageContent() {
     const content = this.message?.content || '';
     if (!content) {
       this.tokens = [];
-      this.cdr.markForCheck();
-      return;
+      return this.cdr.markForCheck();
     }
-
     if (MessageComponent.allUsers.length > 0) {
       this.executeParsing(content);
     } else {
-      this.userSvc.getAllUsers().then(users => {
-        MessageComponent.allUsers = users;
-        setTimeout(() => {
-          this.executeParsing(content);
-          this.cdr.markForCheck();
-        }, 0);
-      }).catch(e => {
-        console.error('Fehler beim Laden der User für Message-Parsing:', e);
-        setTimeout(() => {
-          this.executeParsing(content);
-          this.cdr.markForCheck();
-        }, 0);
-      });
+      this.loadUsersAndParse(content);
     }
+  }
+
+  private loadUsersAndParse(content: string): void {
+    this.userSvc.getAllUsers()
+      .then(users => MessageComponent.allUsers = users)
+      .catch(e => console.error('Fehler beim Laden der User für Message-Parsing:', e))
+      .finally(() => setTimeout(() => { this.executeParsing(content); this.cdr.markForCheck(); }, 0));
   }
 
   private executeParsing(content: string) {
     const regex = /(<@[a-f0-9-]{36}>|<#[a-f0-9-]{36}>)/gi;
-    const parts = content.split(regex);
-    const result: MessageToken[] = [];
-
-    for (const part of parts) {
-      if (!part) continue;
-
-      if (part.startsWith('<@') && part.endsWith('>')) {
-        const userId = part.slice(2, -1);
-        const user = MessageComponent.allUsers.find(u => u.id === userId);
-        const displayName = user ? user.display_name : 'Gelöschter User';
-        result.push({
-          type: 'mention',
-          text: `@${displayName}`,
-          userId: userId
-        });
-      } else if (part.startsWith('<#') && part.endsWith('>')) {
-        const channelId = part.slice(2, -1);
-        const channel = this.channelSvc.channels().find(c => c.id === channelId);
-        const name = channel ? channel.name : 'Gelöschter Channel';
-        result.push({
-          type: 'channel',
-          text: `#${name}`,
-          channelId: channelId
-        });
-      } else {
-        result.push({
-          type: 'text',
-          text: part,
-          parts: this.buildTextParts(part)
-        });
-      }
-    }
-
-    this.tokens = result;
+    this.tokens = content.split(regex)
+      .filter(Boolean)
+      .map(part => this.parsePartToToken(part))
+      .filter((t): t is MessageToken => !!t);
     this.cdr.markForCheck();
+  }
+
+  private parsePartToToken(part: string): MessageToken | null {
+    if (part.startsWith('<@') && part.endsWith('>')) {
+      const userId = part.slice(2, -1);
+      const user = MessageComponent.allUsers.find(u => u.id === userId);
+      return { type: 'mention', text: `@${user?.display_name || 'Gelöschter User'}`, userId };
+    }
+    if (part.startsWith('<#') && part.endsWith('>')) {
+      const channelId = part.slice(2, -1);
+      const chan = this.channelSvc.channels().find(c => c.id === channelId);
+      return { type: 'channel', text: `#${chan?.name || 'Gelöschter Channel'}`, channelId };
+    }
+    return { type: 'text', text: part, parts: this.buildTextParts(part) };
   }
 
   onChannelClick(channelId: string) {
@@ -367,18 +313,12 @@ export class MessageComponent implements OnInit {
   async saveEdit() {
     if (!this.message.id || !this.editContent.trim()) return;
     try {
-      const parsedEditContent = this.messageSvc.zeroWidthToMarkup(this.editContent);
-      const { error } = await this.messageSvc['supabaseSvc'].supabase
-        .from('messages')
-        .update({ content: parsedEditContent })
-        .eq('id', this.message.id);
-
-      if (!error) {
-        this.message.content = parsedEditContent;
-        this.parseMessageContent();
-        this.isEditing = false;
-        this.showEditEmojiPicker = false;
-      }
+      const content = this.messageSvc.zeroWidthToMarkup(this.editContent);
+      const { error } = await this.messageSvc['supabaseSvc'].supabase.from('messages').update({ content }).eq('id', this.message.id);
+      if (error) throw error;
+      this.message.content = content;
+      this.parseMessageContent();
+      this.isEditing = this.showEditEmojiPicker = false;
     } catch (err) {
       console.error('Failed to save message edit:', err);
     }

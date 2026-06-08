@@ -35,32 +35,40 @@ export class dialogCreateChannelComponent {
     const trimmedName = this.channelName.trim();
     if (!trimmedName) return;
 
-    this.nameExistsError = false;
-    this.errorMessage = '';
-    this.cdr.detectChanges();
-
-    try {
-      const isDuplicate = await this.channelSvc.isChannelNameDuplicate(trimmedName);
-      if (isDuplicate) {
-        const isMember = this.channelSvc.channels().some(
-          c => c.name.trim() === trimmedName
-        );
-        if (isMember) {
-          this.errorMessage = 'Dieser Name existiert bereits in deiner Channel-Liste.';
-        } else {
-          this.errorMessage = 'Dieser Name ist bereits vergeben (der Channel ist für dich eventuell nicht sichtbar).';
-        }
-        this.nameExistsError = true;
-        this.cdr.detectChanges();
-        return;
-      }
-    } catch (error) {
-      console.error('Error checking channel name duplicate status:', error);
-    }
+    this.resetErrorState();
+    const isDuplicate = await this.checkDuplicateName(trimmedName);
+    if (isDuplicate) return;
 
     this.channelSaved.emit({
       name: trimmedName,
       description: this.channelDescription
     });
+  }
+
+  private resetErrorState(): void {
+    this.nameExistsError = false;
+    this.errorMessage = '';
+    this.cdr.detectChanges();
+  }
+
+  private async checkDuplicateName(trimmedName: string): Promise<boolean> {
+    try {
+      if (await this.channelSvc.isChannelNameDuplicate(trimmedName)) {
+        this.handleDuplicateError(trimmedName);
+        return true;
+      }
+    } catch (error) {
+      console.error('Error checking duplicate status:', error);
+    }
+    return false;
+  }
+
+  private handleDuplicateError(name: string): void {
+    const isMember = this.channelSvc.channels().some(c => c.name.trim() === name);
+    this.errorMessage = isMember 
+      ? 'Dieser Name existiert bereits in deiner Channel-Liste.' 
+      : 'Dieser Name ist bereits vergeben (der Channel ist für dich eventuell nicht sichtbar).';
+    this.nameExistsError = true;
+    this.cdr.detectChanges();
   }
 }

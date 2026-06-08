@@ -82,12 +82,8 @@ export class MessageEncodingService {
     return clean
       .split('\u200B')
       .map((binarySeq) => {
-        const binary = binarySeq
-          .split('')
-          .map((char) => (char === '\u200C' ? '0' : '1'))
-          .join('');
-        if (!binary) return '';
-        return String.fromCharCode(parseInt(binary, 2));
+        const binary = binarySeq.split('').map((char) => (char === '\u200C' ? '0' : '1')).join('');
+        return binary ? String.fromCharCode(parseInt(binary, 2)) : '';
       })
       .join('');
   }

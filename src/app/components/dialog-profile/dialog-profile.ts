@@ -109,48 +109,39 @@ export class DialogProfileComponent {
 	}
 
 	async saveProfile(): Promise<void> {
-		if (!this.canEdit() || !this.editableName().trim() || !this.editableAvatarUrl().trim() || this.isSaving()) {
-			return;
-		}
-
+		if (!this.canSaveProfile()) return;
 		this.isSaving.set(true);
-
 		try {
-			const updatedProfile = await this.authService.updateCurrentUserProfile(
-				this.editableName(),
-				this.editableAvatarUrl(),
-			);
-
-			if (updatedProfile) {
-				this.profileDialogSvc.close();
-			}
+			const updated = await this.authService.updateCurrentUserProfile(this.editableName(), this.editableAvatarUrl());
+			if (updated) this.profileDialogSvc.close();
 		} finally {
 			this.isSaving.set(false);
 		}
 	}
 
+	private canSaveProfile(): boolean {
+		return !!(this.canEdit() && this.editableName().trim() && this.editableAvatarUrl().trim() && !this.isSaving());
+	}
+
 	async confirmAccountDelete(): Promise<void> {
-		if (!this.canEdit() || this.isDeletingAccount()) {
-			return;
-		}
-
+		if (!this.canEdit() || this.isDeletingAccount()) return;
 		this.isDeletingAccount.set(true);
-
 		try {
-			const wasDeleted = await this.authService.deleteCurrentUserAccount();
-
-			if (!wasDeleted) {
+			if (await this.authService.deleteCurrentUserAccount()) {
+				await this.handleAccountDeleted();
+			} else {
 				this.toastSvc.show('Account konnte nicht gelöscht werden.', 'error', 3000, undefined, false);
-				return;
 			}
-
-			this.isDeleteConfirmOpen.set(false);
-			this.profileDialogSvc.close();
-			this.toastSvc.show('Account wurde gelöscht.', 'success', 3000, undefined, false);
-			await this.router.navigate(['/login']);
 		} finally {
 			this.isDeletingAccount.set(false);
 		}
+	}
+
+	private async handleAccountDeleted(): Promise<void> {
+		this.isDeleteConfirmOpen.set(false);
+		this.profileDialogSvc.close();
+		this.toastSvc.show('Account wurde gelöscht.', 'success', 3000, undefined, false);
+		await this.router.navigate(['/login']);
 	}
 
 	private resetEditableFields(): void {

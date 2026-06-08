@@ -65,15 +65,7 @@ export class DialogChannelDetailsComponent implements OnInit {
       try {
         await this.channelSvc.removeMemberFromChannel(active.id, currentUserId);
         await this.channelSvc.loadChannels();
-
-        
-        const remaining = this.channelSvc.channels();
-        if (remaining.length > 0) {
-          this.router.navigate(['/main/channel', remaining[0].id]);
-        } else {
-          this.router.navigate(['/main']);
-        }
-
+        this.navigateToRemainingOrMain();
         this.close.emit();
       } catch (error) {
         console.error('Failed to leave channel:', error);
@@ -125,16 +117,20 @@ export class DialogChannelDetailsComponent implements OnInit {
     if (active && active.id && active.created_by === this.currentUserId) {
       try {
         await this.channelSvc.deleteChannel(active.id);
-        const remaining = this.channelSvc.channels();
-        if (remaining.length > 0) {
-          this.router.navigate(['/main/channel', remaining[0].id]);
-        } else {
-          this.router.navigate(['/main']);
-        }
+        this.navigateToRemainingOrMain();
         this.close.emit();
       } catch (error) {
         console.error('Failed to delete channel:', error);
       }
+    }
+  }
+
+  private navigateToRemainingOrMain(): void {
+    const remaining = this.channelSvc.channels();
+    if (remaining.length > 0) {
+      this.router.navigate(['/main/channel', remaining[0].id]);
+    } else {
+      this.router.navigate(['/main']);
     }
   }
 

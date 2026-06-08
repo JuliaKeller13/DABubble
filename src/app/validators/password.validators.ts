@@ -7,29 +7,15 @@ export function buildPasswordValidators(): ValidatorFn[] {
 }
 
 export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
-  const password = control.get('password')?.value;
-  const confirmPasswordControl = control.get('confirmPassword');
-  const confirmPassword = confirmPasswordControl?.value;
-
-  if (!confirmPasswordControl) {
+  const p = control.get('password')?.value;
+  const cpCtrl = control.get('confirmPassword');
+  if (!cpCtrl) return null;
+  const cp = cpCtrl.value;
+  if (!p || !cp || p === cp) {
+    clearPasswordMismatchError(cpCtrl);
     return null;
   }
-
-  if (!password || !confirmPassword) {
-    clearPasswordMismatchError(confirmPasswordControl);
-    return null;
-  }
-
-  if (password === confirmPassword) {
-    clearPasswordMismatchError(confirmPasswordControl);
-    return null;
-  }
-
-  confirmPasswordControl.setErrors({
-    ...(confirmPasswordControl.errors ?? {}),
-    passwordMismatch: true,
-  });
-
+  cpCtrl.setErrors({ ...(cpCtrl.errors ?? {}), passwordMismatch: true });
   return { passwordMismatch: true };
 }
 

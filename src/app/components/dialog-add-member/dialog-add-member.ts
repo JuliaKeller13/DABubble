@@ -54,20 +54,24 @@ export class dialogAddMemberComponent implements OnInit {
 
     if (this.data.mode === 'add') {
       this.selectionType = 'specific';
-      const activeChannel = this.channelSvc.activeChannel();
-      if (activeChannel && activeChannel.id) {
-        try {
-          const existingMembers = await this.channelSvc.getChannelMembers(activeChannel.id);
-          const existingMemberIds = new Set(existingMembers.map(m => m.id));
-          usersList = usersList.filter(user => !existingMemberIds.has(user.id));
-        } catch (error) {
-          console.error('Error fetching existing channel members for filtering:', error);
-        }
-      }
+      usersList = await this.filterExistingMembers(usersList);
     }
 
     this.users = usersList;
     this.filterUsers();
+  }
+
+  private async filterExistingMembers(usersList: User[]): Promise<User[]> {
+    const activeChannel = this.channelSvc.activeChannel();
+    if (!activeChannel?.id) return usersList;
+    try {
+      const existingMembers = await this.channelSvc.getChannelMembers(activeChannel.id);
+      const existingMemberIds = new Set(existingMembers.map(m => m.id));
+      return usersList.filter(user => !existingMemberIds.has(user.id));
+    } catch (error) {
+      console.error('Error fetching existing channel members for filtering:', error);
+      return usersList;
+    }
   }
 
   
