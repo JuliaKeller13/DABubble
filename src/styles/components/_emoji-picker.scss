@@ -40,11 +40,14 @@
   transition: color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
 }
 
-.emoji-popup .emoji-mart-anchor:hover,
-.emoji-popup .emoji-mart-anchor:focus,
+.emoji-popup .emoji-mart-anchor:not(.emoji-mart-anchor-selected):hover,
+.emoji-popup .emoji-mart-anchor:not(.emoji-mart-anchor-selected):focus {
+  color: $purple-1;
+}
+
 .emoji-popup .emoji-mart-anchor-selected {
   color: $purple-1;
-  background-color: rgba($bg-color, 0.9);
+  background-color: transparent;
 }
 
 .emoji-popup .emoji-mart-anchor:focus-visible {

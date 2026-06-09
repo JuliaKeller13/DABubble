@@ -30,7 +30,13 @@ export class EmojiPickerOverlayService {
   readonly state = signal<EmojiPickerState>(this.closedState());
   private selectHandler: ((emoji: string) => void) | null = null;
   private scrollTarget: HTMLElement | null = null;
-  private scrollOverflow = '';
+  private readonly preventScroll = (event: Event): void => {
+    event.preventDefault();
+  };
+  private readonly preventScrollKeys = (event: KeyboardEvent): void => {
+    const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ', 'Spacebar'];
+    if (keys.includes(event.key)) event.preventDefault();
+  };
 
   warm(): void {
     this.mounted.set(true);
@@ -87,15 +93,17 @@ export class EmojiPickerOverlayService {
     if (!(target instanceof HTMLElement)) return;
     if (this.scrollTarget && this.scrollTarget !== target) this.unlockScroll();
     this.scrollTarget = target;
-    this.scrollOverflow = target.style.overflow;
-    target.style.overflow = 'hidden';
+    target.addEventListener('wheel', this.preventScroll, { passive: false });
+    target.addEventListener('touchmove', this.preventScroll, { passive: false });
+    target.addEventListener('keydown', this.preventScrollKeys);
   }
 
   private unlockScroll(): void {
     if (!this.scrollTarget) return;
-    this.scrollTarget.style.overflow = this.scrollOverflow;
+    this.scrollTarget.removeEventListener('wheel', this.preventScroll);
+    this.scrollTarget.removeEventListener('touchmove', this.preventScroll);
+    this.scrollTarget.removeEventListener('keydown', this.preventScrollKeys);
     this.scrollTarget = null;
-    this.scrollOverflow = '';
   }
 
   private contentBounds(host: HTMLElement, variant: EmojiPickerVariant): DOMRect {
