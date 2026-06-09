@@ -12,7 +12,7 @@
 
 :root {
   --font-main: 'Nunito Variable', sans-serif;
-  --color-primary-blue: $purple-1;
+  --color-primary-blue: #{$purple-1};
   --text-emoji-search-size: 15px;
   --text-emoji-search-weight: 400;
   --text-emoji-category-size: 13px;
