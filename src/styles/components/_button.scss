@@ -268,9 +268,6 @@ button.btn-fab-mobile {
       width: 24px;
       height: 24px;
       transform: translateY(-2px);
-      background-color: currentColor;
-      mask: url('/img/icons/responsive/edit_square.svg') center / contain no-repeat;
-      -webkit-mask: url('/img/icons/responsive/edit_square.svg') center / contain no-repeat;
     }
 
     &:hover {
