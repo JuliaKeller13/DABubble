@@ -181,8 +181,12 @@ export class MessageInputComponent implements OnDestroy {
   insertMention(text: string): void { this.popup.insertMention(text); }
 
   onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (target?.closest?.('[data-emoji-picker-host]')) {
+      return;
+    }
     if (this.popup.activePopup === 'none' && !this.isEmojiActive) return;
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    if (!this.elementRef.nativeElement.contains(target)) {
       this.popup.closePopup();
       this.pickerSvc.close(this.pickerOwner);
     }

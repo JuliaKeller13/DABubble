@@ -5,6 +5,8 @@
     [class.emoji-picker-host--visible]="pickerSvc.state().visible"
     [style.top.px]="pickerSvc.state().top"
     [style.left.px]="pickerSvc.state().left"
+    [style.width.px]="pickerSvc.state().width"
+    [style.height.px]="pickerSvc.state().height"
     (click)="$event.stopPropagation()"
   >
     <app-emoji-picker-popup

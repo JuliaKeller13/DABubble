@@ -8,4 +8,10 @@
     visibility: visible;
     pointer-events: auto;
   }
+
+  app-emoji-picker-popup {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 }

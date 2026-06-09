@@ -184,7 +184,11 @@ export class MessageComponent implements OnInit {
   }
   
   onDocumentClick(event: MouseEvent) {
-    if (!this.elementRef.nativeElement.contains(event.target)) {
+    const target = event.target as HTMLElement;
+    if (target?.closest?.('[data-emoji-picker-host]')) {
+      return;
+    }
+    if (!this.elementRef.nativeElement.contains(target)) {
       this.closeAllPopups();
     }
   }

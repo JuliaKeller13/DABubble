@@ -1,4 +1,4 @@
-<div class="msg-container" [class.msg-container--right]="isCurrentUser" [class.msg-container--highlighted]="isHighlighted" (click)="onMessageContainerClick($event)">
+<div class="msg-container" [class.msg-container--right]="isCurrentUser" [class.msg-container--highlighted]="isHighlighted" [class.msg-container--picker-open]="isReactionPickerOpen('hover')" (click)="onMessageContainerClick($event)">
   <div class="msg-container__avatar-box">
     <img
       [src]="message.sender?.avatar_url || 'img/avatars/avatar_default.svg'"
@@ -210,7 +210,7 @@
     </div>
   </div>
 
-  <div class="msg-container__hover-menu" [class.msg-container__hover-menu--right]="isCurrentUser">
+  <div #hoverMenu class="msg-container__hover-menu" [class.msg-container__hover-menu--right]="isCurrentUser">
     @for (emoji of hoverReactionEmojis; track emoji) {
       <button
         class="msg-container__menu-btn"
@@ -228,7 +228,7 @@
       <button
         #hoverPickerTrigger
         class="msg-container__add-rx-btn"
-        (click)="toggleReactionPicker('hover', hoverPickerTrigger)"
+        (click)="toggleReactionPicker('hover', hoverMenu)"
         type="button"
         aria-label="Reaktion hinzufügen"
         title="Reaktion hinzufügen"

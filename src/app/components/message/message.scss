@@ -22,7 +22,8 @@
     animation: message-flash 2.5s ease-out forwards;
   }
 
-  &:hover {
+  &:hover,
+  &--picker-open {
     background-color: $bg-color;
 
     &:not(.msg-container--right) .msg-container__bubble {

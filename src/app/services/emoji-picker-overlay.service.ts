@@ -10,6 +10,8 @@ interface EmojiPickerState {
   color: string;
   top: number;
   left: number;
+  width: number;
+  height: number;
   visible: boolean;
 }
 
@@ -43,13 +45,13 @@ export class EmojiPickerOverlayService {
 
   open(anchor: HTMLElement, config: EmojiPickerOpenConfig): void {
     const rect = anchor.getBoundingClientRect();
-    const bounds = this.hostBounds(anchor);
+    const bounds = this.hostBounds(anchor, config.variant);
     const size = this.panelSize(config.variant, bounds);
     const pos = this.panelPosition(rect, bounds, size, config.variant);
     this.warm();
     this.lockScroll(anchor);
     this.selectHandler = config.onSelect;
-    this.state.set({ ...config, top: pos.top, left: pos.left, visible: true });
+    this.state.set({ ...config, top: pos.top, left: pos.left, width: size.width, height: size.height, visible: true });
   }
 
   close(owner?: string): void {
@@ -74,9 +76,9 @@ export class EmojiPickerOverlayService {
     this.close(this.state().owner);
   }
 
-  private hostBounds(anchor: HTMLElement): DOMRect {
+  private hostBounds(anchor: HTMLElement, variant: EmojiPickerVariant): DOMRect {
     const host = anchor.closest('.chat-area, .thread-view');
-    if (host instanceof HTMLElement) return this.contentBounds(host);
+    if (host instanceof HTMLElement) return this.contentBounds(host, variant);
     return new DOMRect(16, 16, window.innerWidth - 32, window.innerHeight - 32);
   }
 
@@ -96,30 +98,34 @@ export class EmojiPickerOverlayService {
     this.scrollOverflow = '';
   }
 
-  private contentBounds(host: HTMLElement): DOMRect {
+  private contentBounds(host: HTMLElement, variant: EmojiPickerVariant): DOMRect {
     const rect = host.getBoundingClientRect();
-    const top = this.contentTop(host, rect);
-    const bottom = this.contentBottom(host, rect);
+    const top = this.contentTop(host, rect, variant);
+    const bottom = this.contentBottom(host, rect, variant);
     return new DOMRect(rect.left, top, rect.width, Math.max(bottom - top, 120));
   }
 
-  private contentTop(host: HTMLElement, rect: DOMRect): number {
+  private contentTop(host: HTMLElement, rect: DOMRect, variant: EmojiPickerVariant): number {
+    if (variant === 'input') {
+      return rect.top + 8;
+    }
     const header = host.querySelector('.chat-area__header, .thread-view__header');
     if (!(header instanceof HTMLElement)) return rect.top + 16;
     return header.getBoundingClientRect().bottom + 16;
   }
 
-  private contentBottom(host: HTMLElement, rect: DOMRect): number {
+  private contentBottom(host: HTMLElement, rect: DOMRect, variant: EmojiPickerVariant): number {
     const footer = host.querySelector('.chat-area__footer, .thread-view__footer');
     if (!(footer instanceof HTMLElement)) return rect.bottom - 16;
-    return footer.getBoundingClientRect().top - 16;
+    const offset = variant === 'input' ? 8 : 16;
+    return footer.getBoundingClientRect().top - offset;
   }
 
   private panelSize(variant: EmojiPickerVariant, bounds: DOMRect) {
     const gap = 16;
     const width = variant === 'input' ? 500 : 370;
     const height = variant === 'input' ? 456 : 412;
-    return { gap, width: Math.min(width, bounds.width - gap * 2), height: Math.min(height, bounds.height - gap * 2) };
+    return { gap, width: Math.min(width, bounds.width - gap * 2), height: Math.min(height, bounds.height) };
   }
 
   private panelPosition(rect: DOMRect, bounds: DOMRect, size: { gap: number; width: number; height: number }, variant: EmojiPickerVariant) {
@@ -129,12 +135,12 @@ export class EmojiPickerOverlayService {
   }
 
   private idealTop(rect: DOMRect, bounds: DOMRect, size: { gap: number; height: number }, variant: EmojiPickerVariant) {
-    const offset = variant === 'message-hover' ? 36 : 12;
+    const offset = 8;
     const above = rect.top - size.height - offset;
     const below = rect.bottom + offset;
-    const minTop = bounds.top + size.gap;
-    const maxTop = bounds.bottom - size.height - size.gap;
-    if (variant === 'message-hover' || above < minTop) return Math.min(below, maxTop);
+    const minTop = bounds.top;
+    const maxTop = bounds.bottom - size.height;
+    if (above < minTop) return Math.min(below, maxTop);
     return Math.max(above, minTop);
   }
 
@@ -147,6 +153,6 @@ export class EmojiPickerOverlayService {
   }
 
   private closedState(): EmojiPickerState {
-    return { owner: '', userId: '', variant: 'input', alignRight: false, color: '#444df2', top: 0, left: 0, visible: false };
+    return { owner: '', userId: '', variant: 'input', alignRight: false, color: '#444df2', top: 0, left: 0, width: 0, height: 0, visible: false };
   }
 }
