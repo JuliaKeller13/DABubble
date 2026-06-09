@@ -19,10 +19,6 @@ main {
   width: 100%;
   padding: 120px clamp(15px, -40px + 17.1875vw, 290px) clamp(40px, 38px + 0.625vw, 50px);
   box-sizing: border-box;
-
-  @include tablet-lg {
-    background: $white;
-  }
 }
 
 .datenschutz-title-group {
@@ -51,7 +47,7 @@ main {
     position: relative;
     width: 16px;
     height: 16px;
-    
+
     .btn-back__icon {
       display: block;
       width: 100%;
@@ -116,3 +112,11 @@ main {
     color: $black;
   }
 }
+
+/* #region RESPONSIVE */
+@include tablet-lg {
+  .datenschutz-layout {
+    background: $white;
+  }
+}
+/* #endregion */

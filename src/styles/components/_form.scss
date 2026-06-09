@@ -131,6 +131,7 @@ body .mat-mdc-form-field {
   }
 }
 
+/* #region RESPONSIVE */
 @include mobile-md {
   .form {
     gap: 30px;
@@ -140,3 +141,4 @@ body .mat-mdc-form-field {
     }
   }
 }
+/* #endregion */

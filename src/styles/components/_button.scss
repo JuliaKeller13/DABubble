@@ -259,7 +259,7 @@ button.btn-fab-mobile {
     border-radius: 50%;
     background: $purple-1;
     color: $white;
-    box-shadow: 0px 6px 10px 0px #00000033;
+    box-shadow: 0px 6px 10px 0px rgba($black, 0.30);
     z-index: $z-index-sticky;
     transition: background-color 0.15s ease;
 
@@ -313,7 +313,6 @@ button.btn-fab-mobile {
 }
 
 /* #region RESPONSIVE */
-
 @include mobile-md {
   .btn-google {
     height: 50px;

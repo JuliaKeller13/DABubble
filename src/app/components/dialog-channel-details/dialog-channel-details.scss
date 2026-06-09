@@ -1,5 +1,4 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
+@use '../../../styles/abstracts' as *;
 
 .dialog-backdrop {
   position: fixed;
@@ -9,89 +8,89 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   display: block;
-  z-index: vars.$z-index-modal;
+  z-index: $z-index-modal;
   animation: fadeIn 0.15s ease-out;
 }
 
 .dialog-card {
-  @include mx.flex(column, nowrap, flex-start, stretch);
+  @include flex(column, nowrap, flex-start, stretch);
   position: absolute;
   top: 80px;
   left: 45px;
-  z-index: vars.$z-index-modal-content;
+  z-index: $z-index-modal-content;
   width: 790px;
-  background-color: vars.$white;
+  background-color: $white;
   border-radius: 0px 40px 40px 40px;
-  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 30px rgba($black, 0.1);
   padding: 40px;
   box-sizing: border-box;
   animation: slideDownIn 0.2s ease-out;
   max-width: calc(100% - 90px);
 
   &__header {
-    @include mx.flex(row, nowrap, space-between, center);
+    @include flex(row, nowrap, space-between, center);
     margin-bottom: 25px;
   }
 
   &__title {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 10px;
   }
 
   &__hash {
     font-size: 32px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
     font-family: var(--font-main);
   }
 
   &__title-text {
     font-size: 32px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
     margin: 0;
     font-family: var(--font-main);
   }
 
   &__close-btn {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: transparent;
     border: none;
     cursor: pointer;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    color: vars.$black;
+    color: $black;
     transition: all 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
-      color: vars.$purple-1;
+      background-color: $bg-color;
+      color: $purple-1;
     }
   }
 
   &__body {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 20px;
   }
 
   &__block {
-    @include mx.flex(column, nowrap, flex-start, stretch);
-    border: 1px solid vars.$light-purple;
+    @include flex(column, nowrap, flex-start, stretch);
+    border: 1px solid $light-purple;
     border-radius: 20px;
     padding: 20px 24px;
     box-sizing: border-box;
   }
 
   &__block-header {
-    @include mx.flex(row, nowrap, space-between, center);
+    @include flex(row, nowrap, space-between, center);
     margin-bottom: 12px;
   }
 
   &__label {
     font-size: 18px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
     font-family: var(--font-main);
   }
 
@@ -100,7 +99,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    color: vars.$purple-1;
+    color: $purple-1;
     font-size: 18px;
     font-weight: 600;
     font-family: var(--font-main);
@@ -109,12 +108,12 @@
     border-radius: 6px;
 
     &:hover:not(.dialog-card__edit-btn--disabled) {
-      color: vars.$purple-3;
-      background-color: vars.$bg-color;
+      color: $purple-3;
+      background-color: $bg-color;
     }
 
     &--disabled {
-      color: vars.$light-purple;
+      color: $light-purple;
       cursor: not-allowed;
 
       &:hover::after {
@@ -122,16 +121,16 @@
         position: absolute;
         bottom: 130%;
         right: 0;
-        background-color: vars.$light-red;
-        color: vars.$rosa-error;
-        border: 1px solid vars.$red-hover;
+        background-color: $light-red;
+        color: $rosa-error;
+        border: 1px solid $red-hover;
         padding: 8px 12px;
         border-radius: 8px;
         font-size: 16px;
         font-weight: 600;
         white-space: nowrap;
         z-index: 10;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.06);
+        box-shadow: 0px 4px 8px rgba($black, 0.06);
         pointer-events: none;
         line-height: 1.4;
         font-family: var(--font-main);
@@ -161,7 +160,7 @@
         right: 15px;
         border-width: 6px;
         border-style: solid;
-        border-color: vars.$light-red transparent transparent transparent;
+        border-color: $light-red transparent transparent transparent;
         z-index: 10;
         pointer-events: none;
       }
@@ -169,26 +168,26 @@
   }
 
   &__input-wrapper {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     width: 100%;
     height: 60px;
-    border: 1px solid vars.$light-purple; 
+    border: 1px solid $light-purple; 
     border-radius: 40px;
     padding: 0 24px;
     gap: 10px;
     box-sizing: border-box;
-    background-color: vars.$white;
+    background-color: $white;
 
     &:focus-within {
-      border-color: vars.$purple-1;
-      box-shadow: 0 0 4px rgba(68, 77, 242, 0.25);
+      border-color: $purple-1;
+      box-shadow: 0 0 4px rgba($purple-1, 0.25);
     }
   }
 
   &__input-hash {
     font-size: 18px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
     font-family: var(--font-main);
   }
 
@@ -198,20 +197,20 @@
     outline: none;
     font-family: var(--font-main);
     font-size: 18px;
-    color: vars.$black;
+    color: $black;
     background: transparent;
     padding: 0;
   }
 
   &__block-content {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 8px;
     padding-left: 10px;
 
     &--name {
       font-size: 18px;
       font-family: var(--font-main);
-      color: vars.$black;
+      color: $black;
     }
   }
 
@@ -224,7 +223,7 @@
     font-size: 18px;
     line-height: 1.45;
     font-family: var(--font-main);
-    color: vars.$black;
+    color: $black;
   }
 
   &__divider {
@@ -233,26 +232,26 @@
   }
 
   &__created-by {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 15px;
   }
 
   &__creator-name {
     font-size: 20px;
     font-weight: 600;
-    color: vars.$purple-1;
+    color: $purple-1;
     font-family: var(--font-main);
   }
 
   &__footer {
-    @include mx.flex(row, nowrap, flex-end, center);
+    @include flex(row, nowrap, flex-end, center);
     margin-top: 25px;
     gap: 16px;
   }
 
   &__leave-btn {
-    background-color: vars.$purple-1;
-    color: vars.$white;
+    background-color: $purple-1;
+    color: $white;
     border: none;
     border-radius: 100px;
     padding: 14px 28px;
@@ -261,11 +260,11 @@
     font-family: var(--font-main);
     cursor: pointer;
     transition: all 0.15s ease;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.04);
+    box-shadow: 0px 4px 6px rgba($black, 0.04);
 
     &:hover {
-      background-color: vars.$purple-3;
-      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.08);
+      background-color: $purple-3;
+      box-shadow: 0px 6px 12px rgba($black, 0.08);
     }
   }
 
@@ -279,29 +278,29 @@
 
   
   &__block--members {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 15px;
     margin-top: 10px;
   }
 
   &__members-list {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 12px;
     max-height: 200px;
     overflow-y: auto;
     padding-right: 4px;
-    @include mx.scrollbar(6px, vars.$light-purple);
+    @include scrollbar(6px, $light-purple);
   }
 
   &__member-row {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 15px;
     padding: 6px 10px;
     border-radius: 30px;
     transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
+      background-color: $bg-color;
     }
   }
 
@@ -313,7 +312,7 @@
     cursor: pointer;
 
     &:focus-visible {
-      outline: 2px solid vars.$purple-1;
+      outline: 2px solid $purple-1;
       outline-offset: 2px;
     }
   }
@@ -339,18 +338,18 @@
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: vars.$text-gray;
-    border: 2px solid vars.$white;
+    background-color: $text-gray;
+    border: 2px solid $white;
 
     &--online {
-      background-color: vars.$online-green;
+      background-color: $online-green;
     }
   }
 
   &__member-name {
     font-size: 18px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     font-family: var(--font-main);
 
     &--button {
@@ -362,7 +361,7 @@
 
       &:hover,
       &:focus-visible {
-        color: vars.$purple-1;
+        color: $purple-1;
         outline: none;
       }
     }
@@ -380,7 +379,7 @@
 }
 
 /* #region RESPONSIVE */
-@include mx.tablet-lg {
+@include tablet-lg {
   .dialog-backdrop {
     display: none;
   }
@@ -398,9 +397,9 @@
     border-radius: 0;
     box-shadow: none;
     padding: 20px 16px;
-    z-index: vars.$z-index-mobile-modal;
+    z-index: $z-index-mobile-modal;
     overflow-y: auto;
-    background-color: vars.$white;
+    background-color: $white;
     animation: fadeIn 0.15s ease-out;
 
     &__header {
@@ -435,23 +434,23 @@
 
     
     &__edit-btn {
-      @include mx.flex(row, nowrap, center, center);
+      @include flex(row, nowrap, center, center);
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      background-color: vars.$bg-color;
+      background-color: $bg-color;
       border: none;
-      color: vars.$purple-1;
+      color: $purple-1;
       padding: 0;
       transition: background-color 0.15s ease;
 
       &:hover:not(.dialog-card__edit-btn--disabled) {
-        background-color: vars.$light-purple;
+        background-color: $light-purple;
       }
 
       &--disabled {
         background-color: rgba(0, 0, 0, 0.04);
-        color: vars.$light-purple;
+        color: $light-purple;
         cursor: not-allowed;
       }
 

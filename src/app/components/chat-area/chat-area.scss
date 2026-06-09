@@ -1,73 +1,40 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
-
-/* #region ANIMATIONS */
-@keyframes bounce {
-  0%, 80%, 100% { transform: scale(0); }
-  40% { transform: scale(1.0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes fadeInConfirm {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes slideUpConfirm {
-  from { transform: translateX(-50%) translateY(100%); }
-  to { transform: translateX(-50%) translateY(0); }
-}
-
-@keyframes chat-spin {
-  to { transform: rotate(360deg); }
-}
-/* #endregion */
+@use '../../../styles/abstracts' as *;
 
 .chat-area {
-  @include mx.flex(column, nowrap, flex-start, stretch);
+  @include flex(column, nowrap, flex-start, stretch);
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: vars.$white;
+  background-color: $white;
   border-radius: 30px;
   box-sizing: border-box;
 
-  @include mx.tablet-lg {
+  @include tablet-lg {
     min-height: unset;
   }
 
   /* --- HEADER & NAVIGATION --- */
   &__header {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     width: 100%;
     height: 95px;
     box-sizing: border-box;
     padding: 0 45px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    background-color: vars.$white;
+    background-color: $white;
     border-radius: 30px 30px 0 0;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 10px rgba($black, 0.08);
     clip-path: inset(0 0 -20px 0 round 30px 30px 0 0);
     flex-shrink: 0;
 
-    @include mx.tablet-lg {
+    @include tablet-lg {
       height: 70px;
       padding: 0 20px;
     }
 
     &--new-msg {
       position: relative;
-      z-index: vars.$z-index-dropdown;
+      z-index: $z-index-dropdown;
       clip-path: none;
       height: auto;
       min-height: 165px;
@@ -78,7 +45,7 @@
       padding-bottom: 25px;
       gap: 15px;
 
-      @include mx.tablet-lg {
+      @include tablet-lg {
         min-height: 135px;
         padding-top: 20px;
         padding-bottom: 20px;
@@ -90,52 +57,52 @@
   }
 
   &__header-left {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 10px;
 
     &--clickable {
       cursor: pointer;
       &:hover {
         .chat-area__title,
-        .chat-area__hash { color: vars.$purple-1; }
+        .chat-area__hash { color: $purple-1; }
       }
     }
   }
 
   &__header-right {
-    @include mx.flex(row, nowrap, flex-end, center);
+    @include flex(row, nowrap, flex-end, center);
     gap: 16px;
     margin-left: auto;
   }
 
   /* --- MEMBERS & AVATARS --- */
   &__members-trigger {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 10px;
     padding: 6px 12px 6px 6px;
     border-radius: 100px;
     cursor: pointer;
     transition: background-color 0.15s ease;
 
-    &:hover { background-color: vars.$bg-color; }
-    @include mx.tablet-lg { display: none; }
+    &:hover { background-color: $bg-color; }
+    @include tablet-lg { display: none; }
   }
 
-  &__avatar-group { @include mx.flex(row, nowrap, flex-start, center); }
+  &__avatar-group { @include flex(row, nowrap, flex-start, center); }
 
   &__avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid vars.$white;
-    background-color: vars.$white;
+    border: 2px solid $white;
+    background-color: $white;
     margin-left: -10px;
     &:first-child { margin-left: 0; }
   }
 
   &__header-avatar-wrapper {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     position: relative;
     width: 40px;
     height: 40px;
@@ -157,21 +124,21 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid vars.$white;
-    background-color: vars.$text-gray;
+    border: 2px solid $white;
+    background-color: $text-gray;
 
-    &--online { background-color: vars.$online-green; }
+    &--online { background-color: $online-green; }
   }
 
   &__member-count {
     font-family: var(--font-main);
     font-size: 20px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
   }
 
   &__add-member-btn {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: transparent;
     border: none;
     cursor: pointer;
@@ -182,7 +149,7 @@
     transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
+      background-color: $bg-color;
       .chat-area__add-member-icon--normal { display: none; }
       .chat-area__add-member-icon--hover { display: block; }
     }
@@ -199,7 +166,7 @@
   &__hash, &__title {
     font-size: 24px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
     margin: 0;
     font-family: var(--font-main);
     user-select: none;
@@ -216,17 +183,17 @@
 
   /* --- BODY & SCROLLAREA --- */
   &__body {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     flex: 1;
     overflow-y: auto;
     width: 100%;
     box-sizing: border-box;
     padding-bottom: 24px;
-    @include mx.scrollbar(6px, vars.$light-purple);
+    @include scrollbar(6px, $light-purple);
   }
 
   &__date-divider {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     width: 100%;
     margin: 24px 0;
     padding: 0;
@@ -237,39 +204,39 @@
   &__date-line {
     flex: 1;
     height: 1px;
-    background-color: vars.$light-purple;
+    background-color: $light-purple;
     opacity: 0.4;
   }
 
   &__date-bubble {
     padding: 8px 20px;
-    background-color: vars.$white;
-    border: 1px solid vars.$light-purple;
+    background-color: $white;
+    border: 1px solid $light-purple;
     border-radius: 30px;
     font-size: 16px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     margin: 0;
   }
 
   /* --- TYPING INDICATOR --- */
   &__typing-indicator {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 8px;
     font-size: 14px;
-    color: vars.$purple-2;
+    color: $purple-2;
     margin-bottom: 8px;
     margin-left: 10px;
     animation: fadeIn 0.2s ease-in-out;
 
     .typing-dots {
-      @include mx.flex(row, nowrap, flex-start, center);
+      @include flex(row, nowrap, flex-start, center);
       gap: 3px;
 
       .dot {
         width: 6px;
         height: 6px;
-        background-color: vars.$purple-2;
+        background-color: $purple-2;
         border-radius: 50%;
         animation: bounce 1.4s infinite ease-in-out both;
         &:nth-child(1) { animation-delay: -0.32s; }
@@ -280,19 +247,19 @@
 
   /* --- EMPTY & WELCOME STATES --- */
   &__empty-state {
-    @include mx.flex(column, nowrap, flex-end, flex-start);
+    @include flex(column, nowrap, flex-end, flex-start);
     flex: 1;
     padding: 24px 45px 16px 45px;
     text-align: left;
-    color: vars.$text-gray;
+    color: $text-gray;
     box-sizing: border-box;
     margin-top: auto;
 
-    @include mx.tablet-lg { padding: 16px 20px; }
+    @include tablet-lg { padding: 16px 20px; }
   }
 
   &__empty-header {
-    @include mx.flex(row, nowrap, flex-start, flex-end);
+    @include flex(row, nowrap, flex-start, flex-end);
     gap: 24px;
     margin-bottom: 20px;
     .chat-area__empty-title { margin-bottom: 0; }
@@ -308,14 +275,14 @@
   &__empty-hash {
     font-size: 60px;
     font-weight: 700;
-    color: vars.$purple-2;
+    color: $purple-2;
     margin-bottom: 12px;
   }
 
   &__empty-title {
     font-size: 24px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
     margin: 0 0 12px 0;
     font-family: var(--font-main);
   }
@@ -324,17 +291,17 @@
     font-size: 20px;
     font-weight: 400;
     margin: 0;
-    color: vars.$text-gray;
+    color: $text-gray;
     line-height: 1.45;
     font-family: var(--font-main);
     max-width: 85%;
 
-    @include mx.tablet-lg { max-width: 100%; }
-    strong { color: vars.$black; font-weight: 700; }
+    @include tablet-lg { max-width: 100%; }
+    strong { color: $black; font-weight: 700; }
   }
 
   &__empty-highlight {
-    color: vars.$purple-3;
+    color: $purple-3;
     font-weight: 600;
   }
 
@@ -346,12 +313,12 @@
     cursor: pointer;
     color: inherit;
     &:hover {
-      .chat-area__empty-highlight { color: vars.$purple-1; }
+      .chat-area__empty-highlight { color: $purple-1; }
     }
   }
 
   &__profile-trigger, &__empty-profile-trigger {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     background: transparent;
     border: none;
     padding: 0;
@@ -359,14 +326,14 @@
     cursor: pointer;
     color: inherit;
     &:hover {
-      .chat-area__title, .chat-area__empty-title { color: vars.$purple-1; }
+      .chat-area__title, .chat-area__empty-title { color: $purple-1; }
     }
   }
 
   &__empty-profile-trigger { align-items: flex-end; }
 
   &__welcome-container {
-    @include mx.flex(column, nowrap, center, center);
+    @include flex(column, nowrap, center, center);
     flex: 1;
     padding: 40px;
     text-align: center;
@@ -376,7 +343,7 @@
   }
 
   &__welcome-header {
-    @include mx.flex(column, nowrap, flex-start, center);
+    @include flex(column, nowrap, flex-start, center);
     gap: 20px;
     margin-bottom: 24px;
   }
@@ -390,14 +357,14 @@
   &__welcome-title {
     font-size: 32px;
     font-weight: 700;
-    color: vars.$purple-1;
+    color: $purple-1;
     margin: 0;
     font-family: var(--font-main);
   }
 
   &__welcome-text {
     font-size: 20px;
-    color: vars.$text-gray;
+    color: $text-gray;
     line-height: 1.5;
     margin: 0 0 24px 0;
     font-family: var(--font-main);
@@ -405,9 +372,9 @@
 
   &__welcome-hint {
     font-size: 16px;
-    color: vars.$purple-2;
+    color: $purple-2;
     background-color: rgba(68, 77, 242, 0.05);
-    border: 1px dashed vars.$light-purple;
+    border: 1px dashed $light-purple;
     padding: 16px 24px;
     border-radius: 16px;
     line-height: 1.5;
@@ -422,23 +389,23 @@
     box-sizing: border-box;
     flex-shrink: 0;
 
-    @include mx.tablet-lg { padding: 0 16px 0px 16px; }
+    @include tablet-lg { padding: 0 16px 0px 16px; }
   }
 
   /* --- NEW MESSAGE / RECIPIENT FLOW --- */
   &__new-msg-recipient-container {
     position: relative;
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     margin: 10px 0 0 0;
     width: 100%;
     padding: 10px 25px;
-    background-color: vars.$white;
-    border: 1px solid vars.$light-purple;
+    background-color: $white;
+    border: 1px solid $light-purple;
     border-radius: 30px;
     box-sizing: border-box;
     gap: 10px;
 
-    @include mx.tablet-lg {
+    @include tablet-lg {
       margin: 5px 0 0 0;
       padding: 8px 16px;
     }
@@ -448,12 +415,12 @@
     font-family: var(--font-main);
     font-size: 18px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     user-select: none;
   }
 
   &__new-msg-recipient-chips {
-    @include mx.flex(row, wrap, flex-start, center);
+    @include flex(row, wrap, flex-start, center);
     flex: 1;
     gap: 8px;
   }
@@ -466,33 +433,33 @@
     font-family: var(--font-main);
     font-size: 18px;
     font-weight: 400;
-    color: vars.$black;
+    color: $black;
     padding: 0;
 
     &::placeholder {
-      color: vars.$text-gray;
+      color: $text-gray;
       font-size: 18px;
       font-weight: 400;
     }
   }
 
   &__recipient-chip {
-    @include mx.flex(row, nowrap, flex-start, center);
-    background-color: vars.$bg-color;
-    border: 1px solid vars.$light-purple;
+    @include flex(row, nowrap, flex-start, center);
+    background-color: $bg-color;
+    border: 1px solid $light-purple;
     border-radius: 20px;
     padding: 4px 10px;
     gap: 6px;
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     transition: background-color 0.15s ease;
 
     &--channel {
       background-color: rgba(68, 77, 242, 0.08);
       border-color: rgba(68, 77, 242, 0.2);
-      color: vars.$purple-3;
+      color: $purple-3;
       .chat-area__chip-hash { font-weight: 700; }
     }
   }
@@ -507,7 +474,7 @@
   &__chip-text { white-space: nowrap; }
 
   &__chip-remove {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: transparent;
     border: none;
     padding: 0;
@@ -524,20 +491,20 @@
     top: calc(100% + 8px);
     left: 0;
     right: 0;
-    background-color: vars.$white;
-    border: 1px solid vars.$light-purple;
+    background-color: $white;
+    border: 1px solid $light-purple;
     border-radius: 20px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.12);
-    z-index: vars.$z-index-header-sidebar;
+    box-shadow: 0px 8px 20px rgba($black, 0.12);
+    z-index: $z-index-header-sidebar;
     max-height: 250px;
     overflow-y: auto;
-    @include mx.scrollbar(6px, vars.$light-purple);
+    @include scrollbar(6px, $light-purple);
     box-sizing: border-box;
     padding: 10px;
   }
 
   &__search-dropdown-group {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 4px;
     margin-bottom: 10px;
     &:last-child { margin-bottom: 0; }
@@ -547,13 +514,13 @@
     font-family: var(--font-main);
     font-size: 14px;
     font-weight: 600;
-    color: vars.$text-gray;
+    color: $text-gray;
     padding: 4px 12px;
     user-select: none;
   }
 
   &__search-dropdown-item {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     padding: 8px 16px;
     border-radius: 100px;
     cursor: pointer;
@@ -561,19 +528,19 @@
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
-      color: vars.$purple-1;
+      background-color: $bg-color;
+      color: $purple-1;
     }
   }
 
   &__dropdown-item-hash {
     font-weight: 700;
     font-size: 18px;
-    color: vars.$black;
+    color: $black;
   }
 
   &__dropdown-item-avatar {
@@ -592,11 +559,11 @@
   /* --- MENU & HEADER DROPDOWN --- */
   &__menu-container {
     position: relative;
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
   }
 
   &__menu-btn {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: transparent;
     border: none;
     cursor: pointer;
@@ -604,12 +571,12 @@
     height: 40px;
     border-radius: 50%;
     padding: 0;
-    color: vars.$black;
+    color: $black;
     transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
-      color: vars.$purple-1;
+      background-color: $bg-color;
+      color: $purple-1;
     }
   }
 
@@ -623,25 +590,25 @@
     position: absolute;
     top: 75px;
     right: 45px;
-    background-color: vars.$white;
-    border: 1px solid vars.$light-purple;
+    background-color: $white;
+    border: 1px solid $light-purple;
     border-radius: 30px 0 30px 30px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 8px 20px rgba($black, 0.12);
     z-index: 1000;
     box-sizing: border-box;
     padding: 12px 10px;
     width: 210px;
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 4px;
 
-    @include mx.tablet-lg {
+    @include tablet-lg {
       top: 60px;
       right: 20px;
     }
   }
 
   &__dropdown-item {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     padding: 10px 16px;
     border-radius: 100px;
     cursor: pointer;
@@ -649,7 +616,7 @@
     font-family: var(--font-main);
     font-size: 16px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     background: transparent;
     border: none;
     text-align: center;
@@ -657,8 +624,8 @@
     transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
-      color: vars.$purple-1;
+      background-color: $bg-color;
+      color: $purple-1;
     }
 
     &--danger {
@@ -669,7 +636,7 @@
       }
     }
 
-    @include mx.tablet-lg {
+    @include tablet-lg {
       justify-content: flex-start;
       text-align: left;
     }
@@ -703,17 +670,17 @@
     top: 75px;
     right: 45px;
     z-index: 9999;
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 24px;
     width: min(460px, calc(100vw - 32px));
     padding: 32px;
-    background: vars.$white;
+    background: $white;
     border-radius: 30px 0 30px 30px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 8px 20px rgba($black, 0.12);
     box-sizing: border-box;
     animation: fadeInConfirm 0.2s ease-out;
 
-    @include mx.tablet-lg {
+    @include tablet-lg {
       position: fixed;
       bottom: 0;
       left: 50%;
@@ -741,29 +708,29 @@
     cursor: grab;
 
     &:active { cursor: grabbing; }
-    @include mx.tablet-lg { display: block; }
+    @include tablet-lg { display: block; }
   }
 
   &__confirm-title {
     margin: 0;
-    color: vars.$black;
+    color: $black;
     font-family: var(--font-main);
     font-weight: 700;
   }
 
   &__confirm-text {
     margin: 0;
-    color: vars.$text-gray;
+    color: $text-gray;
     font-family: var(--font-main);
     line-height: 1.5;
   }
 
   &__confirm-actions {
-    @include mx.flex(row, nowrap, flex-end, center);
+    @include flex(row, nowrap, flex-end, center);
     gap: 16px;
 
-    @include mx.tablet-lg {
-      @include mx.flex(column, nowrap, stretch, stretch);
+    @include tablet-lg {
+      @include flex(column, nowrap, stretch, stretch);
       gap: 12px;
     }
   }
@@ -778,7 +745,7 @@
 
   /* --- LOADING STATE --- */
   &__loading-container {
-    @include mx.flex(column, nowrap, center, center);
+    @include flex(column, nowrap, center, center);
     flex: 1;
     height: 100%;
     width: 100%;
@@ -789,7 +756,39 @@
     height: 50px;
     border: 4px solid rgba(0, 0, 0, 0.06);
     border-radius: 50%;
-    border-top-color: vars.$purple-1;
+    border-top-color: $purple-1;
     animation: chat-spin 1s linear infinite;
   }
 }
+
+/* #region ANIMATION */
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1.0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInConfirm {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUpConfirm {
+  from { transform: translateX(-50%) translateY(100%); }
+  to { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes chat-spin {
+  to { transform: rotate(360deg); }
+}
+/* #endregion */

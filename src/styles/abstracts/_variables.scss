@@ -11,6 +11,8 @@ $text-gray: #686868;
 $purple-2: #797ef3;
 $purple-3: #535af1;
 $purple-1: #444df2;
+$purple-3-hover-light: rgba($purple-3, 0.08);
+$blue-gray-dark: #2b3b48;
 $online-green: #92c83e;
 $rosa-error: #ed1e79;
 $light-red: #ffebeb;
@@ -37,6 +39,8 @@ $text-grey: $text-gray;
   --purple-2: #797ef3;
   --purple-3: #535af1;
   --purple-1: #444df2;
+  --purple-3-hover-light: rgba(83, 90, 241, 0.08);
+  --blue-gray-dark: #2b3b48;
   --online-green: #92c83e;
   --rosa-error: #ed1e79;
   --light-red: #ffebeb;
@@ -49,6 +53,7 @@ $text-grey: $text-gray;
 // BREAKPOINTS & LAYOUT
 // ==========================================================================
 $breakpoint-mobile-sm: 370px;
+$breakpoint-mobile-login: 410px;
 $breakpoint-mobile: 480px;
 $breakpoint-tablet: 768px;
 $breakpoint-tablet-max: 1024px;
@@ -75,7 +80,7 @@ $z-index-profile-overlay-content: 121;
 // ==========================================================================
 // SHADOWS
 // ==========================================================================
-$shadow-dialog: 0px 6px 10px 0px #00000033;
+$shadow-dialog: 0px 6px 10px 0px rgba($black, 0.2);
 $shadow-btn: 0px 4px 6px rgba(0, 0, 0, 0.04);
 $shadow-btn-hover: 0px 6px 12px rgba(0, 0, 0, 0.08);
 $shadow-emoji-popup: 0px 18px 38px rgba($purple-1, 0.12), 0px 10px 24px rgba($black, 0.12);

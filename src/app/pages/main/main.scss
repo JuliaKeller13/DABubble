@@ -1,5 +1,4 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
+@use '../../../styles/abstracts' as *;
 
 
 .main-layout {
@@ -13,7 +12,7 @@
   padding: 120px 20px 30px 20px;
 
   &__content {
-    @include mx.flex(row, nowrap, flex-start, stretch);
+    @include flex(row, nowrap, flex-start, stretch);
     width: 100%;
     height: calc(100vh - 150px);
     min-height: 650px;
@@ -79,7 +78,7 @@
   }
 }
 
-@include mx.tablet-lg {
+@include tablet-lg {
   .main-layout {
     height: 100vh;
     height: 100dvh;
@@ -88,7 +87,7 @@
     background-color: var(--white);
 
     &__content {
-      @include mx.flex(column, nowrap, flex-start, stretch);
+      @include flex(column, nowrap, flex-start, stretch);
       height: calc(100vh - 110px);
       height: calc(100dvh - 110px);
       min-height: unset;

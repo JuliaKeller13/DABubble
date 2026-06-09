@@ -1,5 +1,4 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
+@use '../../../styles/abstracts' as *;
 
 .dialog-backdrop {
   position: fixed;
@@ -9,17 +8,17 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.3);
   display: block;
-  z-index: vars.$z-index-modal;
+  z-index: $z-index-modal;
   animation: fadeIn 0.15s ease-out;
 }
 
 .dialog-card {
-  @include mx.flex(column, nowrap, flex-start, stretch);
+  @include flex(column, nowrap, flex-start, stretch);
   position: absolute;
   top: 90px;
-  z-index: vars.$z-index-modal-content;
+  z-index: $z-index-modal-content;
   width: 415px;
-  background-color: vars.$white;
+  background-color: $white;
   border-radius: 30px 0px 30px 30px;
   
   &--right-110 {
@@ -29,7 +28,7 @@
   &--right-50 {
     right: 50px;
   }
-  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 6px 30px rgba($black, 0.1);
   padding: 40px;
   box-sizing: border-box;
   animation: slideDownIn 0.2s ease-out;
@@ -40,7 +39,7 @@
   }
 
   &__header {
-    @include mx.flex(row, nowrap, space-between, center);
+    @include flex(row, nowrap, space-between, center);
     margin-bottom: 20px;
   }
 
@@ -48,35 +47,35 @@
     font-family: var(--font-main);
     font-size: 24px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
     margin: 0;
   }
 
   &__close-btn {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: transparent;
     border: none;
     cursor: pointer;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    color: vars.$black;
+    color: $black;
     transition: all 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
-      color: vars.$purple-1;
+      background-color: $bg-color;
+      color: $purple-1;
     }
   }
 
   &__body {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 24px;
   }
 
   &__members-list {
-    @include mx.flex(column, nowrap, flex-start, stretch);
-    @include mx.scrollbar(6px, vars.$light-purple);
+    @include flex(column, nowrap, flex-start, stretch);
+    @include scrollbar(6px, $light-purple);
     gap: 15px;
     max-height: 250px;
     overflow-y: auto;
@@ -84,14 +83,14 @@
   }
 
   &__member-row {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 15px;
     padding: 4px 8px;
     border-radius: 100px;
     transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
+      background-color: $bg-color;
     }
   }
 
@@ -110,7 +109,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid vars.$purple-1;
+      outline: 2px solid $purple-1;
       outline-offset: 2px;
     }
   }
@@ -134,12 +133,12 @@
     right: 0;
     width: 10px;
     height: 10px;
-    background-color: vars.$text-gray;
-    border: 2px solid vars.$white;
+    background-color: $text-gray;
+    border: 2px solid $white;
     border-radius: 50%;
 
     &--online {
-      background-color: vars.$online-green;
+      background-color: $online-green;
     }
   }
 
@@ -147,7 +146,7 @@
     font-family: var(--font-main);
     font-size: 18px;
     font-weight: 400;
-    color: vars.$black;
+    color: $black;
 
     &--button {
       padding: 0;
@@ -158,27 +157,27 @@
 
       &:hover,
       &:focus-visible {
-        color: vars.$purple-1;
+        color: $purple-1;
         outline: none;
       }
     }
   }
 
   &__remove-btn {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: transparent;
     border: none;
     cursor: pointer;
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    color: vars.$text-gray;
+    color: $text-gray;
     margin-left: auto;
     transition: all 0.15s ease;
 
     &:hover {
       background-color: rgba(237, 30, 121, 0.1);
-      color: vars.$rosa-error;
+      color: $rosa-error;
     }
   }
 
@@ -188,7 +187,7 @@
   }
 
   &__add-btn {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 15px;
     background: transparent;
     border: none;
@@ -198,7 +197,7 @@
     transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
+      background-color: $bg-color;
 
       .dialog-card__add-icon--normal {
         display: none;
@@ -207,7 +206,7 @@
         display: block;
       }
       .dialog-card__add-text {
-        color: vars.$purple-1;
+        color: $purple-1;
       }
     }
   }
@@ -232,7 +231,7 @@
     font-family: var(--font-main);
     font-size: 18px;
     font-weight: 400;
-    color: vars.$black;
+    color: $black;
     transition: color 0.15s ease, font-weight 0.15s ease;
   }
 }
@@ -248,7 +247,7 @@
 }
 
 /* #region RESPONSIVE */
-@include mx.mobile {
+@include mobile {
   .dialog-card {
     top: 50%;
     left: 50%;

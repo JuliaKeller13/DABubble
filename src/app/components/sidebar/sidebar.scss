@@ -18,7 +18,7 @@
 
     .sidebar__toggle {
       border-radius: 0 30px 30px 0;
-      box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.2);
+      box-shadow: 4px 4px 7px rgba($black, 0.2);
     }
   }
 
@@ -45,7 +45,7 @@
     border: none;
     border-radius: 0 30px 30px 0;
     padding: 24px 8px;
-    box-shadow: 4px 4px 7px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 4px 7px rgba($black, 0.2);
     cursor: pointer;
     transition:
       color 0.2s ease,

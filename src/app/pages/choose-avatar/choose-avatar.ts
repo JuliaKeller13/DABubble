@@ -3,6 +3,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { FooterComponent } from '../../components/footer/footer';
 import { authService } from '../../services/auth.service';
+import { avatarService } from '../../services/avatar.service';
 import { ToastService } from '../../services/toast.service';
 import { SignupData, SignupStateService } from '../../services/signup-state.service';
 
@@ -17,24 +18,22 @@ export class ChooseAvatar {
   private readonly existingUserErrorCodes = new Set(['user_already_exists']);
   private router = inject(Router);
   private authService = inject(authService);
+  private avatarSvc = inject(avatarService);
   private toast = inject(ToastService);
   private signupState = inject(SignupStateService);
 
   loading = signal(false);
   private signupData: SignupData | null = null;
 
-  selectedAvatar = signal('img/avatars/avatar_default.svg');
-  private readonly defaultAvatar = 'img/avatars/avatar_default.svg';
+  private readonly defaultAvatar = this.avatarSvc.getDefaultAvatar();
+  selectedAvatar = signal(this.defaultAvatar);
   readonly avatarSelected = computed(() => this.selectedAvatar() !== this.defaultAvatar);
+  readonly previewAvatar = computed(() => {
+    const avatar = this.selectedAvatar().trim();
+    return avatar || this.defaultAvatar;
+  });
 
-  readonly avatars = [
-    'img/avatars/avatar_female_1.svg',
-    'img/avatars/avatar_female_2.svg',
-    'img/avatars/avatar_male_1.svg',
-    'img/avatars/avatar_male_2.svg',
-    'img/avatars/avatar_male_3.svg',
-    'img/avatars/avatar_male_4.svg',
-  ];
+  readonly avatars = this.avatarSvc.getAvatars();
 
   get userName(): string {
     return this.signupData?.name ?? '';
@@ -42,6 +41,10 @@ export class ChooseAvatar {
 
   selectAvatar(src: string): void {
     this.selectedAvatar.set(src);
+  }
+
+  resetToDefaultAvatar(): void {
+    this.selectedAvatar.set(this.defaultAvatar);
   }
 
   constructor() {
@@ -87,14 +90,14 @@ export class ChooseAvatar {
   private applyGoogleAvatarDefault(): void {
     const profileAvatar = this.authService.currentUserProfile()?.avatar_url?.trim();
     if (profileAvatar) {
-      this.selectedAvatar.set(profileAvatar);
+      this.selectedAvatar.set(this.avatarSvc.normalizeAvatarUrl(profileAvatar));
       return;
     }
 
     const metadata = this.authService.currentUser()?.user_metadata;
     const metadataAvatar = metadata?.['avatar_url'] ?? metadata?.['picture'] ?? metadata?.['picture_url'];
     if (typeof metadataAvatar === 'string' && metadataAvatar.trim().length > 0) {
-      this.selectedAvatar.set(metadataAvatar);
+      this.selectedAvatar.set(this.avatarSvc.normalizeAvatarUrl(metadataAvatar));
     }
   }
 
