@@ -46,7 +46,7 @@
   border: 1px solid var(--light-purple);
   border-radius: 0px 30px 30px 30px;
   box-shadow: 0px 6px 15px rgba($black, 0.15);
-  z-index: 1000;
+  z-index: $z-index-header-sidebar-content;
   padding: 15px;
   box-sizing: border-box;
   animation: popupFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);

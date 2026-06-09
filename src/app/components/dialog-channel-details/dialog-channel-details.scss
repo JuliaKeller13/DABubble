@@ -129,7 +129,7 @@
         font-size: 16px;
         font-weight: 600;
         white-space: nowrap;
-        z-index: 10;
+        z-index: $z-index-tooltip;
         box-shadow: 0px 4px 8px rgba($black, 0.06);
         pointer-events: none;
         line-height: 1.4;
@@ -161,7 +161,7 @@
         border-width: 6px;
         border-style: solid;
         border-color: $light-red transparent transparent transparent;
-        z-index: 10;
+        z-index: $z-index-tooltip;
         pointer-events: none;
       }
     }

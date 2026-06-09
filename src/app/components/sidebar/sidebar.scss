@@ -131,11 +131,18 @@
       border-radius: 50%;
       background: transparent;
       color: $black;
-      transition: background-color 0.15s ease, color 0.15s ease;
+      transition:
+        background-color 0.15s ease,
+        box-shadow 0.15s ease,
+        color 0.15s ease;
 
       &:hover {
         background-color: $bg-color;
-        color: $purple-1;
+        box-shadow: 0 2px 0 2px $bg-color;
+
+        .sidebar__new-msg-btn-icon {
+          filter: brightness(0) invert(31%) sepia(87%) saturate(4649%) hue-rotate(231deg) brightness(97%) contrast(96%);
+        }
       }
     }
   }
@@ -145,6 +152,7 @@
       display: block;
       width: 24px;
       height: 24px;
+      transition: filter 0.15s ease;
     }
   }
 
@@ -455,7 +463,7 @@
     font-family: var(--font-main);
     border: 2px solid var(--white);
     box-sizing: border-box;
-    z-index: 2;
+    z-index: $z-index-raised;
     animation: unreadPulse 2s infinite ease-in-out;
   }
 
@@ -475,7 +483,7 @@
     box-sizing: border-box;
     margin-left: auto;
     flex-shrink: 0;
-    z-index: 2;
+    z-index: $z-index-raised;
     animation: unreadPulse 2s infinite ease-in-out;
   }
 

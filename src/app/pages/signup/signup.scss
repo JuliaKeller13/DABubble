@@ -1,5 +1,4 @@
 @use '../../../styles/abstracts' as *;
-@use '../../../styles/components' as *;
 
 main {
   @include flex(row, nowrap, center, center);

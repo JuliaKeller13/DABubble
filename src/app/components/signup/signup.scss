@@ -1,5 +1,4 @@
 @use '../../../styles/abstracts' as *;
-@use '../../../styles/components' as *;
 
 .signup {
     @include flex(column, nowrap, flex-start, center);
