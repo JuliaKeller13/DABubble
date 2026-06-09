@@ -6,7 +6,7 @@ export const routes: Routes = [
   { path: 'intro', redirectTo: 'login', pathMatch: 'full' },
   { 
     path: 'login', 
-    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent) 
+    loadComponent: () => import('./pages/login/login').then(m => m.LoginComponent)
   },
   { 
     path: 'impressum', 

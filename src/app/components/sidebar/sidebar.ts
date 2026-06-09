@@ -63,15 +63,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private directChatClearedSubscription: Subscription | null = null;
   private routerSubscription: Subscription | null = null;
   private sessionStartTime = new Date().getTime();
+  private subscribedUserId: string | null = null;
+  private activeLoadPromise: Promise<void> | null = null;
+  private needsReloadAfterActiveLoad = false;
 
   constructor() {
     effect(() => {
-      const currentUser = this.authSvc.currentUser();
-      if (currentUser?.id) {
-        this.subscribeToDMs(currentUser.id);
-        this.subscribeToGlobalMessages(currentUser.id);
-        this.loadData();
-      }
+      const currentUserId = this.authSvc.currentUser()?.id ?? null;
+      if (!currentUserId || currentUserId === this.subscribedUserId) return;
+      this.subscribedUserId = currentUserId;
+      this.subscribeToDMs(currentUserId);
+      this.subscribeToGlobalMessages(currentUserId);
+      void this.loadData();
     });
   }
 
@@ -83,7 +86,25 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   async loadData(): Promise<void> {
+    if (this.activeLoadPromise) {
+      this.needsReloadAfterActiveLoad = true;
+      return this.activeLoadPromise;
+    }
+
     const isInitial = this.channels().length === 0 && this.usersWithHistory().length === 0;
+    this.activeLoadPromise = this.performLoadData(isInitial);
+    try {
+      await this.activeLoadPromise;
+    } finally {
+      this.activeLoadPromise = null;
+      if (this.needsReloadAfterActiveLoad) {
+        this.needsReloadAfterActiveLoad = false;
+        await this.loadData();
+      }
+    }
+  }
+
+  private async performLoadData(isInitial: boolean): Promise<void> {
     if (isInitial) this.isSidebarLoading.set(true);
     try {
       const active = this.activeChannel();
@@ -116,7 +137,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    await this.loadData();
+    if (!this.subscribedUserId) await this.loadData();
     this.handleRouteSelection();
     this.channelSvc.isInitializing.set(false);
     this.routerSubscription = this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => this.handleRouteSelection());
@@ -128,6 +149,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (this.globalMessagesSubscription) this.messageSvc.unsubscribe(this.globalMessagesSubscription);
     this.directChatClearedSubscription?.unsubscribe();
     this.routerSubscription?.unsubscribe();
+    this.subscribedUserId = null;
   }
 
   private subscribeToDMs(currentUserId: string): void {

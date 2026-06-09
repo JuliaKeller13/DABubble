@@ -1,6 +1,6 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { supabaseService } from './supabase.service';
-import { AuthError, AuthResponse, OAuthResponse, PostgrestError, User } from '@supabase/supabase-js';
+import { AuthError, AuthResponse, OAuthResponse, PostgrestError, Session, User } from '@supabase/supabase-js';
 import { User as UserProfile } from '../interfaces/user.interface';
 import { channelService } from './channel.service';
 import { userService } from './user.service';
@@ -26,6 +26,12 @@ export class authService {
   private userSvc = inject(userService);
   private presenceSvc = inject(PresenceService);
   private avatarSvc = inject(avatarService);
+  private readonly startupMeasureEnabled = typeof window !== 'undefined' && window.location.search.includes('measureAuth=1');
+  private readonly authBootstrapStart = this.markStart('initSession.bootstrap');
+  private profileLoadVersion = 0;
+  private profileLoadUserId: string | null = null;
+  private initialSessionHandled = false;
+  private initialSessionFallbackTimer: ReturnType<typeof setTimeout> | null = null;
 
   private currentUserSignal = signal<User | null>(null);
   private currentUserProfileSignal = signal<UserProfile | null>(null);
@@ -56,21 +62,28 @@ export class authService {
   }
 
   constructor() {
-    this.initSession();
     this.initAuthStateChange();
+    this.initSessionFallback();
   }
 
-  private initSession(): void {
-    this.supabaseSvc.supabase.auth.getSession()
-      .then(({ data, error }) => {
-        if (error) this.handleSessionError(error.message);
-        else {
-          if (data.session) this.clearAuthUrlHash();
-          this.handleUserChange(data.session?.user ?? null);
-        }
-      })
-      .catch((err) => { console.error('Failed to get session:', err); this.handleSessionError(''); })
-      .finally(() => this.isInitializedSignal.set(true));
+  private initSessionFallback(): void {
+    this.initialSessionFallbackTimer = setTimeout(() => {
+      if (this.initialSessionHandled) return;
+      const initStart = this.markStart('initSession.getSessionFallback');
+      this.supabaseSvc.supabase.auth.getSession()
+        .then(({ data, error }) => {
+          this.markEnd('initSession.getSessionFallback', initStart);
+          if (this.initialSessionHandled) return;
+          if (error) this.handleSessionError(error.message);
+          else this.resolveInitialSession(data.session ?? null);
+        })
+        .catch((err) => {
+          console.error('Failed to get session:', err);
+          if (this.initialSessionHandled) return;
+          this.handleSessionError('');
+          this.resolveInitialSession(null);
+        });
+    }, 250);
   }
 
   private handleSessionError(msg: string): void {
@@ -82,6 +95,10 @@ export class authService {
 
   private initAuthStateChange(): void {
     this.supabaseSvc.supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'INITIAL_SESSION') {
+        this.resolveInitialSession(session);
+        return;
+      }
       if (event === 'TOKEN_REFRESHED' && !session) {
         console.warn('Token refresh failed (no session returned). Signing out.');
         this.clearStaleTokens();
@@ -90,7 +107,25 @@ export class authService {
       }
       if (event === 'SIGNED_OUT' || session) this.clearAuthUrlHash();
       this.handleUserChange(session?.user ?? null);
+      this.finishInitialization();
     });
+  }
+
+  private resolveInitialSession(session: Session | null): void {
+    if (this.initialSessionHandled) return;
+    this.initialSessionHandled = true;
+    this.markEnd('initSession.bootstrap', this.authBootstrapStart);
+    if (session) this.clearAuthUrlHash();
+    this.handleUserChange(session?.user ?? null);
+    this.finishInitialization();
+  }
+
+  private finishInitialization(): void {
+    if (this.initialSessionFallbackTimer !== null) {
+      clearTimeout(this.initialSessionFallbackTimer);
+      this.initialSessionFallbackTimer = null;
+    }
+    if (!this.isInitializedSignal()) this.isInitializedSignal.set(true);
   }
 
   private clearStaleTokens(): void {
@@ -112,17 +147,37 @@ export class authService {
   }
 
   private handleUserChange(user: User | null): void {
+    const nextUserId = user?.id ?? null;
+    const currentUserId = this.currentUserSignal()?.id ?? null;
+    const profileUserId = this.currentUserProfileSignal()?.id ?? null;
+
     this.currentUserSignal.set(user);
-    this.loadUserProfile(user);
+
+    if (this.profileLoadUserId === nextUserId) return;
+    if (currentUserId === nextUserId && profileUserId === nextUserId) return;
+
+    void this.loadUserProfile(user, ++this.profileLoadVersion);
   }
 
-  private async loadUserProfile(user: User | null): Promise<void> {
-    if (!user) { await this.clearUserState(); return; }
+  private async loadUserProfile(user: User | null, loadVersion: number): Promise<void> {
+    this.profileLoadUserId = user?.id ?? null;
+    if (!user) {
+      await this.clearUserState();
+      if (this.profileLoadVersion === loadVersion) this.profileLoadUserId = null;
+      return;
+    }
+    const loadStart = this.markStart('loadUserProfile.total');
     const profileData = await this.syncProfileWithDatabase(user);
+    if (this.profileLoadVersion !== loadVersion || this.currentUserSignal()?.id !== user.id) return;
     if (profileData) {
       this.currentUserProfileSignal.set(profileData);
+      const presenceStart = this.markStart('loadUserProfile.presenceSetup');
       await this.presenceSvc.setup(user);
+      if (this.profileLoadVersion !== loadVersion || this.currentUserSignal()?.id !== user.id) return;
+      this.markEnd('loadUserProfile.presenceSetup', presenceStart);
     }
+    this.profileLoadUserId = user.id;
+    this.markEnd('loadUserProfile.total', loadStart);
   }
 
   private async clearUserState(): Promise<void> {
@@ -133,14 +188,32 @@ export class authService {
   }
 
   private async syncProfileWithDatabase(user: User): Promise<UserProfile | null> {
+    const syncStart = this.markStart('syncProfileWithDatabase.total');
     const displayName = this.getProfileDisplayName(user);
     const email = this.getProfileEmail(user);
     const avatarUrl = this.getAvatarUrl(user) || null;
+    const fetchStart = this.markStart('syncProfileWithDatabase.fetchProfile');
     const { data: existing, error: fetchError } = await this.supabaseSvc.supabase
       .from('profiles').select('*').eq('id', user.id).maybeSingle();
+    this.markEnd('syncProfileWithDatabase.fetchProfile', fetchStart);
     if (fetchError) { console.error('Error loading profile:', fetchError); return null; }
-    if (!existing) return this.createProfile(user.id, displayName, email, avatarUrl);
-    return this.syncExistingProfile(user.id, existing as UserProfile, displayName, avatarUrl);
+    if (!existing) {
+      const createdProfile = await this.createProfile(user.id, displayName, email, avatarUrl);
+      this.markEnd('syncProfileWithDatabase.total', syncStart);
+      return createdProfile;
+    }
+    const syncedProfile = this.syncExistingProfile(user.id, existing as UserProfile, displayName, avatarUrl);
+    this.markEnd('syncProfileWithDatabase.total', syncStart);
+    return syncedProfile;
+  }
+
+  private markStart(label: string): number {
+    return this.startupMeasureEnabled && typeof performance !== 'undefined' ? performance.now() : 0;
+  }
+
+  private markEnd(label: string, start: number): void {
+    if (!this.startupMeasureEnabled || typeof performance === 'undefined' || !start) return;
+    console.info(`[auth-startup] ${label}: ${Math.round(performance.now() - start)}ms`);
   }
 
   private syncExistingProfile(

@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, effect, inject, signal, OnInit } from '@angular/core';
 import { authService } from '../../services/auth.service';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -54,6 +54,12 @@ export class LoginComponent implements OnInit {
     this.authService.resetPasswordVisibility('password');
     this.iconRegistry.addSvgIcon('mail', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/mail.svg'));
     this.iconRegistry.addSvgIcon('lock', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/lock.svg'));
+    effect(() => {
+      if (!this.authService.isInitialized() || !this.authService.isAuthenticated()) {
+        return;
+      }
+      void this.router.navigate(['/main']);
+    });
   }
 
   loginError = signal(false);
