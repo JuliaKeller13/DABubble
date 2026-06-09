@@ -1,4 +1,4 @@
-@if (pickerSvc.mounted()) {
+@defer (when pickerSvc.mounted(); prefetch on idle) {
   <div
     class="emoji-picker-host"
     data-emoji-picker-host
