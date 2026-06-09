@@ -44,8 +44,7 @@
 
     &.mat-mdc-form-field {
       .mat-mdc-form-field-infix {
-        display: flex;
-        align-items: center;
+        @include flex(row, nowrap, flex-start, center);
         padding: 0;
       }
     }
@@ -70,7 +69,7 @@
 
     .mat-mdc-form-field-flex {
       width: 100%;
-      display: flex;
+      @include flex(row, nowrap, flex-start, stretch);
       gap: 30px;
     }
 

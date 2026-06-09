@@ -1,8 +1,10 @@
+@use '../../../styles/abstracts' as *;
+
 .emoji-picker-host {
   position: fixed;
   visibility: hidden;
   pointer-events: none;
-  z-index: 1300;
+  z-index: $z-index-emoji-picker-host;
 
   &--visible {
     visibility: visible;

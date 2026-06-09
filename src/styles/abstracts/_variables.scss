@@ -64,7 +64,10 @@ $breakpoint-large: 1440px;
 // Z-INDEX LAYERS
 // ==========================================================================
 $z-index-below: -1;
+$z-index-default: 0;
 $z-index-base: 1;
+$z-index-raised: 2;
+$z-index-tooltip: 10;
 $z-index-dropdown: 20;
 $z-index-dropdown-top: 21;
 $z-index-sticky: 30;
@@ -73,9 +76,13 @@ $z-index-modal: 50;
 $z-index-modal-content: 55;
 $z-index-toast: 60;
 $z-index-header-sidebar: 100;
+$z-index-header-sidebar-content: 101;
 $z-index-mobile-modal: 110;
 $z-index-profile-overlay: 120;
 $z-index-profile-overlay-content: 121;
+$z-index-confirm-backdrop: 122;
+$z-index-confirm-dialog: 123;
+$z-index-emoji-picker-host: 130;
 $z-index-intro: 200;
 
 // ==========================================================================

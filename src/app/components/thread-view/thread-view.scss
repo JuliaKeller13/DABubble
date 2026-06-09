@@ -106,7 +106,7 @@
       color: $purple-2;
       background-color: $white;
       padding: 0 10px;
-      z-index: 1;
+      z-index: $z-index-base;
       white-space: nowrap;
     }
 
@@ -117,20 +117,18 @@
       right: 45px;
       height: 1px;
       background-color: rgba($black, 0.08);
-      z-index: 0;
+      z-index: $z-index-default;
     }
   }
 
   &__replies-list {
-    display: flex;
-    flex-direction: column;
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 20px;
     padding: 0 10px 20px 0;
   }
 
   &__typing-indicator {
-    display: flex;
-    align-items: center;
+    @include flex(row, nowrap, flex-start, center);
     gap: 8px;
     font-size: 14px;
     color: $purple-2;
@@ -139,9 +137,8 @@
     animation: fadeIn 0.2s ease-in-out;
 
     .typing-dots {
-      display: flex;
+      @include flex(row, nowrap, flex-start, center);
       gap: 3px;
-      align-items: center;
 
       .dot {
         width: 6px;

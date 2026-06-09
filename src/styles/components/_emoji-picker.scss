@@ -1,8 +1,7 @@
 @use '../abstracts' as *;
 
 .emoji-popup .emoji-mart {
-  display: flex;
-  flex-direction: column;
+  @include flex(column, nowrap, flex-start, stretch);
   width: 100%;
   height: 100%;
   color: $black;
@@ -152,8 +151,7 @@
 }
 
 .emoji-popup .emoji-mart-category-list li {
-  display: flex;
-  justify-content: center;
+  @include flex(row, nowrap, center, stretch);
   width: auto;
 }
 
