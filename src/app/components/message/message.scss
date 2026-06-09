@@ -568,10 +568,7 @@
 
   &__add-rx-icon {
     display: block;
-    background-color: currentColor;
     transform: translate(1px, -1px);
-    mask: url('/img/icons/chatarea/chat_icons/add_reaction.svg') center / contain no-repeat;
-    -webkit-mask: url('/img/icons/chatarea/chat_icons/add_reaction.svg') center / contain no-repeat;
   }
 
   &__more-dropdown {
