@@ -1,5 +1,5 @@
 @use '../../../styles/abstracts' as *;
-@use '../../../styles/components/button' as *;
+@use '../../../styles/components' as *;
 
 .signup {
     @include flex(column, nowrap, flex-start, center);
@@ -11,14 +11,14 @@
       border-radius: 25px;
       background-color: transparent;
       border: 1px solid transparent;
-      color: var(--purple-2);
+      color: $purple-2;
       cursor: pointer;
       font-weight: 400;
 
       transition: all 0.35s ease;
       &:hover {
-        border-color: var(--purple-2);
-        color: var(--purple-1);
+        border-color: $purple-2;
+        color: $purple-1;
         font-weight: 500;
       }
     }

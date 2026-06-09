@@ -96,10 +96,6 @@ main {
       background-color: $bg-color;
     }
   }
-
-  @include mobile-md {
-    @include flex(row, nowrap, flex-start, flex-start);
-  }
 }
 
 .form .btn-primary {
@@ -107,8 +103,7 @@ main {
 }
 
 /* #region RESPONSIVE */
-
-@media (max-width: 768px) {
+@include mobile {
   .desktop-header-only {
     display: none;
   }
@@ -152,4 +147,9 @@ main {
   }
 }
 
+@include mobile-md {
+  .custom-checkbox{
+    @include flex(row, nowrap, flex-start, flex-start);
+  }
+}
 /* #endregion */

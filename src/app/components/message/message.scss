@@ -1,14 +1,5 @@
 @use '../../../styles/abstracts' as *;
 
-@keyframes message-flash {
-  0% {
-    background-color: rgba(121, 126, 243, 0.4);
-  }
-  100% {
-    background-color: transparent;
-  }
-}
-
 .msg-container {
   @include flex(row, nowrap, flex-start, stretch);
   gap: 16px;
@@ -90,8 +81,8 @@
     height: 50px;
     border-radius: 50px;
     object-fit: cover;
-    background-color: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: $white;
+    border: 1px solid rgba($black, 0.05);
 
     &--clickable {
       cursor: pointer;
@@ -166,7 +157,7 @@
     box-sizing: border-box;
     @include flex(column, nowrap, flex-start, stretch);
     gap: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 12px rgba($black, 0.04);
   }
 
   &__edit-textarea {
@@ -275,7 +266,7 @@
       background-color: transparent;
 
       &:hover {
-        background-color: rgba(83, 90, 241, 0.08);
+        background-color: $purple-3-hover-light;
       }
     }
 
@@ -467,7 +458,7 @@
     border: 1px solid $light-purple;
     padding: 6px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba($black, 0.1);
     z-index: $z-index-dropdown;
 
     &--right {
@@ -501,7 +492,7 @@
     border: 1px solid $light-purple;
     border-radius: 25px 25px 0 25px;
     padding: 3px 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 10px rgba($black, 0.08);
     z-index: $z-index-base + 4;
     gap: 4px;
     box-sizing: border-box;
@@ -528,7 +519,7 @@
     width: 40px;
     height: 40px;
     @include flex(row, nowrap, center, center);
-    color: #2b3b48;
+    color: $blue-gray-dark;
     transition: all 0.15s ease;
 
     .icon-wrapper {
@@ -591,7 +582,7 @@
     width: 270px;
     height: auto;
     background-color: $white;
-    box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 6px 14px rgba($black, 0.08);
     border-radius: 0 30px 30px 30px;
     z-index: $z-index-dropdown;
     @include flex(column, nowrap, flex-start, stretch);
@@ -675,6 +666,15 @@
         color: $white;
       }
     }
+  }
+}
+
+@keyframes message-flash {
+  0% {
+    background-color: $purple-2;
+  }
+  100% {
+    background-color: transparent;
   }
 }
 

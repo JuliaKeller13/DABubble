@@ -1,17 +1,16 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
+@use '../../../styles/abstracts' as *;
 
 .auth-footer {
-  @include mx.flex(row, nowrap, center, center);
+  @include flex(row, nowrap, center, center);
   position: absolute;
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   gap: 16px;
-  z-index: vars.$z-index-sticky;
+  z-index: $z-index-sticky;
 
   &__link {
-    color: vars.$purple-2;
+    color: $purple-2;
     font-size: 18px;
     font-weight: 400;
     text-decoration: none;
@@ -21,15 +20,15 @@
     transition: all 150ms ease-in-out;
 
     &:hover {
-      color: vars.$purple-1;
-      border-color: vars.$purple-2;
+      color: $purple-1;
+      border-color: $purple-2;
       text-decoration: none;
     }
   }
 }
 
 /* #region RESPONSIVE */
-@include mx.mobile {
+@include mobile {
   .auth-footer {
     position: relative;
     bottom: auto;

@@ -1,4 +1,4 @@
-@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts' as *;
 
 .intro {
   --logo-scale: 2.5;
@@ -6,16 +6,12 @@
   --logo-initial-transform: translate(calc(-50% + var(--logo-offset-x) * var(--logo-scale)), -50%) scale(var(--logo-scale));
   --logo-final-transform: translate(-50%, -50%) scale(var(--logo-scale));
 
-  @include mx.flex(row, nowrap, center, center);
-  height: 100vh;
-  height: 100dvh;
-  width: 100%;
-  background: transparent;
+  @include flex(row, nowrap, center, center);
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
   z-index: 9999;
   overflow: hidden;
 
@@ -43,7 +39,7 @@
     max-width: 1920px;
     height: 100%;
     z-index: 2;
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
   }
 
   &__logo-wrapper {
@@ -77,6 +73,12 @@
     &--black {
       z-index: 1;
     }
+  }
+}
+
+@supports (height: 100lvh) {
+  .intro {
+    height: 100lvh;
   }
 }
 

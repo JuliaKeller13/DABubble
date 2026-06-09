@@ -1,26 +1,25 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
+@use '../../../styles/abstracts' as *;
 
 .header {
-  @include mx.flex(row, nowrap, flex-start, center);
+  @include flex(row, nowrap, flex-start, center);
   position: absolute;
   top: 25px;
   left: 0;
   right: 0;
   padding: 0 20px;
   box-sizing: border-box;
-  z-index: vars.$z-index-sticky;
+  z-index: $z-index-sticky;
   max-width: 1920px;
 
   &__left {
-    @include mx.flex(row, nowrap, flex-start, center);
     width: 365px;
     flex: none;
+    @include flex(row, nowrap, flex-start, center);
     transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   &__center {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     flex: 1;
     max-width: 990px;
     margin-left: 20px;
@@ -35,7 +34,7 @@
   }
 
   &__right {
-    @include mx.flex(row, nowrap, flex-end, center);
+    @include flex(row, nowrap, flex-end, center);
     width: 485px;
     flex: none;
   }
@@ -87,22 +86,22 @@
   }
 }
 
-@include mx.tablet-lg {
+@include tablet-lg {
   .header:not(.header--transparent) {
     top: 0;
     left: 0;
     right: 0;
     padding: 0;
-    z-index: vars.$z-index-header-sidebar;
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    z-index: $z-index-header-sidebar;
+    @include flex(column, nowrap, flex-start, stretch);
     background-color: var(--white);
 
     .header__left {
       width: 100%;
       height: 80px;
       padding: 0 16px;
-      background-color: var(--bg-color);
-      @include mx.flex(row, nowrap, flex-start, center);
+      z-index: $z-index-header-sidebar;
+      @include flex(row, nowrap, flex-start, center);
       box-sizing: border-box;
     }
 
@@ -112,7 +111,7 @@
     }
 
     .header__back-btn {
-      @include mx.flex(row, nowrap, center, center);
+      @include flex(row, nowrap, center, center);
       background: transparent;
       border: none;
       cursor: pointer;
@@ -122,7 +121,7 @@
       border-radius: 50%;
       transition: background-color 0.15s ease;
       position: relative;
-      z-index: vars.$z-index-base;
+      z-index: $z-index-base;
       pointer-events: auto;
 
       &:hover {
@@ -141,7 +140,7 @@
     }
 
     .header__workspace-info {
-      @include mx.flex(row, nowrap, flex-start, center);
+      @include flex(row, nowrap, flex-start, center);
       gap: 10px;
     }
 
@@ -164,7 +163,7 @@
       right: 16px;
       top: 0;
       height: 80px;
-      @include mx.flex(row, nowrap, flex-end, center);
+      @include flex(row, nowrap, flex-end, center);
       margin-left: 0;
     }
 

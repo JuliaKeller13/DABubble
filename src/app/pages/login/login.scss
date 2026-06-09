@@ -93,7 +93,17 @@ main {
 
 
 /* #region RESPONSIVE */
-@media (max-width: 768px) {
+@include mobile-login-extra {
+  .btns-container {
+    @include flex(column, wrap, center, center);
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+    }
+  }
+}
+
+@include mobile {
   .desktop-header-only {
     display: none;
   }
@@ -144,16 +154,6 @@ main {
       color: $purple-1;
       border: 1px solid $purple-2;
       cursor: pointer;
-    }
-  }
-}
-
-@media (max-width: 410px) {
-  .btns-container {
-    @include flex(column, wrap, center, center);
-    .btn-primary,
-    .btn-secondary {
-      width: 100%;
     }
   }
 }

@@ -29,7 +29,7 @@
 
       <section class="result-selection">
         <div class="choose-avatar">
-          <img [src]="selectedAvatar()" alt="person" />
+          <img [src]="previewAvatar()" alt="person" (error)="resetToDefaultAvatar()" />
         </div>
 
         <p class="text-account-name">{{ userName }}</p>

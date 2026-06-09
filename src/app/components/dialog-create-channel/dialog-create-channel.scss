@@ -1,7 +1,7 @@
-@use '../../../styles/abstracts/mixins' as mx;
+@use '../../../styles/abstracts' as *;
 
 .create-channel {
-  @include mx.flex(column, nowrap, space-between, stretch);
+  @include flex(column, nowrap, space-between, stretch);
   padding: 40px;
   background-color: var(--white);
   border-radius: 30px;
@@ -11,7 +11,7 @@
   font-family: "Nunito", sans-serif;
 
   &__header {
-    @include mx.flex(row, nowrap, space-between, center);
+    @include flex(row, nowrap, space-between, center);
   }
 
   &__title {
@@ -22,7 +22,7 @@
   }
 
   &__close-btn {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: none;
     border: none;
     cursor: pointer;
@@ -45,12 +45,12 @@
   }
 
   &__form {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 20px;
   }
 
   &__field {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 8px;
   }
 
@@ -74,7 +74,7 @@
   }
 
   &__input-wrapper {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     position: relative;
   }
 
@@ -111,7 +111,7 @@
   }
 
   &__actions {
-    @include mx.flex(row, nowrap, flex-end, stretch);
+    @include flex(row, nowrap, flex-end, stretch);
   }
 
   &__submit-btn {
@@ -136,7 +136,7 @@
   }
 }
 
-/* #region Responsive */
+/* #region RESPONSIVE */
 @media (max-width: 900px) {
   .create-channel {
     border-radius: 0;

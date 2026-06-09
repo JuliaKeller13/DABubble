@@ -26,12 +26,7 @@ main {
   width: calc(100vw - 30px);
   max-width: 680px;
   box-shadow: 0 2px 10px 0 rgba($black, 0.14);
-
   box-sizing: border-box;
-
-  @include mobile-sm{
-    padding: 30px 40px;
-  }
 
   &__group {
     @include flex(column, nowrap, flex-start, stretch);
@@ -60,3 +55,11 @@ main {
     }
   }
 }
+
+/* #region RESPONSIVE */
+@include mobile-sm{
+  .legal-card {
+    padding: 30px 40px;
+  }
+}
+/* #endregion */

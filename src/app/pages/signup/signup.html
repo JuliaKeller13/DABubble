@@ -83,7 +83,6 @@
             (click)="authService.togglePassword()"
             (keydown.enter)="authService.togglePassword()"
             (keydown.space)="authService.togglePassword(); $event.preventDefault()"
-            style="cursor: pointer"
           />
           @if (form.get('password')?.touched && form.get('password')?.hasError('required')) {
             <mat-error>Passwort ist erforderlich.</mat-error>

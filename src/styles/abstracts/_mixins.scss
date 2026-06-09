@@ -1,6 +1,6 @@
 @use 'sass:color';
 @use 'sass:math';
-@use 'variables' as vars;
+@use 'variables' as *;
 
 // Mixin for fluid typography
 @mixin fluid-text($min: 16, $max: 48) {
@@ -21,7 +21,7 @@
 }
 
 // Mixin for custom scrollbar styling
-@mixin scrollbar($width: 8px, $thumb-color: vars.$color-gray-form, $track-margin: 0px) {
+@mixin scrollbar($width: 8px, $thumb-color: $color-gray-form, $track-margin: 0px) {
   scrollbar-width: thin;
   scrollbar-color: #{$thumb-color} transparent;
 
@@ -121,56 +121,63 @@
 
 // Up to 370px
 @mixin mobile-sm {
-  @media (max-width: #{vars.$breakpoint-mobile-sm}) {
+  @media (max-width: #{$breakpoint-mobile-sm}) {
+    @content;
+  }
+}
+
+// Up to 410px
+@mixin mobile-login-extra {
+  @media (max-width: #{$breakpoint-mobile-login}) {
     @content;
   }
 }
 
 // Up to 480px
 @mixin mobile-md {
-  @media (max-width: #{vars.$breakpoint-mobile}) {
+  @media (max-width: #{$breakpoint-mobile}) {
     @content;
   }
 }
 
 // Up to 768px (Mobile/Large-Mobile range)
 @mixin mobile {
-  @media (max-width: #{vars.$breakpoint-tablet}) {
+  @media (max-width: #{$breakpoint-tablet}) {
     @content;
   }
 }
 
 // From 769px to 1024px (Tablet Landscape)
 @mixin tablet {
-  @media (min-width: 769px) and (max-width: #{vars.$breakpoint-tablet-max}) {
+  @media (min-width: 769px) and (max-width: #{$breakpoint-tablet-max}) {
     @content;
   }
 }
 
 // Up to 1024px (Mobile and Tablet)
 @mixin tablet-lg {
-  @media (max-width: #{vars.$breakpoint-tablet-max}) {
+  @media (max-width: #{$breakpoint-tablet-max}) {
     @content;
   }
 }
 
 // Up to 1200px (Large Tablet / Small Laptop)
 @mixin tablet-xl {
-  @media (max-width: #{vars.$breakpoint-tablet-lg}) {
+  @media (max-width: #{$breakpoint-tablet-lg}) {
     @content;
   }
 }
 
 // From 1025px (Desktop)
 @mixin desktop {
-  @media (min-width: #{vars.$breakpoint-tablet-max + 1px}) {
+  @media (min-width: #{$breakpoint-tablet-max + 1px}) {
     @content;
   }
 }
 
 // From 1441px (Large Desktop)
 @mixin large-desktop {
-  @media (min-width: #{vars.$breakpoint-large + 1px}) {
+  @media (min-width: #{$breakpoint-large + 1px}) {
     @content;
   }
 }

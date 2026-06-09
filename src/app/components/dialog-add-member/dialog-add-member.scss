@@ -1,10 +1,9 @@
-@use '../../../styles/abstracts/mixins' as mx;
-@use '../../../styles/abstracts/variables' as vars;
+@use '../../../styles/abstracts' as *;
 
 .add-member {
-  @include mx.flex(column, nowrap, space-between, stretch);
+  @include flex(column, nowrap, space-between, stretch);
   padding: 40px;
-  background-color: vars.$white;
+  background-color: $white;
   border-radius: 30px;
   box-sizing: border-box;
   width: 100%;
@@ -27,22 +26,22 @@
   }
 
   &__header {
-    @include mx.flex(row, nowrap, space-between, flex-start);
+    @include flex(row, nowrap, space-between, flex-start);
   }
 
   &__title-container {
-    @include mx.flex(column, nowrap, flex-start, flex-start);
+    @include flex(column, nowrap, flex-start, flex-start);
   }
 
   &__title {
     margin: 0;
     font-size: 24px;
     font-weight: 700;
-    color: vars.$black;
+    color: $black;
   }
 
   &__subtitle {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 6px;
     font-size: 18px;
     color: #535af1;
@@ -58,35 +57,35 @@
   }
 
   &__close-btn {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: none;
     border: none;
     cursor: pointer;
-    color: vars.$black;
+    color: $black;
     padding: 8px;
     border-radius: 50%;
     transition: background-color 0.2s ease, color 0.2s ease;
 
     &:hover {
-      background-color: vars.$bg-color;
-      color: vars.$purple-1;
+      background-color: $bg-color;
+      color: $purple-1;
     }
   }
 
   &__form {
-    @include mx.flex(column, nowrap, space-between, stretch);
+    @include flex(column, nowrap, space-between, stretch);
     gap: 30px;
     flex-grow: 1;
     margin-top: 20px;
   }
 
   &__radio-group {
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 20px;
   }
 
   &__radio-btn {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 12px;
     cursor: pointer;
   }
@@ -96,7 +95,7 @@
     -webkit-appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid vars.$text-gray;
+    border: 2px solid $text-gray;
     border-radius: 50%;
     flex-shrink: 0;
     cursor: pointer;
@@ -104,7 +103,7 @@
     position: relative;
 
     &:checked {
-      border-color: vars.$purple-1;
+      border-color: $purple-1;
 
       &::after {
         content: '';
@@ -115,33 +114,33 @@
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        background-color: vars.$purple-1;
+        background-color: $purple-1;
       }
     }
 
     &:hover {
-      border-color: vars.$purple-1;
+      border-color: $purple-1;
     }
   }
 
   &__radio-label {
     font-size: 18px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
   }
 
   &__channel-name {
-    color: vars.$purple-1;
+    color: $purple-1;
     font-weight: 700;
   }
 
   &__actions {
-    @include mx.flex(row, nowrap, flex-end, stretch);
+    @include flex(row, nowrap, flex-end, stretch);
   }
 
   &__submit-btn {
-    background-color: vars.$purple-1;
-    color: vars.$white;
+    background-color: $purple-1;
+    color: $white;
     border: none;
     border-radius: 25px;
     padding: 12px 35px;
@@ -151,7 +150,7 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: vars.$purple-2;
+      background-color: $purple-2;
     }
 
     &--disabled {
@@ -166,37 +165,37 @@
 
   &__specific-selection {
     position: relative;
-    @include mx.flex(column, nowrap, flex-start, stretch);
+    @include flex(column, nowrap, flex-start, stretch);
     gap: 16px;
     margin-top: 10px;
     width: 100%;
   }
 
   &__input-container {
-    @include mx.flex(row, wrap, flex-start, center);
+    @include flex(row, wrap, flex-start, center);
     gap: 8px;
     padding: 8px 20px;
     border: 1px solid #ADB0D9;
     border-radius: 30px;
-    background-color: vars.$white;
+    background-color: $white;
     min-height: 46px;
     box-sizing: border-box;
     transition: border-color 0.2s ease;
 
     &--focused {
-      border-color: vars.$purple-1;
+      border-color: $purple-1;
     }
   }
 
   &__chip {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 8px;
     background-color: #ECEEFE;
     padding: 3px 10px 3px 6px;
     border-radius: 20px;
     font-size: 16px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     line-height: 1;
     flex-shrink: 0;
   }
@@ -206,22 +205,22 @@
     height: 24px;
     border-radius: 50%;
     object-fit: cover;
-    background-color: vars.$white;
+    background-color: $white;
   }
 
   &__chip-remove {
-    @include mx.flex(row, nowrap, center, center);
+    @include flex(row, nowrap, center, center);
     background: none;
     border: none;
     padding: 2px;
     border-radius: 50%;
-    color: vars.$black;
+    color: $black;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
 
     &:hover {
       background-color: #d0d2f0;
-      color: vars.$purple-1;
+      color: $purple-1;
     }
   }
 
@@ -243,10 +242,10 @@
     left: 40px;
     width: 335px;
     max-height: 300px;
-    background-color: vars.$white;
+    background-color: $white;
     border: 1px solid #ADB0D9;
     border-radius: 0 20px 20px 20px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 10px rgba($black, 0.08);
     overflow-y: auto;
     z-index: 100;
     margin-top: 4px;
@@ -272,13 +271,13 @@
 
     &:hover {
       .add-member__suggestion-pill {
-        background-color: vars.$bg-color;
+        background-color: $bg-color;
       }
     }
   }
 
   &__suggestion-pill {
-    @include mx.flex(row, nowrap, flex-start, center);
+    @include flex(row, nowrap, flex-start, center);
     gap: 15px;
     padding: 6px 24px;
     border-radius: 30px;
@@ -299,7 +298,7 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    background-color: vars.$white;
+    background-color: $white;
   }
 
   &__status-dot {
@@ -309,18 +308,18 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    border: 2px solid vars.$white;
-    background-color: vars.$text-gray;
+    border: 2px solid $white;
+    background-color: $text-gray;
 
     &--online {
-      background-color: vars.$online-green;
+      background-color: $online-green;
     }
   }
 
   &__suggestion-name {
     font-size: 18px;
     font-weight: 500;
-    color: vars.$black;
+    color: $black;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -329,20 +328,20 @@
   &__user-status {
     font-size: 14px;
     font-weight: 400;
-    color: vars.$text-gray;
+    color: $text-gray;
   }
 
   &__no-results {
     padding: 12px 24px;
     font-size: 16px;
     font-weight: 500;
-    color: vars.$text-gray;
+    color: $text-gray;
     text-align: center;
     font-family: inherit;
   }
 }
 
-/* #region Responsive */
+/* #region RESPONSIVE */
 @media (max-width: 900px) {
   .add-member {
     border-radius: 0;
