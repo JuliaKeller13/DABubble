@@ -270,6 +270,11 @@ button.btn-fab-mobile {
       transform: translateY(-2px);
     }
 
+    > .sidebar__new-msg-btn-icon {
+      filter: brightness(0) invert(1);
+      transform: translateY(-3px);
+    }
+
     &:hover {
       background: $purple-2;
     }
