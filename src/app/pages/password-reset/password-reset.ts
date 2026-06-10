@@ -23,24 +23,64 @@ import { buildPasswordValidators, PASSWORD_MIN_LENGTH, passwordsMatchValidator }
   templateUrl: './password-reset.html',
   styleUrl: './password-reset.scss',
 })
+/**
+ * Component representing the password reset page.
+ * Allows users to enter and confirm their new password after initiating a reset.
+ */
 export class PasswordReset implements OnInit {
+  /**
+   * Lifecycle hook that runs on initialization.
+   * Scrolls the window to the top.
+   */
   ngOnInit(): void {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 0);
   }
 
+  /**
+   * The minimum length required for a password.
+   */
   readonly passwordMinLength = PASSWORD_MIN_LENGTH;
 
+  /**
+   * Form builder instance used to construct the reactive form.
+   */
   private readonly fb = inject(NonNullableFormBuilder);
+
+  /**
+   * Authentication service instance containing password update logic and password visibility state.
+   */
   readonly authService = inject(authService);
+
+  /**
+   * Toast service used to display notifications.
+   */
   private readonly toast = inject(ToastService);
+
+  /**
+   * Router instance used for navigating between routes.
+   */
   private readonly router = inject(Router);
+
+  /**
+   * Material icon registry used to register custom SVG icons.
+   */
   private readonly iconRegistry = inject(MatIconRegistry);
+
+  /**
+   * Sanitizer used to trust resource URLs of registered custom icons.
+   */
   private readonly sanitizer = inject(DomSanitizer);
 
+  /**
+   * Signal indicating whether the password reset submission is loading.
+   */
   loading = signal(false);
 
+  /**
+   * Form group managing the new password and its confirmation.
+   */
   form = this.fb.group(
     {
       password: ['', buildPasswordValidators()],
@@ -51,11 +91,18 @@ export class PasswordReset implements OnInit {
     }
   );
 
+  /**
+   * Constructs the PasswordReset component, resets password field visibility,
+   * and registers custom lock icon.
+   */
   constructor() {
     this.authService.resetPasswordVisibility('password', 'confirmPassword');
     this.iconRegistry.addSvgIcon('lock', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/lock.svg'));
   }
 
+  /**
+   * Clears errors on password fields and updates form validity.
+   */
   clearPasswordError(): void {
     const passwordControl = this.form.controls.password;
     const confirmPasswordControl = this.form.controls.confirmPassword;
@@ -73,6 +120,12 @@ export class PasswordReset implements OnInit {
     }
   }
 
+  /**
+   * Handles the submission of the password reset form.
+   * Updates user's password and navigates back to the login page on success.
+   *
+   * @returns A promise that resolves when the password update completes.
+   */
   async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

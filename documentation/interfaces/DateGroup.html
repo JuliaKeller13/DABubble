@@ -1,0 +1,599 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  DateGroup</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/chat-area/chat-area.helpers.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interface representing a group of messages under a specific date label.</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#dateLabel" 
+>
+                                            dateLabel
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#messages" 
+>
+                                            messages
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="dateLabel"></a>
+                                        <span class="name "><b>dateLabel</b>
+                                            <a href="#dateLabel">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>dateLabel:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The date label, e.g. &quot;Heute&quot;, &quot;Gestern&quot;, or formatted date string.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="messages"></a>
+                                        <span class="name "><b>messages</b>
+                                            <a href="#messages">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>messages:         <code><a href="../interfaces/Message.html" target="_self" >Message[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/Message.html" target="_self" >Message[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>List of messages belonging to this date group.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { WritableSignal } from &#x27;@angular/core&#x27;;
+import { Message } from &#x27;../../interfaces/message.interface&#x27;;
+import { Channel } from &#x27;../../interfaces/channel.interface&#x27;;
+import { User } from &#x27;../../interfaces/user.interface&#x27;;
+import { userService } from &#x27;../../services/user.service&#x27;;
+import { channelService } from &#x27;../../services/channel.service&#x27;;
+
+/**
+ * Interface representing a group of messages under a specific date label.
+ */
+export interface DateGroup {
+  /** The date label, e.g. &quot;Heute&quot;, &quot;Gestern&quot;, or formatted date string. */
+  dateLabel: string;
+  /** List of messages belonging to this date group. */
+  messages: Message[];
+}
+
+/**
+ * Builds a list of DateGroup objects from the flat array of messages.
+ * Only root messages (without parent_id) are grouped, and each message is enriched with reply details.
+ * @param messages - The flat array of messages.
+ * @returns Array of grouped messages.
+ */
+export function buildGroupedMessages(messages: Message[]): DateGroup[] {
+  const groups: DateGroup[] &#x3D; [];
+  const rootMessages &#x3D; messages
+    .filter((msg) &#x3D;&gt; !msg.parent_id)
+    .map((msg) &#x3D;&gt; enrichMessage(msg, messages));
+  rootMessages.forEach((msg) &#x3D;&gt; addMessageToGroup(msg, groups));
+  return groups;
+}
+
+/**
+ * Enriches a message with reply count and last reply timestamp.
+ * @param msg - The message to enrich.
+ * @param messages - The full list of messages to find replies from.
+ * @returns The enriched message.
+ */
+function enrichMessage(msg: Message, messages: Message[]): Message {
+  const replies &#x3D; messages.filter((m) &#x3D;&gt; m.parent_id &#x3D;&#x3D;&#x3D; msg.id);
+  return {
+    ...msg,
+    reply_count: replies.length,
+    last_reply_time: replies.length &gt; 0 ? replies[replies.length - 1].created_at : undefined,
+  } as Message;
+}
+
+/**
+ * Adds a message to the corresponding date group in the provided list.
+ * @param msg - The message to add.
+ * @param groups - The array of DateGroup objects.
+ */
+function addMessageToGroup(msg: Message, groups: DateGroup[]): void {
+  const label &#x3D; getDateLabel(msg.created_at);
+  let group &#x3D; groups.find((g) &#x3D;&gt; g.dateLabel &#x3D;&#x3D;&#x3D; label);
+  if (!group) {
+    group &#x3D; { dateLabel: label, messages: [] };
+    groups.push(group);
+  }
+  group.messages.push(msg);
+}
+
+/**
+ * Formats a given ISO date string into a friendly label like &quot;Heute&quot;, &quot;Gestern&quot;, or &quot;weekday, day month&quot;.
+ * @param dateStr - The ISO date string.
+ * @returns The formatted date label.
+ */
+export function getDateLabel(dateStr?: string): string {
+  if (!dateStr) return &#x27;&#x27;;
+  const date &#x3D; new Date(dateStr);
+  const today &#x3D; new Date();
+  const yesterday &#x3D; new Date();
+  yesterday.setDate(today.getDate() - 1);
+  if (date.toDateString() &#x3D;&#x3D;&#x3D; today.toDateString()) return &#x27;Heute&#x27;;
+  if (date.toDateString() &#x3D;&#x3D;&#x3D; yesterday.toDateString()) return &#x27;Gestern&#x27;;
+  return date.toLocaleDateString(&#x27;de-DE&#x27;, { weekday: &#x27;long&#x27;, day: &#x27;numeric&#x27;, month: &#x27;long&#x27; }).replace(&#x27;.&#x27;, &#x27;&#x27;);
+}
+
+/**
+ * Scrolls the given HTML container element to the bottom.
+ * @param scrollContainer - The scroll container ElementRef.
+ */
+export function scrollContainerToBottom(scrollContainer: any): void {
+  setTimeout(() &#x3D;&gt; {
+    if (scrollContainer) scrollContainer.nativeElement.scrollTop &#x3D; scrollContainer.nativeElement.scrollHeight;
+  }, 100);
+}
+
+/**
+ * Checks if there is a search target message active, and if so, scrolls to it.
+ * Otherwise, scrolls the container to the bottom.
+ * @param searchTargetMessageId - The ID of the targeted search message.
+ * @param clearTarget - Callback function to clear the search target.
+ * @param scrollContainer - The scroll container element.
+ */
+export function checkAndScrollToSearchTarget(
+  searchTargetMessageId: string | null,
+  clearTarget: () &#x3D;&gt; void,
+  scrollContainer: any,
+): void {
+  const targetId &#x3D; searchTargetMessageId;
+  if (targetId) {
+    setTimeout(() &#x3D;&gt; {
+      const element &#x3D; document.getElementById(&#x27;message-&#x27; + targetId);
+      if (element) element.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;center&#x27; });
+      else scrollContainerToBottom(scrollContainer);
+      setTimeout(() &#x3D;&gt; clearTarget(), 3000);
+    }, 300);
+  } else {
+    scrollContainerToBottom(scrollContainer);
+  }
+}
+
+/**
+ * Handles typing broadcast events, updating lists of typing users and scheduling automatic removal timeouts.
+ * @param payload - The typing status payload.
+ * @param currentUserId - The current user&#x27;s ID.
+ * @param typingUsers - WritableSignal of users currently typing.
+ * @param typingTimeouts - Map containing removal timeouts by user ID.
+ */
+export function handleTypingBroadcast(
+  payload: { userId: string; userName: string; isTyping: boolean },
+  currentUserId: string,
+  typingUsers: WritableSignal&lt;{ userId: string; userName: string }[]&gt;,
+  typingTimeouts: Map&lt;string, any&gt;,
+): void {
+  if (payload.userId &#x3D;&#x3D;&#x3D; currentUserId) return;
+  const existing &#x3D; typingTimeouts.get(payload.userId);
+  if (existing) { clearTimeout(existing); typingTimeouts.delete(payload.userId); }
+  if (payload.isTyping) {
+    typingUsers.update((users) &#x3D;&gt; users.some((u) &#x3D;&gt; u.userId &#x3D;&#x3D;&#x3D; payload.userId) ? users : [...users, { userId: payload.userId, userName: payload.userName }]);
+    const timeout &#x3D; setTimeout(() &#x3D;&gt; {
+      typingUsers.update((users) &#x3D;&gt; users.filter((u) &#x3D;&gt; u.userId !&#x3D;&#x3D; payload.userId));
+      typingTimeouts.delete(payload.userId);
+    }, 5000);
+    typingTimeouts.set(payload.userId, timeout);
+  } else {
+    typingUsers.update((users) &#x3D;&gt; users.filter((u) &#x3D;&gt; u.userId !&#x3D;&#x3D; payload.userId));
+  }
+}
+
+/**
+ * Gets a descriptive display text summarizing who is currently typing.
+ * @param typingUsers - Array of users currently typing.
+ * @returns Formatted typing text.
+ */
+export function getTypingText(typingUsers: { userId: string; userName: string }[]): string {
+  if (typingUsers.length &#x3D;&#x3D;&#x3D; 0) return &#x27;&#x27;;
+  if (typingUsers.length &#x3D;&#x3D;&#x3D; 1) return &#x60;${typingUsers[0].userName} schreibt...&#x60;;
+  if (typingUsers.length &#x3D;&#x3D;&#x3D; 2) return &#x60;${typingUsers[0].userName} und ${typingUsers[1].userName} schreiben...&#x60;;
+  return &#x27;Mehrere Personen schreiben...&#x27;;
+}
+
+/**
+ * Searches for users and channels matching the query string.
+ * Supports prefixes like &#x27;#&#x27; for channels and &#x27;@&#x27; for users.
+ * @param query - The search query.
+ * @param channelSvc - The channel service instance.
+ * @param userSvc - The user service instance.
+ * @param currentUserId - The current user&#x27;s ID.
+ * @returns A promise resolving to filtered channels and users.
+ */
+export async function searchRecipients(
+  query: string,
+  channelSvc: channelService,
+  userSvc: userService,
+  currentUserId: string,
+): Promise&lt;{ filteredChannels: Channel[]; filteredUsers: User[] }&gt; {
+  if (!query) return { filteredChannels: [], filteredUsers: [] };
+  const allC &#x3D; channelSvc.channels();
+  const allU &#x3D; await userSvc.getAllUsers();
+  const filteredAllUsers &#x3D; userSvc.filterDuplicateGuests(allU, currentUserId);
+  if (query.startsWith(&#x27;#&#x27;)) {
+    const search &#x3D; query.substring(1).toLowerCase();
+    return { filteredChannels: allC.filter((c) &#x3D;&gt; c.name.toLowerCase().includes(search)), filteredUsers: [] };
+  }
+  if (query.startsWith(&#x27;@&#x27;)) {
+    const search &#x3D; query.substring(1).toLowerCase();
+    return { filteredChannels: [], filteredUsers: filteredAllUsers.filter((u) &#x3D;&gt; u.display_name.toLowerCase().includes(search)) };
+  }
+  const search &#x3D; query.toLowerCase();
+  return {
+    filteredChannels: allC.filter((c) &#x3D;&gt; c.name.toLowerCase().includes(search)),
+    filteredUsers: filteredAllUsers.filter((u) &#x3D;&gt; u.display_name.toLowerCase().includes(search) || (u.email &amp;&amp; u.email.toLowerCase().includes(search))),
+  };
+}
+
+/**
+ * Adds selected members to a channel.
+ * @param memberResult - The object representing member selection.
+ * @param channelId - The ID of the target channel.
+ * @param userSvc - The user service instance.
+ * @param channelSvc - The channel service instance.
+ * @param currentUserId - The current user&#x27;s ID.
+ * @returns A promise that resolves when the members are added.
+ */
+export async function addMembersToChannel(
+  memberResult: any,
+  channelId: string,
+  userSvc: userService,
+  channelSvc: channelService,
+  currentUserId: string,
+): Promise&lt;void&gt; {
+  let memberIds: string[] &#x3D; [];
+  if (memberResult.selectionType &#x3D;&#x3D;&#x3D; &#x27;all&#x27;) {
+    const allUsers &#x3D; await userSvc.getAllUsers();
+    memberIds &#x3D; userSvc.filterDuplicateGuests(allUsers, currentUserId).map((u) &#x3D;&gt; u.id);
+  } else if (memberResult.selectionType &#x3D;&#x3D;&#x3D; &#x27;specific&#x27; &amp;&amp; memberResult.selectedUsers) {
+    memberIds &#x3D; memberResult.selectedUsers;
+  }
+  if (memberIds.length &gt; 0) {
+    await channelSvc.addMembersToChannel(channelId, memberIds);
+    await channelSvc.refreshActiveChannelMembers();
+  }
+}
+
+/**
+ * Sends a message in new message mode and navigates to the target channel or direct chat.
+ * @param content - The message content.
+ * @param selectedRecipient - The selected recipient user or channel object.
+ * @param selectedRecipientType - Recipient type (&#x27;channel&#x27; or &#x27;user&#x27;).
+ * @param userId - The sender&#x27;s ID.
+ * @param messageSvc - The message service instance.
+ * @param router - The Angular router instance.
+ * @returns A promise resolving to true if successful, false otherwise.
+ */
+export async function sendNewModeMessage(
+  content: string,
+  selectedRecipient: any,
+  selectedRecipientType: &#x27;channel&#x27; | &#x27;user&#x27; | null,
+  userId: string,
+  messageSvc: any,
+  router: any,
+): Promise&lt;boolean&gt; {
+  if (!selectedRecipient || !userId) return false;
+  if (selectedRecipientType &#x3D;&#x3D;&#x3D; &#x27;channel&#x27;) {
+    const newMsg &#x3D; await messageSvc.sendMessage(content, userId, selectedRecipient.id);
+    if (newMsg) { router.navigate([&#x27;/main/channel&#x27;, selectedRecipient.id]); return true; }
+  } else if (selectedRecipientType &#x3D;&#x3D;&#x3D; &#x27;user&#x27;) {
+    const newMsg &#x3D; await messageSvc.sendDirectMessage(content, userId, selectedRecipient.id);
+    if (newMsg) { router.navigate([&#x27;/main/dm&#x27;, selectedRecipient.id]); return true; }
+  }
+  return false;
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'DateGroup.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,3908 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MessageInputComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+            <tr>
+                <td class="col-md-3">changeDetection</td>
+                <td class="col-md-9"><code>ChangeDetectionStrategy.OnPush</code></td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">host</td>
+                <td class="col-md-9"><code>{<br>}</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-message-input</code></td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="https://angular.io/api/forms/FormsModule" target="_blank" >FormsModule</a></code>
+                            <code>EmojiComponent</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./message-input.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./message-input.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_messageText" >_messageText</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#authSvc" >authSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#channelSvc" >channelSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#elementRef" >elementRef</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#emojiRegex" >emojiRegex</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#emojiSet" >emojiSet</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isCurrentlyTyping" >isCurrentlyTyping</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#messageSvc" >messageSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#messageTextarea" >messageTextarea</a>
+                            </li>
+                            <li>
+                                <a href="#messageTextParts" >messageTextParts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Static</span>
+                                <a href="#nextPickerId" >nextPickerId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#pickerOwner" >pickerOwner</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#pickerSvc" >pickerSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#popup" >popup</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#regionalFlagRegex" >regionalFlagRegex</a>
+                            </li>
+                            <li>
+                                <a href="#renderedScrollTop" >renderedScrollTop</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#threadSvc" >threadSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#typingInterval" >typingInterval</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#typingTimeout" >typingTimeout</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#userSvc" >userSvc</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#buildMessageTextParts" >buildMessageTextParts</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getPickerConfig" >getPickerConfig</a>
+                            </li>
+                            <li>
+                                <a href="#insertChannelMention" >insertChannelMention</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#insertEmojiAtCursor" >insertEmojiAtCursor</a>
+                            </li>
+                            <li>
+                                <a href="#insertMention" >insertMention</a>
+                            </li>
+                            <li>
+                                <a href="#insertUserMention" >insertUserMention</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isEmojiSegment" >isEmojiSegment</a>
+                            </li>
+                            <li>
+                                <a href="#isUserOnlineById" >isUserOnlineById</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#onDocumentClick" >onDocumentClick</a>
+                            </li>
+                            <li>
+                                <a href="#onEmojiSelected" >onEmojiSelected</a>
+                            </li>
+                            <li>
+                                <a href="#onEnterPressed" >onEnterPressed</a>
+                            </li>
+                            <li>
+                                <a href="#onEscapePressed" >onEscapePressed</a>
+                            </li>
+                            <li>
+                                <a href="#onInputChange" >onInputChange</a>
+                            </li>
+                            <li>
+                                <a href="#onMessageInputClick" >onMessageInputClick</a>
+                            </li>
+                            <li>
+                                <a href="#onTextareaScroll" >onTextareaScroll</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#restoreCursor" >restoreCursor</a>
+                            </li>
+                            <li>
+                                <a href="#send" >send</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#splitIntoGraphemes" >splitIntoGraphemes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#startTypingHeartbeat" >startTypingHeartbeat</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#stopTyping" >stopTyping</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#syncRenderedScroll" >syncRenderedScroll</a>
+                            </li>
+                            <li>
+                                <a href="#toggleEmoji" >toggleEmoji</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#toggleMention" >toggleMention</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#toUnified" >toUnified</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#disabled" >disabled</a>
+                            </li>
+                            <li>
+                                <a href="#placeholder" >placeholder</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#sendMessage" >sendMessage</a>
+                            </li>
+                            <li>
+                                <a href="#typing" >typing</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#messageText" >messageText</a>
+                                </li>
+                                <li>
+                                    <a href="#activePopup" >activePopup</a>
+                                </li>
+                                <li>
+                                    <a href="#popupUsers" >popupUsers</a>
+                                </li>
+                                <li>
+                                    <a href="#popupChannels" >popupChannels</a>
+                                </li>
+                                <li>
+                                    <a href="#isLoading" >isLoading</a>
+                                </li>
+                                <li>
+                                    <a href="#isEmojiActive" >isEmojiActive</a>
+                                </li>
+                                <li>
+                                    <a href="#isMentionActive" >isMentionActive</a>
+                                </li>
+                                <li>
+                                    <a href="#currentUserId" >currentUserId</a>
+                                </li>
+                                <li>
+                                    <a href="#textareaElement" >textareaElement</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="disabled"></a>
+                        <b>disabled</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:66</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Whether the input is disabled.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="placeholder"></a>
+                        <b>placeholder</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Nachricht an #Entwicklerteam&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:64</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>The placeholder string displayed in the input field.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sendMessage"></a>
+                        <b>sendMessage</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:68</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emits when a message is successfully sent.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="typing"></a>
+                        <b>typing</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:70</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Emits typing status changes.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buildMessageTextParts"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>buildMessageTextParts</b></span>
+                        <a href="#buildMessageTextParts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>buildMessageTextParts(text: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="327"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:327</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Splits input text into visual segments of plain text, native emojis, and newlines.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Input text.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>MessageInputPart[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPickerConfig"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getPickerConfig</b></span>
+                        <a href="#getPickerConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getPickerConfig()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="319"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:319</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets emoji picker popup config.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{ owner: string; userId: string; variant: &quot;input&quot;; alignRight: boolean; color: string; onSelect: (emoji: string) &#x3D;&gt; void; }</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="insertChannelMention"></a>
+                    <span class="name">
+                        <span ><b>insertChannelMention</b></span>
+                        <a href="#insertChannelMention"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>insertChannelMention(channel: <a href="../interfaces/PopupChannel.html" target="_self">PopupChannel</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="282"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:282</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inserts channel mention markup.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>channel</td>
+                                            <td>
+                                                            <code><a href="../interfaces/PopupChannel.html" target="_self" >PopupChannel</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Target channel.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="insertEmojiAtCursor"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>insertEmojiAtCursor</b></span>
+                        <a href="#insertEmojiAtCursor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>insertEmojiAtCursor(textarea: HTMLTextAreaElement, emoji: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="252"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:252</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inserts an emoji string at the current cursor selection point of the textarea.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>textarea</td>
+                                            <td>
+                                                        <code>HTMLTextAreaElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Textarea HTML element.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>emoji</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Native emoji character.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="insertMention"></a>
+                    <span class="name">
+                        <span ><b>insertMention</b></span>
+                        <a href="#insertMention"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>insertMention(text: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="288"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:288</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inserts mention text.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Plain mention text.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="insertUserMention"></a>
+                    <span class="name">
+                        <span ><b>insertUserMention</b></span>
+                        <a href="#insertUserMention"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>insertUserMention(user: <a href="../interfaces/PopupUser.html" target="_self">PopupUser</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="276"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:276</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inserts user mention markup.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>user</td>
+                                            <td>
+                                                            <code><a href="../interfaces/PopupUser.html" target="_self" >PopupUser</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Target user.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isEmojiSegment"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isEmojiSegment</b></span>
+                        <a href="#isEmojiSegment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isEmojiSegment(segment: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="357"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:357</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks if grapheme is emoji.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>segment</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Grapheme segment.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isUserOnlineById"></a>
+                    <span class="name">
+                        <span ><b>isUserOnlineById</b></span>
+                        <a href="#isUserOnlineById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isUserOnlineById(userId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:139</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks if user is online.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>User ID.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cleanup method on component destruction.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDocumentClick"></a>
+                    <span class="name">
+                        <span ><b>onDocumentClick</b></span>
+                        <a href="#onDocumentClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDocumentClick(event: MouseEvent)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="294"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:294</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Document click listener to close overlays on clicking outside.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>MouseEvent</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Mouse click event.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEmojiSelected"></a>
+                    <span class="name">
+                        <span ><b>onEmojiSelected</b></span>
+                        <a href="#onEmojiSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEmojiSelected(emoji: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="240"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:240</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Event handler when an emoji is selected from picker.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>emoji</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Native emoji character.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEnterPressed"></a>
+                    <span class="name">
+                        <span ><b>onEnterPressed</b></span>
+                        <a href="#onEnterPressed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEnterPressed(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles keyboard enter event.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Keyboard event.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEscapePressed"></a>
+                    <span class="name">
+                        <span ><b>onEscapePressed</b></span>
+                        <a href="#onEscapePressed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEscapePressed()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="309"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:309</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles escape keydown to close any active popups.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onInputChange"></a>
+                    <span class="name">
+                        <span ><b>onInputChange</b></span>
+                        <a href="#onInputChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onInputChange()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="160"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:160</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Triggers typing indicators and checks for trigger characters (&#39;@&#39;, &#39;#&#39;) on input.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onMessageInputClick"></a>
+                    <span class="name">
+                        <span ><b>onMessageInputClick</b></span>
+                        <a href="#onMessageInputClick"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onMessageInputClick()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="214"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:214</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles click inside input area, closing active popups.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onTextareaScroll"></a>
+                    <span class="name">
+                        <span ><b>onTextareaScroll</b></span>
+                        <a href="#onTextareaScroll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onTextareaScroll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:175</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Textarea scroll event listener to synchronize visual text overlay position.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="restoreCursor"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>restoreCursor</b></span>
+                        <a href="#restoreCursor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>restoreCursor(textarea: HTMLTextAreaElement, position: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="266"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:266</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Restores focus and cursor position in the textarea.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>textarea</td>
+                                            <td>
+                                                        <code>HTMLTextAreaElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Textarea HTML element.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>position</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The new cursor index.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="send"></a>
+                    <span class="name">
+                        <span ><b>send</b></span>
+                        <a href="#send"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>send()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Emits the message text if not empty, stops typing indicator, and clears input.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="splitIntoGraphemes"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>splitIntoGraphemes</b></span>
+                        <a href="#splitIntoGraphemes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>splitIntoGraphemes(text: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="345"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:345</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Splits string into grapheme blocks.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>String.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>string[]</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startTypingHeartbeat"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>startTypingHeartbeat</b></span>
+                        <a href="#startTypingHeartbeat"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>startTypingHeartbeat()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="180"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:180</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initiates periodic typing updates to keep typing status active.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stopTyping"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>stopTyping</b></span>
+                        <a href="#stopTyping"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>stopTyping()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stops active typing status and emits typing false state.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="syncRenderedScroll"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>syncRenderedScroll</b></span>
+                        <a href="#syncRenderedScroll"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>syncRenderedScroll()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="374"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:374</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Synchronizes visual backdrop overlay scroll position.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleEmoji"></a>
+                    <span class="name">
+                        <span ><b>toggleEmoji</b></span>
+                        <a href="#toggleEmoji"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleEmoji(trigger: HTMLElement)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="223"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:223</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggles the emoji picker overlay.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>trigger</td>
+                                            <td>
+                                                        <code>HTMLElement</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The anchoring HTML trigger element.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleMention"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>toggleMention</b></span>
+                        <a href="#toggleMention"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toggleMention()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="231"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:231</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Toggles mention dropdown overlay.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toUnified"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>toUnified</b></span>
+                        <a href="#toUnified"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>toUnified(emoji: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="365"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:365</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Converts emoji to unified hex format string.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>emoji</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Native emoji character.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_messageText"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_messageText</b></span>
+                        <a href="#_messageText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:57</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Backing property for the raw text content of the message input.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>authSvc</b></span>
+                        <a href="#authSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(authService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:79</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injected AuthService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="channelSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>channelSvc</b></span>
+                        <a href="#channelSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(channelService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:75</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injected ChannelService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="elementRef"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>elementRef</b></span>
+                        <a href="#elementRef"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ElementRef)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:87</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injected ElementRef.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="emojiRegex"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>emojiRegex</b></span>
+                        <a href="#emojiRegex"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>/\p{Extended_Pictographic}/u</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:53</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Regular expression for matching emojis.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="emojiSet"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>emojiSet</b></span>
+                        <a href="#emojiSet"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;apple&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="110" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:110</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The emoji set to display.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isCurrentlyTyping"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isCurrentlyTyping</b></span>
+                        <a href="#isCurrentlyTyping"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="117" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:117</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Internal flag indicating whether user is actively typing.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messageSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>messageSvc</b></span>
+                        <a href="#messageSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(messageService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:83</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injected MessageService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messageTextarea"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>messageTextarea</b></span>
+                        <a href="#messageTextarea"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef&lt;HTMLTextAreaElement&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;messageTextarea&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:72</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Textarea element reference.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messageTextParts"></a>
+                    <span class="name">
+                        <span ><b>messageTextParts</b></span>
+                        <a href="#messageTextParts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MessageInputPart[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:99</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Parsed segments of input text.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nextPickerId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Static</span>
+                        <span ><b>nextPickerId</b></span>
+                        <a href="#nextPickerId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:51</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Counter used to generate unique IDs for emoji picker overlays.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pickerOwner"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>pickerOwner</b></span>
+                        <a href="#pickerOwner"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x60;message-input:${MessageInputComponent.nextPickerId++}&#x60;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:61</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Unique scope identifier for this input&#39;s emoji picker.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pickerSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>pickerSvc</b></span>
+                        <a href="#pickerSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(EmojiPickerOverlayService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:85</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injected EmojiPickerOverlayService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="popup"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>popup</b></span>
+                        <a href="#popup"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new MessageInputPopupHelper(
+    this.channelSvc, this.userSvc, this.authSvc, this.threadSvc, this.messageSvc,
+    () &#x3D;&gt; this.textareaElement,
+    () &#x3D;&gt; this.messageText,
+    (val) &#x3D;&gt; { this.messageText &#x3D; val; },
+    () &#x3D;&gt; this.syncRenderedScroll(),
+  )</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:90</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Helper managing mention popups for users/channels.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="regionalFlagRegex"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>regionalFlagRegex</b></span>
+                        <a href="#regionalFlagRegex"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>/^[\u{1F1E6}-\u{1F1FF}]{2}$/u</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:55</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Regular expression for matching regional flag emojis.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderedScrollTop"></a>
+                    <span class="name">
+                        <span ><b>renderedScrollTop</b></span>
+                        <a href="#renderedScrollTop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:59</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Scroll position of the fake backdrop overlay to match textarea scroll.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="threadSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>threadSvc</b></span>
+                        <a href="#threadSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ThreadService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:81</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injected ThreadService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="typingInterval"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>typingInterval</b></span>
+                        <a href="#typingInterval"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ReturnType&lt;unknown&gt; | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:115</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Typing heartbeat interval identifier.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="typingTimeout"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>typingTimeout</b></span>
+                        <a href="#typingTimeout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ReturnType&lt;unknown&gt; | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:113</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Typing inactivity timeout identifier.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>userSvc</b></span>
+                        <a href="#userSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(userService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:77</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Injected UserService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="messageText"></a>
+                        <span class="name"><b>messageText</b><a href="#messageText"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>messageText()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:102</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter for raw input message text.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>messageText(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:104</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Setter for raw input message text, also triggering visual parsing.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>value</td>
+                                                    
+                                                            <td>
+                                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="activePopup"></a>
+                        <span class="name"><b>activePopup</b><a href="#activePopup"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>activePopup()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:120</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Active popup identifier (&#39;none&#39;, &#39;users&#39;, or &#39;channels&#39;).</p>
+</div>
+
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="popupUsers"></a>
+                        <span class="name"><b>popupUsers</b><a href="#popupUsers"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>popupUsers()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:122</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Matching users list in the popup dropdown.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>PopupUser[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="popupChannels"></a>
+                        <span class="name"><b>popupChannels</b><a href="#popupChannels"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>popupChannels()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:124</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Matching channels list in the popup dropdown.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>PopupChannel[]</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoading"></a>
+                        <span class="name"><b>isLoading</b><a href="#isLoading"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isLoading()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="126" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:126</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Whether autocomplete suggestions are loading.</p>
+</div>
+
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isEmojiActive"></a>
+                        <span class="name"><b>isEmojiActive</b><a href="#isEmojiActive"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isEmojiActive()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="128" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:128</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Whether the emoji picker overlay is visible.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isMentionActive"></a>
+                        <span class="name"><b>isMentionActive</b><a href="#isMentionActive"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>isMentionActive()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:130</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Whether a mention popup is active.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentUserId"></a>
+                        <span class="name"><b>currentUserId</b><a href="#currentUserId"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>currentUserId()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:133</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Current logged in user ID.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="textareaElement"></a>
+                        <span class="name"><b>textareaElement</b><a href="#textareaElement"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>textareaElement()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input.ts:142</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Private getter returning native HTML textarea element.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>HTMLTextAreaElement | null</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+  inject,
+} from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { EmojiComponent } from &#x27;@ctrl/ngx-emoji-mart/ngx-emoji&#x27;;
+import { channelService } from &#x27;../../services/channel.service&#x27;;
+import { userService } from &#x27;../../services/user.service&#x27;;
+import { authService } from &#x27;../../services/auth.service&#x27;;
+import { ThreadService } from &#x27;../../services/thread.service&#x27;;
+import { messageService } from &#x27;../../services/message.service&#x27;;
+import { EmojiPickerOverlayService } from &#x27;../../services/emoji-picker-overlay.service&#x27;;
+import { MessageInputPopupHelper, PopupChannel, PopupUser } from &#x27;./message-input-popup.helper&#x27;;
+
+/**
+ * Represents a segment of the message text to be rendered visually, differentiating text, native emojis, and newlines.
+ */
+interface MessageInputPart {
+  /** The type of segment. */
+  type: &#x27;text&#x27; | &#x27;emoji&#x27; | &#x27;newline&#x27;;
+  /** Plain text string if type is &#x27;text&#x27;. */
+  text?: string;
+  /** Hexadecimal unicode identifier if type is &#x27;emoji&#x27;. */
+  unified?: string;
+}
+
+@Component({
+  selector: &#x27;app-message-input&#x27;,
+  imports: [CommonModule, FormsModule, EmojiComponent],
+  templateUrl: &#x27;./message-input.html&#x27;,
+  styleUrl: &#x27;./message-input.scss&#x27;,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    &#x27;(document:click)&#x27;: &#x27;onDocumentClick($event)&#x27;,
+    &#x27;(document:keydown.escape)&#x27;: &#x27;onEscapePressed()&#x27;,
+  },
+})
+/**
+ * Component for message typing area including autocomplete popups for user/channel mentions and emoji picker.
+ */
+export class MessageInputComponent implements OnDestroy {
+  /** Counter used to generate unique IDs for emoji picker overlays. */
+  private static nextPickerId &#x3D; 0;
+  /** Regular expression for matching emojis. */
+  private readonly emojiRegex &#x3D; /\p{Extended_Pictographic}/u;
+  /** Regular expression for matching regional flag emojis. */
+  private readonly regionalFlagRegex &#x3D; /^[\u{1F1E6}-\u{1F1FF}]{2}$/u;
+  /** Backing property for the raw text content of the message input. */
+  private _messageText &#x3D; &#x27;&#x27;;
+  /** Scroll position of the fake backdrop overlay to match textarea scroll. */
+  renderedScrollTop &#x3D; 0;
+  /** Unique scope identifier for this input&#x27;s emoji picker. */
+  readonly pickerOwner &#x3D; &#x60;message-input:${MessageInputComponent.nextPickerId++}&#x60;;
+
+  /** The placeholder string displayed in the input field. */
+  @Input() placeholder: string &#x3D; &#x27;Nachricht an #Entwicklerteam&#x27;;
+  /** Whether the input is disabled. */
+  @Input() disabled: boolean &#x3D; false;
+  /** Emits when a message is successfully sent. */
+  @Output() sendMessage &#x3D; new EventEmitter&lt;string&gt;();
+  /** Emits typing status changes. */
+  @Output() typing &#x3D; new EventEmitter&lt;boolean&gt;();
+  /** Textarea element reference. */
+  @ViewChild(&#x27;messageTextarea&#x27;) private messageTextarea?: ElementRef&lt;HTMLTextAreaElement&gt;;
+
+  /** Injected ChannelService. */
+  private channelSvc &#x3D; inject(channelService);
+  /** Injected UserService. */
+  private userSvc &#x3D; inject(userService);
+  /** Injected AuthService. */
+  private authSvc &#x3D; inject(authService);
+  /** Injected ThreadService. */
+  private threadSvc &#x3D; inject(ThreadService);
+  /** Injected MessageService. */
+  private messageSvc &#x3D; inject(messageService);
+  /** Injected EmojiPickerOverlayService. */
+  private pickerSvc &#x3D; inject(EmojiPickerOverlayService);
+  /** Injected ElementRef. */
+  private elementRef &#x3D; inject(ElementRef);
+
+  /** Helper managing mention popups for users/channels. */
+  readonly popup &#x3D; new MessageInputPopupHelper(
+    this.channelSvc, this.userSvc, this.authSvc, this.threadSvc, this.messageSvc,
+    () &#x3D;&gt; this.textareaElement,
+    () &#x3D;&gt; this.messageText,
+    (val) &#x3D;&gt; { this.messageText &#x3D; val; },
+    () &#x3D;&gt; this.syncRenderedScroll(),
+  );
+
+  /** Parsed segments of input text. */
+  messageTextParts: MessageInputPart[] &#x3D; [];
+
+  /** Getter for raw input message text. */
+  get messageText(): string { return this._messageText; }
+  /** Setter for raw input message text, also triggering visual parsing. */
+  set messageText(value: string) {
+    this._messageText &#x3D; value;
+    this.messageTextParts &#x3D; this.buildMessageTextParts(value);
+  }
+
+  /** The emoji set to display. */
+  readonly emojiSet &#x3D; &#x27;apple&#x27;;
+
+  /** Typing inactivity timeout identifier. */
+  private typingTimeout: ReturnType&lt;typeof setTimeout&gt; | null &#x3D; null;
+  /** Typing heartbeat interval identifier. */
+  private typingInterval: ReturnType&lt;typeof setInterval&gt; | null &#x3D; null;
+  /** Internal flag indicating whether user is actively typing. */
+  private isCurrentlyTyping &#x3D; false;
+
+  /** Active popup identifier (&#x27;none&#x27;, &#x27;users&#x27;, or &#x27;channels&#x27;). */
+  get activePopup() { return this.popup.activePopup; }
+  /** Matching users list in the popup dropdown. */
+  get popupUsers(): PopupUser[] { return this.popup.popupUsers; }
+  /** Matching channels list in the popup dropdown. */
+  get popupChannels(): PopupChannel[] { return this.popup.popupChannels; }
+  /** Whether autocomplete suggestions are loading. */
+  get isLoading() { return this.popup.isLoading; }
+  /** Whether the emoji picker overlay is visible. */
+  get isEmojiActive(): boolean { return this.pickerSvc.isOpen(this.pickerOwner); }
+  /** Whether a mention popup is active. */
+  get isMentionActive(): boolean { return this.popup.isMentionActive; }
+
+  /** Current logged in user ID. */
+  get currentUserId(): string { return this.authSvc.currentUser()?.id || &#x27;&#x27;; }
+
+  /**
+   * Checks if user is online.
+   * @param userId - User ID.
+   */
+  isUserOnlineById(userId: string): boolean { return this.authSvc.onlineUserIds().has(userId); }
+
+  /** Private getter returning native HTML textarea element. */
+  private get textareaElement(): HTMLTextAreaElement | null {
+    return this.messageTextarea?.nativeElement ?? null;
+  }
+
+  /**
+   * Emits the message text if not empty, stops typing indicator, and clears input.
+   */
+  send(): void {
+    if (!this.messageText.trim()) return;
+    this.stopTyping();
+    this.sendMessage.emit(this.messageText);
+    this.messageText &#x3D; &#x27;&#x27;;
+    this.renderedScrollTop &#x3D; 0;
+  }
+
+  /**
+   * Triggers typing indicators and checks for trigger characters (&#x27;@&#x27;, &#x27;#&#x27;) on input.
+   */
+  onInputChange(): void {
+    if (!this.isCurrentlyTyping) {
+      this.isCurrentlyTyping &#x3D; true;
+      this.typing.emit(true);
+      this.startTypingHeartbeat();
+    }
+    if (this.typingTimeout) clearTimeout(this.typingTimeout);
+    this.typingTimeout &#x3D; setTimeout(() &#x3D;&gt; this.stopTyping(), 3000);
+    this.popup.checkForTriggerChar();
+    this.syncRenderedScroll();
+  }
+
+  /**
+   * Textarea scroll event listener to synchronize visual text overlay position.
+   */
+  onTextareaScroll(): void { this.syncRenderedScroll(); }
+
+  /**
+   * Initiates periodic typing updates to keep typing status active.
+   */
+  private startTypingHeartbeat(): void {
+    this.typingInterval &#x3D; setInterval(() &#x3D;&gt; this.typing.emit(true), 2000);
+  }
+
+  /**
+   * Stops active typing status and emits typing false state.
+   */
+  private stopTyping(): void {
+    if (this.typingTimeout) { clearTimeout(this.typingTimeout); this.typingTimeout &#x3D; null; }
+    if (this.typingInterval) { clearInterval(this.typingInterval); this.typingInterval &#x3D; null; }
+    this.isCurrentlyTyping &#x3D; false;
+    this.typing.emit(false);
+  }
+
+  /**
+   * Cleanup method on component destruction.
+   */
+  ngOnDestroy(): void {
+    if (this.typingTimeout) clearTimeout(this.typingTimeout);
+    if (this.typingInterval) clearInterval(this.typingInterval);
+  }
+
+  /**
+   * Handles keyboard enter event.
+   * @param event - Keyboard event.
+   */
+  onEnterPressed(event: Event): void {
+    const keyboardEvent &#x3D; event as KeyboardEvent;
+    if (!keyboardEvent.shiftKey) { keyboardEvent.preventDefault(); this.send(); }
+  }
+
+  /**
+   * Handles click inside input area, closing active popups.
+   */
+  onMessageInputClick(): void {
+    this.popup.closePopup();
+    this.pickerSvc.close(this.pickerOwner);
+  }
+
+  /**
+   * Toggles the emoji picker overlay.
+   * @param trigger - The anchoring HTML trigger element.
+   */
+  toggleEmoji(trigger: HTMLElement): void {
+    this.popup.closePopup();
+    this.pickerSvc.toggle(trigger, this.getPickerConfig());
+  }
+
+  /**
+   * Toggles mention dropdown overlay.
+   */
+  async toggleMention(): Promise&lt;void&gt; {
+    this.pickerSvc.close(this.pickerOwner);
+    await this.popup.toggleMention();
+  }
+
+  /**
+   * Event handler when an emoji is selected from picker.
+   * @param emoji - Native emoji character.
+   */
+  onEmojiSelected(emoji: string): void {
+    if (!emoji) return;
+    const textarea &#x3D; this.textareaElement;
+    if (!textarea) { this.messageText +&#x3D; emoji; return; }
+    this.insertEmojiAtCursor(textarea, emoji);
+  }
+
+  /**
+   * Inserts an emoji string at the current cursor selection point of the textarea.
+   * @param textarea - Textarea HTML element.
+   * @param emoji - Native emoji character.
+   */
+  private insertEmojiAtCursor(textarea: HTMLTextAreaElement, emoji: string): void {
+    const start &#x3D; textarea.selectionStart ?? this.messageText.length;
+    const end &#x3D; textarea.selectionEnd ?? start;
+    const before &#x3D; this.messageText.substring(0, start);
+    const after &#x3D; this.messageText.substring(end);
+    this.messageText &#x3D; &#x60;${before}${emoji}${after}&#x60;;
+    setTimeout(() &#x3D;&gt; this.restoreCursor(textarea, start + emoji.length), 0);
+  }
+
+  /**
+   * Restores focus and cursor position in the textarea.
+   * @param textarea - Textarea HTML element.
+   * @param position - The new cursor index.
+   */
+  private restoreCursor(textarea: HTMLTextAreaElement, position: number): void {
+    textarea.focus();
+    textarea.setSelectionRange(position, position);
+    this.syncRenderedScroll();
+  }
+
+  /**
+   * Inserts user mention markup.
+   * @param user - Target user.
+   */
+  insertUserMention(user: PopupUser): void { this.popup.insertUserMention(user); }
+
+  /**
+   * Inserts channel mention markup.
+   * @param channel - Target channel.
+   */
+  insertChannelMention(channel: PopupChannel): void { this.popup.insertMention(&#x60;#${channel.name}&#x60;); }
+
+  /**
+   * Inserts mention text.
+   * @param text - Plain mention text.
+   */
+  insertMention(text: string): void { this.popup.insertMention(text); }
+
+  /**
+   * Document click listener to close overlays on clicking outside.
+   * @param event - Mouse click event.
+   */
+  onDocumentClick(event: MouseEvent): void {
+    const target &#x3D; event.target as HTMLElement;
+    if (target?.closest?.(&#x27;[data-emoji-picker-host]&#x27;)) {
+      return;
+    }
+    if (this.popup.activePopup &#x3D;&#x3D;&#x3D; &#x27;none&#x27; &amp;&amp; !this.isEmojiActive) return;
+    if (!this.elementRef.nativeElement.contains(target)) {
+      this.popup.closePopup();
+      this.pickerSvc.close(this.pickerOwner);
+    }
+  }
+
+  /**
+   * Handles escape keydown to close any active popups.
+   */
+  onEscapePressed(): void {
+    if (this.popup.activePopup !&#x3D;&#x3D; &#x27;none&#x27; || this.isEmojiActive) {
+      this.popup.closePopup();
+      this.pickerSvc.close(this.pickerOwner);
+    }
+  }
+
+  /**
+   * Gets emoji picker popup config.
+   */
+  private getPickerConfig() {
+    return { owner: this.pickerOwner, userId: this.currentUserId, variant: &#x27;input&#x27; as const, alignRight: false, color: &#x27;#444df2&#x27;, onSelect: (emoji: string) &#x3D;&gt; this.onEmojiSelected(emoji) };
+  }
+
+  /**
+   * Splits input text into visual segments of plain text, native emojis, and newlines.
+   * @param text - Input text.
+   */
+  private buildMessageTextParts(text: string): MessageInputPart[] {
+    if (!text) return [];
+    const parts: MessageInputPart[] &#x3D; [];
+    let buffer &#x3D; &#x27;&#x27;;
+    for (const seg of this.splitIntoGraphemes(text)) {
+      if (seg !&#x3D;&#x3D; &#x27;\n&#x27; &amp;&amp; !this.isEmojiSegment(seg)) { buffer +&#x3D; seg; continue; }
+      if (buffer) parts.push({ type: &#x27;text&#x27;, text: buffer });
+      buffer &#x3D; &#x27;&#x27;;
+      parts.push(seg &#x3D;&#x3D;&#x3D; &#x27;\n&#x27; ? { type: &#x27;newline&#x27; } : { type: &#x27;emoji&#x27;, unified: this.toUnified(seg) });
+    }
+    if (buffer) parts.push({ type: &#x27;text&#x27;, text: buffer });
+    return parts;
+  }
+
+  /**
+   * Splits string into grapheme blocks.
+   * @param text - String.
+   */
+  private splitIntoGraphemes(text: string): string[] {
+    if (typeof Intl !&#x3D;&#x3D; &#x27;undefined&#x27; &amp;&amp; &#x27;Segmenter&#x27; in Intl) {
+      const segmenter &#x3D; new Intl.Segmenter(undefined, { granularity: &#x27;grapheme&#x27; });
+      return Array.from(segmenter.segment(text), ({ segment }) &#x3D;&gt; segment);
+    }
+    return Array.from(text);
+  }
+
+  /**
+   * Checks if grapheme is emoji.
+   * @param segment - Grapheme segment.
+   */
+  private isEmojiSegment(segment: string): boolean {
+    return this.regionalFlagRegex.test(segment) || this.emojiRegex.test(segment);
+  }
+
+  /**
+   * Converts emoji to unified hex format string.
+   * @param emoji - Native emoji character.
+   */
+  private toUnified(emoji: string): string {
+    return Array.from(emoji)
+      .map((char) &#x3D;&gt; char.codePointAt(0)?.toString(16).toUpperCase() ?? &#x27;&#x27;)
+      .filter(Boolean).join(&#x27;-&#x27;);
+  }
+
+  /**
+   * Synchronizes visual backdrop overlay scroll position.
+   */
+  private syncRenderedScroll(): void {
+    this.renderedScrollTop &#x3D; this.textareaElement?.scrollTop ?? 0;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div #messageInput class&#x3D;&quot;message-input&quot; [class.message-input--disabled]&#x3D;&quot;disabled&quot; (click)&#x3D;&quot;onMessageInputClick()&quot;&gt;
+  @if (activePopup &#x3D;&#x3D;&#x3D; &#x27;users&#x27;) {
+    &lt;div class&#x3D;&quot;mention-popup&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+      &lt;div class&#x3D;&quot;mention-popup__list&quot;&gt;
+        @if (isLoading) {
+          &lt;div class&#x3D;&quot;mention-popup__loading&quot;&gt;Mitglieder werden geladen...&lt;/div&gt;
+        } @else {
+          @for (user of popupUsers; track user.id) {
+            &lt;div class&#x3D;&quot;mention-popup__item&quot; (click)&#x3D;&quot;insertUserMention(user)&quot;&gt;
+              &lt;div class&#x3D;&quot;mention-popup__avatar-container&quot;&gt;
+                &lt;img [src]&#x3D;&quot;user.avatar&quot; class&#x3D;&quot;mention-popup__avatar&quot; alt&#x3D;&quot;Avatar&quot;&gt;
+                &lt;span class&#x3D;&quot;mention-popup__status-badge&quot; [class.online]&#x3D;&quot;isUserOnlineById(user.id)&quot;&gt;&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;span class&#x3D;&quot;mention-popup__name&quot;&gt;{{ user.name }} {{ user.id &#x3D;&#x3D;&#x3D; currentUserId ? &#x27;(Du)&#x27; : &#x27;&#x27; }}&lt;/span&gt;
+            &lt;/div&gt;
+          }
+          @if (popupUsers.length &#x3D;&#x3D;&#x3D; 0) {
+            &lt;div class&#x3D;&quot;mention-popup__empty&quot;&gt;Keine Mitglieder gefunden&lt;/div&gt;
+          }
+        }
+      &lt;/div&gt;
+    &lt;/div&gt;
+  }
+
+  
+  @if (activePopup &#x3D;&#x3D;&#x3D; &#x27;channels&#x27;) {
+    &lt;div class&#x3D;&quot;mention-popup&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+      &lt;div class&#x3D;&quot;mention-popup__list&quot;&gt;
+        @if (isLoading) {
+          &lt;div class&#x3D;&quot;mention-popup__loading&quot;&gt;Channels werden geladen...&lt;/div&gt;
+        } @else {
+          @for (channel of popupChannels; track channel.id) {
+            &lt;div class&#x3D;&quot;mention-popup__item&quot; (click)&#x3D;&quot;insertMention(&#x27;#&#x27; + channel.name)&quot;&gt;
+              &lt;span class&#x3D;&quot;mention-popup__hashtag&quot;&gt;#&lt;/span&gt;
+              &lt;span class&#x3D;&quot;mention-popup__name&quot;&gt;{{ channel.name }}&lt;/span&gt;
+            &lt;/div&gt;
+          }
+          @if (popupChannels.length &#x3D;&#x3D;&#x3D; 0) {
+            &lt;div class&#x3D;&quot;mention-popup__empty&quot;&gt;Keine Channels vorhanden&lt;/div&gt;
+          }
+        }
+      &lt;/div&gt;
+    &lt;/div&gt;
+  }
+
+  &lt;div class&#x3D;&quot;message-input__editor&quot;&gt;
+    @if (messageText.length &gt; 0) {
+      &lt;div class&#x3D;&quot;message-input__rendered&quot; aria-hidden&#x3D;&quot;true&quot;&gt;
+        &lt;div
+          class&#x3D;&quot;message-input__rendered-content&quot;
+          [style.transform]&#x3D;&quot;&#x27;translateY(-&#x27; + renderedScrollTop + &#x27;px)&#x27;&quot;
+        &gt;
+          @for (part of messageTextParts; track $index) {
+            @if (part.type &#x3D;&#x3D;&#x3D; &#x27;emoji&#x27;) {
+              &lt;ngx-emoji
+                class&#x3D;&quot;message-input__rendered-emoji&quot;
+                [emoji]&#x3D;&quot;part.unified!&quot;
+                [set]&#x3D;&quot;emojiSet&quot;
+                [size]&#x3D;&quot;20&quot;
+              &gt;&lt;/ngx-emoji&gt;
+            } @else if (part.type &#x3D;&#x3D;&#x3D; &#x27;newline&#x27;) {
+              &lt;br /&gt;
+            } @else {
+              &lt;span&gt;{{ part.text }}&lt;/span&gt;
+            }
+          }
+        &lt;/div&gt;
+      &lt;/div&gt;
+    }
+
+    &lt;textarea 
+      #messageTextarea
+      class&#x3D;&quot;message-input__textarea&quot; 
+      [placeholder]&#x3D;&quot;placeholder&quot;
+      [(ngModel)]&#x3D;&quot;messageText&quot;
+      (input)&#x3D;&quot;onInputChange()&quot;
+      (scroll)&#x3D;&quot;onTextareaScroll()&quot;
+      (keydown.enter)&#x3D;&quot;onEnterPressed($event)&quot;
+      [disabled]&#x3D;&quot;disabled&quot;
+    &gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+  
+  &lt;div class&#x3D;&quot;message-input__actions&quot;&gt;
+    &lt;div class&#x3D;&quot;message-input__actions-left&quot;&gt;
+      &lt;button class&#x3D;&quot;message-input__btn&quot; [class.active]&#x3D;&quot;isEmojiActive&quot; (click)&#x3D;&quot;$event.stopPropagation(); toggleEmoji(messageInput)&quot; type&#x3D;&quot;button&quot; aria-label&#x3D;&quot;Add Emoji&quot; [disabled]&#x3D;&quot;disabled&quot;&gt;
+        &lt;img src&#x3D;&quot;img/icons/chatarea/sentiment_satisfied.svg&quot; class&#x3D;&quot;message-input__icon&quot; alt&#x3D;&quot;Smiley&quot;&gt;
+      &lt;/button&gt;
+      &lt;button class&#x3D;&quot;message-input__btn&quot; [class.active]&#x3D;&quot;isMentionActive&quot; (click)&#x3D;&quot;$event.stopPropagation(); toggleMention()&quot; type&#x3D;&quot;button&quot; aria-label&#x3D;&quot;Mention User&quot; [disabled]&#x3D;&quot;disabled&quot;&gt;
+        &lt;img src&#x3D;&quot;img/icons/chatarea/alternate_email.svg&quot; class&#x3D;&quot;message-input__icon&quot; alt&#x3D;&quot;Mention&quot;&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    
+    &lt;div class&#x3D;&quot;message-input__actions-right&quot;&gt;
+      &lt;button 
+        class&#x3D;&quot;message-input__send-btn&quot; 
+        [class.message-input__send-btn--active]&#x3D;&quot;messageText.trim().length &gt; 0&quot;
+        (click)&#x3D;&quot;send()&quot; 
+        type&#x3D;&quot;button&quot; 
+        aria-label&#x3D;&quot;Send Message&quot;
+        [disabled]&#x3D;&quot;disabled&quot;
+      &gt;
+        &lt;img src&#x3D;&quot;img/icons/chatarea/send.svg&quot; class&#x3D;&quot;message-input__send-icon&quot; alt&#x3D;&quot;Send&quot;&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div #messageInput class="message-input" [class.message-input--disabled]="disabled" (click)="onMessageInputClick()">  @if (activePopup === \'users\') {    <div class="mention-popup" (click)="$event.stopPropagation()">      <div class="mention-popup__list">        @if (isLoading) {          <div class="mention-popup__loading">Mitglieder werden geladen...</div>        } @else {          @for (user of popupUsers; track user.id) {            <div class="mention-popup__item" (click)="insertUserMention(user)">              <div class="mention-popup__avatar-container">                <img [src]="user.avatar" class="mention-popup__avatar" alt="Avatar">                <span class="mention-popup__status-badge" [class.online]="isUserOnlineById(user.id)"></span>              </div>              <span class="mention-popup__name">{{ user.name }} {{ user.id === currentUserId ? \'(Du)\' : \'\' }}</span>            </div>          }          @if (popupUsers.length === 0) {            <div class="mention-popup__empty">Keine Mitglieder gefunden</div>          }        }      </div>    </div>  }    @if (activePopup === \'channels\') {    <div class="mention-popup" (click)="$event.stopPropagation()">      <div class="mention-popup__list">        @if (isLoading) {          <div class="mention-popup__loading">Channels werden geladen...</div>        } @else {          @for (channel of popupChannels; track channel.id) {            <div class="mention-popup__item" (click)="insertMention(\'#\' + channel.name)">              <span class="mention-popup__hashtag">#</span>              <span class="mention-popup__name">{{ channel.name }}</span>            </div>          }          @if (popupChannels.length === 0) {            <div class="mention-popup__empty">Keine Channels vorhanden</div>          }        }      </div>    </div>  }  <div class="message-input__editor">    @if (messageText.length > 0) {      <div class="message-input__rendered" aria-hidden="true">        <div          class="message-input__rendered-content"          [style.transform]="\'translateY(-\' + renderedScrollTop + \'px)\'"        >          @for (part of messageTextParts; track $index) {            @if (part.type === \'emoji\') {              <ngx-emoji                class="message-input__rendered-emoji"                [emoji]="part.unified!"                [set]="emojiSet"                [size]="20"              ></ngx-emoji>            } @else if (part.type === \'newline\') {              <br />            } @else {              <span>{{ part.text }}</span>            }          }        </div>      </div>    }    <textarea       #messageTextarea      class="message-input__textarea"       [placeholder]="placeholder"      [(ngModel)]="messageText"      (input)="onInputChange()"      (scroll)="onTextareaScroll()"      (keydown.enter)="onEnterPressed($event)"      [disabled]="disabled"    ></textarea>  </div>    <div class="message-input__actions">    <div class="message-input__actions-left">      <button class="message-input__btn" [class.active]="isEmojiActive" (click)="$event.stopPropagation(); toggleEmoji(messageInput)" type="button" aria-label="Add Emoji" [disabled]="disabled">        <img src="img/icons/chatarea/sentiment_satisfied.svg" class="message-input__icon" alt="Smiley">      </button>      <button class="message-input__btn" [class.active]="isMentionActive" (click)="$event.stopPropagation(); toggleMention()" type="button" aria-label="Mention User" [disabled]="disabled">        <img src="img/icons/chatarea/alternate_email.svg" class="message-input__icon" alt="Mention">      </button>    </div>        <div class="message-input__actions-right">      <button         class="message-input__send-btn"         [class.message-input__send-btn--active]="messageText.trim().length > 0"        (click)="send()"         type="button"         aria-label="Send Message"        [disabled]="disabled"      >        <img src="img/icons/chatarea/send.svg" class="message-input__send-icon" alt="Send">      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'ChatAreaComponent', 'selector': 'app-chat-area'},{'name': 'ChooseAvatar', 'selector': 'app-choose-avatar'},{'name': 'DatenschutzComponent', 'selector': 'app-datenschutz'},{'name': 'dialogAddMemberComponent', 'selector': 'app-dialog-add-member'},{'name': 'DialogChannelDetailsComponent', 'selector': 'app-dialog-channel-details'},{'name': 'DialogChannelMembersComponent', 'selector': 'app-dialog-channel-members'},{'name': 'dialogCreateChannelComponent', 'selector': 'app-dialog-create-channel'},{'name': 'DialogProfileComponent', 'selector': 'app-dialog-profile'},{'name': 'DialogProfileOverlayComponent', 'selector': 'app-dialog-profile-overlay'},{'name': 'EmojiPickerHostComponent', 'selector': 'app-emoji-picker-host'},{'name': 'EmojiPickerPopupComponent', 'selector': 'app-emoji-picker-popup'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'ForgotPassword', 'selector': 'app-forgot-password'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'ImpressumComponent', 'selector': 'app-impressum'},{'name': 'IntroComponent', 'selector': 'app-intro'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainComponent', 'selector': 'app-main'},{'name': 'MessageComponent', 'selector': 'app-message'},{'name': 'MessageInputComponent', 'selector': 'app-message-input'},{'name': 'PasswordReset', 'selector': 'app-password-reset'},{'name': 'ProfileMenuComponent', 'selector': 'app-profile-menu'},{'name': 'SearchBarComponent', 'selector': 'app-searchbar'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'ThreadViewComponent', 'selector': 'app-thread-view'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MessageInputComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MessageInputComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

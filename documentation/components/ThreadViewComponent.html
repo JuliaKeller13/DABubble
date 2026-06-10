@@ -1,0 +1,1980 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ThreadViewComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnDestroy" target="_blank" >OnDestroy</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-thread-view</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="../components/MessageInputComponent.html" target="_self" >MessageInputComponent</a></code>
+                                <code><a href="../components/MessageComponent.html" target="_self" >MessageComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./thread-view.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./thread-view.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#authSvc" >authSvc</a>
+                            </li>
+                            <li>
+                                <a href="#isRepliesLoading" >isRepliesLoading</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#messageDeletedSubscription" >messageDeletedSubscription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#messageSvc" >messageSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#optimisticReactionSubscription" >optimisticReactionSubscription</a>
+                            </li>
+                            <li>
+                                <a href="#replies" >replies</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Private</span>
+                                <a href="#repliesContainer" >repliesContainer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#repliesSubscription" >repliesSubscription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#searchTargetSubscription" >searchTargetSubscription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#threadSvc" >threadSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#typingTimeouts" >typingTimeouts</a>
+                            </li>
+                            <li>
+                                <a href="#typingUsers" >typingUsers</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#checkAndScrollToSearchTarget" >checkAndScrollToSearchTarget</a>
+                            </li>
+                            <li>
+                                <a href="#getTypingText" >getTypingText</a>
+                            </li>
+                            <li>
+                                <a href="#handleTypingBroadcast" >handleTypingBroadcast</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#onClose" >onClose</a>
+                            </li>
+                            <li>
+                                <a href="#onParentDeleted" >onParentDeleted</a>
+                            </li>
+                            <li>
+                                <a href="#onReplyDeleted" >onReplyDeleted</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onSendReply" >onSendReply</a>
+                            </li>
+                            <li>
+                                <a href="#onTypingStatusChange" >onTypingStatusChange</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#scrollToBottom" >scrollToBottom</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#currentUserId" >currentUserId</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:55</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Initializes the ThreadViewComponent, subscribing to message deletion,
+search selection, optimistic reactions, and changes in the active parent message.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkAndScrollToSearchTarget"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>checkAndScrollToSearchTarget</b></span>
+                        <a href="#checkAndScrollToSearchTarget"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkAndScrollToSearchTarget()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="302"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:302</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks for a search target message and scrolls it into view, falling back to bottom if not found.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTypingText"></a>
+                    <span class="name">
+                        <span ><b>getTypingText</b></span>
+                        <a href="#getTypingText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTypingText()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="228"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:228</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets visual typing display text summarizing who is typing.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleTypingBroadcast"></a>
+                    <span class="name">
+                        <span ><b>handleTypingBroadcast</b></span>
+                        <a href="#handleTypingBroadcast"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>handleTypingBroadcast(payload: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="184"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:184</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles typing broadcast updates inside the thread view, displaying and clearing typing indicators.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>payload</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The typing broadcast payload.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Component destruction lifecycle hook. Unsubscribes from active database channels and event streams.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onClose"></a>
+                    <span class="name">
+                        <span ><b>onClose</b></span>
+                        <a href="#onClose"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onClose()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="239"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:239</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the active thread side panel.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onParentDeleted"></a>
+                    <span class="name">
+                        <span ><b>onParentDeleted</b></span>
+                        <a href="#onParentDeleted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onParentDeleted(_parentId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="247"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:247</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Event handler when the parent message is deleted.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>_parentId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Deleted parent message ID.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onReplyDeleted"></a>
+                    <span class="name">
+                        <span ><b>onReplyDeleted</b></span>
+                        <a href="#onReplyDeleted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onReplyDeleted(replyId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="255"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:255</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Event handler when a reply is deleted.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>replyId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Deleted reply ID.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSendReply"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>onSendReply</b></span>
+                        <a href="#onSendReply"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onSendReply(content: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="263"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:263</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Sends a reply message to the database.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>content</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Reply content string.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onTypingStatusChange"></a>
+                    <span class="name">
+                        <span ><b>onTypingStatusChange</b></span>
+                        <a href="#onTypingStatusChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onTypingStatusChange(isTyping: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="213"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:213</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates typing status and broadcasts it to the thread channel.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>isTyping</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Active typing status.</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scrollToBottom"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>scrollToBottom</b></span>
+                        <a href="#scrollToBottom"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>scrollToBottom()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="290"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Scrolls the replies scroll container to the bottom.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>authSvc</b></span>
+                        <a href="#authSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(authService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:28</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The injected AuthService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isRepliesLoading"></a>
+                    <span class="name">
+                        <span ><b>isRepliesLoading</b></span>
+                        <a href="#isRepliesLoading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;boolean&gt;(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:36</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal indicating if replies are currently loading.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messageDeletedSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>messageDeletedSubscription</b></span>
+                        <a href="#messageDeletedSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subscription | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:40</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subscription for parent message deletion events.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="messageSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>messageSvc</b></span>
+                        <a href="#messageSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(messageService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:26</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The injected MessageService.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="optimisticReactionSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>optimisticReactionSubscription</b></span>
+                        <a href="#optimisticReactionSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subscription | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:42</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subscription for optimistic reaction updates.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="replies"></a>
+                    <span class="name">
+                        <span ><b>replies</b></span>
+                        <a href="#replies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Message[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:34</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal holding the list of replies in the current thread.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="repliesContainer"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Private</span>
+                        <span ><b>repliesContainer</b></span>
+                        <a href="#repliesContainer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/ElementRef" target="_blank" >ElementRef</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;repliesContainer&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:31</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Element reference to the replies scroll container.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="repliesSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>repliesSubscription</b></span>
+                        <a href="#repliesSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Channel.html" target="_self" >RealtimeChannel | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:38</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Realtime database subscription channel for thread replies.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchTargetSubscription"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>searchTargetSubscription</b></span>
+                        <a href="#searchTargetSubscription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Subscription | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:44</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Subscription for scrolling to search targets.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="threadSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>threadSvc</b></span>
+                        <a href="#threadSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ThreadService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:24</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The injected ThreadService managing active thread states.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="typingTimeouts"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>typingTimeouts</b></span>
+                        <a href="#typingTimeouts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, any&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:48</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Map of timeouts by user ID to clear typing indicators.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="typingUsers"></a>
+                    <span class="name">
+                        <span ><b>typingUsers</b></span>
+                        <a href="#typingUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;{ userId: string; userName: string }[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:46</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal containing the list of users typing replies in this thread.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentUserId"></a>
+                        <span class="name"><b>currentUserId</b><a href="#currentUserId"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>currentUserId()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/thread-view/thread-view.ts:53</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Gets the ID of the currently logged-in user.</p>
+</div>
+
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, signal, effect, OnDestroy, ViewChild, ElementRef } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Subscription } from &#x27;rxjs&#x27;;
+import { MessageInputComponent } from &#x27;../message-input/message-input&#x27;;
+import { MessageComponent } from &#x27;../message/message&#x27;;
+import { ThreadService } from &#x27;../../services/thread.service&#x27;;
+import { messageService } from &#x27;../../services/message.service&#x27;;
+import { authService } from &#x27;../../services/auth.service&#x27;;
+import { Message } from &#x27;../../interfaces/message.interface&#x27;;
+import { RealtimeChannel } from &#x27;@supabase/supabase-js&#x27;;
+
+@Component({
+  selector: &#x27;app-thread-view&#x27;,
+  standalone: true,
+  imports: [CommonModule, MessageInputComponent, MessageComponent],
+  templateUrl: &#x27;./thread-view.html&#x27;,
+  styleUrl: &#x27;./thread-view.scss&#x27;,
+})
+/**
+ * Component representing the side panel for a message reply thread, showing the parent message and its replies.
+ */
+export class ThreadViewComponent implements OnDestroy {
+  /** The injected ThreadService managing active thread states. */
+  public threadSvc &#x3D; inject(ThreadService);
+  /** The injected MessageService. */
+  private messageSvc &#x3D; inject(messageService);
+  /** The injected AuthService. */
+  private authSvc &#x3D; inject(authService);
+
+  /** Element reference to the replies scroll container. */
+  @ViewChild(&#x27;repliesContainer&#x27;) private repliesContainer!: ElementRef;
+
+  /** Signal holding the list of replies in the current thread. */
+  replies &#x3D; signal&lt;Message[]&gt;([]);
+  /** Signal indicating if replies are currently loading. */
+  isRepliesLoading &#x3D; signal&lt;boolean&gt;(false);
+  /** Realtime database subscription channel for thread replies. */
+  private repliesSubscription: RealtimeChannel | null &#x3D; null;
+  /** Subscription for parent message deletion events. */
+  private messageDeletedSubscription: Subscription | null &#x3D; null;
+  /** Subscription for optimistic reaction updates. */
+  private optimisticReactionSubscription: Subscription | null &#x3D; null;
+  /** Subscription for scrolling to search targets. */
+  private searchTargetSubscription: Subscription | null &#x3D; null;
+  /** Signal containing the list of users typing replies in this thread. */
+  typingUsers &#x3D; signal&lt;{ userId: string; userName: string }[]&gt;([]);
+  /** Map of timeouts by user ID to clear typing indicators. */
+  private typingTimeouts &#x3D; new Map&lt;string, any&gt;();
+
+  /**
+   * Gets the ID of the currently logged-in user.
+   */
+  get currentUserId(): string {
+    return this.authSvc.currentUser()?.id || &#x27;&#x27;;
+  }
+
+  /**
+   * Initializes the ThreadViewComponent, subscribing to message deletion,
+   * search selection, optimistic reactions, and changes in the active parent message.
+   */
+  constructor() {
+    this.messageDeletedSubscription &#x3D; this.messageSvc.messageDeleted.subscribe((id) &#x3D;&gt; {
+      this.replies.update((prev) &#x3D;&gt; prev.filter((r) &#x3D;&gt; r.id !&#x3D;&#x3D; id));
+      const parentMsg &#x3D; this.threadSvc.activeMessage();
+      if (parentMsg &amp;&amp; parentMsg.id &#x3D;&#x3D;&#x3D; id) {
+        this.threadSvc.closeThread();
+      }
+    });
+
+    this.searchTargetSubscription &#x3D; this.messageSvc.searchTargetSelected.subscribe((messageId) &#x3D;&gt; {
+      this.checkAndScrollToSearchTarget();
+    });
+
+    this.optimisticReactionSubscription &#x3D; this.messageSvc.optimisticReaction.subscribe(({ messageId, emoji, userId }) &#x3D;&gt; {
+      this.replies.update((prev) &#x3D;&gt; prev.map((m) &#x3D;&gt; {
+        if (m.id !&#x3D;&#x3D; messageId) return m;
+        const reactions &#x3D; { ...(m.reactions || {}) };
+        let userIds &#x3D; reactions[emoji] ? [...reactions[emoji]] : [];
+        const index &#x3D; userIds.indexOf(userId);
+        if (index &gt; -1) {
+          userIds.splice(index, 1);
+        } else {
+          userIds.push(userId);
+        }
+        if (userIds.length &#x3D;&#x3D;&#x3D; 0) {
+          delete reactions[emoji];
+        } else {
+          reactions[emoji] &#x3D; userIds;
+        }
+        return { ...m, reactions };
+      }));
+
+      const parentMsg &#x3D; this.threadSvc.activeMessage();
+      if (parentMsg &amp;&amp; parentMsg.id &#x3D;&#x3D;&#x3D; messageId) {
+        const reactions &#x3D; { ...(parentMsg.reactions || {}) };
+        let userIds &#x3D; reactions[emoji] ? [...reactions[emoji]] : [];
+        const index &#x3D; userIds.indexOf(userId);
+        if (index &gt; -1) {
+          userIds.splice(index, 1);
+        } else {
+          userIds.push(userId);
+        }
+        if (userIds.length &#x3D;&#x3D;&#x3D; 0) {
+          delete reactions[emoji];
+        } else {
+          reactions[emoji] &#x3D; userIds;
+        }
+        this.threadSvc.activeMessage.set({ ...parentMsg, reactions });
+      }
+    });
+
+    effect(async () &#x3D;&gt; {
+      const parentMsg &#x3D; this.threadSvc.activeMessage();
+
+      if (parentMsg &amp;&amp; parentMsg.id) {
+        this.isRepliesLoading.set(true);
+      }
+
+      if (this.repliesSubscription) {
+        this.messageSvc.unsubscribe(this.repliesSubscription);
+        this.repliesSubscription &#x3D; null;
+      }
+
+      if (parentMsg &amp;&amp; parentMsg.id) {
+        try {
+          const dbReplies &#x3D; await this.messageSvc.getThreadReplies(parentMsg.id);
+          this.replies.set(dbReplies);
+          this.checkAndScrollToSearchTarget();
+
+          this.repliesSubscription &#x3D; this.messageSvc.subscribeToThreadReplies(
+            parentMsg.id,
+            (event, msg) &#x3D;&gt; {
+              if (event &#x3D;&#x3D;&#x3D; &#x27;INSERT&#x27;) {
+                this.replies.update(prev &#x3D;&gt; {
+                  if (prev.some(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; msg.id)) return prev;
+                  return [...prev, msg];
+                });
+                this.scrollToBottom();
+              } else if (event &#x3D;&#x3D;&#x3D; &#x27;UPDATE&#x27;) {
+                this.replies.update(prev &#x3D;&gt; prev.map(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; msg.id ? msg : m));
+              } else if (event &#x3D;&#x3D;&#x3D; &#x27;DELETE&#x27;) {
+                this.replies.update(prev &#x3D;&gt; prev.filter(m &#x3D;&gt; m.id !&#x3D;&#x3D; msg.id));
+              }
+            },
+            (typingPayload) &#x3D;&gt; {
+              this.handleTypingBroadcast(typingPayload);
+            }
+          );
+        } catch (error) {
+          console.error(&#x27;Error loading thread replies:&#x27;, error);
+          this.replies.set([]);
+        } finally {
+          this.isRepliesLoading.set(false);
+        }
+      } else {
+        this.replies.set([]);
+        this.isRepliesLoading.set(false);
+      }
+    });
+  }
+
+  /**
+   * Component destruction lifecycle hook. Unsubscribes from active database channels and event streams.
+   */
+  ngOnDestroy() {
+    if (this.repliesSubscription) {
+      this.messageSvc.unsubscribe(this.repliesSubscription);
+    }
+    if (this.messageDeletedSubscription) {
+      this.messageDeletedSubscription.unsubscribe();
+    }
+    if (this.optimisticReactionSubscription) {
+      this.optimisticReactionSubscription.unsubscribe();
+    }
+    if (this.searchTargetSubscription) {
+      this.searchTargetSubscription.unsubscribe();
+    }
+  }
+
+  /**
+   * Handles typing broadcast updates inside the thread view, displaying and clearing typing indicators.
+   * @param payload - The typing broadcast payload.
+   */
+  handleTypingBroadcast(payload: { userId: string; userName: string; isTyping: boolean }) {
+    if (payload.userId &#x3D;&#x3D;&#x3D; this.currentUserId) return;
+
+    const existingTimeout &#x3D; this.typingTimeouts.get(payload.userId);
+    if (existingTimeout) {
+      clearTimeout(existingTimeout);
+      this.typingTimeouts.delete(payload.userId);
+    }
+
+    if (payload.isTyping) {
+      this.typingUsers.update((users) &#x3D;&gt; {
+        if (users.some((u) &#x3D;&gt; u.userId &#x3D;&#x3D;&#x3D; payload.userId)) return users;
+        return [...users, { userId: payload.userId, userName: payload.userName }];
+      });
+
+      const timeout &#x3D; setTimeout(() &#x3D;&gt; {
+        this.typingUsers.update((users) &#x3D;&gt; users.filter((u) &#x3D;&gt; u.userId !&#x3D;&#x3D; payload.userId));
+        this.typingTimeouts.delete(payload.userId);
+      }, 5000);
+      this.typingTimeouts.set(payload.userId, timeout);
+    } else {
+      this.typingUsers.update((users) &#x3D;&gt; users.filter((u) &#x3D;&gt; u.userId !&#x3D;&#x3D; payload.userId));
+    }
+  }
+
+  /**
+   * Updates typing status and broadcasts it to the thread channel.
+   * @param isTyping - Active typing status.
+   */
+  onTypingStatusChange(isTyping: boolean) {
+    const profile &#x3D; this.authSvc.currentUserProfile();
+    if (profile &amp;&amp; this.repliesSubscription) {
+      this.messageSvc.sendTypingStatus(
+        this.repliesSubscription,
+        profile.id,
+        profile.display_name,
+        isTyping
+      );
+    }
+  }
+
+  /**
+   * Gets visual typing display text summarizing who is typing.
+   */
+  getTypingText(): string {
+    const users &#x3D; this.typingUsers();
+    if (users.length &#x3D;&#x3D;&#x3D; 0) return &#x27;&#x27;;
+    if (users.length &#x3D;&#x3D;&#x3D; 1) return &#x60;${users[0].userName} schreibt...&#x60;;
+    if (users.length &#x3D;&#x3D;&#x3D; 2) return &#x60;${users[0].userName} und ${users[1].userName} schreiben...&#x60;;
+    return &#x27;Mehrere Personen schreiben...&#x27;;
+  }
+
+  /**
+   * Closes the active thread side panel.
+   */
+  onClose() {
+    this.threadSvc.closeThread();
+  }
+
+  /**
+   * Event handler when the parent message is deleted.
+   * @param _parentId - Deleted parent message ID.
+   */
+  onParentDeleted(_parentId: string) {
+    this.threadSvc.closeThread();
+  }
+
+  /**
+   * Event handler when a reply is deleted.
+   * @param replyId - Deleted reply ID.
+   */
+  onReplyDeleted(replyId: string) {
+    this.replies.update(prev &#x3D;&gt; prev.filter(r &#x3D;&gt; r.id !&#x3D;&#x3D; replyId));
+  }
+
+  /**
+   * Sends a reply message to the database.
+   * @param content - Reply content string.
+   */
+  async onSendReply(content: any) {
+    if (typeof content !&#x3D;&#x3D; &#x27;string&#x27; || !content.trim()) return;
+    const parentMsg &#x3D; this.threadSvc.activeMessage();
+    if (!parentMsg || !parentMsg.id) return;
+
+    const userId &#x3D; this.currentUserId;
+    if (!userId) return;
+
+    const newReply &#x3D; await this.messageSvc.sendMessage(
+      content, 
+      userId, 
+      parentMsg.channel_id || &#x27;&#x27;, 
+      parentMsg.id
+    );
+
+    if (newReply) {
+      this.replies.update(prev &#x3D;&gt; {
+        if (prev.some(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; newReply.id)) return prev;
+        return [...prev, newReply];
+      });
+      this.scrollToBottom();
+    }
+  }
+
+  /**
+   * Scrolls the replies scroll container to the bottom.
+   */
+  private scrollToBottom() {
+    setTimeout(() &#x3D;&gt; {
+      if (this.repliesContainer) {
+        const element &#x3D; this.repliesContainer.nativeElement;
+        element.scrollTop &#x3D; element.scrollHeight;
+      }
+    }, 100);
+  }
+
+  /**
+   * Checks for a search target message and scrolls it into view, falling back to bottom if not found.
+   */
+  public checkAndScrollToSearchTarget() {
+    const targetId &#x3D; this.messageSvc.searchTargetMessageId;
+    if (targetId) {
+      setTimeout(() &#x3D;&gt; {
+        const element &#x3D; document.getElementById(&#x27;message-&#x27; + targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;center&#x27; });
+        } else {
+          this.scrollToBottom();
+        }
+        
+        setTimeout(() &#x3D;&gt; {
+          if (this.messageSvc.searchTargetMessageId &#x3D;&#x3D;&#x3D; targetId) {
+            this.messageSvc.searchTargetMessageId &#x3D; null;
+          }
+        }, 3000);
+      }, 300);
+    } else {
+      this.scrollToBottom();
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;thread-view&quot;&gt;
+  &lt;div class&#x3D;&quot;thread-view__header&quot;&gt;
+    &lt;div class&#x3D;&quot;thread-view__header-left&quot;&gt;
+      &lt;h2 class&#x3D;&quot;thread-view__title text-title-24&quot;&gt;Thread&lt;/h2&gt;
+      &lt;span class&#x3D;&quot;thread-view__channel-name text-chat-time&quot;&gt;# {{ threadSvc.activeMessage()?.sender?.display_name }}&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;button class&#x3D;&quot;thread-view__close-btn&quot; type&#x3D;&quot;button&quot; aria-label&#x3D;&quot;Thread schließen&quot; (click)&#x3D;&quot;onClose()&quot;&gt;
+      &lt;img src&#x3D;&quot;img/icons/threads/close_button.svg&quot; class&#x3D;&quot;thread-view__close-icon thread-view__close-icon--normal&quot; alt&#x3D;&quot;Thread schließen&quot;&gt;
+      &lt;img src&#x3D;&quot;img/icons/threads/close_button_hover.svg&quot; class&#x3D;&quot;thread-view__close-icon thread-view__close-icon--hover&quot; alt&#x3D;&quot;Thread schließen&quot;&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;thread-view__body&quot; #repliesContainer&gt;
+    @if (isRepliesLoading()) {
+      &lt;div class&#x3D;&quot;thread-view__loading-container&quot;&gt;
+        &lt;div class&#x3D;&quot;thread-view__loading-spinner&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    } @else if (threadSvc.activeMessage(); as parentMsg) {
+      
+      &lt;div class&#x3D;&quot;thread-view__parent&quot;&gt;
+        &lt;app-message 
+          [id]&#x3D;&quot;&#x27;message-&#x27; + parentMsg.id&quot;
+          [message]&#x3D;&quot;parentMsg&quot; 
+          [currentUserId]&#x3D;&quot;currentUserId&quot; 
+          [isThreadMessage]&#x3D;&quot;true&quot;
+          (delete)&#x3D;&quot;onParentDeleted($event)&quot;&gt;
+        &lt;/app-message&gt;
+      &lt;/div&gt;
+
+      
+      @if (replies().length &gt; 0) {
+        &lt;div class&#x3D;&quot;thread-view__divider&quot;&gt;
+          &lt;span&gt;{{ replies().length }} {{ replies().length &#x3D;&#x3D;&#x3D; 1 ? &#x27;Antwort&#x27; : &#x27;Antworten&#x27; }}&lt;/span&gt;
+        &lt;/div&gt;
+      }
+
+      
+      &lt;div class&#x3D;&quot;thread-view__replies-list&quot;&gt;
+        @for (reply of replies(); track reply.id) {
+          &lt;app-message 
+            [id]&#x3D;&quot;&#x27;message-&#x27; + reply.id&quot;
+            [message]&#x3D;&quot;reply&quot; 
+            [currentUserId]&#x3D;&quot;currentUserId&quot; 
+            [isThreadMessage]&#x3D;&quot;true&quot;
+            (delete)&#x3D;&quot;onReplyDeleted($event)&quot;&gt;
+          &lt;/app-message&gt;
+        }
+      &lt;/div&gt;
+    }
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;thread-view__footer&quot;&gt;
+    @if (typingUsers().length &gt; 0) {
+      &lt;div class&#x3D;&quot;thread-view__typing-indicator&quot;&gt;
+        &lt;span&gt;{{ getTypingText() }}&lt;/span&gt;
+        &lt;div class&#x3D;&quot;typing-dots&quot;&gt;
+          &lt;span class&#x3D;&quot;dot&quot;&gt;&lt;/span&gt;
+          &lt;span class&#x3D;&quot;dot&quot;&gt;&lt;/span&gt;
+          &lt;span class&#x3D;&quot;dot&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    }
+    &lt;app-message-input 
+      placeholder&#x3D;&quot;Antworten...&quot; 
+      (sendMessage)&#x3D;&quot;onSendReply($event)&quot;
+      (typing)&#x3D;&quot;onTypingStatusChange($event)&quot;&gt;
+    &lt;/app-message-input&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="thread-view">  <div class="thread-view__header">    <div class="thread-view__header-left">      <h2 class="thread-view__title text-title-24">Thread</h2>      <span class="thread-view__channel-name text-chat-time"># {{ threadSvc.activeMessage()?.sender?.display_name }}</span>    </div>    <button class="thread-view__close-btn" type="button" aria-label="Thread schließen" (click)="onClose()">      <img src="img/icons/threads/close_button.svg" class="thread-view__close-icon thread-view__close-icon--normal" alt="Thread schließen">      <img src="img/icons/threads/close_button_hover.svg" class="thread-view__close-icon thread-view__close-icon--hover" alt="Thread schließen">    </button>  </div>  <div class="thread-view__body" #repliesContainer>    @if (isRepliesLoading()) {      <div class="thread-view__loading-container">        <div class="thread-view__loading-spinner"></div>      </div>    } @else if (threadSvc.activeMessage(); as parentMsg) {            <div class="thread-view__parent">        <app-message           [id]="\'message-\' + parentMsg.id"          [message]="parentMsg"           [currentUserId]="currentUserId"           [isThreadMessage]="true"          (delete)="onParentDeleted($event)">        </app-message>      </div>            @if (replies().length > 0) {        <div class="thread-view__divider">          <span>{{ replies().length }} {{ replies().length === 1 ? \'Antwort\' : \'Antworten\' }}</span>        </div>      }            <div class="thread-view__replies-list">        @for (reply of replies(); track reply.id) {          <app-message             [id]="\'message-\' + reply.id"            [message]="reply"             [currentUserId]="currentUserId"             [isThreadMessage]="true"            (delete)="onReplyDeleted($event)">          </app-message>        }      </div>    }  </div>  <div class="thread-view__footer">    @if (typingUsers().length > 0) {      <div class="thread-view__typing-indicator">        <span>{{ getTypingText() }}</span>        <div class="typing-dots">          <span class="dot"></span>          <span class="dot"></span>          <span class="dot"></span>        </div>      </div>    }    <app-message-input       placeholder="Antworten..."       (sendMessage)="onSendReply($event)"      (typing)="onTypingStatusChange($event)">    </app-message-input>  </div></div></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'ChatAreaComponent', 'selector': 'app-chat-area'},{'name': 'ChooseAvatar', 'selector': 'app-choose-avatar'},{'name': 'DatenschutzComponent', 'selector': 'app-datenschutz'},{'name': 'dialogAddMemberComponent', 'selector': 'app-dialog-add-member'},{'name': 'DialogChannelDetailsComponent', 'selector': 'app-dialog-channel-details'},{'name': 'DialogChannelMembersComponent', 'selector': 'app-dialog-channel-members'},{'name': 'dialogCreateChannelComponent', 'selector': 'app-dialog-create-channel'},{'name': 'DialogProfileComponent', 'selector': 'app-dialog-profile'},{'name': 'DialogProfileOverlayComponent', 'selector': 'app-dialog-profile-overlay'},{'name': 'EmojiPickerHostComponent', 'selector': 'app-emoji-picker-host'},{'name': 'EmojiPickerPopupComponent', 'selector': 'app-emoji-picker-popup'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'ForgotPassword', 'selector': 'app-forgot-password'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'ImpressumComponent', 'selector': 'app-impressum'},{'name': 'IntroComponent', 'selector': 'app-intro'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainComponent', 'selector': 'app-main'},{'name': 'MessageComponent', 'selector': 'app-message'},{'name': 'MessageInputComponent', 'selector': 'app-message-input'},{'name': 'PasswordReset', 'selector': 'app-password-reset'},{'name': 'ProfileMenuComponent', 'selector': 'app-profile-menu'},{'name': 'SearchBarComponent', 'selector': 'app-searchbar'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'ThreadViewComponent', 'selector': 'app-thread-view'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ThreadViewComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ThreadViewComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

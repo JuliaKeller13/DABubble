@@ -1,0 +1,1923 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  DialogChannelDetailsComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-dialog-channel-details</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/common/CommonModule" target="_blank" >CommonModule</a></code>
+                                <code><a href="https://angular.io/api/forms/FormsModule" target="_blank" >FormsModule</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./dialog-channel-details.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./dialog-channel-details.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#activeChannel" >activeChannel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#authSvc" >authSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#channelSvc" >channelSvc</a>
+                            </li>
+                            <li>
+                                <a href="#creatorName" >creatorName</a>
+                            </li>
+                            <li>
+                                <a href="#editDescriptionValue" >editDescriptionValue</a>
+                            </li>
+                            <li>
+                                <a href="#editNameValue" >editNameValue</a>
+                            </li>
+                            <li>
+                                <a href="#isEditingDescription" >isEditingDescription</a>
+                            </li>
+                            <li>
+                                <a href="#isEditingName" >isEditingName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#profileDialogSvc" >profileDialogSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#userSvc" >userSvc</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#isUserOnline" >isUserOnline</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#navigateToRemainingOrMain" >navigateToRemainingOrMain</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onClose" >onClose</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onDeleteChannel" >onDeleteChannel</a>
+                            </li>
+                            <li>
+                                <a href="#onEditDescription" >onEditDescription</a>
+                            </li>
+                            <li>
+                                <a href="#onEditName" >onEditName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onLeaveChannel" >onLeaveChannel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#openMemberProfile" >openMemberProfile</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#saveDescription" >saveDescription</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#saveName" >saveName</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#isSidebarClosed" >isSidebarClosed</a>
+                            </li>
+                            <li>
+                                <a href="#members" >members</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#close" >close</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#currentUserId" >currentUserId</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isSidebarClosed"></a>
+                        <b>isSidebarClosed</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:25</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Input indicating if the sidebar is closed.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="members"></a>
+                        <b>members</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:29</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>List of members in the channel.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="close"></a>
+                        <b>close</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:33</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event emitted when the dialog is closed.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isUserOnline"></a>
+                    <span class="name">
+                        <span ><b>isUserOnline</b></span>
+                        <a href="#isUserOnline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isUserOnline(member: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks whether a specific channel member is currently online.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>member</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>The member object to check.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>True if the user is online, false otherwise.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="navigateToRemainingOrMain"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>navigateToRemainingOrMain</b></span>
+                        <a href="#navigateToRemainingOrMain"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>navigateToRemainingOrMain()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="214"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:214</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates to the first remaining channel, or to the main workspace route if no channels are left.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Angular lifecycle hook called after component initialization.
+Fetches the creator&#39;s user details.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise that resolves when the user lookup is complete.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onClose"></a>
+                    <span class="name">
+                        <span ><b>onClose</b></span>
+                        <a href="#onClose"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onClose()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:120</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the channel details dialog.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDeleteChannel"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>onDeleteChannel</b></span>
+                        <a href="#onDeleteChannel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onDeleteChannel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Deletes the active channel if the current user is the channel creator.
+Redirects after deletion.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise resolving when the channel is deleted and navigation complete.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEditDescription"></a>
+                    <span class="name">
+                        <span ><b>onEditDescription</b></span>
+                        <a href="#onEditDescription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEditDescription()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:171</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Switches the component to description editing mode, prefilling the input field.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEditName"></a>
+                    <span class="name">
+                        <span ><b>onEditName</b></span>
+                        <a href="#onEditName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEditName()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Switches the component to name editing mode, prefilling the input field.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onLeaveChannel"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>onLeaveChannel</b></span>
+                        <a href="#onLeaveChannel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onLeaveChannel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:129</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles leaving the current channel for the logged-in user.
+Reloads available channels and redirects.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise resolving when the member is removed and navigation complete.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openMemberProfile"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>openMemberProfile</b></span>
+                        <a href="#openMemberProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openMemberProfile(memberId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="228"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:228</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Opens the profile overlay dialog for the specified member.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>memberId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>The ID of the member whose profile to display.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise that resolves when the profile dialog starts opening.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveDescription"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>saveDescription</b></span>
+                        <a href="#saveDescription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveDescription()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="180"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:180</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Saves the edited channel description to the database if the user is the creator.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise resolving when description is updated.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveName"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>saveName</b></span>
+                        <a href="#saveName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveName()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="156"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:156</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Saves the edited channel name to the database if the user is the creator.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise resolving when name is updated.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeChannel"></a>
+                    <span class="name">
+                        <span ><b>activeChannel</b></span>
+                        <a href="#activeChannel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.channelSvc.activeChannel</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:73</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal referencing the active channel.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>authSvc</b></span>
+                        <a href="#authSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(authService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Auth service injected to access currently logged-in user information.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="channelSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>channelSvc</b></span>
+                        <a href="#channelSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(channelService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Channel service injected to interact with channel data.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="creatorName"></a>
+                    <span class="name">
+                        <span ><b>creatorName</b></span>
+                        <a href="#creatorName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string&gt;(&#x27;Laden...&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:77</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal storing the display name of the channel creator.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editDescriptionValue"></a>
+                    <span class="name">
+                        <span ><b>editDescriptionValue</b></span>
+                        <a href="#editDescriptionValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:94</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Temporary value of the channel description during edit.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editNameValue"></a>
+                    <span class="name">
+                        <span ><b>editNameValue</b></span>
+                        <a href="#editNameValue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:90</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Temporary value of the channel name during edit.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isEditingDescription"></a>
+                    <span class="name">
+                        <span ><b>isEditingDescription</b></span>
+                        <a href="#isEditingDescription"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:86</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates if the channel description is currently being edited.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isEditingName"></a>
+                    <span class="name">
+                        <span ><b>isEditingName</b></span>
+                        <a href="#isEditingName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:82</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Indicates if the channel name is currently being edited.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileDialogSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>profileDialogSvc</b></span>
+                        <a href="#profileDialogSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ProfileDialogService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:54</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service to trigger opening of the user profile dialog.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:59</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Router to handle page redirection after deleting or leaving a channel.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>userSvc</b></span>
+                        <a href="#userSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(userService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:44</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>User service injected to retrieve user profiles.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentUserId"></a>
+                        <span class="name"><b>currentUserId</b><a href="#currentUserId"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>currentUserId()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="113" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-channel-details/dialog-channel-details.ts:113</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Getter for the current authenticated user&#39;s ID.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Output, EventEmitter, Input, OnInit, inject, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { channelService } from &#x27;../../services/channel.service&#x27;;
+import { userService } from &#x27;../../services/user.service&#x27;;
+import { authService } from &#x27;../../services/auth.service&#x27;;
+import { ProfileDialogService } from &#x27;../../services/profile-dialog.service&#x27;;
+
+@Component({
+  selector: &#x27;app-dialog-channel-details&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: &#x27;./dialog-channel-details.html&#x27;,
+  styleUrl: &#x27;./dialog-channel-details.scss&#x27;
+})
+/**
+ * Component representing the dialog to show channel details.
+ * Allows members to view details, leave, edit name/description (if creator), or delete the channel.
+ */
+export class DialogChannelDetailsComponent implements OnInit {
+  /**
+   * Input indicating if the sidebar is closed.
+   */
+  @Input() isSidebarClosed &#x3D; false;
+  /**
+   * List of members in the channel.
+   */
+  @Input() members: any[] &#x3D; [];
+  /**
+   * Event emitted when the dialog is closed.
+   */
+  @Output() close &#x3D; new EventEmitter&lt;void&gt;();
+
+  /**
+   * Channel service injected to interact with channel data.
+   * @private
+   */
+  private channelSvc &#x3D; inject(channelService);
+  /**
+   * User service injected to retrieve user profiles.
+   * @private
+   */
+  private userSvc &#x3D; inject(userService);
+  /**
+   * Auth service injected to access currently logged-in user information.
+   * @private
+   */
+  private authSvc &#x3D; inject(authService);
+  /**
+   * Service to trigger opening of the user profile dialog.
+   * @private
+   */
+  private profileDialogSvc &#x3D; inject(ProfileDialogService);
+  /**
+   * Router to handle page redirection after deleting or leaving a channel.
+   * @private
+   */
+  private router &#x3D; inject(Router);
+
+  /**
+   * Checks whether a specific channel member is currently online.
+   * @param member The member object to check.
+   * @returns True if the user is online, false otherwise.
+   */
+  isUserOnline(member: any): boolean {
+    return this.authSvc.onlineUserIds().has(member.id);
+  }
+
+  /**
+   * Signal referencing the active channel.
+   */
+  activeChannel &#x3D; this.channelSvc.activeChannel;
+  /**
+   * Signal storing the display name of the channel creator.
+   */
+  creatorName &#x3D; signal&lt;string&gt;(&#x27;Laden...&#x27;);
+
+  /**
+   * Indicates if the channel name is currently being edited.
+   */
+  isEditingName &#x3D; false;
+  /**
+   * Indicates if the channel description is currently being edited.
+   */
+  isEditingDescription &#x3D; false;
+  /**
+   * Temporary value of the channel name during edit.
+   */
+  editNameValue &#x3D; &#x27;&#x27;;
+  /**
+   * Temporary value of the channel description during edit.
+   */
+  editDescriptionValue &#x3D; &#x27;&#x27;;
+
+  /**
+   * Angular lifecycle hook called after component initialization.
+   * Fetches the creator&#x27;s user details.
+   * @returns A promise that resolves when the user lookup is complete.
+   */
+  async ngOnInit() {
+    const creatorId &#x3D; this.activeChannel()?.created_by;
+    if (creatorId) {
+      const creator &#x3D; await this.userSvc.getUserById(creatorId);
+      this.creatorName.set(creator ? creator.display_name : &#x27;Unbekannt&#x27;);
+    }
+  }
+
+  /**
+   * Getter for the current authenticated user&#x27;s ID.
+   * @returns The user ID string, or an empty string if not logged in.
+   */
+  get currentUserId(): string {
+    return this.authSvc.currentUser()?.id || &#x27;&#x27;;
+  }
+
+  /**
+   * Closes the channel details dialog.
+   */
+  onClose() {
+    this.close.emit();
+  }
+
+  /**
+   * Handles leaving the current channel for the logged-in user.
+   * Reloads available channels and redirects.
+   * @returns A promise resolving when the member is removed and navigation complete.
+   */
+  async onLeaveChannel() {
+    const active &#x3D; this.activeChannel();
+    const currentUserId &#x3D; this.currentUserId;
+    if (active &amp;&amp; active.id &amp;&amp; currentUserId) {
+      try {
+        await this.channelSvc.removeMemberFromChannel(active.id, currentUserId);
+        await this.channelSvc.loadChannels();
+        this.navigateToRemainingOrMain();
+        this.close.emit();
+      } catch (error) {
+        console.error(&#x27;Failed to leave channel:&#x27;, error);
+      }
+    }
+  }
+
+  /**
+   * Switches the component to name editing mode, prefilling the input field.
+   */
+  onEditName() {
+    this.isEditingName &#x3D; true;
+    this.editNameValue &#x3D; this.activeChannel()?.name || &#x27;&#x27;;
+  }
+
+  /**
+   * Saves the edited channel name to the database if the user is the creator.
+   * @returns A promise resolving when name is updated.
+   */
+  async saveName() {
+    const active &#x3D; this.activeChannel();
+    if (active &amp;&amp; active.id &amp;&amp; this.editNameValue.trim() &amp;&amp; active.created_by &#x3D;&#x3D;&#x3D; this.currentUserId) {
+      try {
+        await this.channelSvc.updateChannel(active.id, { name: this.editNameValue.trim() });
+        this.isEditingName &#x3D; false;
+      } catch (error) {
+        console.error(&#x27;Failed to update channel name:&#x27;, error);
+      }
+    }
+  }
+
+  /**
+   * Switches the component to description editing mode, prefilling the input field.
+   */
+  onEditDescription() {
+    this.isEditingDescription &#x3D; true;
+    this.editDescriptionValue &#x3D; this.activeChannel()?.description || &#x27;&#x27;;
+  }
+
+  /**
+   * Saves the edited channel description to the database if the user is the creator.
+   * @returns A promise resolving when description is updated.
+   */
+  async saveDescription() {
+    const active &#x3D; this.activeChannel();
+    if (active &amp;&amp; active.id &amp;&amp; active.created_by &#x3D;&#x3D;&#x3D; this.currentUserId) {
+      try {
+        await this.channelSvc.updateChannel(active.id, { description: this.editDescriptionValue.trim() });
+        this.isEditingDescription &#x3D; false;
+      } catch (error) {
+        console.error(&#x27;Failed to update channel description:&#x27;, error);
+      }
+    }
+  }
+
+  /**
+   * Deletes the active channel if the current user is the channel creator.
+   * Redirects after deletion.
+   * @returns A promise resolving when the channel is deleted and navigation complete.
+   */
+  async onDeleteChannel() {
+    const active &#x3D; this.activeChannel();
+    if (active &amp;&amp; active.id &amp;&amp; active.created_by &#x3D;&#x3D;&#x3D; this.currentUserId) {
+      try {
+        await this.channelSvc.deleteChannel(active.id);
+        this.navigateToRemainingOrMain();
+        this.close.emit();
+      } catch (error) {
+        console.error(&#x27;Failed to delete channel:&#x27;, error);
+      }
+    }
+  }
+
+  /**
+   * Navigates to the first remaining channel, or to the main workspace route if no channels are left.
+   * @private
+   */
+  private navigateToRemainingOrMain(): void {
+    const remaining &#x3D; this.channelSvc.channels();
+    if (remaining.length &gt; 0) {
+      this.router.navigate([&#x27;/main/channel&#x27;, remaining[0].id]);
+    } else {
+      this.router.navigate([&#x27;/main&#x27;]);
+    }
+  }
+
+  /**
+   * Opens the profile overlay dialog for the specified member.
+   * @param memberId The ID of the member whose profile to display.
+   * @returns A promise that resolves when the profile dialog starts opening.
+   */
+  async openMemberProfile(memberId: string): Promise&lt;void&gt; {
+    await this.profileDialogSvc.openById(memberId, { suppressOutsideCloseOnce: true });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;dialog-backdrop&quot; (click)&#x3D;&quot;onClose()&quot;&gt;&lt;/div&gt;
+&lt;div class&#x3D;&quot;dialog-card&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+  &lt;div class&#x3D;&quot;dialog-card__header&quot;&gt;
+    &lt;div class&#x3D;&quot;dialog-card__title&quot;&gt;
+      &lt;span class&#x3D;&quot;dialog-card__hash&quot;&gt;#&lt;/span&gt;
+      &lt;h2 class&#x3D;&quot;dialog-card__title-text&quot;&gt;{{ activeChannel()?.name }}&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;button class&#x3D;&quot;dialog-card__close-btn&quot; (click)&#x3D;&quot;onClose()&quot; aria-label&#x3D;&quot;Close dialog&quot;&gt;
+      &lt;svg width&#x3D;&quot;24&quot; height&#x3D;&quot;24&quot; viewBox&#x3D;&quot;0 0 24 24&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;2&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot;&gt;
+        &lt;line x1&#x3D;&quot;18&quot; y1&#x3D;&quot;6&quot; x2&#x3D;&quot;6&quot; y2&#x3D;&quot;18&quot;&gt;&lt;/line&gt;
+        &lt;line x1&#x3D;&quot;6&quot; y1&#x3D;&quot;6&quot; x2&#x3D;&quot;18&quot; y2&#x3D;&quot;18&quot;&gt;&lt;/line&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;dialog-card__body&quot;&gt;
+    &lt;div class&#x3D;&quot;dialog-card__block&quot;&gt;
+      &lt;div class&#x3D;&quot;dialog-card__block-header&quot;&gt;
+        &lt;span class&#x3D;&quot;dialog-card__label&quot;&gt;Channel-Name&lt;/span&gt;
+        @if (isEditingName) {
+          &lt;button class&#x3D;&quot;dialog-card__edit-btn dialog-card__edit-btn--save&quot; (click)&#x3D;&quot;saveName()&quot;&gt;Speichern&lt;/button&gt;
+        } @else {
+          &lt;button class&#x3D;&quot;dialog-card__edit-btn&quot; 
+                  [class.dialog-card__edit-btn--disabled]&#x3D;&quot;activeChannel()?.created_by !&#x3D;&#x3D; currentUserId&quot;
+                  [attr.data-tooltip]&#x3D;&quot;activeChannel()?.created_by !&#x3D;&#x3D; currentUserId ? &#x27;Nur der Ersteller kann den Channel bearbeiten&#x27; : null&quot;
+                  (click)&#x3D;&quot;activeChannel()?.created_by &#x3D;&#x3D;&#x3D; currentUserId ? onEditName() : null&quot; 
+                  aria-label&#x3D;&quot;Bearbeiten&quot;&gt;
+            &lt;span class&#x3D;&quot;dialog-card__edit-btn-text&quot;&gt;Bearbeiten&lt;/span&gt;
+            &lt;img class&#x3D;&quot;dialog-card__edit-btn-icon&quot; src&#x3D;&quot;img/icons/edit.svg&quot; alt&#x3D;&quot;Bearbeiten&quot;&gt;
+          &lt;/button&gt;
+        }
+      &lt;/div&gt;
+      
+      @if (isEditingName) {
+        &lt;div class&#x3D;&quot;dialog-card__input-wrapper&quot;&gt;
+          &lt;span class&#x3D;&quot;dialog-card__input-hash&quot;&gt;#&lt;/span&gt;
+          &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;editNameValue&quot; class&#x3D;&quot;dialog-card__input&quot; placeholder&#x3D;&quot;Channel-Name&quot;&gt;
+        &lt;/div&gt;
+      } @else {
+        &lt;div class&#x3D;&quot;dialog-card__block-content dialog-card__block-content--name&quot;&gt;
+          &lt;span class&#x3D;&quot;dialog-card__content-hash&quot;&gt;#&lt;/span&gt;
+          &lt;span class&#x3D;&quot;dialog-card__content-text&quot;&gt;{{ activeChannel()?.name }}&lt;/span&gt;
+        &lt;/div&gt;
+      }
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;dialog-card__block dialog-card__block--description&quot;&gt;
+      &lt;div class&#x3D;&quot;dialog-card__block-header&quot;&gt;
+        &lt;span class&#x3D;&quot;dialog-card__label&quot;&gt;Beschreibung&lt;/span&gt;
+        @if (isEditingDescription) {
+          &lt;button class&#x3D;&quot;dialog-card__edit-btn dialog-card__edit-btn--save&quot; (click)&#x3D;&quot;saveDescription()&quot;&gt;Speichern&lt;/button&gt;
+        } @else {
+          &lt;button class&#x3D;&quot;dialog-card__edit-btn&quot; 
+                  [class.dialog-card__edit-btn--disabled]&#x3D;&quot;activeChannel()?.created_by !&#x3D;&#x3D; currentUserId&quot;
+                  [attr.data-tooltip]&#x3D;&quot;activeChannel()?.created_by !&#x3D;&#x3D; currentUserId ? &#x27;Nur der Ersteller kann den Channel bearbeiten&#x27; : null&quot;
+                  (click)&#x3D;&quot;activeChannel()?.created_by &#x3D;&#x3D;&#x3D; currentUserId ? onEditDescription() : null&quot; 
+                  aria-label&#x3D;&quot;Bearbeiten&quot;&gt;
+            &lt;span class&#x3D;&quot;dialog-card__edit-btn-text&quot;&gt;Bearbeiten&lt;/span&gt;
+            &lt;img class&#x3D;&quot;dialog-card__edit-btn-icon&quot; src&#x3D;&quot;img/icons/edit.svg&quot; alt&#x3D;&quot;Bearbeiten&quot;&gt;
+          &lt;/button&gt;
+        }
+      &lt;/div&gt;
+      
+      @if (isEditingDescription) {
+        &lt;div class&#x3D;&quot;dialog-card__input-wrapper&quot;&gt;
+          &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;editDescriptionValue&quot; class&#x3D;&quot;dialog-card__input&quot; placeholder&#x3D;&quot;Beschreibung&quot;&gt;
+        &lt;/div&gt;
+      } @else {
+        &lt;p class&#x3D;&quot;dialog-card__description-text&quot;&gt;
+          {{ activeChannel()?.description || &#x27;Keine Beschreibung vorhanden.&#x27; }}
+        &lt;/p&gt;
+      }
+      
+      &lt;div class&#x3D;&quot;dialog-card__divider&quot;&gt;&lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;dialog-card__created-by&quot;&gt;
+        &lt;span class&#x3D;&quot;dialog-card__label&quot;&gt;Erstellt von&lt;/span&gt;
+        &lt;span class&#x3D;&quot;dialog-card__creator-name&quot;&gt;{{ creatorName() }}&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;dialog-card__footer&quot;&gt;
+    @if (activeChannel()?.created_by &#x3D;&#x3D;&#x3D; currentUserId) {
+      &lt;button class&#x3D;&quot;btn-danger dialog-card__delete-btn&quot; (click)&#x3D;&quot;onDeleteChannel()&quot;&gt;Channel löschen&lt;/button&gt;
+    }
+    &lt;button class&#x3D;&quot;dialog-card__leave-btn&quot; (click)&#x3D;&quot;onLeaveChannel()&quot;&gt;Channel verlassen&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="dialog-backdrop" (click)="onClose()"></div><div class="dialog-card" (click)="$event.stopPropagation()">  <div class="dialog-card__header">    <div class="dialog-card__title">      <span class="dialog-card__hash">#</span>      <h2 class="dialog-card__title-text">{{ activeChannel()?.name }}</h2>    </div>    <button class="dialog-card__close-btn" (click)="onClose()" aria-label="Close dialog">      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">        <line x1="18" y1="6" x2="6" y2="18"></line>        <line x1="6" y1="6" x2="18" y2="18"></line>      </svg>    </button>  </div>  <div class="dialog-card__body">    <div class="dialog-card__block">      <div class="dialog-card__block-header">        <span class="dialog-card__label">Channel-Name</span>        @if (isEditingName) {          <button class="dialog-card__edit-btn dialog-card__edit-btn--save" (click)="saveName()">Speichern</button>        } @else {          <button class="dialog-card__edit-btn"                   [class.dialog-card__edit-btn--disabled]="activeChannel()?.created_by !== currentUserId"                  [attr.data-tooltip]="activeChannel()?.created_by !== currentUserId ? \'Nur der Ersteller kann den Channel bearbeiten\' : null"                  (click)="activeChannel()?.created_by === currentUserId ? onEditName() : null"                   aria-label="Bearbeiten">            <span class="dialog-card__edit-btn-text">Bearbeiten</span>            <img class="dialog-card__edit-btn-icon" src="img/icons/edit.svg" alt="Bearbeiten">          </button>        }      </div>            @if (isEditingName) {        <div class="dialog-card__input-wrapper">          <span class="dialog-card__input-hash">#</span>          <input type="text" [(ngModel)]="editNameValue" class="dialog-card__input" placeholder="Channel-Name">        </div>      } @else {        <div class="dialog-card__block-content dialog-card__block-content--name">          <span class="dialog-card__content-hash">#</span>          <span class="dialog-card__content-text">{{ activeChannel()?.name }}</span>        </div>      }    </div>    <div class="dialog-card__block dialog-card__block--description">      <div class="dialog-card__block-header">        <span class="dialog-card__label">Beschreibung</span>        @if (isEditingDescription) {          <button class="dialog-card__edit-btn dialog-card__edit-btn--save" (click)="saveDescription()">Speichern</button>        } @else {          <button class="dialog-card__edit-btn"                   [class.dialog-card__edit-btn--disabled]="activeChannel()?.created_by !== currentUserId"                  [attr.data-tooltip]="activeChannel()?.created_by !== currentUserId ? \'Nur der Ersteller kann den Channel bearbeiten\' : null"                  (click)="activeChannel()?.created_by === currentUserId ? onEditDescription() : null"                   aria-label="Bearbeiten">            <span class="dialog-card__edit-btn-text">Bearbeiten</span>            <img class="dialog-card__edit-btn-icon" src="img/icons/edit.svg" alt="Bearbeiten">          </button>        }      </div>            @if (isEditingDescription) {        <div class="dialog-card__input-wrapper">          <input type="text" [(ngModel)]="editDescriptionValue" class="dialog-card__input" placeholder="Beschreibung">        </div>      } @else {        <p class="dialog-card__description-text">          {{ activeChannel()?.description || \'Keine Beschreibung vorhanden.\' }}        </p>      }            <div class="dialog-card__divider"></div>      <div class="dialog-card__created-by">        <span class="dialog-card__label">Erstellt von</span>        <span class="dialog-card__creator-name">{{ creatorName() }}</span>      </div>    </div>  </div>  <div class="dialog-card__footer">    @if (activeChannel()?.created_by === currentUserId) {      <button class="btn-danger dialog-card__delete-btn" (click)="onDeleteChannel()">Channel löschen</button>    }    <button class="dialog-card__leave-btn" (click)="onLeaveChannel()">Channel verlassen</button>  </div></div></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'ChatAreaComponent', 'selector': 'app-chat-area'},{'name': 'ChooseAvatar', 'selector': 'app-choose-avatar'},{'name': 'DatenschutzComponent', 'selector': 'app-datenschutz'},{'name': 'dialogAddMemberComponent', 'selector': 'app-dialog-add-member'},{'name': 'DialogChannelDetailsComponent', 'selector': 'app-dialog-channel-details'},{'name': 'DialogChannelMembersComponent', 'selector': 'app-dialog-channel-members'},{'name': 'dialogCreateChannelComponent', 'selector': 'app-dialog-create-channel'},{'name': 'DialogProfileComponent', 'selector': 'app-dialog-profile'},{'name': 'DialogProfileOverlayComponent', 'selector': 'app-dialog-profile-overlay'},{'name': 'EmojiPickerHostComponent', 'selector': 'app-emoji-picker-host'},{'name': 'EmojiPickerPopupComponent', 'selector': 'app-emoji-picker-popup'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'ForgotPassword', 'selector': 'app-forgot-password'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'ImpressumComponent', 'selector': 'app-impressum'},{'name': 'IntroComponent', 'selector': 'app-intro'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainComponent', 'selector': 'app-main'},{'name': 'MessageComponent', 'selector': 'app-message'},{'name': 'MessageInputComponent', 'selector': 'app-message-input'},{'name': 'PasswordReset', 'selector': 'app-password-reset'},{'name': 'ProfileMenuComponent', 'selector': 'app-profile-menu'},{'name': 'SearchBarComponent', 'selector': 'app-searchbar'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'ThreadViewComponent', 'selector': 'app-thread-view'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'DialogChannelDetailsComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'DialogChannelDetailsComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

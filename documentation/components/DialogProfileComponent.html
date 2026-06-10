@@ -1,0 +1,2534 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  DialogProfileComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+            <tr>
+                <td class="col-md-3">changeDetection</td>
+                <td class="col-md-9"><code>ChangeDetectionStrategy.OnPush</code></td>
+            </tr>
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">host</td>
+                <td class="col-md-9"><code>{<br>}</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-dialog-profile</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./dialog-profile.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./dialog-profile.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#availableAvatars" >availableAvatars</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#avatarSvc" >avatarSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#avatarUrl" >avatarUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#canEdit" >canEdit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#cardClass" >cardClass</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#channelSvc" >channelSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#displayName" >displayName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#editableAvatarUrl" >editableAvatarUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#editableName" >editableName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#email" >email</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#headerTitle" >headerTitle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#isDeleteConfirmOpen" >isDeleteConfirmOpen</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#isDeletingAccount" >isDeletingAccount</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#isEditing" >isEditing</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#isOnline" >isOnline</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#isSaving" >isSaving</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#profileDialogSvc" >profileDialogSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#toastSvc" >toastSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#userSvc" >userSvc</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cancelAccountDelete" >cancelAccountDelete</a>
+                            </li>
+                            <li>
+                                <a href="#cancelEdit" >cancelEdit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#canSaveProfile" >canSaveProfile</a>
+                            </li>
+                            <li>
+                                <a href="#closeDialog" >closeDialog</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#confirmAccountDelete" >confirmAccountDelete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleAccountDeleted" >handleAccountDeleted</a>
+                            </li>
+                            <li>
+                                <a href="#openDirectChat" >openDirectChat</a>
+                            </li>
+                            <li>
+                                <a href="#requestAccountDelete" >requestAccountDelete</a>
+                            </li>
+                            <li>
+                                <a href="#requestEdit" >requestEdit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#resetEditableFields" >resetEditableFields</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#saveProfile" >saveProfile</a>
+                            </li>
+                            <li>
+                                <a href="#selectAvatar" >selectAvatar</a>
+                            </li>
+                            <li>
+                                <a href="#updateEditableName" >updateEditableName</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#profile" >profile</a>
+                            </li>
+                            <li>
+                                <a href="#variant" >variant</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#closed" >closed</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:111</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Constructor. Registers an effect to synchronize editable fields when the profile input signal changes.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="profile"></a>
+                        <b>profile</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/User.html" target="_self" >User</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Required : </i>&nbsp;<b>true</b>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:103</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Required input signal containing the User profile data to display.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="variant"></a>
+                        <b>variant</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;default&quot; | &quot;desktop-sheet&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;default&#x27;</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:107</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Optional input signal specifying the visual variant of the profile dialog (&#39;default&#39; or &#39;desktop-sheet&#39;).</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="closed"></a>
+                        <b>closed</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:111</a></div>
+                            </td>
+                        </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Output emitter triggered when the profile dialog is closed.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelAccountDelete"></a>
+                    <span class="name">
+                        <span ><b>cancelAccountDelete</b></span>
+                        <a href="#cancelAccountDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelAccountDelete()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the account deletion confirmation overlay.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelEdit"></a>
+                    <span class="name">
+                        <span ><b>cancelEdit</b></span>
+                        <a href="#cancelEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelEdit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Cancels editing mode and restores the original user profile values.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canSaveProfile"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>canSaveProfile</b></span>
+                        <a href="#canSaveProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>canSaveProfile()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="242"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:242</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks whether the edited profile can be saved.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>True if input values are valid, user is authorized, and save is not already in progress.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeDialog"></a>
+                    <span class="name">
+                        <span ><b>closeDialog</b></span>
+                        <a href="#closeDialog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>closeDialog()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="162"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:162</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Closes the dialog and emits the closed output.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmAccountDelete"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>confirmAccountDelete</b></span>
+                        <a href="#confirmAccountDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>confirmAccountDelete()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="250"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:250</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Deletes the logged-in user&#39;s account after confirmation.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise resolving when account deletion attempt completes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleAccountDeleted"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>handleAccountDeleted</b></span>
+                        <a href="#handleAccountDeleted"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleAccountDeleted()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="269"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:269</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Redirects and triggers toasts once the account is successfully deleted.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise resolving when navigation finishes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openDirectChat"></a>
+                    <span class="name">
+                        <span ><b>openDirectChat</b></span>
+                        <a href="#openDirectChat"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openDirectChat()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="288"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:288</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Opens a direct message chat room with the active user profile, then closes the dialog overlay.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requestAccountDelete"></a>
+                    <span class="name">
+                        <span ><b>requestAccountDelete</b></span>
+                        <a href="#requestAccountDelete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>requestAccountDelete()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="190"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:190</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Opens the account deletion confirmation overlay.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requestEdit"></a>
+                    <span class="name">
+                        <span ><b>requestEdit</b></span>
+                        <a href="#requestEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>requestEdit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="169"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:169</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Puts the dialog into edit mode if the current user owns this profile.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resetEditableFields"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>resetEditableFields</b></span>
+                        <a href="#resetEditableFields"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resetEditableFields()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="280"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:280</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Resets editing values back to original user values.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="saveProfile"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>saveProfile</b></span>
+                        <a href="#saveProfile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>saveProfile()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="226"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:226</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Saves profile updates (name and avatar URL) via the authentication service.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise resolving when saving attempt concludes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selectAvatar"></a>
+                    <span class="name">
+                        <span ><b>selectAvatar</b></span>
+                        <a href="#selectAvatar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>selectAvatar(avatarUrl: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="209"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:209</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Selects an avatar and sets the temp editable avatar URL.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>avatarUrl</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>The URL of the avatar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateEditableName"></a>
+                    <span class="name">
+                        <span ><b>updateEditableName</b></span>
+                        <a href="#updateEditableName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateEditableName(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="217"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:217</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates the editable display name when the user inputs text.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>The input change event.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(authService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:39</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Authentication service injected to verify current user and execute profile edits or account deletion.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="availableAvatars"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>availableAvatars</b></span>
+                        <a href="#availableAvatars"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.avatarSvc.getAvatars()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:98</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>List of all available avatar image URLs.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="avatarSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>avatarSvc</b></span>
+                        <a href="#avatarSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(avatarService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:59</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Avatar service injected to load available avatars.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="avatarUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>avatarUrl</b></span>
+                        <a href="#avatarUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; (this.profile().avatar_url || &#x27;&#x27;).trim() || this.avatarSvc.getDefaultAvatar())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:135</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Computed signal returning the avatar URL of the profile or a default avatar fallback.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canEdit"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>canEdit</b></span>
+                        <a href="#canEdit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; {
+		const currentUser &#x3D; this.authService.currentUserProfile();
+		return !!currentUser &amp;&amp; this.profile().id &#x3D;&#x3D;&#x3D; currentUser.id;
+	})</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:145</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Computed signal returning true if the active profile is that of the currently logged-in user.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cardClass"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>cardClass</b></span>
+                        <a href="#cardClass"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; {
+		const roleClass &#x3D; this.canEdit() ? &#x27;dialog-profile--self&#x27; : &#x27;dialog-profile--other&#x27;;
+		const variantClass &#x3D; this.variant() &#x3D;&#x3D;&#x3D; &#x27;desktop-sheet&#x27; ? &#x27;dialog-profile--desktop-sheet&#x27; : &#x27;&#x27;;
+
+		return &#x60;${roleClass} ${variantClass}&#x60;.trim();
+	})</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="152" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:152</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Computed signal returning the combined CSS classes applied to the profile card wrapper.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="channelSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>channelSvc</b></span>
+                        <a href="#channelSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(channelService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:49</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Channel service.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="displayName"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>displayName</b></span>
+                        <a href="#displayName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; (this.profile().display_name || &#x27;&#x27;).trim())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:127</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Computed signal returning the trimmed display name of the profile.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editableAvatarUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>editableAvatarUrl</b></span>
+                        <a href="#editableAvatarUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:82</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Writable signal storing the temporary selected avatar URL.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editableName"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>editableName</b></span>
+                        <a href="#editableName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:78</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Writable signal storing the temporary editable display name.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="email"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>email</b></span>
+                        <a href="#email"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; (this.profile().email || &#x27;&#x27;).trim())</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:131</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Computed signal returning the trimmed email of the profile.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="headerTitle"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>headerTitle</b></span>
+                        <a href="#headerTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; this.isEditing() ? &#x27;Dein Profil bearbeiten&#x27; : &#x27;Profil&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="123" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:123</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Computed signal returning the appropriate title for the dialog header based on edit state.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isDeleteConfirmOpen"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>isDeleteConfirmOpen</b></span>
+                        <a href="#isDeleteConfirmOpen"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:90</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal indicating whether the account delete confirmation dialog is open.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isDeletingAccount"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>isDeletingAccount</b></span>
+                        <a href="#isDeletingAccount"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:94</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal indicating whether account deletion process is currently ongoing.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isEditing"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>isEditing</b></span>
+                        <a href="#isEditing"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:74</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal storing whether the profile is currently in edit mode.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isOnline"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>isOnline</b></span>
+                        <a href="#isOnline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>computed(() &#x3D;&gt; {
+		return this.authService.onlineUserIds().has(this.profile().id);
+	})</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:139</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Computed signal returning true if the profile owner is currently online.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isSaving"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>isSaving</b></span>
+                        <a href="#isSaving"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:86</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal indicating whether the profile save action is in progress.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="profileDialogSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>profileDialogSvc</b></span>
+                        <a href="#profileDialogSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ProfileDialogService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:54</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Service managing the state and opening/closing of the profile dialog overlay.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:64</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Router injected for navigating to chat routes or login page after deletion.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toastSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>toastSvc</b></span>
+                        <a href="#toastSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ToastService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:69</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Toast service injected to show feedback notifications.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>userSvc</b></span>
+                        <a href="#userSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(userService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/dialog-profile/dialog-profile.ts:44</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>User service injected for user profile query.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+	ChangeDetectionStrategy,
+	Component,
+	computed,
+	effect,
+	inject,
+	input,
+	output,
+	signal,
+} from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { authService } from &#x27;../../services/auth.service&#x27;;
+import { User } from &#x27;../../interfaces/user.interface&#x27;;
+import { userService } from &#x27;../../services/user.service&#x27;;
+import { channelService } from &#x27;../../services/channel.service&#x27;;
+import { ProfileDialogService } from &#x27;../../services/profile-dialog.service&#x27;;
+import { avatarService } from &#x27;../../services/avatar.service&#x27;;
+import { ToastService } from &#x27;../../services/toast.service&#x27;;
+
+@Component({
+	selector: &#x27;app-dialog-profile&#x27;,
+	templateUrl: &#x27;./dialog-profile.html&#x27;,
+	styleUrl: &#x27;./dialog-profile.scss&#x27;,
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	host: {
+		class: &#x27;dialog-profile-host&#x27;
+	}
+})
+/**
+ * Component representing the user profile dialog.
+ * Supports viewing details of any user, editing name and avatar for the current user,
+ * opening direct chats, or deleting the user&#x27;s account.
+ */
+export class DialogProfileComponent {
+	/**
+	 * Authentication service injected to verify current user and execute profile edits or account deletion.
+	 * @private
+	 */
+	private readonly authService &#x3D; inject(authService);
+	/**
+	 * User service injected for user profile query.
+	 * @private
+	 */
+	private readonly userSvc &#x3D; inject(userService);
+	/**
+	 * Channel service.
+	 * @private
+	 */
+	private readonly channelSvc &#x3D; inject(channelService);
+	/**
+	 * Service managing the state and opening/closing of the profile dialog overlay.
+	 * @private
+	 */
+	private readonly profileDialogSvc &#x3D; inject(ProfileDialogService);
+	/**
+	 * Avatar service injected to load available avatars.
+	 * @private
+	 */
+	private readonly avatarSvc &#x3D; inject(avatarService);
+	/**
+	 * Router injected for navigating to chat routes or login page after deletion.
+	 * @private
+	 */
+	private readonly router &#x3D; inject(Router);
+	/**
+	 * Toast service injected to show feedback notifications.
+	 * @private
+	 */
+	private readonly toastSvc &#x3D; inject(ToastService);
+
+	/**
+	 * Signal storing whether the profile is currently in edit mode.
+	 */
+	readonly isEditing &#x3D; signal(false);
+	/**
+	 * Writable signal storing the temporary editable display name.
+	 */
+	readonly editableName &#x3D; signal(&#x27;&#x27;);
+	/**
+	 * Writable signal storing the temporary selected avatar URL.
+	 */
+	readonly editableAvatarUrl &#x3D; signal(&#x27;&#x27;);
+	/**
+	 * Signal indicating whether the profile save action is in progress.
+	 */
+	readonly isSaving &#x3D; signal(false);
+	/**
+	 * Signal indicating whether the account delete confirmation dialog is open.
+	 */
+	readonly isDeleteConfirmOpen &#x3D; signal(false);
+	/**
+	 * Signal indicating whether account deletion process is currently ongoing.
+	 */
+	readonly isDeletingAccount &#x3D; signal(false);
+	/**
+	 * List of all available avatar image URLs.
+	 */
+	readonly availableAvatars &#x3D; this.avatarSvc.getAvatars();
+
+	/**
+	 * Required input signal containing the User profile data to display.
+	 */
+	readonly profile &#x3D; input.required&lt;User&gt;();
+	/**
+	 * Optional input signal specifying the visual variant of the profile dialog (&#x27;default&#x27; or &#x27;desktop-sheet&#x27;).
+	 */
+	readonly variant &#x3D; input&lt;&#x27;default&#x27; | &#x27;desktop-sheet&#x27;&gt;(&#x27;default&#x27;);
+	/**
+	 * Output emitter triggered when the profile dialog is closed.
+	 */
+	readonly closed &#x3D; output&lt;void&gt;();
+
+	/**
+	 * Constructor. Registers an effect to synchronize editable fields when the profile input signal changes.
+	 */
+	constructor() {
+		effect(() &#x3D;&gt; this.resetEditableFields());
+	}
+
+	/**
+	 * Computed signal returning the appropriate title for the dialog header based on edit state.
+	 */
+	readonly headerTitle &#x3D; computed(() &#x3D;&gt; this.isEditing() ? &#x27;Dein Profil bearbeiten&#x27; : &#x27;Profil&#x27;);
+	/**
+	 * Computed signal returning the trimmed display name of the profile.
+	 */
+	readonly displayName &#x3D; computed(() &#x3D;&gt; (this.profile().display_name || &#x27;&#x27;).trim());
+	/**
+	 * Computed signal returning the trimmed email of the profile.
+	 */
+	readonly email &#x3D; computed(() &#x3D;&gt; (this.profile().email || &#x27;&#x27;).trim());
+	/**
+	 * Computed signal returning the avatar URL of the profile or a default avatar fallback.
+	 */
+	readonly avatarUrl &#x3D; computed(() &#x3D;&gt; (this.profile().avatar_url || &#x27;&#x27;).trim() || this.avatarSvc.getDefaultAvatar());
+	/**
+	 * Computed signal returning true if the profile owner is currently online.
+	 */
+	readonly isOnline &#x3D; computed(() &#x3D;&gt; {
+		return this.authService.onlineUserIds().has(this.profile().id);
+	});
+	/**
+	 * Computed signal returning true if the active profile is that of the currently logged-in user.
+	 */
+	readonly canEdit &#x3D; computed(() &#x3D;&gt; {
+		const currentUser &#x3D; this.authService.currentUserProfile();
+		return !!currentUser &amp;&amp; this.profile().id &#x3D;&#x3D;&#x3D; currentUser.id;
+	});
+	/**
+	 * Computed signal returning the combined CSS classes applied to the profile card wrapper.
+	 */
+	readonly cardClass &#x3D; computed(() &#x3D;&gt; {
+		const roleClass &#x3D; this.canEdit() ? &#x27;dialog-profile--self&#x27; : &#x27;dialog-profile--other&#x27;;
+		const variantClass &#x3D; this.variant() &#x3D;&#x3D;&#x3D; &#x27;desktop-sheet&#x27; ? &#x27;dialog-profile--desktop-sheet&#x27; : &#x27;&#x27;;
+
+		return &#x60;${roleClass} ${variantClass}&#x60;.trim();
+	});
+
+	/**
+	 * Closes the dialog and emits the closed output.
+	 */
+	closeDialog(): void {
+		this.closed.emit();
+	}
+
+	/**
+	 * Puts the dialog into edit mode if the current user owns this profile.
+	 */
+	requestEdit(): void {
+		if (!this.canEdit()) {
+			return;
+		}
+
+		this.resetEditableFields();
+		this.isEditing.set(true);
+	}
+
+	/**
+	 * Cancels editing mode and restores the original user profile values.
+	 */
+	cancelEdit(): void {
+		this.isDeleteConfirmOpen.set(false);
+		this.resetEditableFields();
+		this.isEditing.set(false);
+	}
+
+	/**
+	 * Opens the account deletion confirmation overlay.
+	 */
+	requestAccountDelete(): void {
+		if (!this.canEdit() || this.isDeletingAccount()) {
+			return;
+		}
+
+		this.isDeleteConfirmOpen.set(true);
+	}
+
+	/**
+	 * Closes the account deletion confirmation overlay.
+	 */
+	cancelAccountDelete(): void {
+		this.isDeleteConfirmOpen.set(false);
+	}
+
+	/**
+	 * Selects an avatar and sets the temp editable avatar URL.
+	 * @param avatarUrl The URL of the avatar.
+	 */
+	selectAvatar(avatarUrl: string): void {
+		this.editableAvatarUrl.set(avatarUrl);
+	}
+
+	/**
+	 * Updates the editable display name when the user inputs text.
+	 * @param event The input change event.
+	 */
+	updateEditableName(event: Event): void {
+		const target &#x3D; event.target as HTMLInputElement | null;
+		this.editableName.set(target?.value ?? &#x27;&#x27;);
+	}
+
+	/**
+	 * Saves profile updates (name and avatar URL) via the authentication service.
+	 * @returns A promise resolving when saving attempt concludes.
+	 */
+	async saveProfile(): Promise&lt;void&gt; {
+		if (!this.canSaveProfile()) return;
+		this.isSaving.set(true);
+		try {
+			const updated &#x3D; await this.authService.updateCurrentUserProfile(this.editableName(), this.editableAvatarUrl());
+			if (updated) this.profileDialogSvc.close();
+		} finally {
+			this.isSaving.set(false);
+		}
+	}
+
+	/**
+	 * Checks whether the edited profile can be saved.
+	 * @returns True if input values are valid, user is authorized, and save is not already in progress.
+	 * @private
+	 */
+	private canSaveProfile(): boolean {
+		return !!(this.canEdit() &amp;&amp; this.editableName().trim() &amp;&amp; this.editableAvatarUrl().trim() &amp;&amp; !this.isSaving());
+	}
+
+	/**
+	 * Deletes the logged-in user&#x27;s account after confirmation.
+	 * @returns A promise resolving when account deletion attempt completes.
+	 */
+	async confirmAccountDelete(): Promise&lt;void&gt; {
+		if (!this.canEdit() || this.isDeletingAccount()) return;
+		this.isDeletingAccount.set(true);
+		try {
+			if (await this.authService.deleteCurrentUserAccount()) {
+				await this.handleAccountDeleted();
+			} else {
+				this.toastSvc.show(&#x27;Account konnte nicht gelöscht werden.&#x27;, &#x27;error&#x27;, 3000, undefined, false);
+			}
+		} finally {
+			this.isDeletingAccount.set(false);
+		}
+	}
+
+	/**
+	 * Redirects and triggers toasts once the account is successfully deleted.
+	 * @returns A promise resolving when navigation finishes.
+	 * @private
+	 */
+	private async handleAccountDeleted(): Promise&lt;void&gt; {
+		this.isDeleteConfirmOpen.set(false);
+		this.profileDialogSvc.close();
+		this.toastSvc.show(&#x27;Account wurde gelöscht.&#x27;, &#x27;success&#x27;, 3000, undefined, false);
+		await this.router.navigate([&#x27;/login&#x27;]);
+	}
+
+	/**
+	 * Resets editing values back to original user values.
+	 * @private
+	 */
+	private resetEditableFields(): void {
+		this.editableName.set(this.displayName());
+		this.editableAvatarUrl.set(this.avatarUrl());
+	}
+
+	/**
+	 * Opens a direct message chat room with the active user profile, then closes the dialog overlay.
+	 */
+	openDirectChat(): void {
+		if (this.canEdit()) {
+			return;
+		}
+
+		this.router.navigate([&#x27;/main/dm&#x27;, this.profile().id]);
+		this.profileDialogSvc.close();
+	}
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;section
+	class&#x3D;&quot;dialog-profile&quot;
+	[class]&#x3D;&quot;cardClass()&quot;
+	role&#x3D;&quot;dialog&quot;
+	aria-modal&#x3D;&quot;true&quot;
+	aria-label&#x3D;&quot;Profil&quot;
+&gt;
+	&lt;header class&#x3D;&quot;dialog-profile__header&quot;&gt;
+		&lt;h2 class&#x3D;&quot;dialog-profile__title text-profile-title&quot;&gt;{{ headerTitle() }}&lt;/h2&gt;
+
+		&lt;button
+			class&#x3D;&quot;dialog-profile__close&quot;
+			type&#x3D;&quot;button&quot;
+			aria-label&#x3D;&quot;Profil-Dialog schliessen&quot;
+			(click)&#x3D;&quot;closeDialog()&quot;
+		&gt;
+			&lt;img src&#x3D;&quot;img/icons/threads/close_button.svg&quot; class&#x3D;&quot;dialog-profile__close-icon dialog-profile__close-icon--normal&quot; alt&#x3D;&quot;Profil-Dialog schliessen&quot;&gt;
+			&lt;img src&#x3D;&quot;img/icons/threads/close_button_hover.svg&quot; class&#x3D;&quot;dialog-profile__close-icon dialog-profile__close-icon--hover&quot; alt&#x3D;&quot;Profil-Dialog schliessen&quot;&gt;
+		&lt;/button&gt;
+	&lt;/header&gt;
+
+	@if (isEditing()) {
+		&lt;div class&#x3D;&quot;dialog-profile__body dialog-profile__body--edit&quot;&gt;
+			&lt;div class&#x3D;&quot;dialog-profile__avatar-wrap&quot;&gt;
+				&lt;img class&#x3D;&quot;dialog-profile__avatar&quot; [src]&#x3D;&quot;editableAvatarUrl()&quot; [alt]&#x3D;&quot;displayName()&quot; referrerpolicy&#x3D;&quot;no-referrer&quot;&gt;
+			&lt;/div&gt;
+
+			&lt;div class&#x3D;&quot;dialog-profile__avatar-picker&quot;&gt;
+				&lt;p class&#x3D;&quot;dialog-profile__avatar-picker-label text-profile-label&quot;&gt;Avatar auswählen&lt;/p&gt;
+				&lt;div class&#x3D;&quot;dialog-profile__avatar-options&quot;&gt;
+					@for (avatar of availableAvatars; track avatar; let i &#x3D; $index) {
+						&lt;button
+							class&#x3D;&quot;dialog-profile__avatar-option&quot;
+							type&#x3D;&quot;button&quot;
+							[class.dialog-profile__avatar-option--selected]&#x3D;&quot;editableAvatarUrl() &#x3D;&#x3D;&#x3D; avatar&quot;
+							[attr.aria-label]&#x3D;&quot;&#x27;Avatar &#x27; + (i + 1) + &#x27; auswählen&#x27;&quot;
+							[attr.aria-pressed]&#x3D;&quot;editableAvatarUrl() &#x3D;&#x3D;&#x3D; avatar&quot;
+							(click)&#x3D;&quot;selectAvatar(avatar)&quot;
+						&gt;
+							&lt;img class&#x3D;&quot;dialog-profile__avatar-option-image&quot; [src]&#x3D;&quot;avatar&quot; alt&#x3D;&quot;&quot; aria-hidden&#x3D;&quot;true&quot;&gt;
+						&lt;/button&gt;
+					}
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			&lt;div class&#x3D;&quot;dialog-profile__edit-field&quot;&gt;
+				&lt;div class&#x3D;&quot;dialog-profile__edit-label-row&quot;&gt;
+					&lt;img src&#x3D;&quot;img/icons/account_circle.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;dialog-profile__edit-label-icon&quot;&gt;
+					&lt;p class&#x3D;&quot;dialog-profile__edit-label text-profile-label&quot;&gt;Vollständiger Name&lt;/p&gt;
+				&lt;/div&gt;
+
+				&lt;input
+					class&#x3D;&quot;dialog-profile__edit-input text-profile-value&quot;
+					type&#x3D;&quot;text&quot;
+					[value]&#x3D;&quot;editableName()&quot;
+					(input)&#x3D;&quot;updateEditableName($event)&quot;
+					placeholder&#x3D;&quot;Vollständiger Name&quot;
+					maxlength&#x3D;&quot;80&quot;
+				&gt;
+			&lt;/div&gt;
+
+			&lt;div class&#x3D;&quot;dialog-profile__edit-actions&quot;&gt;
+				&lt;button class&#x3D;&quot;dialog-profile__action-btn btn-secondary text-profile-action&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;cancelEdit()&quot;&gt;
+					Abbrechen
+				&lt;/button&gt;
+
+				&lt;button class&#x3D;&quot;dialog-profile__action-btn btn-primary text-profile-action&quot; type&#x3D;&quot;button&quot; [disabled]&#x3D;&quot;isDeletingAccount()&quot; (click)&#x3D;&quot;saveProfile()&quot;&gt;
+					Speichern
+				&lt;/button&gt;
+			&lt;/div&gt;
+
+			&lt;div class&#x3D;&quot;dialog-profile__danger-zone&quot;&gt;
+				&lt;button class&#x3D;&quot;dialog-profile__delete-btn text-profile-action&quot; type&#x3D;&quot;button&quot; [disabled]&#x3D;&quot;isDeletingAccount()&quot; (click)&#x3D;&quot;requestAccountDelete()&quot;&gt;
+					Account löschen
+				&lt;/button&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	} @else {
+		&lt;div class&#x3D;&quot;dialog-profile__body&quot;&gt;
+			&lt;div class&#x3D;&quot;dialog-profile__avatar-wrap&quot;&gt;
+				&lt;img class&#x3D;&quot;dialog-profile__avatar&quot; [src]&#x3D;&quot;avatarUrl()&quot; [alt]&#x3D;&quot;displayName()&quot; referrerpolicy&#x3D;&quot;no-referrer&quot;&gt;
+			&lt;/div&gt;
+
+			&lt;div class&#x3D;&quot;dialog-profile__identity-row&quot;&gt;
+				&lt;div class&#x3D;&quot;dialog-profile__identity&quot;&gt;
+					&lt;h3 class&#x3D;&quot;dialog-profile__name text-profile-name&quot;&gt;{{ displayName() }}&lt;/h3&gt;
+
+					&lt;div class&#x3D;&quot;dialog-profile__status&quot;&gt;
+						&lt;span class&#x3D;&quot;dialog-profile__status-dot&quot; [class.dialog-profile__status-dot--offline]&#x3D;&quot;!isOnline()&quot;&gt;&lt;/span&gt;
+						&lt;span class&#x3D;&quot;dialog-profile__status-text text-profile-status&quot; [class.dialog-profile__status-text--offline]&#x3D;&quot;!isOnline()&quot;&gt;{{ isOnline() ? &#x27;Aktiv&#x27; : &#x27;Abwesend&#x27; }}&lt;/span&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				@if (canEdit()) {
+					&lt;button class&#x3D;&quot;dialog-profile__edit text-profile-action&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;requestEdit()&quot;&gt;
+						&lt;img src&#x3D;&quot;img/icons/edit.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;dialog-profile__edit-icon&quot;&gt;
+						&lt;span class&#x3D;&quot;dialog-profile__edit-text&quot;&gt;Bearbeiten&lt;/span&gt;
+					&lt;/button&gt;
+				}
+			&lt;/div&gt;
+
+			&lt;div class&#x3D;&quot;dialog-profile__info-block&quot;&gt;
+				&lt;div class&#x3D;&quot;dialog-profile__info-icon&quot; aria-hidden&#x3D;&quot;true&quot;&gt;
+					&lt;img src&#x3D;&quot;img/icons/form/mail.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;dialog-profile__info-icon-image&quot;&gt;
+				&lt;/div&gt;
+
+				&lt;div class&#x3D;&quot;dialog-profile__info-content&quot;&gt;
+					&lt;p class&#x3D;&quot;dialog-profile__info-label text-profile-label&quot;&gt;E-Mail-Adresse&lt;/p&gt;
+					&lt;a class&#x3D;&quot;dialog-profile__info-value text-profile-value&quot; [href]&#x3D;&quot;&#x27;mailto:&#x27; + email()&quot;&gt;{{ email() }}&lt;/a&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+
+			@if (!canEdit()) {
+				&lt;button class&#x3D;&quot;dialog-profile__message-btn text-profile-action&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;openDirectChat()&quot;&gt;
+					&lt;img src&#x3D;&quot;img/icons/button_icons/mode_comment.svg&quot; alt&#x3D;&quot;&quot; class&#x3D;&quot;dialog-profile__message-btn-icon&quot;&gt;
+					&lt;span&gt;Nachricht&lt;/span&gt;
+				&lt;/button&gt;
+			}
+		&lt;/div&gt;
+	}
+
+	@if (isDeleteConfirmOpen()) {
+		&lt;div class&#x3D;&quot;dialog-profile__confirm-backdrop&quot; (click)&#x3D;&quot;cancelAccountDelete()&quot;&gt;
+			&lt;section
+				class&#x3D;&quot;dialog-profile__confirm-dialog&quot;
+				role&#x3D;&quot;alertdialog&quot;
+				aria-modal&#x3D;&quot;true&quot;
+				aria-labelledby&#x3D;&quot;delete-account-title&quot;
+				aria-describedby&#x3D;&quot;delete-account-description&quot;
+				(click)&#x3D;&quot;$event.stopPropagation()&quot;
+			&gt;
+				&lt;h3 id&#x3D;&quot;delete-account-title&quot; class&#x3D;&quot;dialog-profile__confirm-title text-profile-title&quot;&gt;Account löschen?&lt;/h3&gt;
+				&lt;p id&#x3D;&quot;delete-account-description&quot; class&#x3D;&quot;dialog-profile__confirm-text text-profile-value&quot;&gt;
+					Dein Profil und alle zugehörigen Daten werden dauerhaft gelöscht. Dieser Schritt kann nicht rückgängig gemacht werden.
+				&lt;/p&gt;
+				&lt;div class&#x3D;&quot;dialog-profile__confirm-actions&quot;&gt;
+					&lt;button class&#x3D;&quot;dialog-profile__action-btn btn-secondary text-profile-action&quot; type&#x3D;&quot;button&quot; [disabled]&#x3D;&quot;isDeletingAccount()&quot; (click)&#x3D;&quot;cancelAccountDelete()&quot;&gt;
+						Abbrechen
+					&lt;/button&gt;
+					&lt;button class&#x3D;&quot;btn-danger text-profile-action&quot; type&#x3D;&quot;button&quot; [disabled]&#x3D;&quot;isDeletingAccount()&quot; (click)&#x3D;&quot;confirmAccountDelete()&quot;&gt;
+						{{ isDeletingAccount() ? &#x27;Lösche...&#x27; : &#x27;Ja, Account löschen&#x27; }}
+					&lt;/button&gt;
+				&lt;/div&gt;
+			&lt;/section&gt;
+		&lt;/div&gt;
+	}
+&lt;/section&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><section	class="dialog-profile"	[class]="cardClass()"	role="dialog"	aria-modal="true"	aria-label="Profil">	<header class="dialog-profile__header">		<h2 class="dialog-profile__title text-profile-title">{{ headerTitle() }}</h2>		<button			class="dialog-profile__close"			type="button"			aria-label="Profil-Dialog schliessen"			(click)="closeDialog()"		>			<img src="img/icons/threads/close_button.svg" class="dialog-profile__close-icon dialog-profile__close-icon--normal" alt="Profil-Dialog schliessen">			<img src="img/icons/threads/close_button_hover.svg" class="dialog-profile__close-icon dialog-profile__close-icon--hover" alt="Profil-Dialog schliessen">		</button>	</header>	@if (isEditing()) {		<div class="dialog-profile__body dialog-profile__body--edit">			<div class="dialog-profile__avatar-wrap">				<img class="dialog-profile__avatar" [src]="editableAvatarUrl()" [alt]="displayName()" referrerpolicy="no-referrer">			</div>			<div class="dialog-profile__avatar-picker">				<p class="dialog-profile__avatar-picker-label text-profile-label">Avatar auswählen</p>				<div class="dialog-profile__avatar-options">					@for (avatar of availableAvatars; track avatar; let i = $index) {						<button							class="dialog-profile__avatar-option"							type="button"							[class.dialog-profile__avatar-option--selected]="editableAvatarUrl() === avatar"							[attr.aria-label]="\'Avatar \' + (i + 1) + \' auswählen\'"							[attr.aria-pressed]="editableAvatarUrl() === avatar"							(click)="selectAvatar(avatar)"						>							<img class="dialog-profile__avatar-option-image" [src]="avatar" alt="" aria-hidden="true">						</button>					}				</div>			</div>			<div class="dialog-profile__edit-field">				<div class="dialog-profile__edit-label-row">					<img src="img/icons/account_circle.svg" alt="" class="dialog-profile__edit-label-icon">					<p class="dialog-profile__edit-label text-profile-label">Vollständiger Name</p>				</div>				<input					class="dialog-profile__edit-input text-profile-value"					type="text"					[value]="editableName()"					(input)="updateEditableName($event)"					placeholder="Vollständiger Name"					maxlength="80"				>			</div>			<div class="dialog-profile__edit-actions">				<button class="dialog-profile__action-btn btn-secondary text-profile-action" type="button" (click)="cancelEdit()">					Abbrechen				</button>				<button class="dialog-profile__action-btn btn-primary text-profile-action" type="button" [disabled]="isDeletingAccount()" (click)="saveProfile()">					Speichern				</button>			</div>			<div class="dialog-profile__danger-zone">				<button class="dialog-profile__delete-btn text-profile-action" type="button" [disabled]="isDeletingAccount()" (click)="requestAccountDelete()">					Account löschen				</button>			</div>		</div>	} @else {		<div class="dialog-profile__body">			<div class="dialog-profile__avatar-wrap">				<img class="dialog-profile__avatar" [src]="avatarUrl()" [alt]="displayName()" referrerpolicy="no-referrer">			</div>			<div class="dialog-profile__identity-row">				<div class="dialog-profile__identity">					<h3 class="dialog-profile__name text-profile-name">{{ displayName() }}</h3>					<div class="dialog-profile__status">						<span class="dialog-profile__status-dot" [class.dialog-profile__status-dot--offline]="!isOnline()"></span>						<span class="dialog-profile__status-text text-profile-status" [class.dialog-profile__status-text--offline]="!isOnline()">{{ isOnline() ? \'Aktiv\' : \'Abwesend\' }}</span>					</div>				</div>				@if (canEdit()) {					<button class="dialog-profile__edit text-profile-action" type="button" (click)="requestEdit()">						<img src="img/icons/edit.svg" alt="" class="dialog-profile__edit-icon">						<span class="dialog-profile__edit-text">Bearbeiten</span>					</button>				}			</div>			<div class="dialog-profile__info-block">				<div class="dialog-profile__info-icon" aria-hidden="true">					<img src="img/icons/form/mail.svg" alt="" class="dialog-profile__info-icon-image">				</div>				<div class="dialog-profile__info-content">					<p class="dialog-profile__info-label text-profile-label">E-Mail-Adresse</p>					<a class="dialog-profile__info-value text-profile-value" [href]="\'mailto:\' + email()">{{ email() }}</a>				</div>			</div>			@if (!canEdit()) {				<button class="dialog-profile__message-btn text-profile-action" type="button" (click)="openDirectChat()">					<img src="img/icons/button_icons/mode_comment.svg" alt="" class="dialog-profile__message-btn-icon">					<span>Nachricht</span>				</button>			}		</div>	}	@if (isDeleteConfirmOpen()) {		<div class="dialog-profile__confirm-backdrop" (click)="cancelAccountDelete()">			<section				class="dialog-profile__confirm-dialog"				role="alertdialog"				aria-modal="true"				aria-labelledby="delete-account-title"				aria-describedby="delete-account-description"				(click)="$event.stopPropagation()"			>				<h3 id="delete-account-title" class="dialog-profile__confirm-title text-profile-title">Account löschen?</h3>				<p id="delete-account-description" class="dialog-profile__confirm-text text-profile-value">					Dein Profil und alle zugehörigen Daten werden dauerhaft gelöscht. Dieser Schritt kann nicht rückgängig gemacht werden.				</p>				<div class="dialog-profile__confirm-actions">					<button class="dialog-profile__action-btn btn-secondary text-profile-action" type="button" [disabled]="isDeletingAccount()" (click)="cancelAccountDelete()">						Abbrechen					</button>					<button class="btn-danger text-profile-action" type="button" [disabled]="isDeletingAccount()" (click)="confirmAccountDelete()">						{{ isDeletingAccount() ? \'Lösche...\' : \'Ja, Account löschen\' }}					</button>				</div>			</section>		</div>	}</section></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'ChatAreaComponent', 'selector': 'app-chat-area'},{'name': 'ChooseAvatar', 'selector': 'app-choose-avatar'},{'name': 'DatenschutzComponent', 'selector': 'app-datenschutz'},{'name': 'dialogAddMemberComponent', 'selector': 'app-dialog-add-member'},{'name': 'DialogChannelDetailsComponent', 'selector': 'app-dialog-channel-details'},{'name': 'DialogChannelMembersComponent', 'selector': 'app-dialog-channel-members'},{'name': 'dialogCreateChannelComponent', 'selector': 'app-dialog-create-channel'},{'name': 'DialogProfileComponent', 'selector': 'app-dialog-profile'},{'name': 'DialogProfileOverlayComponent', 'selector': 'app-dialog-profile-overlay'},{'name': 'EmojiPickerHostComponent', 'selector': 'app-emoji-picker-host'},{'name': 'EmojiPickerPopupComponent', 'selector': 'app-emoji-picker-popup'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'ForgotPassword', 'selector': 'app-forgot-password'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'ImpressumComponent', 'selector': 'app-impressum'},{'name': 'IntroComponent', 'selector': 'app-intro'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainComponent', 'selector': 'app-main'},{'name': 'MessageComponent', 'selector': 'app-message'},{'name': 'MessageInputComponent', 'selector': 'app-message-input'},{'name': 'PasswordReset', 'selector': 'app-password-reset'},{'name': 'ProfileMenuComponent', 'selector': 'app-profile-menu'},{'name': 'SearchBarComponent', 'selector': 'app-searchbar'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'ThreadViewComponent', 'selector': 'app-thread-view'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'DialogProfileComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'DialogProfileComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

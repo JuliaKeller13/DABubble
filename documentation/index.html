@@ -1,0 +1,312 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content readme">
+                   <div class="content-data">
+
+
+<h1>DABubble 💬</h1>
+<div align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/img/logo/logo_with_text_white.svg">
+    <source media="(prefers-color-scheme: light)" srcset="public/img/logo/logo_with_text.svg">
+    <img alt="DABubble Logo" src="public/img/logo/logo_with_text.svg" width="300px">
+  </picture>
+  <p><em>A modern, high-performance real-time team chat in the style of Slack – built with Angular 21 and Supabase.</em></p>
+</div>
+
+<hr>
+<p><a href="https://angular.dev/"><img src="https://img.shields.io/badge/Angular-21.2-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular" class="img-responsive"></a>
+<a href="https://supabase.com/"><img src="https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" class="img-responsive"></a>
+<a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" class="img-responsive"></a></p>
+<p>DABubble is an interactive web application for real-time team communication, inspired by Slack. The project was designed and implemented as a team project within the <strong>Developer Akademie</strong> program. It combines a modern frontend architecture based on Angular with a scalable Backend-as-a-Service (BaaS) infrastructure powered by Supabase.</p>
+<hr>
+<h2>🚀 Key Features</h2>
+<ul>
+<li><strong>Real-Time Messaging</strong>: Send and receive messages in channels, direct messages (DMs), or thread replies without manual page reloads using Supabase Realtime Channels.</li>
+<li><strong>Presence &amp; Online Status</strong>: Instant visibility of team members&#39; online status (Online, Offline, Away) via Supabase Presence.</li>
+<li><strong>Typing Indicators</strong>: Real-time visual indicators when a chat partner is typing.</li>
+<li><strong>Mentions &amp; Autocomplete</strong>: Quickly link team members using <code>@</code> and channels using <code>#</code> with interactive autocompletion during input.</li>
+<li><strong>Rich Text &amp; Emoji Integration</strong>: Message input field supporting line breaks, mentions, and an integrated emoji picker (<code>ngx-emoji-mart</code>) with a history of recently used emojis.</li>
+<li><strong>Message Interactions</strong>: Add emoji reactions to messages, edit your own messages, or delete messages completely.</li>
+<li><strong>Global Full-Text Search</strong>: Find channels, message contents, and members quickly via an intelligent search bar.</li>
+<li><strong>User Profiles</strong>: Custom profiles including avatar selection (from predefined avatars or custom uploads) and status management.</li>
+<li><strong>Secure Authentication</strong>: Sign up and login via email/password or Google OAuth (Social Login), forgot password function, and password reset flows.</li>
+<li><strong>Privacy (GDPR Compliant)</strong>: Full account deletion via a dedicated Supabase Deno Edge Function. This cleans up all related data (memberships, reactions, channels) and deletes the authentication user.</li>
+</ul>
+<hr>
+<h2>🛠️ Tech Stack</h2>
+<h3>Frontend</h3>
+<ul>
+<li><strong>Framework</strong>: Angular 21 (Standalone Components, Signals for reactive state management, Standalone Routing &amp; Guards).</li>
+<li><strong>Styling</strong>: SCSS (structured styles, custom core CSS system with CSS variables, responsive layouts for mobile, tablet, and desktop).</li>
+<li><strong>UI Library</strong>: Angular Material &amp; CDK (for modal dialogs, overlays, and accessibility).</li>
+<li><strong>Utilities</strong>: <code>@ctrl/ngx-emoji-mart</code> for emojis.</li>
+</ul>
+<h3>Backend &amp; Database</h3>
+<ul>
+<li><strong>Platform</strong>: Supabase (PostgreSQL).</li>
+<li><strong>Database</strong>: Tables for profiles, channels, channel members, messages, and direct chat deletions.</li>
+<li><strong>Realtime</strong>: Postgres replication triggers to synchronize messages and presence information.</li>
+<li><strong>Serverless</strong>: Supabase Edge Functions (Deno/TypeScript) for administrative cleanup logic.</li>
+</ul>
+<h3>Tooling &amp; Testing</h3>
+<ul>
+<li><strong>Test Runner</strong>: Vitest &amp; jsdom (fast, modern unit tests for Angular components and services).</li>
+<li><strong>Code Quality</strong>: Prettier for consistent code formatting.</li>
+<li><strong>Package Manager</strong>: npm (v11+).</li>
+</ul>
+<hr>
+<h2>📁 Project Structure (Excerpt)</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-text">DABubble/
+├── supabase/                   # Supabase configuration &amp; Edge Functions
+│   ├── functions/              # Deno Edge Functions
+│   │   └── delete-account/     # Edge Function for GDPR-compliant account deletion
+│   └── migrations/             # SQL database migrations
+├── src/
+│   ├── app/
+│   │   ├── components/         # Reusable UI components (Chat, Sidebar, Modals)
+│   │   ├── guards/             # Route Guards (e.g., authGuard)
+│   │   ├── interfaces/         # TypeScript Interfaces (Channel, Message, User)
+│   │   ├── pages/              # Main pages (Login, Signup, Main Dashboard, Reset Password)
+│   │   ├── services/           # Services for Backend, Realtime, Profile &amp; Message handling
+│   │   └── app.ts              # Root component of the app
+│   ├── environments/           # Environment configurations (Supabase keys)
+│   └── styles/                 # Global stylesheets &amp; SCSS partials
+├── vitest.config.ts            # Configuration for Vitest
+└── angular.json                # Angular CLI configuration</code></pre></div><hr>
+<h2>💻 Getting Started (Local Installation)</h2>
+<h3>Prerequisites</h3>
+<p>Make sure you have the following software installed on your system:</p>
+<ul>
+<li><a href="https://nodejs.org/">Node.js</a> (Version &gt;= 20.x recommended)</li>
+<li><a href="https://angular.dev/tools/cli">Angular CLI</a> (Version 21.x)</li>
+<li><a href="https://supabase.com/docs/guides/cli">Supabase CLI</a> (optional)</li>
+</ul>
+<h3>1. Clone the Repository &amp; Install Dependencies</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">git clone https://github.com/JensBaumannDev/DABubble.git
+cd DABubble
+npm install</code></pre></div><h3>2. Set up Environment Variables</h3>
+<p>Create or adjust the configuration file <code>src/environments/environment.ts</code> and enter your Supabase project credentials:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">export const environment = {
+  supabaseUrl: &#39;YOUR_SUPABASE_URL&#39;,
+  supabaseKey: &#39;YOUR_SUPABASE_ANON_KEY&#39;
+};</code></pre></div><h3>3. Start the Development Server</h3>
+<p>Run the Angular application locally:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm start</code></pre></div><p>The application will open automatically at <code>http://localhost:4200/</code>.</p>
+<h3>4. Run Tests</h3>
+<p>Execute the unit tests with Vitest:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm test</code></pre></div><hr>
+<h2>🗄️ Supabase Database Setup</h2>
+<p>DABubble requires the following tables in the Supabase PostgreSQL database:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-mermaid">erDiagram
+    profiles ||--o{ channel_members : user_id
+    profiles ||--o{ channels : created_by
+    profiles ||--o{ messages : sender_id
+    profiles ||--o{ messages : recipient_id
+    profiles ||--o{ direct_chat_deletions : user_id
+    profiles ||--o{ direct_chat_deletions : other_user_id
+    channels ||--o{ channel_members : channel_id
+    channels ||--o{ messages : channel_id</code></pre></div><p>The database schema includes the following tables for data storage and real-time synchronization:</p>
+<ul>
+<li><strong><code>profiles</code></strong>: User profiles (linked to Supabase Auth).</li>
+<li><strong><code>channels</code></strong>: Team channels for group chats.</li>
+<li><strong><code>channel_members</code></strong>: Mapping of users to channels.</li>
+<li><strong><code>messages</code></strong>: Chat messages for channels, direct messages (DMs), and threads.</li>
+<li><strong><code>direct_chat_deletions</code></strong>: Records of cleared chat histories per user.</li>
+</ul>
+<hr>
+<h2>⚖️ License &amp; Development</h2>
+<p>This project was created as a team project within the <strong>Developer Akademie</strong> program by:</p>
+<ul>
+<li><strong>Jens Baumann</strong></li>
+<li><strong>Julia Keller</strong></li>
+</ul>
+<p>The rights to the code and the graphic assets belong to the <strong>Developer Akademie</strong>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -25,22 +25,59 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: './forgot-password.html',
   styleUrl: './forgot-password.scss',
 })
+/**
+ * Component representing the forgot password page.
+ * Allows users to enter their email address to receive a password reset link.
+ */
 export class ForgotPassword implements OnInit {
+  /**
+   * Lifecycle hook that runs on initialization.
+   * Scrolls the window to the top.
+   */
   ngOnInit(): void {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 0);
   }
 
+  /**
+   * Form builder instance used to construct the reactive form.
+   */
   private readonly fb = inject(NonNullableFormBuilder);
+
+  /**
+   * Authentication service instance containing password reset request logic.
+   */
   private readonly authService = inject(authService);
+
+  /**
+   * Toast service used to display success or error notifications.
+   */
   private readonly toast = inject(ToastService);
+
+  /**
+   * Router instance used for navigating between routes.
+   */
   private readonly router = inject(Router);
+
+  /**
+   * Material icon registry used to register custom SVG icons.
+   */
   private readonly iconRegistry = inject(MatIconRegistry);
+
+  /**
+   * Sanitizer used to trust resource URLs of registered custom icons.
+   */
   private readonly sanitizer = inject(DomSanitizer);
 
+  /**
+   * Signal indicating whether the password reset request is loading.
+   */
   loading = signal(false);
 
+  /**
+   * Form group managing the email input.
+   */
   form = this.fb.group({
     email: [
       '',
@@ -51,10 +88,16 @@ export class ForgotPassword implements OnInit {
     ],
   });
 
+  /**
+   * Constructs the ForgotPassword component and registers custom SVG icons.
+   */
   constructor() {
     this.iconRegistry.addSvgIcon('mail', this.sanitizer.bypassSecurityTrustResourceUrl('img/icons/form/mail.svg'));
   }
 
+  /**
+   * Clears any active password reset errors on the email form control.
+   */
   clearLoginError(): void {
     const emailControl = this.form.controls.email;
     if (emailControl.hasError('passwordResetError')) {
@@ -62,6 +105,12 @@ export class ForgotPassword implements OnInit {
     }
   }
 
+  /**
+   * Handles the submission of the forgot password form.
+   * Triggers the auth service's password reset request and navigates back to the login page on success.
+   *
+   * @returns A promise that resolves when the password reset attempt completes.
+   */
   async onSubmit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

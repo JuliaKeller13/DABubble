@@ -8,4 +8,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './footer.html',
   styleUrl: './footer.scss'
 })
+/**
+ * Footer component displaying basic navigation links and copyright information.
+ */
 export class FooterComponent {}
