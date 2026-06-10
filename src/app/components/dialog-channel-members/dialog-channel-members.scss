@@ -10,6 +10,7 @@
   display: block;
   z-index: $z-index-modal;
   animation: fadeIn 0.15s ease-out;
+  transition: opacity 0.35s ease;
 }
 
 .dialog-card {
@@ -36,6 +37,29 @@
 
   &--embedded-view {
     padding: 0;
+
+    .dialog-card__drag-handle {
+      margin: 12px auto 0 auto;
+    }
+  }
+
+  &__drag-handle {
+    display: none;
+    width: 40px;
+    height: 4px;
+    padding: 16px 0;
+    box-sizing: content-box;
+    background-color: #d0d0d0;
+    background-clip: content-box;
+    border-radius: 2px;
+    margin: -20px auto 16px auto;
+    cursor: grab;
+    flex-shrink: 0;
+    touch-action: none;
+    
+    &:active {
+      cursor: grabbing;
+    }
   }
 
   &__header {
@@ -246,17 +270,68 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
+@keyframes slideUpFromBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDownOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 /* #region RESPONSIVE */
 @include mobile {
   .dialog-card {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 380px;
-    border-radius: 30px;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    max-width: 100vw;
+    border-radius: 30px 30px 0 0;
     padding: 24px;
-    animation: fadeIn 0.2s ease-out;
+    animation: slideUpFromBottom 0.35s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+    box-sizing: border-box;
+
+    &.dialog-card--closing {
+      animation: slideDownOut 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards !important;
+    }
+
+    &__drag-handle {
+      display: block;
+      margin: -12px auto 16px auto;
+    }
+
+    &--embedded-view {
+      padding: 0;
+
+      .dialog-card__drag-handle {
+        margin: 16px auto 0 auto !important;
+      }
+    }
 
     &__title {
       font-size: 20px;
@@ -268,9 +343,8 @@
     }
   }
 
-  @keyframes slideDownIn {
-    from { transform: translate(-50%, -60%); opacity: 0; }
-    to { transform: translate(-50%, -50%); opacity: 1; }
+  .dialog-backdrop--closing {
+    animation: fadeOut 0.3s ease forwards !important;
   }
 }
 /* #endregion */

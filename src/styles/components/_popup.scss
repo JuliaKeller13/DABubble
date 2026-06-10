@@ -35,6 +35,26 @@ html body div.cdk-overlay-container div.cdk-overlay-pane.create-channel-dialog-c
   }
 }
 
+@keyframes slideDownOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 /* #region RESPONSIVE */
 @include mobile {
   div.cdk-overlay-pane.custom-dialog-container {
@@ -54,6 +74,16 @@ html body div.cdk-overlay-container div.cdk-overlay-pane.create-channel-dialog-c
       height: auto;
       animation: slideUpFromBottom 0.35s cubic-bezier(0.32, 0.72, 0, 1) forwards;
     }
+
+    &.dialog-closing {
+      .mdc-dialog__surface {
+        animation: slideDownOut 0.35s cubic-bezier(0.32, 0.72, 0, 1) forwards ;
+      }
+    }
+  }
+
+  div.cdk-overlay-backdrop.dialog-closing-backdrop {
+    animation: fadeOut 0.3s ease forwards ;
   }
 }
 

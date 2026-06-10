@@ -479,7 +479,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   async openCreateChannelDialog(): Promise<void> {
     const dialogRef = this.dialog.open(dialogCreateChannelComponent, getResponsiveDialogConfig({ width: '870px', height: '540px', panelClass: 'create-channel-dialog-container' }, 'full-screen'));
     dialogRef.componentInstance.channelSaved.subscribe(async (result) => {
-      const addMemberRef = this.dialog.open(dialogAddMemberComponent, getResponsiveDialogConfig({ width: '500px', minHeight: '290px', maxWidth: '100vw', maxHeight: '90vh', panelClass: ['custom-dialog-container', 'add-member-dialog-container'], data: { channelName: result.name } }, 'bottom-sheet'));
+      const addMemberRef = this.dialog.open(dialogAddMemberComponent, getResponsiveDialogConfig({ width: '500px', minHeight: '290px', maxWidth: '100vw', maxHeight: '90vh', disableClose: true, panelClass: ['custom-dialog-container', 'add-member-dialog-container'], data: { channelName: result.name } }, 'bottom-sheet'));
       const memberResult = await firstValueFrom(addMemberRef.afterClosed());
       if (memberResult) await this.createChannelWithMembers(dialogRef, result, memberResult);
     });

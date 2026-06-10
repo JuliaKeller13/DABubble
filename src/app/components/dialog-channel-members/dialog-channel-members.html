@@ -1,5 +1,14 @@
-<div class="dialog-backdrop" (click)="onClose()"></div>
-<div class="dialog-card" [class.dialog-card--embedded-view]="view === 'add'" [ngClass]="'dialog-card--' + positionClass" (click)="$event.stopPropagation()">
+<div class="dialog-backdrop" [class.dialog-backdrop--closing]="isClosing" (click)="onClose()"></div>
+<div class="dialog-card" 
+     [class.dialog-card--embedded-view]="view === 'add'" 
+     [class.dialog-card--closing]="isClosing"
+     [ngClass]="'dialog-card--' + positionClass" 
+     (click)="$event.stopPropagation()">
+  
+  <div class="dialog-card__drag-handle" 
+       (touchstart)="onTouchStart($event)" 
+       (touchend)="onTouchEnd($event)"></div>
+
   @if (view === 'members') {
     <div class="dialog-card__header">
       <h2 class="dialog-card__title">Mitglieder</h2>
@@ -59,6 +68,7 @@
   } @else {
     <app-dialog-add-member 
       [inputData]="{ channelName: channelName, mode: 'add' }" 
+      [isEmbedded]="true"
       (dialogClosed)="onAddMemberClosed($event)">
     </app-dialog-add-member>
   }

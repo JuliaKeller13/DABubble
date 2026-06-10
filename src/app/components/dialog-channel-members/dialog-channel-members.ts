@@ -117,10 +117,50 @@ export class DialogChannelMembersComponent implements OnInit {
   }
 
   /**
+   * Flag indicating whether the closing animation is currently in progress.
+   */
+  isClosing = false;
+  /**
+   * The initial vertical touch coordinate recorded at the start of a touch interaction.
+   * @private
+   */
+  private touchStartY = 0;
+
+  /**
+   * Handles the start of a touch interaction on the drag handle, storing the initial vertical position.
+   * @param event The TouchEvent triggered by the user.
+   */
+  onTouchStart(event: TouchEvent): void {
+    this.touchStartY = event.touches[0].clientY;
+  }
+
+  /**
+   * Handles the end of a touch interaction, triggering the closing animation if swiped downwards past the threshold.
+   * @param event The TouchEvent triggered by the user.
+   */
+  onTouchEnd(event: TouchEvent): void {
+    const diffY = event.changedTouches[0].clientY - this.touchStartY;
+    if (diffY > 50) {
+      this.closeWithAnimation();
+    }
+  }
+
+  /**
+   * Initiates the closing sequence by setting the closing state and emitting the close event after the animation completes.
+   */
+  closeWithAnimation(): void {
+    this.isClosing = true;
+    setTimeout(() => {
+      this.close.emit();
+      this.isClosing = false;
+    }, 300);
+  }
+
+  /**
    * Triggers the closing event of the dialog.
    */
   onClose() {
-    this.close.emit();
+    this.closeWithAnimation();
   }
 
   /**
@@ -139,7 +179,7 @@ export class DialogChannelMembersComponent implements OnInit {
     if (result) {
       this.addMember.emit(result);
     }
-    this.close.emit();
+    this.closeWithAnimation();
   }
 
   /**

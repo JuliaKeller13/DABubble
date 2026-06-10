@@ -121,6 +121,12 @@ export class dialogAddMemberComponent implements OnInit {
 
     this.users = usersList;
     this.filterUsers();
+
+    if (this.dialogRef) {
+      this.dialogRef.backdropClick().subscribe(() => {
+        this.closeWithAnimation();
+      });
+    }
   }
 
   /**
@@ -192,13 +198,64 @@ export class dialogAddMemberComponent implements OnInit {
   }
 
   /**
+   * The initial vertical touch coordinate recorded at the start of a touch interaction.
+   * @private
+   */
+  private touchStartY = 0;
+
+  /**
+   * Handles the start of a touch interaction on the drag handle, storing the initial vertical position.
+   * Only active when the component is not embedded (i.e. opened via MatDialog).
+   * @param event The TouchEvent triggered by the user.
+   */
+  onTouchStart(event: TouchEvent): void {
+    if (this.isEmbedded) return;
+    this.touchStartY = event.touches[0].clientY;
+  }
+
+  /**
+   * Handles the end of a touch interaction, triggering the closing animation if swiped downwards past the threshold.
+   * Only active when the component is not embedded (i.e. opened via MatDialog).
+   * @param event The TouchEvent triggered by the user.
+   */
+  onTouchEnd(event: TouchEvent): void {
+    if (this.isEmbedded) return;
+    const diffY = event.changedTouches[0].clientY - this.touchStartY;
+    if (diffY > 50) {
+      this.closeWithAnimation();
+    }
+  }
+
+  /**
+   * Initiates the closing sequence by setting the closing class on the dialog panel/backdrop and closing the ref after the animation.
+   * @param result Optional result to return to the parent component.
+   */
+  closeWithAnimation(result?: any): void {
+    const pane = document.querySelector('.add-member-dialog-container') as HTMLElement;
+    if (pane) {
+      pane.classList.add('dialog-closing');
+    }
+    const backdropEl = document.querySelector('.cdk-overlay-backdrop') as HTMLElement;
+    if (backdropEl) {
+      backdropEl.classList.add('dialog-closing-backdrop');
+    }
+    setTimeout(() => {
+      if (this.dialogRef) {
+        this.dialogRef.close(result);
+      }
+      this.dialogClosed.emit(result);
+    }, 300);
+  }
+
+  /**
    * Closes the dialog or emits the dialog closed event if embedded.
    */
   closeDialog(): void {
     if (this.dialogRef) {
-      this.dialogRef.close();
+      this.closeWithAnimation();
+    } else {
+      this.dialogClosed.emit();
     }
-    this.dialogClosed.emit();
   }
 
   /**
@@ -213,8 +270,9 @@ export class dialogAddMemberComponent implements OnInit {
     };
 
     if (this.dialogRef) {
-      this.dialogRef.close(result);
+      this.closeWithAnimation(result);
+    } else {
+      this.dialogClosed.emit(result);
     }
-    this.dialogClosed.emit(result);
   }
 }

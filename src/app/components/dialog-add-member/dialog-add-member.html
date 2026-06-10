@@ -1,5 +1,7 @@
 <div class="add-member" [class.add-member--embedded]="isEmbedded">
-  <div class="add-member__drag-handle"></div>
+  <div class="add-member__drag-handle"
+       (touchstart)="onTouchStart($event)"
+       (touchend)="onTouchEnd($event)"></div>
 
   <div class="add-member__header">
     <div class="add-member__title-container">
