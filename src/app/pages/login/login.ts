@@ -45,9 +45,8 @@ export class LoginComponent implements OnInit {
     setTimeout(() => {
       window.scrollTo(0, 0);
     }, 0);
-    if (typeof window !== 'undefined' && !sessionStorage.getItem('introShown')) {
+    if (typeof window !== 'undefined') {
       this.showIntro.set(true);
-      sessionStorage.setItem('introShown', 'true');
     }
   }
 

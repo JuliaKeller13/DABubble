@@ -123,7 +123,7 @@
                     }
                   </div>
                   <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
-                    {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
+                    {{ user.display_name | truncate }}{{ user.id === currentUserId ? ' (Du)' : '' }}
                   </span>
                   
                   <button class="sidebar__close-chat-btn" (click)="closeChat(user.id, $event)" aria-label="Chat ausblenden">
@@ -154,7 +154,7 @@
                     }
                   </div>
                   <span class="sidebar__item-name" [class.sidebar__item-name--unread]="unreadUsers()[user.id]">
-                    {{ user.display_name }}{{ user.id === currentUserId ? ' (Du)' : '' }}
+                    {{ user.display_name | truncate }}{{ user.id === currentUserId ? ' (Du)' : '' }}
                   </span>
                 </div>
               }
