@@ -106,9 +106,14 @@ main {
     margin: 0;
   }
 
+  h3 {
+    margin: 16px 0 4px 0;
+    color: $black;
+  }
+
   p {
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
     color: $black;
   }
 }
