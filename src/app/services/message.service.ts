@@ -106,7 +106,8 @@ export class messageService {
   ): Promise<Message | null> {
     try {
       const parsedContent = this.zeroWidthToMarkup(content);
-      const payload: any = { content: parsedContent, sender_id: senderId, channel_id: channelId };
+      const payload: any = { content: parsedContent, sender_id: senderId };
+      if (channelId) payload.channel_id = channelId;
       if (parentMessageId) payload.parent_id = parentMessageId;
       const { data, error } = await this.supabaseSvc.supabase
         .from('messages').insert(payload).select().single();

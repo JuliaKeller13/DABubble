@@ -22,6 +22,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
+    clip-path: inset(0);
     font-family: var(--font-main);
     font-size: 18px;
     font-weight: 400;
