@@ -15,6 +15,7 @@ import { SearchBarComponent } from '../searchbar/searchbar';
 import { dialogCreateChannelComponent } from '../dialog-create-channel/dialog-create-channel';
 import { dialogAddMemberComponent } from '../dialog-add-member/dialog-add-member';
 import { SidebarDataService } from './sidebar-data.service';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 /**
  * Modifies a MatDialogConfig to support mobile viewports as either a full-screen display or a bottom-sheet.
@@ -35,7 +36,7 @@ export function getResponsiveDialogConfig(config: MatDialogConfig, type: 'full-s
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, SearchBarComponent],
+  imports: [CommonModule, MatDialogModule, SearchBarComponent, TruncatePipe],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })

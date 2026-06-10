@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { authService } from '../../services/auth.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
 import { DialogProfileComponent } from '../dialog-profile/dialog-profile';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-profile-menu',
   standalone: true,
-  imports: [DialogProfileComponent],
+  imports: [DialogProfileComponent, TruncatePipe],
   templateUrl: './profile-menu.html',
   styleUrl: './profile-menu.scss',
 })
