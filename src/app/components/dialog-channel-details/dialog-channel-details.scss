@@ -278,9 +278,13 @@
 
   
   &__block--members {
-    @include flex(column, nowrap, flex-start, stretch);
-    gap: 15px;
-    margin-top: 10px;
+    display: none;
+
+    @include tablet-lg {
+      @include flex(column, nowrap, flex-start, stretch);
+      gap: 15px;
+      margin-top: 10px;
+    }
   }
 
   &__members-list {
@@ -366,6 +370,55 @@
       }
     }
   }
+
+  &__add-btn {
+    @include flex(row, nowrap, flex-start, center);
+    gap: 15px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 100px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: $bg-color;
+
+      .dialog-card__add-icon--normal {
+        display: none;
+      }
+      .dialog-card__add-icon--hover {
+        display: block;
+      }
+      .dialog-card__add-text {
+        color: $purple-1;
+      }
+    }
+  }
+
+  &__add-icon-container {
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
+  &__add-icon {
+    width: 40px;
+    height: 40px;
+    display: none;
+
+    &--normal {
+      display: block;
+    }
+  }
+
+  &__add-text {
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 400;
+    color: $black;
+    transition: color 0.15s ease, font-weight 0.15s ease;
+  }
 }
 
 @keyframes fadeIn {
@@ -424,7 +477,8 @@
     &__label,
     &__description-text,
     &__block-content--name,
-    &__member-name {
+    &__member-name,
+    &__add-text {
       font-size: 16px;
     }
 

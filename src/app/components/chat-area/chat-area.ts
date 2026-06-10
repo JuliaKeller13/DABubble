@@ -580,6 +580,14 @@ export class ChatAreaComponent implements OnDestroy {
   closeChannelDetails(): void { this.isChannelDetailsOpen = false; }
 
   /**
+   * Closes the channel details dialog and opens the add member view.
+   */
+  openAddMemberFromDetails(): void {
+    this.isChannelDetailsOpen = false;
+    this.onAddMember();
+  }
+
+  /**
    * Opens the channel members list popup.
    */
   openChannelMembers(): void { this.isChannelMembersOpen = true; this.channelMembersInitialView = 'members'; this.channelMembersPosition = 'right-110'; }

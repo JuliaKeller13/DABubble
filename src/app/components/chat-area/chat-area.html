@@ -236,7 +236,7 @@
   }
 
   @if (isChannelDetailsOpen) {
-    <app-dialog-channel-details [isSidebarClosed]="isSidebarClosed" [members]="members()" (close)="closeChannelDetails()"></app-dialog-channel-details>
+    <app-dialog-channel-details [isSidebarClosed]="isSidebarClosed" [members]="members()" (close)="closeChannelDetails()" (addMember)="openAddMemberFromDetails()"></app-dialog-channel-details>
   }
 
   @if (isChannelMembersOpen) {

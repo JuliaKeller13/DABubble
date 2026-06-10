@@ -31,6 +31,10 @@ export class DialogChannelDetailsComponent implements OnInit {
    * Event emitted when the dialog is closed.
    */
   @Output() close = new EventEmitter<void>();
+  /**
+   * Event emitted when adding a member is requested.
+   */
+  @Output() addMember = new EventEmitter<void>();
 
   /**
    * Channel service injected to interact with channel data.
@@ -119,6 +123,13 @@ export class DialogChannelDetailsComponent implements OnInit {
    */
   onClose() {
     this.close.emit();
+  }
+
+  /**
+   * Triggers the add member flow by emitting the addMember event.
+   */
+  onAddMember() {
+    this.addMember.emit();
   }
 
   /**
