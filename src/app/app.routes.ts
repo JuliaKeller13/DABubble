@@ -1,6 +1,12 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
+/**
+ * Application routes configuration for DABubble.
+ * 
+ * Defines path mapping for authentication pages, informational pages (legal/privacy),
+ * and main application pages (channels, direct messages, new messages) guarded by `authGuard`.
+ */
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'intro', redirectTo: 'login', pathMatch: 'full' },

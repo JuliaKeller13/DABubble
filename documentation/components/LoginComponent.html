@@ -1,0 +1,1569 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  LoginComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-login</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="https://angular.io/api/forms/ReactiveFormsModule" target="_blank" >ReactiveFormsModule</a></code>
+                            <code>MatFormFieldModule</code>
+                            <code>MatInputModule</code>
+                            <code>MatIconModule</code>
+                                <code><a href="../components/HeaderComponent.html" target="_self" >HeaderComponent</a></code>
+                                <code><a href="../components/FooterComponent.html" target="_self" >FooterComponent</a></code>
+                                <code><a href="https://angular.io/api/router/RouterLink" target="_blank" >RouterLink</a></code>
+                                <code><a href="../components/IntroComponent.html" target="_self" >IntroComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./login.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./login.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#iconRegistry" >iconRegistry</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#loginError" >loginError</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#sanitizer" >sanitizer</a>
+                            </li>
+                            <li>
+                                <a href="#showIntro" >showIntro</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#toast" >toast</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#clearLoginError" >clearLoginError</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#guestLogin" >guestLogin</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#handleError" >handleError</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#loginWithGoogle" >loginWithGoogle</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onIntroFinished" >onIntroFinished</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#onSubmit" >onSubmit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#redirectToMain" >redirectToMain</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:90</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Constructs the LoginComponent, resets password visibility states,
+registers custom SVG icons, and sets up auth state change monitoring.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearLoginError"></a>
+                    <span class="name">
+                        <span ><b>clearLoginError</b></span>
+                        <a href="#clearLoginError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearLoginError()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="135"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:135</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Clears the current login error and resets the custom password field error.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guestLogin"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>guestLogin</b></span>
+                        <a href="#guestLogin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>guestLogin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Performs guest login and redirects user to main page upon success.
+Shows error toast message on failure.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise that resolves when the guest login process completes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleError"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>handleError</b></span>
+                        <a href="#handleError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleError()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="229"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:229</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles error states by setting login error signals and form field errors.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loginWithGoogle"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>loginWithGoogle</b></span>
+                        <a href="#loginWithGoogle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>loginWithGoogle()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="208"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:208</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initiates Google authentication process.
+Sets loading states and handles potential errors.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise that resolves when the Google sign-in completes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="44"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:44</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Lifecycle hook that runs on initialization.
+Scrolls to top and checks if the intro should be displayed.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onIntroFinished"></a>
+                    <span class="name">
+                        <span ><b>onIntroFinished</b></span>
+                        <a href="#onIntroFinished"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onIntroFinished()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Callback executed when the intro animation is finished.
+Hides the intro component.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>onSubmit</b></span>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="149"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:149</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles the submission of the email/password login form.
+Performs validation, triggers auth service login, and manages state.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise that resolves when the submit process completes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="redirectToMain"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>redirectToMain</b></span>
+                        <a href="#redirectToMain"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>redirectToMain()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="239"
+                                    class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:239</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Navigates the router to the main application page.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>A promise that resolves when navigation completes.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(authService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:75</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Authentication service instance containing auth status and logic.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NonNullableFormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:65</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Form builder instance used to construct the reactive form.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    email: [
+      &#x27;&#x27;,
+      [
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+      ],
+    ],
+    password: [&#x27;&#x27;, Validators.required],
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="121" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:121</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Form group managing the email and password inputs.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="iconRegistry"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>iconRegistry</b></span>
+                        <a href="#iconRegistry"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(MatIconRegistry)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:85</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Material icon registry used to register custom SVG icons.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:116</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal indicating if a login operation is currently loading.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loginError"></a>
+                    <span class="name">
+                        <span ><b>loginError</b></span>
+                        <a href="#loginError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="111" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:111</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal indicating if a login error occurred.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:70</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Router instance used for navigating between routes.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sanitizer"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>sanitizer</b></span>
+                        <a href="#sanitizer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(DomSanitizer)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:90</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Sanitizer used to trust resource URLs of registered custom icons.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="showIntro"></a>
+                    <span class="name">
+                        <span ><b>showIntro</b></span>
+                        <a href="#showIntro"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:38</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Signal indicating whether the intro animation should be displayed.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toast"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>toast</b></span>
+                        <a href="#toast"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ToastService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/pages/login/login.ts:80</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Toast service used to display notifications to the user.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, effect, inject, signal, OnInit } from &#x27;@angular/core&#x27;;
+import { authService } from &#x27;../../services/auth.service&#x27;;
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from &#x27;@angular/forms&#x27;;
+import { MatFormFieldModule } from &#x27;@angular/material/form-field&#x27;;
+import { MatInputModule } from &#x27;@angular/material/input&#x27;;
+import { MatIconModule, MatIconRegistry } from &#x27;@angular/material/icon&#x27;;
+import { DomSanitizer } from &#x27;@angular/platform-browser&#x27;;
+import { Router, RouterLink } from &#x27;@angular/router&#x27;;
+import { HeaderComponent } from &#x27;../../components/header/header&#x27;;
+import { FooterComponent } from &#x27;../../components/footer/footer&#x27;;
+import { ToastService } from &#x27;../../services/toast.service&#x27;;
+import { IntroComponent } from &#x27;../intro/intro&#x27;;
+
+@Component({
+  selector: &#x27;app-login&#x27;,
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    HeaderComponent,
+    FooterComponent,
+    RouterLink,
+    IntroComponent
+  ],
+  templateUrl: &#x27;./login.html&#x27;,
+  styleUrl: &#x27;./login.scss&#x27;
+})
+/**
+ * Component representing the login page of the application.
+ * Handles normal email/password login, guest login, and Google authentication.
+ */
+export class LoginComponent implements OnInit {
+  /**
+   * Signal indicating whether the intro animation should be displayed.
+   */
+  showIntro &#x3D; signal(false);
+
+  /**
+   * Lifecycle hook that runs on initialization.
+   * Scrolls to top and checks if the intro should be displayed.
+   */
+  ngOnInit(): void {
+    setTimeout(() &#x3D;&gt; {
+      window.scrollTo(0, 0);
+    }, 0);
+    if (typeof window !&#x3D;&#x3D; &#x27;undefined&#x27; &amp;&amp; !sessionStorage.getItem(&#x27;introShown&#x27;)) {
+      this.showIntro.set(true);
+      sessionStorage.setItem(&#x27;introShown&#x27;, &#x27;true&#x27;);
+    }
+  }
+
+  /**
+   * Callback executed when the intro animation is finished.
+   * Hides the intro component.
+   */
+  onIntroFinished(): void {
+    this.showIntro.set(false);
+  }
+
+  /**
+   * Form builder instance used to construct the reactive form.
+   */
+  private fb &#x3D; inject(NonNullableFormBuilder);
+
+  /**
+   * Router instance used for navigating between routes.
+   */
+  private router &#x3D; inject(Router);
+
+  /**
+   * Authentication service instance containing auth status and logic.
+   */
+  readonly authService &#x3D; inject(authService);
+
+  /**
+   * Toast service used to display notifications to the user.
+   */
+  private toast &#x3D; inject(ToastService);
+
+  /**
+   * Material icon registry used to register custom SVG icons.
+   */
+  private iconRegistry &#x3D; inject(MatIconRegistry);
+
+  /**
+   * Sanitizer used to trust resource URLs of registered custom icons.
+   */
+  private sanitizer &#x3D; inject(DomSanitizer);
+
+  /**
+   * Constructs the LoginComponent, resets password visibility states,
+   * registers custom SVG icons, and sets up auth state change monitoring.
+   */
+  constructor() {
+    this.authService.resetPasswordVisibility(&#x27;password&#x27;);
+    this.iconRegistry.addSvgIcon(&#x27;mail&#x27;, this.sanitizer.bypassSecurityTrustResourceUrl(&#x27;img/icons/form/mail.svg&#x27;));
+    this.iconRegistry.addSvgIcon(&#x27;lock&#x27;, this.sanitizer.bypassSecurityTrustResourceUrl(&#x27;img/icons/form/lock.svg&#x27;));
+    effect(() &#x3D;&gt; {
+      if (!this.authService.isInitialized() || !this.authService.isAuthenticated()) {
+        return;
+      }
+      void this.router.navigate([&#x27;/main&#x27;]);
+    });
+  }
+
+  /**
+   * Signal indicating if a login error occurred.
+   */
+  loginError &#x3D; signal(false);
+
+  /**
+   * Signal indicating if a login operation is currently loading.
+   */
+  loading &#x3D; signal(false);
+
+  /**
+   * Form group managing the email and password inputs.
+   */
+  form &#x3D; this.fb.group({
+    email: [
+      &#x27;&#x27;,
+      [
+        Validators.required,
+        Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+      ],
+    ],
+    password: [&#x27;&#x27;, Validators.required],
+  });
+
+  /**
+   * Clears the current login error and resets the custom password field error.
+   */
+  clearLoginError(): void {
+    this.loginError.set(false);
+    const passwordCtrl &#x3D; this.form.get(&#x27;password&#x27;);
+    if (passwordCtrl?.hasError(&#x27;loginError&#x27;)) {
+      passwordCtrl.setErrors(null);
+    }
+  }
+
+  /**
+   * Handles the submission of the email/password login form.
+   * Performs validation, triggers auth service login, and manages state.
+   *
+   * @returns A promise that resolves when the submit process completes.
+   */
+  async onSubmit(): Promise&lt;void&gt; {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.loading.set(true);
+    this.loginError.set(false);
+
+    const { email, password } &#x3D; this.form.getRawValue();
+
+    try {
+      const { error } &#x3D; await this.authService.loginWithEmail(email, password);
+
+      if (error) {
+        this.handleError();
+      } else {
+        await this.redirectToMain();
+      }
+    } catch (e) {
+      this.handleError();
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  /**
+   * Performs guest login and redirects user to main page upon success.
+   * Shows error toast message on failure.
+   *
+   * @returns A promise that resolves when the guest login process completes.
+   */
+  async guestLogin(): Promise&lt;void&gt; {
+    this.loading.set(true);
+    this.loginError.set(false);
+    try {
+      const { error } &#x3D; await this.authService.guestLogin();
+      if (error) {
+        console.error(&#x27;Gast-Login Fehler:&#x27;, error);
+        this.toast.show(&#x27;Gast-Login ist derzeit nicht verfügbar.&#x27;, &#x27;error&#x27;);
+        this.handleError();
+      } else {
+        await this.redirectToMain();
+      }
+    } catch (e) {
+      console.error(&#x27;Gast-Login Ausnahme:&#x27;, e);
+      this.toast.show(&#x27;Gast-Login ist derzeit nicht verfügbar.&#x27;, &#x27;error&#x27;);
+      this.handleError();
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  /**
+   * Initiates Google authentication process.
+   * Sets loading states and handles potential errors.
+   *
+   * @returns A promise that resolves when the Google sign-in completes.
+   */
+  async loginWithGoogle(): Promise&lt;void&gt; {
+    this.loading.set(true);
+    this.loginError.set(false);
+
+    try {
+      const targetUrl &#x3D; new URL(&#x27;main?auth&#x3D;google-login-success&#x27;, document.baseURI).href;
+      const { error } &#x3D; await this.authService.loginWithGoogle(targetUrl);
+
+      if (error) {
+        throw error;
+      }
+    } catch (e) {
+      console.error(&#x27;Google Login Fehler:&#x27;, e);
+      this.loginError.set(true);
+      this.loading.set(false);
+    }
+  }
+
+  /**
+   * Handles error states by setting login error signals and form field errors.
+   */
+  private handleError(): void {
+    this.loginError.set(true);
+    this.form.get(&#x27;password&#x27;)?.setErrors({ loginError: true });
+  }
+
+  /**
+   * Navigates the router to the main application page.
+   *
+   * @returns A promise that resolves when navigation completes.
+   */
+  private async redirectToMain(): Promise&lt;void&gt; {
+    await this.router.navigate([&#x27;/main&#x27;]);
+  }
+}</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;main&gt;
+  &lt;div class&#x3D;&quot;page-container&quot;&gt;
+    &lt;app-header
+      [showSearch]&#x3D;&quot;false&quot;
+      [showProfile]&#x3D;&quot;false&quot;
+      [showSignup]&#x3D;&quot;true&quot;
+      [isTransparent]&#x3D;&quot;true&quot;
+      [loginHeader]&#x3D;&quot;true&quot;
+      [class.invisible]&#x3D;&quot;showIntro()&quot;
+      class&#x3D;&quot;desktop-header-only&quot;
+    &gt;&lt;/app-header&gt;
+
+    &lt;div class&#x3D;&quot;mobile-header-only&quot; [class.invisible]&#x3D;&quot;showIntro()&quot;&gt;
+      &lt;img src&#x3D;&quot;img/logo/logo_with_text.svg&quot; alt&#x3D;&quot;DABubble Logo&quot; class&#x3D;&quot;login-logo&quot; /&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;login-form-box&quot;&gt;
+      &lt;header class&#x3D;&quot;form-box-header&quot;&gt;
+        &lt;h1 class&#x3D;&quot;text-headline-blue&quot;&gt;Anmeldung&lt;/h1&gt;
+        &lt;p class&#x3D;&quot;text-body&quot;&gt;
+          Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.
+        &lt;/p&gt;
+      &lt;/header&gt;
+
+      &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;form&quot; novalidate (ngSubmit)&#x3D;&quot;onSubmit()&quot;&gt;
+        &lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;custom-input&quot; subscriptSizing&#x3D;&quot;dynamic&quot;&gt;
+          &lt;mat-icon matPrefix svgIcon&#x3D;&quot;mail&quot;&gt;&lt;/mat-icon&gt;
+          &lt;input
+            matInput
+            formControlName&#x3D;&quot;email&quot;
+            type&#x3D;&quot;email&quot;
+            placeholder&#x3D;&quot;beispielname@email.com&quot;
+            (input)&#x3D;&quot;clearLoginError()&quot;
+          /&gt;
+          @if (form.get(&#x27;email&#x27;)?.touched &amp;&amp; form.get(&#x27;email&#x27;)?.hasError(&#x27;required&#x27;)) {
+            &lt;mat-error&gt;Bitte geben Sie Ihre E-Mail ein.&lt;/mat-error&gt;
+          }
+          @if (form.get(&#x27;email&#x27;)?.hasError(&#x27;pattern&#x27;)) {
+            &lt;mat-error&gt;*Diese E-Mail-Adresse ist leider ungültig.&lt;/mat-error&gt;
+          }
+        &lt;/mat-form-field&gt;
+
+        &lt;mat-form-field appearance&#x3D;&quot;outline&quot; class&#x3D;&quot;custom-input&quot; subscriptSizing&#x3D;&quot;dynamic&quot;&gt;
+          &lt;mat-icon matPrefix svgIcon&#x3D;&quot;lock&quot;&gt;&lt;/mat-icon&gt;
+          &lt;input
+            matInput
+            formControlName&#x3D;&quot;password&quot;
+            [type]&#x3D;&quot;authService.showPassword() ? &#x27;text&#x27; : &#x27;password&#x27;&quot;
+            placeholder&#x3D;&quot;Passwort&quot;
+            (input)&#x3D;&quot;clearLoginError()&quot;
+          /&gt;
+          &lt;img
+            matSuffix
+            [src]&#x3D;&quot;authService.showPassword() ? &#x27;img/icons/form/visibility.svg&#x27; : &#x27;img/icons/form/visibility_off.svg&#x27;&quot;
+            alt&#x3D;&quot;Passwortsichtbarkeit umschalten&quot;
+            aria-label&#x3D;&quot;Passwortsichtbarkeit umschalten&quot;
+            role&#x3D;&quot;button&quot;
+            tabindex&#x3D;&quot;0&quot;
+            (click)&#x3D;&quot;authService.togglePassword()&quot;
+            (keydown.enter)&#x3D;&quot;authService.togglePassword()&quot;
+            (keydown.space)&#x3D;&quot;authService.togglePassword(); $event.preventDefault()&quot;
+          /&gt;
+          @if (form.get(&#x27;password&#x27;)?.touched &amp;&amp; form.get(&#x27;password&#x27;)?.hasError(&#x27;required&#x27;)) {
+            &lt;mat-error&gt;Bitte geben Sie ein Passwort ein.&lt;/mat-error&gt;
+          }
+          @if (form.get(&#x27;password&#x27;)?.hasError(&#x27;loginError&#x27;)) {
+            &lt;mat-error&gt;Falsches Passwort oder E-Mail. Bitte noch einmal versuchen.&lt;/mat-error&gt;
+          }
+        &lt;/mat-form-field&gt;
+
+        &lt;div class&#x3D;&quot;forgot-password-container&quot;&gt;
+          &lt;a routerLink&#x3D;&quot;/forgot-password&quot; class&#x3D;&quot;forgot-password-link text-chat-list&quot;&gt;Passwort vergessen?&lt;/a&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;divider&quot;&gt;
+          &lt;span class&#x3D;&quot;text-chat-list&quot;&gt;ODER&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;button
+            type&#x3D;&quot;button&quot;
+            class&#x3D;&quot;btn-google&quot;
+            (click)&#x3D;&quot;loginWithGoogle()&quot;
+            [disabled]&#x3D;&quot;loading()&quot;
+          &gt;
+            &lt;img class&#x3D;&quot;google-logo&quot; src&#x3D;&quot;img/icons/google.svg&quot; alt&#x3D;&quot;Google Logo&quot; /&gt;
+            Anmelden mit Google
+          &lt;/button&gt;
+
+        &lt;div class&#x3D;&quot;btns-container&quot;&gt;
+          &lt;button class&#x3D;&quot;btn-primary&quot; type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;form.invalid || loading()&quot;&gt;
+            Anmelden
+          &lt;/button&gt;
+          &lt;button class&#x3D;&quot;btn-secondary&quot; type&#x3D;&quot;button&quot; (click)&#x3D;&quot;guestLogin()&quot; [disabled]&#x3D;&quot;loading()&quot;&gt;
+            Gäste-Login
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;mobile-register-only&quot;&gt;
+      &lt;span class&#x3D;&quot;text-body-18&quot;&gt;Neu bei DABubble?&lt;/span&gt;
+      &lt;button class&#x3D;&quot;btn-register text-body-bold-18&quot; type&#x3D;&quot;button&quot; routerLink&#x3D;&quot;/signup&quot;&gt;Konto erstellen&lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;app-footer&gt;&lt;/app-footer&gt;
+  &lt;/div&gt;
+&lt;/main&gt;
+
+@if (showIntro()) {
+  &lt;app-intro (finished)&#x3D;&quot;onIntroFinished()&quot;&gt;&lt;/app-intro&gt;
+}</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><main>  <div class="page-container">    <app-header      [showSearch]="false"      [showProfile]="false"      [showSignup]="true"      [isTransparent]="true"      [loginHeader]="true"      [class.invisible]="showIntro()"      class="desktop-header-only"    ></app-header>    <div class="mobile-header-only" [class.invisible]="showIntro()">      <img src="img/logo/logo_with_text.svg" alt="DABubble Logo" class="login-logo" />    </div>    <div class="login-form-box">      <header class="form-box-header">        <h1 class="text-headline-blue">Anmeldung</h1>        <p class="text-body">          Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.        </p>      </header>      <form [formGroup]="form" class="form" novalidate (ngSubmit)="onSubmit()">        <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">          <mat-icon matPrefix svgIcon="mail"></mat-icon>          <input            matInput            formControlName="email"            type="email"            placeholder="beispielname@email.com"            (input)="clearLoginError()"          />          @if (form.get(\'email\')?.touched && form.get(\'email\')?.hasError(\'required\')) {            <mat-error>Bitte geben Sie Ihre E-Mail ein.</mat-error>          }          @if (form.get(\'email\')?.hasError(\'pattern\')) {            <mat-error>*Diese E-Mail-Adresse ist leider ungültig.</mat-error>          }        </mat-form-field>        <mat-form-field appearance="outline" class="custom-input" subscriptSizing="dynamic">          <mat-icon matPrefix svgIcon="lock"></mat-icon>          <input            matInput            formControlName="password"            [type]="authService.showPassword() ? \'text\' : \'password\'"            placeholder="Passwort"            (input)="clearLoginError()"          />          <img            matSuffix            [src]="authService.showPassword() ? \'img/icons/form/visibility.svg\' : \'img/icons/form/visibility_off.svg\'"            alt="Passwortsichtbarkeit umschalten"            aria-label="Passwortsichtbarkeit umschalten"            role="button"            tabindex="0"            (click)="authService.togglePassword()"            (keydown.enter)="authService.togglePassword()"            (keydown.space)="authService.togglePassword(); $event.preventDefault()"          />          @if (form.get(\'password\')?.touched && form.get(\'password\')?.hasError(\'required\')) {            <mat-error>Bitte geben Sie ein Passwort ein.</mat-error>          }          @if (form.get(\'password\')?.hasError(\'loginError\')) {            <mat-error>Falsches Passwort oder E-Mail. Bitte noch einmal versuchen.</mat-error>          }        </mat-form-field>        <div class="forgot-password-container">          <a routerLink="/forgot-password" class="forgot-password-link text-chat-list">Passwort vergessen?</a>        </div>        <div class="divider">          <span class="text-chat-list">ODER</span>        </div>        <button            type="button"            class="btn-google"            (click)="loginWithGoogle()"            [disabled]="loading()"          >            <img class="google-logo" src="img/icons/google.svg" alt="Google Logo" />            Anmelden mit Google          </button>        <div class="btns-container">          <button class="btn-primary" type="submit" [disabled]="form.invalid || loading()">            Anmelden          </button>          <button class="btn-secondary" type="button" (click)="guestLogin()" [disabled]="loading()">            Gäste-Login          </button>        </div>      </form>    </div>    <div class="mobile-register-only">      <span class="text-body-18">Neu bei DABubble?</span>      <button class="btn-register text-body-bold-18" type="button" routerLink="/signup">Konto erstellen</button>    </div>    <app-footer></app-footer>  </div></main>@if (showIntro()) {  <app-intro (finished)="onIntroFinished()"></app-intro>}</div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'ChatAreaComponent', 'selector': 'app-chat-area'},{'name': 'ChooseAvatar', 'selector': 'app-choose-avatar'},{'name': 'DatenschutzComponent', 'selector': 'app-datenschutz'},{'name': 'dialogAddMemberComponent', 'selector': 'app-dialog-add-member'},{'name': 'DialogChannelDetailsComponent', 'selector': 'app-dialog-channel-details'},{'name': 'DialogChannelMembersComponent', 'selector': 'app-dialog-channel-members'},{'name': 'dialogCreateChannelComponent', 'selector': 'app-dialog-create-channel'},{'name': 'DialogProfileComponent', 'selector': 'app-dialog-profile'},{'name': 'DialogProfileOverlayComponent', 'selector': 'app-dialog-profile-overlay'},{'name': 'EmojiPickerHostComponent', 'selector': 'app-emoji-picker-host'},{'name': 'EmojiPickerPopupComponent', 'selector': 'app-emoji-picker-popup'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'ForgotPassword', 'selector': 'app-forgot-password'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'ImpressumComponent', 'selector': 'app-impressum'},{'name': 'IntroComponent', 'selector': 'app-intro'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainComponent', 'selector': 'app-main'},{'name': 'MessageComponent', 'selector': 'app-message'},{'name': 'MessageInputComponent', 'selector': 'app-message-input'},{'name': 'PasswordReset', 'selector': 'app-password-reset'},{'name': 'ProfileMenuComponent', 'selector': 'app-profile-menu'},{'name': 'SearchBarComponent', 'selector': 'app-searchbar'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'Signup', 'selector': 'app-signup'},{'name': 'ThreadViewComponent', 'selector': 'app-thread-view'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'LoginComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'LoginComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

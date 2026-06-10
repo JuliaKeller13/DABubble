@@ -1,0 +1,723 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  PopupUser</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message-input/message-input-popup.helper.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Represents a user profile displayed in the mention autocomplete list.</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#avatar" 
+>
+                                            avatar
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#name" 
+>
+                                            name
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="avatar"></a>
+                                        <span class="name "><b>avatar</b>
+                                            <a href="#avatar">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>avatar:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The URL path to the user&#39;s avatar.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The unique user ID.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="name"></a>
+                                        <span class="name "><b>name</b>
+                                            <a href="#name">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>name:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The display name of the user.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { WritableSignal } from &#x27;@angular/core&#x27;;
+import { channelService } from &#x27;../../services/channel.service&#x27;;
+import { userService } from &#x27;../../services/user.service&#x27;;
+import { authService } from &#x27;../../services/auth.service&#x27;;
+import { ThreadService } from &#x27;../../services/thread.service&#x27;;
+import { messageService } from &#x27;../../services/message.service&#x27;;
+
+/**
+ * Type of the active autocomplete popup in the message input field.
+ */
+export type PopupType &#x3D; &#x27;none&#x27; | &#x27;users&#x27; | &#x27;channels&#x27;;
+
+/**
+ * Represents a user profile displayed in the mention autocomplete list.
+ */
+export interface PopupUser {
+  /** The unique user ID. */
+  id: string;
+  /** The display name of the user. */
+  name: string;
+  /** The URL path to the user&#x27;s avatar. */
+  avatar: string;
+}
+
+/**
+ * Represents a channel displayed in the channel link autocomplete list.
+ */
+export interface PopupChannel {
+  /** The unique channel ID. */
+  id: string;
+  /** The channel name. */
+  name: string;
+}
+
+/**
+ * Helper class that coordinates matching and autocomplete dropdown popups
+ * for user and channel mentions within the message input textarea.
+ */
+export class MessageInputPopupHelper {
+  /** The currently active autocomplete popup type. */
+  activePopup: PopupType &#x3D; &#x27;none&#x27;;
+  /** The list of users currently visible in the autocomplete popup. */
+  popupUsers: PopupUser[] &#x3D; [];
+  /** The list of channels currently visible in the autocomplete popup. */
+  popupChannels: PopupChannel[] &#x3D; [];
+  /** Whether the helper is currently querying database information. */
+  isLoading &#x3D; false;
+
+  /** Unfiltered list of loaded user options for autocomplete. */
+  private allPopupUsers: PopupUser[] &#x3D; [];
+  /** Unfiltered list of loaded channel options for autocomplete. */
+  private allPopupChannels: PopupChannel[] &#x3D; [];
+
+  /** Cache storing channel members by channel ID to reduce query frequency. */
+  private static channelMembersCache &#x3D; new Map&lt;string, PopupUser[]&gt;();
+  /** Cache storing all user profiles. */
+  static allUsersCache: PopupUser[] &#x3D; [];
+
+  /**
+   * Initializes the MessageInputPopupHelper.
+   * @param channelSvc - The injected ChannelService.
+   * @param userSvc - The injected UserService.
+   * @param authSvc - The injected AuthService.
+   * @param threadSvc - The injected ThreadService.
+   * @param messageSvc - The injected MessageService.
+   * @param getTextarea - Function returning the HTMLTextAreaElement of the input.
+   * @param getMessageText - Function returning the raw string content of the input.
+   * @param setMessageText - Function to set the content of the input.
+   * @param syncScroll - Function to trigger scroll alignment.
+   */
+  constructor(
+    private channelSvc: channelService,
+    private userSvc: userService,
+    private authSvc: authService,
+    private threadSvc: ThreadService,
+    private messageSvc: messageService,
+    private getTextarea: () &#x3D;&gt; HTMLTextAreaElement | null,
+    private getMessageText: () &#x3D;&gt; string,
+    private setMessageText: (val: string) &#x3D;&gt; void,
+    private syncScroll: () &#x3D;&gt; void,
+  ) {}
+
+  /**
+   * Gets the current user ID.
+   */
+  get currentUserId(): string {
+    return this.authSvc.currentUser()?.id || &#x27;&#x27;;
+  }
+
+  /**
+   * Checks if mention/autocomplete is active.
+   */
+  get isMentionActive(): boolean {
+    return this.activePopup !&#x3D;&#x3D; &#x27;none&#x27;;
+  }
+
+  /**
+   * Toggles mention states between users popup, channels popup, and none.
+   */
+  async toggleMention(): Promise&lt;void&gt; {
+    if (this.activePopup &#x3D;&#x3D;&#x3D; &#x27;none&#x27;) {
+      this.activePopup &#x3D; &#x27;users&#x27;;
+      await this.loadUsers();
+    } else if (this.activePopup &#x3D;&#x3D;&#x3D; &#x27;users&#x27;) {
+      this.activePopup &#x3D; &#x27;channels&#x27;;
+      await this.loadChannels();
+    } else {
+      this.activePopup &#x3D; &#x27;none&#x27;;
+    }
+  }
+
+  /**
+   * Loads users for the autocomplete list, utilizing caches when possible.
+   */
+  async loadUsers(): Promise&lt;void&gt; {
+    const channelId &#x3D; (this.threadSvc.activeMessage()?.channel_id) || (this.channelSvc.activeChannel()?.id) || &#x27;&#x27;;
+    if (this.loadUsersFromCache(channelId)) return;
+    await this.fetchUsersFromDb(channelId);
+  }
+
+  /**
+   * Attempts to load user data from cached objects.
+   * @param channelId - Target channel ID.
+   * @returns True if loaded from cache successfully, false otherwise.
+   */
+  private loadUsersFromCache(channelId: string): boolean {
+    const activeMembers &#x3D; this.channelSvc.activeChannelMembers();
+    if (channelId &amp;&amp; channelId &#x3D;&#x3D;&#x3D; this.channelSvc.activeChannel()?.id &amp;&amp; activeMembers.length &gt; 0) {
+      this.allPopupUsers &#x3D; this.mapUsers(activeMembers);
+      MessageInputPopupHelper.channelMembersCache.set(channelId, this.allPopupUsers);
+    } else if (channelId &amp;&amp; MessageInputPopupHelper.channelMembersCache.has(channelId)) {
+      this.allPopupUsers &#x3D; MessageInputPopupHelper.channelMembersCache.get(channelId)!;
+    } else if (!channelId &amp;&amp; MessageInputPopupHelper.allUsersCache.length &gt; 0) {
+      this.allPopupUsers &#x3D; MessageInputPopupHelper.allUsersCache;
+    } else return false;
+    this.popupUsers &#x3D; [...this.allPopupUsers];
+    return true;
+  }
+
+  /**
+   * Maps generic user objects to structured PopupUser objects, filtering duplicate guests.
+   * @param users - Unstructured list of users.
+   */
+  private mapUsers(users: any[]): PopupUser[] {
+    const filtered &#x3D; this.userSvc.filterDuplicateGuests(users, this.currentUserId || null);
+    return filtered.map((u) &#x3D;&gt; ({ id: u.id, name: u.display_name, avatar: u.avatar_url || &#x27;img/avatars/avatar_default.svg&#x27; }));
+  }
+
+  /**
+   * Fetches users from the database for the popup list.
+   * @param channelId - Target channel ID.
+   */
+  private async fetchUsersFromDb(channelId: string): Promise&lt;void&gt; {
+    this.isLoading &#x3D; true;
+    try {
+      this.allPopupUsers &#x3D; await this.queryUsers(channelId);
+      this.popupUsers &#x3D; [...this.allPopupUsers];
+    } catch (e) {
+      console.error(&#x27;Fehler beim Laden der Popup-User:&#x27;, e);
+      this.allPopupUsers &#x3D; this.popupUsers &#x3D; [];
+    } finally {
+      this.isLoading &#x3D; false;
+    }
+  }
+
+  /**
+   * Internally runs queries to fetch users list based on channel availability.
+   * @param channelId - Target channel ID.
+   */
+  private async queryUsers(channelId: string): Promise&lt;PopupUser[]&gt; {
+    if (channelId) {
+      const dbMembers &#x3D; await this.channelSvc.getChannelMembers(channelId);
+      const mapped &#x3D; this.mapUsers(dbMembers);
+      MessageInputPopupHelper.channelMembersCache.set(channelId, mapped);
+      return mapped;
+    }
+    const allUsers &#x3D; await this.userSvc.getAllUsers();
+    const mappedAll &#x3D; this.mapUsers(allUsers);
+    MessageInputPopupHelper.allUsersCache &#x3D; mappedAll;
+    return mappedAll;
+  }
+
+  /**
+   * Loads channels for the link autocomplete list, using caches when possible.
+   */
+  async loadChannels(): Promise&lt;void&gt; {
+    const cached &#x3D; this.channelSvc.channels();
+    if (cached.length &gt; 0) {
+      this.allPopupChannels &#x3D; this.popupChannels &#x3D; this.mapChannels(cached);
+    } else {
+      await this.fetchChannelsFromDb();
+    }
+  }
+
+  /**
+   * Fetches channels from database.
+   */
+  private async fetchChannelsFromDb(): Promise&lt;void&gt; {
+    this.isLoading &#x3D; true;
+    try {
+      const fetched &#x3D; await this.channelSvc.getChannels();
+      this.allPopupChannels &#x3D; this.popupChannels &#x3D; this.mapChannels(fetched);
+    } catch (e) {
+      console.error(&#x27;Fehler beim Laden der Popup-Channels:&#x27;, e);
+      this.allPopupChannels &#x3D; this.popupChannels &#x3D; [];
+    } finally {
+      this.isLoading &#x3D; false;
+    }
+  }
+
+  /**
+   * Maps channel database rows to PopupChannel structures.
+   * @param chans - Unstructured channels.
+   */
+  private mapChannels(chans: any[]): PopupChannel[] {
+    return chans.filter((c) &#x3D;&gt; !!c.id).map((c) &#x3D;&gt; ({ id: c.id!, name: c.name }));
+  }
+
+  /**
+   * Scans text content around the cursor, looking for trigger characters (&#x27;@&#x27;, &#x27;#&#x27;)
+   * to automatically open the respective autocomplete popup.
+   */
+  checkForTriggerChar(): void {
+    const textarea &#x3D; this.getTextarea();
+    if (!textarea) return;
+    const text &#x3D; this.getMessageText();
+    const selectionEnd &#x3D; textarea.selectionEnd;
+    if (selectionEnd &lt;&#x3D; 0) { this.closePopup(); return; }
+    const textBeforeCursor &#x3D; text.substring(0, selectionEnd);
+    const lastSpace &#x3D; textBeforeCursor.lastIndexOf(&#x27; &#x27;);
+    const currentWord &#x3D; textBeforeCursor.substring(lastSpace + 1);
+    if (currentWord &#x3D;&#x3D;&#x3D; &#x27;@&#x27;) { this.activePopup &#x3D; &#x27;users&#x27;; void this.loadUsers(); }
+    else if (currentWord &#x3D;&#x3D;&#x3D; &#x27;#&#x27;) { this.activePopup &#x3D; &#x27;channels&#x27;; void this.loadChannels(); }
+    else if (this.activePopup !&#x3D;&#x3D; &#x27;none&#x27;) this.updatePopupVisibility(text, selectionEnd);
+  }
+
+  /**
+   * Filters lists or closes the popup depending on current input changes.
+   * @param text - The full input text.
+   * @param selectionEnd - Cursor position.
+   */
+  updatePopupVisibility(text: string, selectionEnd: number): void {
+    if (this.activePopup &#x3D;&#x3D;&#x3D; &#x27;none&#x27;) return;
+    const textBeforeCursor &#x3D; text.substring(0, selectionEnd);
+    const lastSpace &#x3D; textBeforeCursor.lastIndexOf(&#x27; &#x27;);
+    const currentWord &#x3D; textBeforeCursor.substring(lastSpace + 1);
+    if (this.activePopup &#x3D;&#x3D;&#x3D; &#x27;users&#x27; &amp;&amp; currentWord.startsWith(&#x27;@&#x27;)) {
+      this.filterPopupUsers(currentWord.substring(1));
+    } else if (this.activePopup &#x3D;&#x3D;&#x3D; &#x27;channels&#x27; &amp;&amp; currentWord.startsWith(&#x27;#&#x27;)) {
+      this.filterPopupChannels(currentWord.substring(1));
+    } else {
+      this.closePopup();
+    }
+  }
+
+  /**
+   * Filters the visible autocomplete users list.
+   * @param query - The user search query.
+   */
+  filterPopupUsers(query: string): void {
+    const q &#x3D; query.toLowerCase();
+    this.popupUsers &#x3D; this.allPopupUsers.filter((u) &#x3D;&gt; u.name.toLowerCase().includes(q));
+  }
+
+  /**
+   * Filters the visible autocomplete channels list.
+   * @param query - The channel search query.
+   */
+  filterPopupChannels(query: string): void {
+    const q &#x3D; query.toLowerCase();
+    this.popupChannels &#x3D; this.allPopupChannels.filter((c) &#x3D;&gt; c.name.toLowerCase().includes(q));
+  }
+
+  /**
+   * Encodes a user ID into zero-width characters and inserts the user mention text block.
+   * @param user - Selected user.
+   */
+  insertUserMention(user: PopupUser): void {
+    const zeroWidthId &#x3D; this.messageSvc.encodeToZeroWidth(user.id);
+    this.insertMention(&#x60;@${user.name}\u200B${zeroWidthId}&#x60;);
+  }
+
+  /**
+   * Appends or inserts a mention string block at the text cursor.
+   * @param mentionText - Formatted mention string block.
+   */
+  insertMention(mentionText: string): void {
+    const textarea &#x3D; this.getTextarea();
+    const text &#x3D; this.getMessageText();
+    if (textarea) {
+      this.insertAtCursor(textarea, text, mentionText);
+    } else {
+      this.setMessageText(text ? &#x60;${text} ${mentionText} &#x60; : &#x60;${mentionText} &#x60;);
+    }
+    this.closePopup();
+  }
+
+  /**
+   * Internal routine performing precise text insertion at textarea cursor position.
+   * @param textarea - Textarea HTML element.
+   * @param text - Complete input text.
+   * @param mentionText - Formatted mention block.
+   */
+  private insertAtCursor(textarea: HTMLTextAreaElement, text: string, mentionText: string): void {
+    const startPos &#x3D; textarea.selectionStart;
+    const textBefore &#x3D; text.substring(0, text.substring(0, startPos).lastIndexOf(&#x27; &#x27;) + 1);
+    const textAfter &#x3D; text.substring(textarea.selectionEnd);
+    this.setMessageText(textBefore + mentionText + &#x27; &#x27; + textAfter);
+    setTimeout(() &#x3D;&gt; {
+      textarea.focus();
+      const newPos &#x3D; textBefore.length + mentionText.length + 1;
+      textarea.setSelectionRange(newPos, newPos);
+      this.syncScroll();
+    }, 0);
+  }
+
+  /**
+   * Closes active autocomplete popups.
+   */
+  closePopup(): void {
+    this.activePopup &#x3D; &#x27;none&#x27;;
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'PopupUser.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

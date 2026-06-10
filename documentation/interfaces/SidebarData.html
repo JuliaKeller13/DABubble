@@ -1,0 +1,796 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  SidebarData</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/sidebar/sidebar-data.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Data structure containing loaded channels, users, history breakdowns, and unread counts for the sidebar.</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#channels" 
+>
+                                            channels
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#unreadChannels" 
+>
+                                            unreadChannels
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#unreadUsers" 
+>
+                                            unreadUsers
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#users" 
+>
+                                            users
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#usersWithHistory" 
+>
+                                            usersWithHistory
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#usersWithoutHistory" 
+>
+                                            usersWithoutHistory
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="channels"></a>
+                                        <span class="name "><b>channels</b>
+                                            <a href="#channels">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>channels:         <code><a href="../interfaces/Channel.html" target="_self" >Channel[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/Channel.html" target="_self" >Channel[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>List of loaded channels.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="unreadChannels"></a>
+                                        <span class="name "><b>unreadChannels</b>
+                                            <a href="#unreadChannels">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>unreadChannels:     <code>Record&lt;string | number&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Record&lt;string | number&gt;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Map of channel IDs to number of unread mention notifications.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="unreadUsers"></a>
+                                        <span class="name "><b>unreadUsers</b>
+                                            <a href="#unreadUsers">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>unreadUsers:     <code>Record&lt;string | number&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Record&lt;string | number&gt;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Map of user IDs to number of unread direct messages.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="users"></a>
+                                        <span class="name "><b>users</b>
+                                            <a href="#users">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>users:         <code><a href="../interfaces/User.html" target="_self" >User[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/User.html" target="_self" >User[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>List of all active/loaded user profiles.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="usersWithHistory"></a>
+                                        <span class="name "><b>usersWithHistory</b>
+                                            <a href="#usersWithHistory">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>usersWithHistory:         <code><a href="../interfaces/User.html" target="_self" >User[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/User.html" target="_self" >User[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>List of users with whom the current user has active direct message history.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="usersWithoutHistory"></a>
+                                        <span class="name "><b>usersWithoutHistory</b>
+                                            <a href="#usersWithoutHistory">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>usersWithoutHistory:         <code><a href="../interfaces/User.html" target="_self" >User[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/User.html" target="_self" >User[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>List of users with whom the current user does not have active direct message history.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, inject } from &#x27;@angular/core&#x27;;
+import { channelService } from &#x27;../../services/channel.service&#x27;;
+import { userService } from &#x27;../../services/user.service&#x27;;
+import { authService } from &#x27;../../services/auth.service&#x27;;
+import { messageService } from &#x27;../../services/message.service&#x27;;
+import { User } from &#x27;../../interfaces/user.interface&#x27;;
+import { Message } from &#x27;../../interfaces/message.interface&#x27;;
+import { Channel } from &#x27;../../interfaces/channel.interface&#x27;;
+
+/**
+ * Data structure containing loaded channels, users, history breakdowns, and unread counts for the sidebar.
+ */
+export interface SidebarData {
+  /**
+   * List of loaded channels.
+   */
+  channels: Channel[];
+
+  /**
+   * List of all active/loaded user profiles.
+   */
+  users: User[];
+
+  /**
+   * List of users with whom the current user has active direct message history.
+   */
+  usersWithHistory: User[];
+
+  /**
+   * List of users with whom the current user does not have active direct message history.
+   */
+  usersWithoutHistory: User[];
+
+  /**
+   * Map of user IDs to number of unread direct messages.
+   */
+  unreadUsers: Record&lt;string, number&gt;;
+
+  /**
+   * Map of channel IDs to number of unread mention notifications.
+   */
+  unreadChannels: Record&lt;string, number&gt;;
+}
+
+@Injectable({
+  providedIn: &#x27;root&#x27;,
+})
+/**
+ * Service that fetches and computes sidebar datasets, sorting users and calculating unread notifications for direct chats and channel mentions.
+ */
+export class SidebarDataService {
+  /**
+   * Service managing channels data loading.
+   */
+  private channelSvc &#x3D; inject(channelService);
+
+  /**
+   * Service managing user profile retrieval.
+   */
+  private userSvc &#x3D; inject(userService);
+
+  /**
+   * Service managing user authentication session and state.
+   */
+  private authSvc &#x3D; inject(authService);
+
+  /**
+   * Service for direct messaging and channel messages actions.
+   */
+  private messageSvc &#x3D; inject(messageService);
+
+  /**
+   * Static representation of the DABubble Team placeholder user profile.
+   */
+  private readonly TEAM_USER: User &#x3D; {
+    id: &#x27;dabubble-team-local-id&#x27;, display_name: &#x27;DABubble-Team&#x27;,
+    email: &#x27;team@dabubble.local&#x27;, avatar_url: &#x27;img/logo/Logo.svg&#x27;, status: &#x27;online&#x27;,
+  };
+
+  /**
+   * Safely retrieves a value from localStorage, checking if the window object is defined.
+   * 
+   * @param key The key to look up in localStorage.
+   * @returns The string value if found, or null.
+   */
+  getSafeLocalStorageItem(key: string): string | null {
+    if (typeof window !&#x3D;&#x3D; &#x27;undefined&#x27; &amp;&amp; window.localStorage) return localStorage.getItem(key);
+    return null;
+  }
+
+  /**
+   * Safely writes a key-value pair to localStorage, checking if the window object is defined.
+   * 
+   * @param key The storage key.
+   * @param value The string value to store.
+   */
+  setSafeLocalStorageItem(key: string, value: string): void {
+    if (typeof window !&#x3D;&#x3D; &#x27;undefined&#x27; &amp;&amp; window.localStorage) localStorage.setItem(key, value);
+  }
+
+  /**
+   * Checks if the current user&#x27;s ID tag is mentioned in a text message.
+   * 
+   * @param content The text content of the message.
+   * @param currentUserId The user ID to search for.
+   * @returns True if mentioned, false otherwise.
+   */
+  isUserMentionedInText(content: string, currentUserId: string): boolean {
+    return !!content &amp;&amp; content.includes(&#x60;&lt;@${currentUserId}&gt;&#x60;);
+  }
+
+  /**
+   * Asynchronously loads channels, users, compute unread counts, and splits direct message history for the sidebar.
+   * 
+   * @param sessionStartTime Timestamp when the current session started.
+   * @param activeChannelId Currently active channel ID, if any.
+   * @param activeDMUserId Currently active direct message partner user ID, if any.
+   * @returns A promise resolving to the computed SidebarData.
+   */
+  async load(
+    sessionStartTime: number,
+    activeChannelId: string | undefined,
+    activeDMUserId: string | undefined,
+  ): Promise&lt;SidebarData&gt; {
+    const currentUserId &#x3D; this.authSvc.currentUser()?.id || &#x27;&#x27;;
+    const fetchedChannels &#x3D; await this.channelSvc.loadChannels();
+    const allFetchedUsers &#x3D; await this.userSvc.getAllUsers();
+    const unreadChannels &#x3D; await this.computeUnreadChannels(currentUserId, activeChannelId, sessionStartTime);
+    const { partnerIdsSet, unreadUsers, isGuest } &#x3D; await this.computeDMData(currentUserId, activeDMUserId, sessionStartTime);
+    const fetchedUsers &#x3D; this.userSvc.filterDuplicateGuests(allFetchedUsers, currentUserId, Array.from(partnerIdsSet));
+    const { usersWithHistory, usersWithoutHistory } &#x3D; this.splitUsers(fetchedUsers, partnerIdsSet, currentUserId, isGuest);
+    return { channels: fetchedChannels, users: fetchedUsers, usersWithHistory, usersWithoutHistory, unreadUsers, unreadChannels };
+  }
+
+  /**
+   * Calculates unread channel mentions counts.
+   * 
+   * @param currentUserId ID of the current user.
+   * @param activeChannelId Currently open channel ID.
+   * @param sessionStartTime Current session start time fallback.
+   * @returns A map of channel IDs to mention count.
+   */
+  private async computeUnreadChannels(
+    currentUserId: string, activeChannelId: string | undefined, sessionStartTime: number,
+  ): Promise&lt;Record&lt;string, number&gt;&gt; {
+    if (!currentUserId) return {};
+    const mentions &#x3D; await this.messageSvc.getChannelMentions(currentUserId);
+    const unreadChanMap: Record&lt;string, number&gt; &#x3D; {};
+    mentions.forEach((msg) &#x3D;&gt; {
+      const chanId &#x3D; msg.channel_id;
+      if (!chanId || chanId &#x3D;&#x3D;&#x3D; activeChannelId) return;
+      if (!this.isUserMentionedInText(msg.content || &#x27;&#x27;, currentUserId)) return;
+      const lastReadStr &#x3D; this.getSafeLocalStorageItem(&#x60;channel_last_read:${currentUserId}:${chanId}&#x60;);
+      const lastReadTime &#x3D; lastReadStr ? new Date(lastReadStr).getTime() : sessionStartTime;
+      const msgTime &#x3D; new Date(msg.created_at || &#x27;&#x27;).getTime();
+      if (msgTime &gt; lastReadTime) unreadChanMap[chanId] &#x3D; (unreadChanMap[chanId] || 0) + 1;
+    });
+    return unreadChanMap;
+  }
+
+  /**
+   * Loads direct messages to compute unread counts and identify chat history users.
+   * 
+   * @param currentUserId ID of the current user.
+   * @param activeDMUserId Currently open DM partner user ID.
+   * @param sessionStartTime Current session start time fallback.
+   * @returns Object containing active chat partner IDs, unread maps, and guest status.
+   */
+  private async computeDMData(
+    currentUserId: string, activeDMUserId: string | undefined, sessionStartTime: number,
+  ): Promise&lt;{ partnerIdsSet: Set&lt;string&gt;; unreadUsers: Record&lt;string, number&gt;; isGuest: boolean }&gt; {
+    if (!currentUserId) {
+      return { partnerIdsSet: new Set(), unreadUsers: {}, isGuest: false };
+    }
+    const isGuest &#x3D; !!(this.authSvc.currentUser()?.is_anonymous || this.authSvc.currentUserProfile()?.display_name &#x3D;&#x3D;&#x3D; &#x27;Gast&#x27;);
+    const dbDeletions &#x3D; await this.messageSvc.getDirectChatDeletions(currentUserId);
+    const allDMs &#x3D; await this.messageSvc.getAllUserDirectMessages(currentUserId);
+    const { partnerIdsSet, unreadMap, latestMessageTimeMap } &#x3D; this.processDMs(allDMs, currentUserId, activeDMUserId, sessionStartTime);
+    if (isGuest &amp;&amp; activeDMUserId !&#x3D;&#x3D; &#x27;dabubble-team-local-id&#x27;) {
+      const lastReadStr &#x3D; this.getSafeLocalStorageItem(&#x60;chat_last_read:${currentUserId}:dabubble-team-local-id&#x60;);
+      if (!lastReadStr) unreadMap[&#x27;dabubble-team-local-id&#x27;] &#x3D; 1;
+    }
+    this.filterClosedChats(latestMessageTimeMap, partnerIdsSet, currentUserId, dbDeletions);
+    return { partnerIdsSet, unreadUsers: unreadMap, isGuest };
+  }
+
+  /**
+   * Iterates through all direct messages to identify partners, track latest message timestamps, and compute unread counts.
+   * 
+   * @param allDMs Array of DM message objects.
+   * @param currentUserId Current user ID.
+   * @param activeDMUserId Active DM partner ID.
+   * @param sessionStartTime Current session start time fallback.
+   * @returns Object with partner IDs set, unread counts map, and latest message time map.
+   */
+  private processDMs(
+    allDMs: Message[], currentUserId: string, activeDMUserId: string | undefined, sessionStartTime: number,
+  ) {
+    const partnerIdsSet &#x3D; new Set&lt;string&gt;();
+    const unreadMap: Record&lt;string, number&gt; &#x3D; {};
+    const latestMessageTimeMap &#x3D; new Map&lt;string, number&gt;();
+    allDMs.forEach((msg) &#x3D;&gt; {
+      const partnerId &#x3D; msg.sender_id &#x3D;&#x3D;&#x3D; currentUserId ? msg.recipient_id : msg.sender_id;
+      if (!partnerId) return;
+      const msgTime &#x3D; new Date(msg.created_at || &#x27;&#x27;).getTime();
+      if (msgTime &gt; (latestMessageTimeMap.get(partnerId) || 0)) latestMessageTimeMap.set(partnerId, msgTime);
+      if (msg.recipient_id !&#x3D;&#x3D; currentUserId || activeDMUserId &#x3D;&#x3D;&#x3D; partnerId) return;
+      const lastReadStr &#x3D; this.getSafeLocalStorageItem(&#x60;chat_last_read:${currentUserId}:${partnerId}&#x60;);
+      const lastReadTime &#x3D; lastReadStr ? new Date(lastReadStr).getTime() : sessionStartTime;
+      if (msgTime &gt; lastReadTime) unreadMap[partnerId] &#x3D; (unreadMap[partnerId] || 0) + 1;
+    });
+    return { partnerIdsSet, unreadMap, latestMessageTimeMap };
+  }
+
+  /**
+   * Filters out users from the history set if the chat was explicitly closed/deleted by the user.
+   * 
+   * @param latestMessageTimeMap Map of partner IDs to latest message timestamps.
+   * @param partnerIdsSet Set to collect active partners.
+   * @param currentUserId Current user ID.
+   * @param dbDeletions Database log of closed/deleted chat timestamps.
+   */
+  private filterClosedChats(
+    latestMessageTimeMap: Map&lt;string, number&gt;,
+    partnerIdsSet: Set&lt;string&gt;,
+    currentUserId: string,
+    dbDeletions: Record&lt;string, string&gt;,
+  ): void {
+    latestMessageTimeMap.forEach((latestMsgTime, partnerId) &#x3D;&gt; {
+      if (partnerId &#x3D;&#x3D;&#x3D; currentUserId) return;
+      const localClosedStr &#x3D; this.getSafeLocalStorageItem(&#x60;chat_closed:${currentUserId}:${partnerId}&#x60;);
+      const localClosedTime &#x3D; localClosedStr ? new Date(localClosedStr).getTime() : 0;
+      const dbClosedTime &#x3D; dbDeletions[partnerId] ? new Date(dbDeletions[partnerId]).getTime() : 0;
+      const closedTime &#x3D; Math.max(localClosedTime, dbClosedTime);
+      if (latestMsgTime &gt; closedTime) partnerIdsSet.add(partnerId);
+    });
+  }
+
+  /**
+   * Splits user list into those with active chat history and those without, inserting a team user placeholder for guests if applicable.
+   * 
+   * @param fetchedUsers Array of all loaded user profiles.
+   * @param partnerIdsSet Set of user IDs with active chats.
+   * @param currentUserId Current user ID.
+   * @param isGuest Boolean indicating if current user is guest.
+   * @returns Object containing split user arrays.
+   */
+  private splitUsers(
+    fetchedUsers: User[], partnerIdsSet: Set&lt;string&gt;, currentUserId: string, isGuest: boolean,
+  ): { usersWithHistory: User[]; usersWithoutHistory: User[] } {
+    if (!currentUserId) return { usersWithHistory: [], usersWithoutHistory: fetchedUsers };
+    const withHistory &#x3D; fetchedUsers.filter((u) &#x3D;&gt; partnerIdsSet.has(u.id));
+    if (isGuest) {
+      const closedStr &#x3D; this.getSafeLocalStorageItem(&#x60;chat_closed:${currentUserId}:dabubble-team-local-id&#x60;);
+      if (!closedStr &amp;&amp; !withHistory.some((u) &#x3D;&gt; u.id &#x3D;&#x3D;&#x3D; &#x27;dabubble-team-local-id&#x27;)) {
+        withHistory.unshift(this.TEAM_USER);
+      }
+    }
+    return { usersWithHistory: withHistory, usersWithoutHistory: fetchedUsers.filter((u) &#x3D;&gt; !partnerIdsSet.has(u.id)) };
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'SidebarData.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -5,11 +5,22 @@ import { User } from '../../interfaces/user.interface';
 import { userService } from '../../services/user.service';
 import { channelService } from '../../services/channel.service';
 
+/**
+ * Interface representing a group of messages under a specific date label.
+ */
 export interface DateGroup {
+  /** The date label, e.g. "Heute", "Gestern", or formatted date string. */
   dateLabel: string;
+  /** List of messages belonging to this date group. */
   messages: Message[];
 }
 
+/**
+ * Builds a list of DateGroup objects from the flat array of messages.
+ * Only root messages (without parent_id) are grouped, and each message is enriched with reply details.
+ * @param messages - The flat array of messages.
+ * @returns Array of grouped messages.
+ */
 export function buildGroupedMessages(messages: Message[]): DateGroup[] {
   const groups: DateGroup[] = [];
   const rootMessages = messages
@@ -19,6 +30,12 @@ export function buildGroupedMessages(messages: Message[]): DateGroup[] {
   return groups;
 }
 
+/**
+ * Enriches a message with reply count and last reply timestamp.
+ * @param msg - The message to enrich.
+ * @param messages - The full list of messages to find replies from.
+ * @returns The enriched message.
+ */
 function enrichMessage(msg: Message, messages: Message[]): Message {
   const replies = messages.filter((m) => m.parent_id === msg.id);
   return {
@@ -28,6 +45,11 @@ function enrichMessage(msg: Message, messages: Message[]): Message {
   } as Message;
 }
 
+/**
+ * Adds a message to the corresponding date group in the provided list.
+ * @param msg - The message to add.
+ * @param groups - The array of DateGroup objects.
+ */
 function addMessageToGroup(msg: Message, groups: DateGroup[]): void {
   const label = getDateLabel(msg.created_at);
   let group = groups.find((g) => g.dateLabel === label);
@@ -38,6 +60,11 @@ function addMessageToGroup(msg: Message, groups: DateGroup[]): void {
   group.messages.push(msg);
 }
 
+/**
+ * Formats a given ISO date string into a friendly label like "Heute", "Gestern", or "weekday, day month".
+ * @param dateStr - The ISO date string.
+ * @returns The formatted date label.
+ */
 export function getDateLabel(dateStr?: string): string {
   if (!dateStr) return '';
   const date = new Date(dateStr);
@@ -49,12 +76,23 @@ export function getDateLabel(dateStr?: string): string {
   return date.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long' }).replace('.', '');
 }
 
+/**
+ * Scrolls the given HTML container element to the bottom.
+ * @param scrollContainer - The scroll container ElementRef.
+ */
 export function scrollContainerToBottom(scrollContainer: any): void {
   setTimeout(() => {
     if (scrollContainer) scrollContainer.nativeElement.scrollTop = scrollContainer.nativeElement.scrollHeight;
   }, 100);
 }
 
+/**
+ * Checks if there is a search target message active, and if so, scrolls to it.
+ * Otherwise, scrolls the container to the bottom.
+ * @param searchTargetMessageId - The ID of the targeted search message.
+ * @param clearTarget - Callback function to clear the search target.
+ * @param scrollContainer - The scroll container element.
+ */
 export function checkAndScrollToSearchTarget(
   searchTargetMessageId: string | null,
   clearTarget: () => void,
@@ -73,6 +111,13 @@ export function checkAndScrollToSearchTarget(
   }
 }
 
+/**
+ * Handles typing broadcast events, updating lists of typing users and scheduling automatic removal timeouts.
+ * @param payload - The typing status payload.
+ * @param currentUserId - The current user's ID.
+ * @param typingUsers - WritableSignal of users currently typing.
+ * @param typingTimeouts - Map containing removal timeouts by user ID.
+ */
 export function handleTypingBroadcast(
   payload: { userId: string; userName: string; isTyping: boolean },
   currentUserId: string,
@@ -94,6 +139,11 @@ export function handleTypingBroadcast(
   }
 }
 
+/**
+ * Gets a descriptive display text summarizing who is currently typing.
+ * @param typingUsers - Array of users currently typing.
+ * @returns Formatted typing text.
+ */
 export function getTypingText(typingUsers: { userId: string; userName: string }[]): string {
   if (typingUsers.length === 0) return '';
   if (typingUsers.length === 1) return `${typingUsers[0].userName} schreibt...`;
@@ -101,6 +151,15 @@ export function getTypingText(typingUsers: { userId: string; userName: string }[
   return 'Mehrere Personen schreiben...';
 }
 
+/**
+ * Searches for users and channels matching the query string.
+ * Supports prefixes like '#' for channels and '@' for users.
+ * @param query - The search query.
+ * @param channelSvc - The channel service instance.
+ * @param userSvc - The user service instance.
+ * @param currentUserId - The current user's ID.
+ * @returns A promise resolving to filtered channels and users.
+ */
 export async function searchRecipients(
   query: string,
   channelSvc: channelService,
@@ -126,6 +185,15 @@ export async function searchRecipients(
   };
 }
 
+/**
+ * Adds selected members to a channel.
+ * @param memberResult - The object representing member selection.
+ * @param channelId - The ID of the target channel.
+ * @param userSvc - The user service instance.
+ * @param channelSvc - The channel service instance.
+ * @param currentUserId - The current user's ID.
+ * @returns A promise that resolves when the members are added.
+ */
 export async function addMembersToChannel(
   memberResult: any,
   channelId: string,
@@ -146,6 +214,16 @@ export async function addMembersToChannel(
   }
 }
 
+/**
+ * Sends a message in new message mode and navigates to the target channel or direct chat.
+ * @param content - The message content.
+ * @param selectedRecipient - The selected recipient user or channel object.
+ * @param selectedRecipientType - Recipient type ('channel' or 'user').
+ * @param userId - The sender's ID.
+ * @param messageSvc - The message service instance.
+ * @param router - The Angular router instance.
+ * @returns A promise resolving to true if successful, false otherwise.
+ */
 export async function sendNewModeMessage(
   content: string,
   selectedRecipient: any,

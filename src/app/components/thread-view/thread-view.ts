@@ -16,28 +16,48 @@ import { RealtimeChannel } from '@supabase/supabase-js';
   templateUrl: './thread-view.html',
   styleUrl: './thread-view.scss',
 })
+/**
+ * Component representing the side panel for a message reply thread, showing the parent message and its replies.
+ */
 export class ThreadViewComponent implements OnDestroy {
+  /** The injected ThreadService managing active thread states. */
   public threadSvc = inject(ThreadService);
+  /** The injected MessageService. */
   private messageSvc = inject(messageService);
+  /** The injected AuthService. */
   private authSvc = inject(authService);
 
+  /** Element reference to the replies scroll container. */
   @ViewChild('repliesContainer') private repliesContainer!: ElementRef;
 
+  /** Signal holding the list of replies in the current thread. */
   replies = signal<Message[]>([]);
+  /** Signal indicating if replies are currently loading. */
   isRepliesLoading = signal<boolean>(false);
+  /** Realtime database subscription channel for thread replies. */
   private repliesSubscription: RealtimeChannel | null = null;
+  /** Subscription for parent message deletion events. */
   private messageDeletedSubscription: Subscription | null = null;
+  /** Subscription for optimistic reaction updates. */
   private optimisticReactionSubscription: Subscription | null = null;
+  /** Subscription for scrolling to search targets. */
   private searchTargetSubscription: Subscription | null = null;
+  /** Signal containing the list of users typing replies in this thread. */
   typingUsers = signal<{ userId: string; userName: string }[]>([]);
+  /** Map of timeouts by user ID to clear typing indicators. */
   private typingTimeouts = new Map<string, any>();
 
-  
+  /**
+   * Gets the ID of the currently logged-in user.
+   */
   get currentUserId(): string {
     return this.authSvc.currentUser()?.id || '';
   }
 
-  
+  /**
+   * Initializes the ThreadViewComponent, subscribing to message deletion,
+   * search selection, optimistic reactions, and changes in the active parent message.
+   */
   constructor() {
     this.messageDeletedSubscription = this.messageSvc.messageDeleted.subscribe((id) => {
       this.replies.update((prev) => prev.filter((r) => r.id !== id));
@@ -89,7 +109,6 @@ export class ThreadViewComponent implements OnDestroy {
       }
     });
 
-    
     effect(async () => {
       const parentMsg = this.threadSvc.activeMessage();
 
@@ -97,7 +116,6 @@ export class ThreadViewComponent implements OnDestroy {
         this.isRepliesLoading.set(true);
       }
 
-      
       if (this.repliesSubscription) {
         this.messageSvc.unsubscribe(this.repliesSubscription);
         this.repliesSubscription = null;
@@ -109,7 +127,6 @@ export class ThreadViewComponent implements OnDestroy {
           this.replies.set(dbReplies);
           this.checkAndScrollToSearchTarget();
 
-          
           this.repliesSubscription = this.messageSvc.subscribeToThreadReplies(
             parentMsg.id,
             (event, msg) => {
@@ -142,7 +159,9 @@ export class ThreadViewComponent implements OnDestroy {
     });
   }
 
-  
+  /**
+   * Component destruction lifecycle hook. Unsubscribes from active database channels and event streams.
+   */
   ngOnDestroy() {
     if (this.repliesSubscription) {
       this.messageSvc.unsubscribe(this.repliesSubscription);
@@ -158,11 +177,13 @@ export class ThreadViewComponent implements OnDestroy {
     }
   }
 
-  
+  /**
+   * Handles typing broadcast updates inside the thread view, displaying and clearing typing indicators.
+   * @param payload - The typing broadcast payload.
+   */
   handleTypingBroadcast(payload: { userId: string; userName: string; isTyping: boolean }) {
     if (payload.userId === this.currentUserId) return;
 
-    
     const existingTimeout = this.typingTimeouts.get(payload.userId);
     if (existingTimeout) {
       clearTimeout(existingTimeout);
@@ -170,25 +191,25 @@ export class ThreadViewComponent implements OnDestroy {
     }
 
     if (payload.isTyping) {
-      
       this.typingUsers.update((users) => {
         if (users.some((u) => u.userId === payload.userId)) return users;
         return [...users, { userId: payload.userId, userName: payload.userName }];
       });
 
-      
       const timeout = setTimeout(() => {
         this.typingUsers.update((users) => users.filter((u) => u.userId !== payload.userId));
         this.typingTimeouts.delete(payload.userId);
       }, 5000);
       this.typingTimeouts.set(payload.userId, timeout);
     } else {
-      
       this.typingUsers.update((users) => users.filter((u) => u.userId !== payload.userId));
     }
   }
 
-  
+  /**
+   * Updates typing status and broadcasts it to the thread channel.
+   * @param isTyping - Active typing status.
+   */
   onTypingStatusChange(isTyping: boolean) {
     const profile = this.authSvc.currentUserProfile();
     if (profile && this.repliesSubscription) {
@@ -201,7 +222,9 @@ export class ThreadViewComponent implements OnDestroy {
     }
   }
 
-  
+  /**
+   * Gets visual typing display text summarizing who is typing.
+   */
   getTypingText(): string {
     const users = this.typingUsers();
     if (users.length === 0) return '';
@@ -210,22 +233,33 @@ export class ThreadViewComponent implements OnDestroy {
     return 'Mehrere Personen schreiben...';
   }
 
-  
+  /**
+   * Closes the active thread side panel.
+   */
   onClose() {
     this.threadSvc.closeThread();
   }
 
-  
+  /**
+   * Event handler when the parent message is deleted.
+   * @param _parentId - Deleted parent message ID.
+   */
   onParentDeleted(_parentId: string) {
     this.threadSvc.closeThread();
   }
 
-  
+  /**
+   * Event handler when a reply is deleted.
+   * @param replyId - Deleted reply ID.
+   */
   onReplyDeleted(replyId: string) {
     this.replies.update(prev => prev.filter(r => r.id !== replyId));
   }
 
-  
+  /**
+   * Sends a reply message to the database.
+   * @param content - Reply content string.
+   */
   async onSendReply(content: any) {
     if (typeof content !== 'string' || !content.trim()) return;
     const parentMsg = this.threadSvc.activeMessage();
@@ -234,7 +268,6 @@ export class ThreadViewComponent implements OnDestroy {
     const userId = this.currentUserId;
     if (!userId) return;
 
-    
     const newReply = await this.messageSvc.sendMessage(
       content, 
       userId, 
@@ -251,7 +284,9 @@ export class ThreadViewComponent implements OnDestroy {
     }
   }
 
-  
+  /**
+   * Scrolls the replies scroll container to the bottom.
+   */
   private scrollToBottom() {
     setTimeout(() => {
       if (this.repliesContainer) {
@@ -261,7 +296,9 @@ export class ThreadViewComponent implements OnDestroy {
     }, 100);
   }
 
-  
+  /**
+   * Checks for a search target message and scrolls it into view, falling back to bottom if not found.
+   */
   public checkAndScrollToSearchTarget() {
     const targetId = this.messageSvc.searchTargetMessageId;
     if (targetId) {

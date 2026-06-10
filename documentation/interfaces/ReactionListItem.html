@@ -1,0 +1,1236 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>dabubble documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">dabubble documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  ReactionListItem</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>C:/Users/bauma/Documents/DEVELOPER/Developer Akademie/1.) Gruppenarbeit/DABubble/DABubble/src/app/components/message/message.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Represents an aggregated reaction item for displaying under a message.</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#count" 
+>
+                                            count
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#emoji" 
+>
+                                            emoji
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#tooltipAction" 
+>
+                                            tooltipAction
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#tooltipNames" 
+>
+                                            tooltipNames
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#userIds" 
+>
+                                            userIds
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#userReacted" 
+>
+                                            userReacted
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="count"></a>
+                                        <span class="name "><b>count</b>
+                                            <a href="#count">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>count:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The number of users who reacted with this emoji.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="emoji"></a>
+                                        <span class="name "><b>emoji</b>
+                                            <a href="#emoji">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>emoji:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The native emoji character.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="tooltipAction"></a>
+                                        <span class="name "><b>tooltipAction</b>
+                                            <a href="#tooltipAction">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>tooltipAction:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The action label formatted for a tooltip (e.g. &quot;hat reagiert&quot; or &quot;haben reagiert&quot;).</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="tooltipNames"></a>
+                                        <span class="name "><b>tooltipNames</b>
+                                            <a href="#tooltipNames">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>tooltipNames:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Names of reacting users formatted for a tooltip.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userIds"></a>
+                                        <span class="name "><b>userIds</b>
+                                            <a href="#userIds">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userIds:     <code>string[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>The IDs of users who reacted with this emoji.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userReacted"></a>
+                                        <span class="name "><b>userReacted</b>
+                                            <a href="#userReacted">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userReacted:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Whether the current user reacted with this emoji.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, Output, EventEmitter, inject, ElementRef, OnInit, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { EmojiComponent } from &#x27;@ctrl/ngx-emoji-mart/ngx-emoji&#x27;;
+import { Message } from &#x27;../../interfaces/message.interface&#x27;;
+import { messageService } from &#x27;../../services/message.service&#x27;;
+import { ProfileDialogService } from &#x27;../../services/profile-dialog.service&#x27;;
+import { ToastService } from &#x27;../../services/toast.service&#x27;;
+import { channelService } from &#x27;../../services/channel.service&#x27;;
+import { userService } from &#x27;../../services/user.service&#x27;;
+import { ThreadService } from &#x27;../../services/thread.service&#x27;;
+import { User } from &#x27;../../interfaces/user.interface&#x27;;
+import { EmojiRecentService } from &#x27;../../services/emoji-recent.service&#x27;;
+import { EmojiPickerOverlayService } from &#x27;../../services/emoji-picker-overlay.service&#x27;;
+
+/**
+ * Represents a parsed token of a message content (text, channel link, or user mention).
+ */
+interface MessageToken {
+  /** The token type. */
+  type: &#x27;text&#x27; | &#x27;channel&#x27; | &#x27;mention&#x27;;
+  /** The text representation of the token. */
+  text: string;
+  /** Optional channel ID associated with the token. */
+  channelId?: string;
+  /** Optional user ID associated with the token. */
+  userId?: string;
+  /** Optional text parts for detailed emoji parsing. */
+  parts?: MessageTextPart[];
+}
+
+/**
+ * Represents a sub-part of a text token, separating plain text from native emojis.
+ */
+interface MessageTextPart {
+  /** The part type (&#x27;text&#x27; or &#x27;emoji&#x27;). */
+  type: &#x27;text&#x27; | &#x27;emoji&#x27;;
+  /** The text content if type is &#x27;text&#x27;. */
+  text?: string;
+  /** The unified unicode identifier if type is &#x27;emoji&#x27;. */
+  unified?: string;
+}
+
+/**
+ * Represents an aggregated reaction item for displaying under a message.
+ */
+interface ReactionListItem {
+  /** The native emoji character. */
+  emoji: string;
+  /** The number of users who reacted with this emoji. */
+  count: number;
+  /** Whether the current user reacted with this emoji. */
+  userReacted: boolean;
+  /** The IDs of users who reacted with this emoji. */
+  userIds: string[];
+  /** Names of reacting users formatted for a tooltip. */
+  tooltipNames: string;
+  /** The action label formatted for a tooltip (e.g. &quot;hat reagiert&quot; or &quot;haben reagiert&quot;). */
+  tooltipAction: string;
+}
+
+@Component({
+  selector: &#x27;app-message&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, EmojiComponent],
+  templateUrl: &#x27;./message.html&#x27;,
+  styleUrl: &#x27;./message.scss&#x27;,
+  host: {
+    &#x27;(document:click)&#x27;: &#x27;onDocumentClick($event)&#x27;,
+    &#x27;(mouseleave)&#x27;: &#x27;onMouseLeave()&#x27;,
+  },
+})
+/**
+ * Component representing a single message, including its sender, content parsing (mentions, channel links, emojis), and reactions.
+ */
+export class MessageComponent implements OnInit {
+  /** Counter used to generate unique IDs for emoji picker overlays. */
+  private static nextPickerId &#x3D; 0;
+  /** Promise resolving to all users, cached to prevent multiple database queries. */
+  private static allUsersPromise: Promise&lt;User[]&gt; | null &#x3D; null;
+  /** Inner storage for the message input. */
+  private _message!: Message;
+  /** Regular expression for matching emojis. */
+  private readonly emojiRegex &#x3D; /\p{Extended_Pictographic}/u;
+  /** Regular expression for matching regional flag emojis. */
+  private readonly regionalFlagRegex &#x3D; /^[\u{1F1E6}-\u{1F1FF}]{2}$/u;
+  /** The local order of reactions to prevent layout changes. */
+  private reactionOrder: string[] &#x3D; [];
+  /** Unique scope identifier for this component&#x27;s emoji picker. */
+  private readonly pickerScope &#x3D; &#x60;message:${MessageComponent.nextPickerId++}&#x60;;
+
+  /**
+   * Sets the message object and triggers parsing.
+   */
+  @Input({ required: true }) set message(val: Message) {
+    this._message &#x3D; val;
+    this.syncReactionOrder();
+    this.parseMessageContent();
+  }
+  get message(): Message {
+    return this._message;
+  }
+
+  /**
+   * Checks if this message is highlighted (e.g. matched by search).
+   */
+  get isHighlighted(): boolean {
+    return this.message?.id ? this.message.id &#x3D;&#x3D;&#x3D; this.messageSvc.searchTargetMessageId : false;
+  }
+
+  /** The currently logged-in user&#x27;s ID. */
+  @Input({ required: true }) currentUserId!: string;
+  /** Whether this message is displayed inside a thread view. */
+  @Input() isThreadMessage &#x3D; false;
+
+  /** Event emitted when thread button is clicked. */
+  @Output() threadClick &#x3D; new EventEmitter&lt;Message&gt;();
+  /** Event emitted when edit button is clicked. */
+  @Output() editClick &#x3D; new EventEmitter&lt;Message&gt;();
+  /** Event emitted when message deletion is requested. */
+  @Output() delete &#x3D; new EventEmitter&lt;string&gt;();
+
+  /** Injected MessageService. */
+  private messageSvc &#x3D; inject(messageService);
+  /** Injected ElementRef. */
+  private elementRef &#x3D; inject(ElementRef);
+  /** Injected ProfileDialogService. */
+  private profileDialogSvc &#x3D; inject(ProfileDialogService);
+  /** Injected ToastService. */
+  private toastSvc &#x3D; inject(ToastService);
+  /** Injected ChannelService. */
+  private channelSvc &#x3D; inject(channelService);
+  /** Injected UserService. */
+  private userSvc &#x3D; inject(userService);
+  /** Injected ThreadService. */
+  private threadSvc &#x3D; inject(ThreadService);
+  /** Injected EmojiRecentService. */
+  private emojiRecentSvc &#x3D; inject(EmojiRecentService);
+  /** Injected EmojiPickerOverlayService. */
+  private pickerSvc &#x3D; inject(EmojiPickerOverlayService);
+  /** Injected ChangeDetectorRef. */
+  private cdr &#x3D; inject(ChangeDetectorRef);
+  /** Injected Router. */
+  private router &#x3D; inject(Router);
+
+  /** Whether the message more options menu is open. */
+  showMoreMenu &#x3D; false;
+  /** Whether the message is currently in edit mode. */
+  isEditing &#x3D; false;
+  /** Editable text content in the message edit textarea. */
+  editContent &#x3D; &#x27;&#x27;;
+
+  /** Shared cache of all user profiles in the application. */
+  private static allUsers: User[] &#x3D; [];
+  /** Parsed tokens of the message content. */
+  tokens: MessageToken[] &#x3D; [];
+  
+  /**
+   * Toggles the message options popup menu.
+   */
+  toggleMoreOptions() {
+    const shouldOpen &#x3D; !this.showMoreMenu;
+    this.closeTransientPopups();
+    this.showMoreMenu &#x3D; shouldOpen;
+  }
+
+  /**
+   * Toggles the reaction emoji picker popup.
+   * @param kind - Trigger source (&#x27;footer&#x27; or &#x27;hover&#x27;).
+   * @param trigger - The HTMLElement anchoring the popup.
+   */
+  toggleReactionPicker(kind: &#x27;footer&#x27; | &#x27;hover&#x27;, trigger: HTMLElement) {
+    this.closeTransientPopups();
+    this.pickerSvc.toggle(trigger, this.getPickerConfig(kind));
+  }
+  
+  /** Quick-reaction emojis shown in the message hover bar. */
+  quickEmojis &#x3D; [&#x27;🚀&#x27;, &#x27;✅&#x27;, &#x27;👍&#x27;, &#x27;❤️&#x27;, &#x27;😂&#x27;, &#x27;😮&#x27;];
+  /** The emoji set to use (apple, google, etc.). */
+  readonly emojiSet &#x3D; &#x27;apple&#x27;;
+  /** Fallback emojis for the hover reaction bar. */
+  readonly fallbackHoverReactionEmojis &#x3D; [&#x27;✅&#x27;, &#x27;👍&#x27;];
+
+  /**
+   * Gets the recent reaction emojis for the current user.
+   */
+  get hoverReactionEmojis(): string[] {
+    return this.emojiRecentSvc.getRecentReactionEmojis(this.currentUserId, 2, this.fallbackHoverReactionEmojis);
+  }
+
+  /**
+   * Gets the reply count of this message.
+   */
+  get replyCount(): number {
+    return (this.message as any).reply_count || 0;
+  }
+  
+  /**
+   * Gets the formatted timestamp of the last reply.
+   */
+  get formattedLastReplyTime(): string {
+    const time &#x3D; (this.message as any).last_reply_time;
+    if (!time) return &#x27;&#x27;;
+    const date &#x3D; new Date(time);
+    const hrs &#x3D; String(date.getHours()).padStart(2, &#x27;0&#x27;);
+    const mins &#x3D; String(date.getMinutes()).padStart(2, &#x27;0&#x27;);
+    return &#x60;${hrs}:${mins}&#x60;;
+  }
+  
+  /**
+   * Checks if the sender of this message is the current user.
+   */
+  get isCurrentUser(): boolean {
+    return this.message.sender_id &#x3D;&#x3D;&#x3D; this.currentUserId;
+  }
+  
+  /**
+   * Gets the formatted creation time of this message.
+   */
+  get formattedTime(): string {
+    if (!this.message.created_at) return &#x27;&#x27;;
+    const date &#x3D; new Date(this.message.created_at);
+    const hrs &#x3D; String(date.getHours()).padStart(2, &#x27;0&#x27;);
+    const mins &#x3D; String(date.getMinutes()).padStart(2, &#x27;0&#x27;);
+    return &#x60;${hrs}:${mins} Uhr&#x60;;
+  }
+  
+  /**
+   * Gets the formatted list of reactions for this message.
+   */
+  get reactionList(): ReactionListItem[] {
+    return this.buildReactionList();
+  }
+
+  /**
+   * Checks if the reaction picker popup of a specific kind is currently open.
+   * @param kind - The picker kind (&#x27;footer&#x27; or &#x27;hover&#x27;).
+   */
+  isReactionPickerOpen(kind: &#x27;footer&#x27; | &#x27;hover&#x27;): boolean {
+    return this.pickerSvc.isOpen(this.pickerOwner(kind));
+  }
+
+  /**
+   * Handles emoji selection from the picker.
+   * @param emoji - The selected native emoji string.
+   */
+  onReactionPickerSelect(emoji: string): void {
+    void this.toggleReaction(emoji);
+  }
+
+  /**
+   * Splits a plain text string into plain text and emoji tokens.
+   * @param text - The text to split.
+   */
+  private buildTextParts(text: string): MessageTextPart[] {
+    if (!text) return [];
+    const parts: MessageTextPart[] &#x3D; [];
+    let buffer &#x3D; &#x27;&#x27;;
+    for (const seg of this.splitIntoGraphemes(text)) {
+      if (!this.isEmojiSegment(seg)) { buffer +&#x3D; seg; continue; }
+      if (buffer) parts.push({ type: &#x27;text&#x27;, text: buffer });
+      buffer &#x3D; &#x27;&#x27;;
+      parts.push({ type: &#x27;emoji&#x27;, unified: this.toUnified(seg) });
+    }
+    if (buffer) parts.push({ type: &#x27;text&#x27;, text: buffer });
+    return parts;
+  }
+
+  /**
+   * Converts a native emoji to its unified unicode format.
+   * @param emoji - The native emoji string.
+   */
+  toEmojiKey(emoji: string): string {
+    return this.toUnified(emoji);
+  }
+  
+  /**
+   * Toggles the current user&#x27;s reaction on the message.
+   * @param emoji - The native emoji string.
+   */
+  async toggleReaction(emoji: string) {
+    this.closeTransientPopups();
+    if (!this.message.id) return;
+    this.emojiRecentSvc.recordRecentNativeEmoji(this.currentUserId, emoji);
+    this.messageSvc.optimisticReaction.emit({ messageId: this.message.id, emoji, userId: this.currentUserId });
+    try {
+      await this.messageSvc.toggleReaction(this.message.id, emoji, this.currentUserId);
+    } catch (err) {
+      console.error(&#x27;Fehler beim Speichern der Reaktion in der Datenbank:&#x27;, err);
+    }
+  }
+  
+  /**
+   * Click event listener on the document level.
+   * @param event - Mouse click event.
+   */
+  onDocumentClick(event: MouseEvent) {
+    const target &#x3D; event.target as HTMLElement;
+    if (target?.closest?.(&#x27;[data-emoji-picker-host]&#x27;)) {
+      return;
+    }
+    if (!this.elementRef.nativeElement.contains(target)) {
+      this.closeAllPopups();
+    }
+  }
+
+  /**
+   * Click event handler for the message container.
+   * @param event - Mouse click event.
+   */
+  onMessageContainerClick(event: MouseEvent) {
+    const target &#x3D; event.target;
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    if (this.hasOpenPicker() &amp;&amp; !target.closest(&#x27;.msg-container__reaction-picker-anchor&#x27;)) this.closeReactionPickers();
+  }
+
+  /**
+   * Mouseleave event handler on the component level.
+   */
+  onMouseLeave() {
+    if (!this.hasOpenPicker()) this.closeTransientPopups();
+  }
+
+  /** Whether the inline editor emoji picker is visible. */
+  showEditEmojiPicker &#x3D; false;
+  
+  /**
+   * Starts a reply thread from this message.
+   */
+  onStartThread() {
+    this.closeTransientPopups();
+    this.threadClick.emit(this.message);
+  }
+  
+  /**
+   * Opens the profile dialog of the sender.
+   */
+  openSenderProfile(): void {
+    if (!this.message.sender) {
+      return;
+    }
+
+    this.profileDialogSvc.open(this.message.sender, { suppressOutsideCloseOnce: this.isCurrentUser });
+  }
+  
+  /**
+   * Enters edit mode for this message.
+   */
+  startEdit() {
+    this.closeTransientPopups();
+    this.isEditing &#x3D; true;
+    this.editContent &#x3D; this.messageSvc.markupToZeroWidth(
+      this.message.content,
+      MessageComponent.allUsers,
+      this.channelSvc.channels()
+    );
+    this.showEditEmojiPicker &#x3D; false;
+  }
+  
+  /**
+   * Exits edit mode and discards edits.
+   */
+  cancelEdit() {
+    this.isEditing &#x3D; false;
+    this.showEditEmojiPicker &#x3D; false;
+  }
+  
+  /**
+   * Toggles the emoji picker inside the inline edit field.
+   */
+  toggleEditEmojiPicker() {
+    this.showEditEmojiPicker &#x3D; !this.showEditEmojiPicker;
+  }
+
+  /**
+   * Adds an emoji to the inline edit content.
+   * @param emoji - The selected emoji.
+   */
+  addEmojiToEdit(emoji: string) {
+    this.editContent +&#x3D; emoji;
+    this.showEditEmojiPicker &#x3D; false;
+  }
+
+  /**
+   * Keydown event listener inside the inline edit textarea.
+   * @param event - Keyboard event.
+   */
+  onEditKeyDown(event: any) {
+    const keyboardEvent &#x3D; event as KeyboardEvent;
+    if (keyboardEvent.key &#x3D;&#x3D;&#x3D; &#x27;Enter&#x27; &amp;&amp; !keyboardEvent.shiftKey) {
+      keyboardEvent.preventDefault();
+      this.saveEdit();
+    } else if (keyboardEvent.key &#x3D;&#x3D;&#x3D; &#x27;Escape&#x27;) {
+      keyboardEvent.preventDefault();
+      this.cancelEdit();
+    }
+  }
+
+  /**
+   * Angular initialization lifecycle hook.
+   */
+  ngOnInit() {
+    void this.ensureUsersLoaded();
+  }
+
+  /**
+   * Parses the message content string into structured tokens.
+   */
+  parseMessageContent() {
+    const content &#x3D; this.message?.content || &#x27;&#x27;;
+    if (!content) return this.resetTokens();
+    if (MessageComponent.allUsers.length &gt; 0) return this.executeParsing(content);
+    void this.ensureUsersLoaded().then(() &#x3D;&gt; this.executeParsing(content));
+  }
+
+  /**
+   * Resets the message tokens list.
+   */
+  private resetTokens(): void {
+    this.tokens &#x3D; [];
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Ensures that all users cache is loaded.
+   */
+  private ensureUsersLoaded(): Promise&lt;User[]&gt; {
+    if (MessageComponent.allUsers.length &gt; 0) return Promise.resolve(MessageComponent.allUsers);
+    if (!MessageComponent.allUsersPromise) MessageComponent.allUsersPromise &#x3D; this.loadAllUsers();
+    return MessageComponent.allUsersPromise;
+  }
+
+  /**
+   * Loads all user profiles from DB.
+   */
+  private loadAllUsers(): Promise&lt;User[]&gt; {
+    return this.userSvc.getAllUsers().then((users) &#x3D;&gt; MessageComponent.allUsers &#x3D; users)
+      .catch((error) &#x3D;&gt; (console.error(&#x27;Fehler beim Laden der User in MessageComponent:&#x27;, error), []))
+      .finally(() &#x3D;&gt; MessageComponent.allUsersPromise &#x3D; null);
+  }
+
+  /**
+   * Executes parsing of markup channels and mentions.
+   * @param content - The markup string.
+   */
+  private executeParsing(content: string) {
+    const regex &#x3D; /(&lt;@[a-f0-9-]{36}&gt;|&lt;#[a-f0-9-]{36}&gt;)/gi;
+    this.tokens &#x3D; content.split(regex)
+      .filter(Boolean)
+      .map(part &#x3D;&gt; this.parsePartToToken(part))
+      .filter((t): t is MessageToken &#x3D;&gt; !!t);
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * Parses a specific string segment into a MessageToken.
+   * @param part - The text segment to parse.
+   */
+  private parsePartToToken(part: string): MessageToken | null {
+    if (part.startsWith(&#x27;&lt;@&#x27;) &amp;&amp; part.endsWith(&#x27;&gt;&#x27;)) {
+      const userId &#x3D; part.slice(2, -1);
+      const user &#x3D; MessageComponent.allUsers.find(u &#x3D;&gt; u.id &#x3D;&#x3D;&#x3D; userId);
+      return { type: &#x27;mention&#x27;, text: &#x60;@${user?.display_name || &#x27;Gelöschter User&#x27;}&#x60;, userId };
+    }
+    if (part.startsWith(&#x27;&lt;#&#x27;) &amp;&amp; part.endsWith(&#x27;&gt;&#x27;)) {
+      const channelId &#x3D; part.slice(2, -1);
+      const chan &#x3D; this.channelSvc.channels().find(c &#x3D;&gt; c.id &#x3D;&#x3D;&#x3D; channelId);
+      return { type: &#x27;channel&#x27;, text: &#x60;#${chan?.name || &#x27;Gelöschter Channel&#x27;}&#x60;, channelId };
+    }
+    return { type: &#x27;text&#x27;, text: part, parts: this.buildTextParts(part) };
+  }
+
+  /**
+   * Handles click events on channel mention tokens.
+   * @param channelId - The targeted channel ID.
+   */
+  onChannelClick(channelId: string) {
+    const channel &#x3D; this.channelSvc.channels().find(c &#x3D;&gt; c.id &#x3D;&#x3D;&#x3D; channelId);
+    if (channel) {
+      this.router.navigate([&#x27;/main/channel&#x27;, channel.id]);
+      this.threadSvc.closeThread();
+    }
+  }
+
+  /**
+   * Handles click events on user mention tokens.
+   * @param userId - The targeted user ID.
+   */
+  onUserClick(userId: string) {
+    const user &#x3D; MessageComponent.allUsers.find(u &#x3D;&gt; u.id &#x3D;&#x3D;&#x3D; userId);
+    if (user) {
+      this.profileDialogSvc.open(user, { suppressOutsideCloseOnce: userId &#x3D;&#x3D;&#x3D; this.currentUserId });
+    }
+  }
+
+  /**
+   * Saves the edited message content back to the database.
+   */
+  async saveEdit() {
+    if (!this.message.id || !this.editContent.trim()) return;
+    try {
+      const content &#x3D; this.messageSvc.zeroWidthToMarkup(this.editContent);
+      const { error } &#x3D; await this.messageSvc[&#x27;supabaseSvc&#x27;].supabase.from(&#x27;messages&#x27;).update({ content }).eq(&#x27;id&#x27;, this.message.id);
+      if (error) throw error;
+      this.message.content &#x3D; content;
+      this.parseMessageContent();
+      this.isEditing &#x3D; this.showEditEmojiPicker &#x3D; false;
+    } catch (err) {
+      console.error(&#x27;Failed to save message edit:&#x27;, err);
+    }
+  }
+
+  /**
+   * Deletes this message.
+   */
+  async deleteMessage() {
+    this.closeTransientPopups();
+    if (!this.message.id) return;
+    const msgId &#x3D; this.message.id;
+    this.delete.emit(msgId);
+    await this.messageSvc.deleteMessage(msgId);
+    this.toastSvc.show(&#x27;Nachricht gelöscht&#x27;, &#x27;success&#x27;, 3000, undefined, false);
+  }
+
+  /**
+   * Closes temporary popup elements.
+   */
+  private closeTransientPopups() {
+    this.closeReactionPickers();
+    this.showMoreMenu &#x3D; false;
+  }
+
+  /**
+   * Closes active emoji pickers.
+   */
+  private closeReactionPickers(): void {
+    this.pickerSvc.close(this.pickerOwner(&#x27;footer&#x27;));
+    this.pickerSvc.close(this.pickerOwner(&#x27;hover&#x27;));
+  }
+
+  /**
+   * Checks if any reaction picker is currently open.
+   */
+  private hasOpenPicker(): boolean {
+    return this.isReactionPickerOpen(&#x27;footer&#x27;) || this.isReactionPickerOpen(&#x27;hover&#x27;);
+  }
+
+  /**
+   * Builds the formatted list of reactions for rendering.
+   */
+  private buildReactionList(): ReactionListItem[] {
+    if (!this.message.reactions) {
+      this.reactionOrder &#x3D; [];
+      return [];
+    }
+    this.syncReactionOrder();
+    return this.visibleReactionKeys().map((emoji) &#x3D;&gt; this.createReactionItem(emoji));
+  }
+
+  /**
+   * Gets the list of reaction emoji keys.
+   */
+  private visibleReactionKeys(): string[] {
+    return this.reactionOrder.filter((emoji) &#x3D;&gt; Array.isArray(this.message.reactions?.[emoji]));
+  }
+
+  /**
+   * Generates a ReactionListItem for a specific emoji.
+   * @param emoji - The native emoji character.
+   */
+  private createReactionItem(emoji: string): ReactionListItem {
+    const userIds &#x3D; this.message.reactions?.[emoji] ?? [];
+    const tooltip &#x3D; this.buildReactionTooltip(userIds);
+    return {
+      emoji,
+      count: userIds.length,
+      userReacted: userIds.includes(this.currentUserId),
+      userIds,
+      tooltipNames: tooltip.names,
+      tooltipAction: tooltip.action,
+    };
+  }
+
+  /**
+   * Formats the names of reacting users and action text for the tooltip.
+   * @param userIds - Reacting user IDs.
+   */
+  private buildReactionTooltip(userIds: string[]): { names: string; action: string } {
+    const names &#x3D; [...new Set(userIds.map((id) &#x3D;&gt; {
+      return id &#x3D;&#x3D;&#x3D; this.currentUserId ? &#x27;Du&#x27; : this.resolveReactionUserName(id);
+    }).filter(Boolean))];
+    const len &#x3D; names.length;
+
+    if (len &#x3D;&#x3D;&#x3D; 1) {
+      return {
+        names: names[0],
+        action: names[0] &#x3D;&#x3D;&#x3D; &#x27;Du&#x27; ? &#x27;hast reagiert&#x27; : &#x27;hat reagiert&#x27;,
+      };
+    }
+
+    if (len &#x3D;&#x3D;&#x3D; 2) {
+      return {
+        names: &#x60;${names[0]} und ${names[1]}&#x60;,
+        action: &#x27;haben reagiert&#x27;,
+      };
+    }
+
+    return {
+      names: &#x60;${names[0]}, ${names[1]} und ${len - 2} weitere Person${len &#x3D;&#x3D;&#x3D; 3 ? &#x27;&#x27; : &#x27;en&#x27;}&#x60;,
+      action: &#x27;haben reagiert&#x27;,
+    };
+  }
+
+  /**
+   * Resolves a user ID to a display name for reactions.
+   * @param userId - User ID.
+   */
+  private resolveReactionUserName(userId: string): string {
+    if (userId &#x3D;&#x3D;&#x3D; this.currentUserId) {
+      return &#x27;Du&#x27;;
+    }
+
+    if (this.message.sender?.id &#x3D;&#x3D;&#x3D; userId) {
+      return this.message.sender.display_name;
+    }
+
+    const user &#x3D; MessageComponent.allUsers.find((entry) &#x3D;&gt; entry.id &#x3D;&#x3D;&#x3D; userId);
+    return user?.display_name || &#x27;Unbekannt&#x27;;
+  }
+
+  /**
+   * Synchronizes local reactionOrder array with new keys in reactions object.
+   */
+  private syncReactionOrder(): void {
+    const nextKeys &#x3D; Object.keys(this.message?.reactions ?? {});
+    this.reactionOrder &#x3D; [
+      ...this.reactionOrder.filter((emoji) &#x3D;&gt; nextKeys.includes(emoji)),
+      ...nextKeys.filter((emoji) &#x3D;&gt; !this.reactionOrder.includes(emoji)),
+    ];
+  }
+
+  /**
+   * Gets a unique picker owner key.
+   * @param kind - Picker kind.
+   */
+  private pickerOwner(kind: &#x27;footer&#x27; | &#x27;hover&#x27;): string {
+    return &#x60;${this.pickerScope}:${kind}&#x60;;
+  }
+
+  /**
+   * Generates the emoji picker config for overlay service.
+   * @param kind - Picker kind.
+   */
+  private getPickerConfig(kind: &#x27;footer&#x27; | &#x27;hover&#x27;) {
+    return { owner: this.pickerOwner(kind), userId: this.currentUserId, variant: kind &#x3D;&#x3D;&#x3D; &#x27;footer&#x27; ? &#x27;message-footer&#x27; as const : &#x27;message-hover&#x27; as const, alignRight: this.isCurrentUser, color: &#x27;#444df2&#x27;, onSelect: (emoji: string) &#x3D;&gt; this.onReactionPickerSelect(emoji) };
+  }
+
+  /**
+   * Closes all dialogs and popup windows inside this message card.
+   */
+  private closeAllPopups() {
+    this.closeTransientPopups();
+    this.showEditEmojiPicker &#x3D; false;
+  }
+
+  /**
+   * Splits a string into grapheme segments.
+   * @param text - The string to split.
+   */
+  private splitIntoGraphemes(text: string): string[] {
+    if (typeof Intl !&#x3D;&#x3D; &#x27;undefined&#x27; &amp;&amp; &#x27;Segmenter&#x27; in Intl) {
+      const segmenter &#x3D; new Intl.Segmenter(undefined, { granularity: &#x27;grapheme&#x27; });
+      return Array.from(segmenter.segment(text), ({ segment }) &#x3D;&gt; segment);
+    }
+
+    return Array.from(text);
+  }
+
+  /**
+   * Checks if a grapheme segment is an emoji.
+   * @param segment - Grapheme segment.
+   */
+  private isEmojiSegment(segment: string): boolean {
+    return this.regionalFlagRegex.test(segment) || this.emojiRegex.test(segment);
+  }
+
+  /**
+   * Converts a native emoji to unified hexadecimal format (e.g. 1F600).
+   * @param emoji - Native emoji.
+   */
+  private toUnified(emoji: string): string {
+    return Array.from(emoji)
+      .map(char &#x3D;&gt; char.codePointAt(0)?.toString(16).toUpperCase() ?? &#x27;&#x27;)
+      .filter(Boolean)
+      .join(&#x27;-&#x27;);
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'ReactionListItem.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

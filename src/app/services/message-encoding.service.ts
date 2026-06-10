@@ -6,9 +6,23 @@ import { Channel } from '../interfaces/channel.interface';
 @Injectable({
   providedIn: 'root',
 })
+/**
+ * Service that handles encoding and decoding of user and channel mentions in messages.
+ * It translates standard markup tags (e.g., `<@userId>`, `<#channelId>`) to/from a format
+ * using zero-width characters for clean presentation.
+ */
 export class MessageEncodingService {
+  /**
+   * The injected channelService instance.
+   */
   private channelSvc = inject(channelService);
 
+  /**
+   * Converts zero-width encoded mentions within a text string back into standard markup.
+   *
+   * @param text - The raw text containing zero-width character mentions.
+   * @returns The text formatted with markup tags (e.g., `<@userId>`).
+   */
   zeroWidthToMarkup(text: string): string {
     if (!text) return '';
     let result = this.replaceUserMentions(text);
@@ -16,6 +30,12 @@ export class MessageEncodingService {
     return result;
   }
 
+  /**
+   * Replaces user mentions (encoded using zero-width space characters) with `<@userId>` markup.
+   *
+   * @param text - The text to process.
+   * @returns The text with user markup tags.
+   */
   private replaceUserMentions(text: string): string {
     const userMentionRegex = /@([^\u200B]+)\u200B([\u200B\u200C\u200D]+)/g;
     return text.replace(userMentionRegex, (match, _name, zeroWidthId) => {
@@ -24,6 +44,12 @@ export class MessageEncodingService {
     });
   }
 
+  /**
+   * Replaces hashtag channel mentions with `<#channelId>` markup matching channel names.
+   *
+   * @param text - The text to process.
+   * @returns The text with channel markup tags.
+   */
   private replaceChannelMentions(text: string): string {
     let result = text;
     this.channelSvc.channels().forEach((ch) => {
@@ -35,6 +61,14 @@ export class MessageEncodingService {
     return result;
   }
 
+  /**
+   * Converts markup tags inside a text string into readable text containing zero-width encoded IDs.
+   *
+   * @param text - The text containing markup tags.
+   * @param users - An array of available User profiles.
+   * @param channels - An array of available Channels.
+   * @returns The text with zero-width encoded mentions.
+   */
   markupToZeroWidth(text: string, users: User[], channels: Channel[]): string {
     if (!text) return '';
     let result = this.replaceMarkupUsers(text, users);
@@ -42,6 +76,13 @@ export class MessageEncodingService {
     return result;
   }
 
+  /**
+   * Translates `<@userId>` markup tags into `@display_name\u200BencodedUserId` format.
+   *
+   * @param text - The text containing user markup tags.
+   * @param users - The list of current users.
+   * @returns The text with zero-width encoded user mentions.
+   */
   private replaceMarkupUsers(text: string, users: User[]): string {
     const userRegex = /<@([a-f0-9-]{36})>/gi;
     return text.replace(userRegex, (match, userId) => {
@@ -55,6 +96,13 @@ export class MessageEncodingService {
     });
   }
 
+  /**
+   * Translates `<#channelId>` markup tags into human-readable `#channelName` strings.
+   *
+   * @param text - The text containing channel markup tags.
+   * @param channels - The list of current channels.
+   * @returns The text with readable channel names.
+   */
   private replaceMarkupChannels(text: string, channels: Channel[]): string {
     const channelRegex = /<#([a-f0-9-]{36})>/gi;
     return text.replace(channelRegex, (match, channelId) => {
@@ -63,6 +111,12 @@ export class MessageEncodingService {
     });
   }
 
+  /**
+   * Encodes a standard UTF-8 string into a sequence of zero-width space characters.
+   *
+   * @param str - The string to encode (typically a UUID).
+   * @returns The encoded zero-width character string.
+   */
   encodeToZeroWidth(str: string): string {
     return str
       .split('')
@@ -76,6 +130,12 @@ export class MessageEncodingService {
       .join('\u200B');
   }
 
+  /**
+   * Decodes a zero-width space character sequence back into its original standard UTF-8 string.
+   *
+   * @param zeroWidthStr - The zero-width space string.
+   * @returns The decoded original string.
+   */
   decodeFromZeroWidth(zeroWidthStr: string): string {
     const clean = zeroWidthStr.replace(/[^\u200B\u200C\u200D]/g, '');
     if (!clean) return '';

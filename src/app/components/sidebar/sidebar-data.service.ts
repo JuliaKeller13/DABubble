@@ -7,42 +7,116 @@ import { User } from '../../interfaces/user.interface';
 import { Message } from '../../interfaces/message.interface';
 import { Channel } from '../../interfaces/channel.interface';
 
+/**
+ * Data structure containing loaded channels, users, history breakdowns, and unread counts for the sidebar.
+ */
 export interface SidebarData {
+  /**
+   * List of loaded channels.
+   */
   channels: Channel[];
+
+  /**
+   * List of all active/loaded user profiles.
+   */
   users: User[];
+
+  /**
+   * List of users with whom the current user has active direct message history.
+   */
   usersWithHistory: User[];
+
+  /**
+   * List of users with whom the current user does not have active direct message history.
+   */
   usersWithoutHistory: User[];
+
+  /**
+   * Map of user IDs to number of unread direct messages.
+   */
   unreadUsers: Record<string, number>;
+
+  /**
+   * Map of channel IDs to number of unread mention notifications.
+   */
   unreadChannels: Record<string, number>;
 }
 
 @Injectable({
   providedIn: 'root',
 })
+/**
+ * Service that fetches and computes sidebar datasets, sorting users and calculating unread notifications for direct chats and channel mentions.
+ */
 export class SidebarDataService {
+  /**
+   * Service managing channels data loading.
+   */
   private channelSvc = inject(channelService);
+
+  /**
+   * Service managing user profile retrieval.
+   */
   private userSvc = inject(userService);
+
+  /**
+   * Service managing user authentication session and state.
+   */
   private authSvc = inject(authService);
+
+  /**
+   * Service for direct messaging and channel messages actions.
+   */
   private messageSvc = inject(messageService);
 
+  /**
+   * Static representation of the DABubble Team placeholder user profile.
+   */
   private readonly TEAM_USER: User = {
     id: 'dabubble-team-local-id', display_name: 'DABubble-Team',
     email: 'team@dabubble.local', avatar_url: 'img/logo/Logo.svg', status: 'online',
   };
 
+  /**
+   * Safely retrieves a value from localStorage, checking if the window object is defined.
+   * 
+   * @param key The key to look up in localStorage.
+   * @returns The string value if found, or null.
+   */
   getSafeLocalStorageItem(key: string): string | null {
     if (typeof window !== 'undefined' && window.localStorage) return localStorage.getItem(key);
     return null;
   }
 
+  /**
+   * Safely writes a key-value pair to localStorage, checking if the window object is defined.
+   * 
+   * @param key The storage key.
+   * @param value The string value to store.
+   */
   setSafeLocalStorageItem(key: string, value: string): void {
     if (typeof window !== 'undefined' && window.localStorage) localStorage.setItem(key, value);
   }
 
+  /**
+   * Checks if the current user's ID tag is mentioned in a text message.
+   * 
+   * @param content The text content of the message.
+   * @param currentUserId The user ID to search for.
+   * @returns True if mentioned, false otherwise.
+   */
   isUserMentionedInText(content: string, currentUserId: string): boolean {
     return !!content && content.includes(`<@${currentUserId}>`);
   }
 
+  /**
+   * Asynchronously loads channels, users, compute unread counts, and splits direct message history for the sidebar.
+   * 
+   * @param sessionStartTime Timestamp when the current session started.
+   * @param activeChannelId Currently active channel ID, if any.
+   * @param activeDMUserId Currently active direct message partner user ID, if any.
+   * @returns A promise resolving to the computed SidebarData.
+   */
   async load(
     sessionStartTime: number,
     activeChannelId: string | undefined,
@@ -58,6 +132,14 @@ export class SidebarDataService {
     return { channels: fetchedChannels, users: fetchedUsers, usersWithHistory, usersWithoutHistory, unreadUsers, unreadChannels };
   }
 
+  /**
+   * Calculates unread channel mentions counts.
+   * 
+   * @param currentUserId ID of the current user.
+   * @param activeChannelId Currently open channel ID.
+   * @param sessionStartTime Current session start time fallback.
+   * @returns A map of channel IDs to mention count.
+   */
   private async computeUnreadChannels(
     currentUserId: string, activeChannelId: string | undefined, sessionStartTime: number,
   ): Promise<Record<string, number>> {
@@ -76,6 +158,14 @@ export class SidebarDataService {
     return unreadChanMap;
   }
 
+  /**
+   * Loads direct messages to compute unread counts and identify chat history users.
+   * 
+   * @param currentUserId ID of the current user.
+   * @param activeDMUserId Currently open DM partner user ID.
+   * @param sessionStartTime Current session start time fallback.
+   * @returns Object containing active chat partner IDs, unread maps, and guest status.
+   */
   private async computeDMData(
     currentUserId: string, activeDMUserId: string | undefined, sessionStartTime: number,
   ): Promise<{ partnerIdsSet: Set<string>; unreadUsers: Record<string, number>; isGuest: boolean }> {
@@ -94,6 +184,15 @@ export class SidebarDataService {
     return { partnerIdsSet, unreadUsers: unreadMap, isGuest };
   }
 
+  /**
+   * Iterates through all direct messages to identify partners, track latest message timestamps, and compute unread counts.
+   * 
+   * @param allDMs Array of DM message objects.
+   * @param currentUserId Current user ID.
+   * @param activeDMUserId Active DM partner ID.
+   * @param sessionStartTime Current session start time fallback.
+   * @returns Object with partner IDs set, unread counts map, and latest message time map.
+   */
   private processDMs(
     allDMs: Message[], currentUserId: string, activeDMUserId: string | undefined, sessionStartTime: number,
   ) {
@@ -113,6 +212,14 @@ export class SidebarDataService {
     return { partnerIdsSet, unreadMap, latestMessageTimeMap };
   }
 
+  /**
+   * Filters out users from the history set if the chat was explicitly closed/deleted by the user.
+   * 
+   * @param latestMessageTimeMap Map of partner IDs to latest message timestamps.
+   * @param partnerIdsSet Set to collect active partners.
+   * @param currentUserId Current user ID.
+   * @param dbDeletions Database log of closed/deleted chat timestamps.
+   */
   private filterClosedChats(
     latestMessageTimeMap: Map<string, number>,
     partnerIdsSet: Set<string>,
@@ -129,6 +236,15 @@ export class SidebarDataService {
     });
   }
 
+  /**
+   * Splits user list into those with active chat history and those without, inserting a team user placeholder for guests if applicable.
+   * 
+   * @param fetchedUsers Array of all loaded user profiles.
+   * @param partnerIdsSet Set of user IDs with active chats.
+   * @param currentUserId Current user ID.
+   * @param isGuest Boolean indicating if current user is guest.
+   * @returns Object containing split user arrays.
+   */
   private splitUsers(
     fetchedUsers: User[], partnerIdsSet: Set<string>, currentUserId: string, isGuest: boolean,
   ): { usersWithHistory: User[]; usersWithoutHistory: User[] } {

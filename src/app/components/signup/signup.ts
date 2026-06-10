@@ -9,4 +9,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './signup.html',
   styleUrl: './signup.scss'
 })
+/**
+ * Sign-up routing link component used to direct users to the registration page.
+ */
 export class Signup {}

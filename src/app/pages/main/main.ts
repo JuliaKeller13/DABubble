@@ -15,25 +15,43 @@ import { ThreadService } from '../../services/thread.service';
   styleUrl: './main.scss'
 })
 
+/**
+ * Main component representing the application's workspace layout.
+ * It manages the responsive state of the sidebar, chat area, and thread view
+ * based on screen width and route state.
+ */
 export class MainComponent implements OnInit {
+  /** Indicates whether the sidebar is currently closed. */
   isSidebarClosed = false;
+  /** Flag to track if the component is loaded for the first time, used for initial layout setup. */
   private isInitialLoad = true;
   
+  /** Service to manage state and actions for the message thread view. */
   public threadSvc = inject(ThreadService);
+  /** Angular Router to read and check current active route path names. */
   private router = inject(Router);
 
-  
+  /**
+   * Lifecycle hook that executes after component initialization.
+   * Performs the initial screen size check.
+   */
   ngOnInit() {
     this.checkScreenSize();
   }
 
-  
+  /**
+   * Host listener for window resize events.
+   * Updates the responsive layout settings whenever the screen size changes.
+   */
   @HostListener('window:resize')
   onResize() {
     this.checkScreenSize();
   }
 
-  
+  /**
+   * Evaluates screen width and route state to determine the visibility of the sidebar
+   * and thread view. Ensures an optimal user experience across mobile, tablet, and desktop viewports.
+   */
   private checkScreenSize() {
     const width = window.innerWidth;
     const isChatActive = this.router.url.includes('/main/channel/') || 
@@ -68,7 +86,12 @@ export class MainComponent implements OnInit {
     }
   }
 
-  
+  /**
+   * Handles toggle actions from the sidebar.
+   * Updates the sidebar closed state and closes the thread if screen width requires it.
+   * 
+   * @param isClosed - Indicates whether the sidebar should be closed.
+   */
   onSidebarToggle(isClosed: boolean) {
     this.isSidebarClosed = isClosed;
     if (window.innerWidth <= 1440) {
@@ -78,7 +101,10 @@ export class MainComponent implements OnInit {
     }
   }
 
-  
+  /**
+   * Handles back actions initiated from the header.
+   * Closes the active thread if open, or reopens the sidebar if the thread is already closed.
+   */
   onHeaderBack() {
     if (this.threadSvc.isThreadOpen()) {
       this.threadSvc.closeThread();
