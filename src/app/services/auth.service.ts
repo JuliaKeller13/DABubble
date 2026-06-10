@@ -335,8 +335,8 @@ export class authService {
   private async clearUserState(): Promise<void> {
     await this.presenceSvc.cleanup();
     this.currentUserProfileSignal.set(null);
-    this.channelSvc.selectChannel(null);
-    this.userSvc.selectDirectChatUser(null);
+    this.channelSvc.clearState();
+    this.userSvc.clearState();
   }
 
   /**
@@ -355,14 +355,20 @@ export class authService {
       .from('profiles').select('*').eq('id', user.id).maybeSingle();
     this.markEnd('syncProfileWithDatabase.fetchProfile', fetchStart);
     if (fetchError) { console.error('Error loading profile:', fetchError); return null; }
+    
+    let profile: UserProfile | null = null;
     if (!existing) {
-      const createdProfile = await this.createProfile(user.id, displayName, email, avatarUrl);
-      this.markEnd('syncProfileWithDatabase.total', syncStart);
-      return createdProfile;
+      profile = await this.createProfile(user.id, displayName, email, avatarUrl);
+    } else {
+      profile = this.syncExistingProfile(user.id, existing as UserProfile, displayName, avatarUrl);
     }
-    const syncedProfile = this.syncExistingProfile(user.id, existing as UserProfile, displayName, avatarUrl);
+
+    if (displayName === 'Gast' || (email && email.includes('guest-')) || user.is_anonymous) {
+      await this.addGuestToEntwicklerteamChannel(user.id);
+    }
+
     this.markEnd('syncProfileWithDatabase.total', syncStart);
-    return syncedProfile;
+    return profile;
   }
 
   /**
@@ -422,8 +428,62 @@ export class authService {
       .insert({ id, display_name: displayName, email, avatar_url: avatarUrl, status: 'online' })
       .select().single();
     if (error) { console.error('Error creating profile:', error); return null; }
+
     this.userSvc.clearCache();
     return newProfile as UserProfile;
+  }
+
+  /**
+   * Automatically adds a guest user to the "Entwicklerteam" channel.
+   *
+   * @param userId - The guest user ID.
+   */
+  private async addGuestToEntwicklerteamChannel(userId: string): Promise<void> {
+    try {
+      // 1. Find the channel named "Entwicklerteam"
+      const { data: channel, error: channelError } = await this.supabaseSvc.supabase
+        .from('channels')
+        .select('id')
+        .eq('name', 'Entwicklerteam')
+        .maybeSingle();
+      if (channelError) {
+        console.error('Error fetching Entwicklerteam channel for guest auto-join:', channelError);
+        return;
+      }
+      if (!channel) {
+        console.warn('Channel "Entwicklerteam" not found in the database.');
+        return;
+      }
+
+      // 2. Check if the user is already a member of this channel
+      const { data: existingMember, error: memError } = await this.supabaseSvc.supabase
+        .from('channel_members')
+        .select('channel_id')
+        .eq('channel_id', channel.id)
+        .eq('user_id', userId)
+        .maybeSingle();
+      if (memError) {
+        console.error('Error checking existing membership for guest in Entwicklerteam:', memError);
+        return;
+      }
+
+      // 3. If not already a member, insert the membership
+      if (!existingMember) {
+        const { error: insertError } = await this.supabaseSvc.supabase
+          .from('channel_members')
+          .insert({
+            channel_id: channel.id,
+            user_id: userId,
+          });
+        if (insertError) {
+          console.error('Error adding guest to Entwicklerteam:', insertError);
+        } else {
+          console.info(`Successfully added guest user ${userId} to channel Entwicklerteam`);
+        }
+      }
+    } catch (e) {
+      console.error('Exception in addGuestToEntwicklerteamChannel:', e);
+    }
   }
 
   /**

@@ -127,6 +127,17 @@ export class channelService {
   }
 
   /**
+   * Resets all cached channels, signals, and states of the service.
+   */
+  clearState() {
+    this.channelsListCache = [];
+    this.activeChannelSignal.set(null);
+    this.channelsSignal.set([]);
+    this.activeChannelMembersSignal.set([]);
+    this.isNewMessageModeActive.set(false);
+  }
+
+  /**
    * Loads user channels from cache or fetches them from the database.
    * 
    * @param forceRefresh - If true, bypasses the cache and forces a database query.

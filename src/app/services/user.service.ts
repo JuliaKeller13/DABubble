@@ -55,6 +55,16 @@ export class userService {
     }
 
     /**
+     * Resets all cached user lists, maps, active promises, and signals.
+     */
+    clearState() {
+        this.usersCache.clear();
+        this.usersListCache = null;
+        this.usersListPromise = null;
+        this.activeDirectChatUserSignal.set(null);
+    }
+
+    /**
      * Filters out duplicate guest users in a list, ensuring guest details do not clutter the interface.
      * Keeps the current guest user and guests who have active conversations with the current user.
      * 
