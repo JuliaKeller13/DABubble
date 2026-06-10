@@ -268,11 +268,16 @@ export class ThreadViewComponent implements OnDestroy {
     const userId = this.currentUserId;
     if (!userId) return;
 
+    const recipientId = parentMsg.recipient_id
+      ? (parentMsg.recipient_id === userId ? parentMsg.sender_id : parentMsg.recipient_id)
+      : undefined;
+
     const newReply = await this.messageSvc.sendMessage(
       content, 
       userId, 
       parentMsg.channel_id || '', 
-      parentMsg.id
+      parentMsg.id,
+      recipientId
     );
 
     if (newReply) {

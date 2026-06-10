@@ -103,12 +103,14 @@ export class messageService {
     senderId: string,
     channelId: string,
     parentMessageId?: string,
+    recipientId?: string,
   ): Promise<Message | null> {
     try {
       const parsedContent = this.zeroWidthToMarkup(content);
       const payload: any = { content: parsedContent, sender_id: senderId };
       if (channelId) payload.channel_id = channelId;
       if (parentMessageId) payload.parent_id = parentMessageId;
+      if (recipientId) payload.recipient_id = recipientId;
       const { data, error } = await this.supabaseSvc.supabase
         .from('messages').insert(payload).select().single();
       if (error) { console.error('Error sending message:', error.message); throw error; }
