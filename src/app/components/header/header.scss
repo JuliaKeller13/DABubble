@@ -94,7 +94,7 @@
     padding: 0;
     z-index: $z-index-header-sidebar;
     @include flex(column, nowrap, flex-start, stretch);
-    background-color: var(--white);
+    background-color: var(--bg-color);
 
     .header__left {
       width: 100%;

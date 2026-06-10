@@ -37,6 +37,7 @@
 .profile-menu-avatar-wrapper {
   @include flex(row, nowrap, center, center);
   position: relative;
+  z-index: $z-index-confirm-dialog;
 }
 
 .profile-menu-avatar {
