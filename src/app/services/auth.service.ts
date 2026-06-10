@@ -258,16 +258,23 @@ export class authService {
   }
 
   /**
-   * Clears Supabase-related authentication tokens from localStorage.
+   * Clears Supabase-related authentication tokens from localStorage and sessionStorage.
    */
   private clearStaleTokens(): void {
     if (typeof window === 'undefined') return;
-    const keysToRemove: string[] = [];
+    const keysToRemoveLocal: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (key?.startsWith('sb-')) keysToRemove.push(key);
+      if (key?.startsWith('sb-')) keysToRemoveLocal.push(key);
     }
-    keysToRemove.forEach((key) => localStorage.removeItem(key));
+    keysToRemoveLocal.forEach((key) => localStorage.removeItem(key));
+
+    const keysToRemoveSession: string[] = [];
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key?.startsWith('sb-')) keysToRemoveSession.push(key);
+    }
+    keysToRemoveSession.forEach((key) => sessionStorage.removeItem(key));
   }
 
   /**
