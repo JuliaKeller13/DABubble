@@ -48,7 +48,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "/angular-projects/dabubble/"
+              "baseHref": "/projects/dabubble/"
             },
             "development": {
               "optimization": false,
