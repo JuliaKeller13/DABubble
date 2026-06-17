@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, inject, ElementRef, OnInit, Cha
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { EmojiComponent, EmojiService } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { Message } from '../../interfaces/message.interface';
 import { messageService } from '../../services/message.service';
 import { ProfileDialogService } from '../../services/profile-dialog.service';
@@ -137,6 +137,8 @@ export class MessageComponent implements OnInit {
   private threadSvc = inject(ThreadService);
   /** Injected EmojiRecentService. */
   private emojiRecentSvc = inject(EmojiRecentService);
+  /** Injected EmojiService for resolving native emojis to emoji-mart data. */
+  private emojiSvc = inject(EmojiService);
   /** Injected EmojiPickerOverlayService. */
   private pickerSvc = inject(EmojiPickerOverlayService);
   /** Injected ChangeDetectorRef. */
@@ -261,7 +263,7 @@ export class MessageComponent implements OnInit {
       if (!this.isEmojiSegment(seg)) { buffer += seg; continue; }
       if (buffer) parts.push({ type: 'text', text: buffer });
       buffer = '';
-      parts.push({ type: 'emoji', unified: this.toUnified(seg) });
+      parts.push({ type: 'emoji', unified: this.resolveUnified(seg) });
     }
     if (buffer) parts.push({ type: 'text', text: buffer });
     return parts;
@@ -272,7 +274,7 @@ export class MessageComponent implements OnInit {
    * @param emoji - The native emoji string.
    */
   toEmojiKey(emoji: string): string {
-    return this.toUnified(emoji);
+    return this.resolveUnified(emoji);
   }
   
   /**
@@ -697,5 +699,51 @@ export class MessageComponent implements OnInit {
       .map(char => char.codePointAt(0)?.toString(16).toUpperCase() ?? '')
       .filter(Boolean)
       .join('-');
+  }
+
+  /** Reverse lookup map from native emoji to emoji-mart's exact unified code. */
+  private static nativeUnifiedMap: Map<string, string> | null = null;
+
+  /**
+   * Resolves a native emoji to the exact unified code used by emoji-mart's data set.
+   * Falls back to a variation-selector-stripped lookup and finally the raw codepoints,
+   * preventing emojis (e.g. ✋) from rendering empty when their stored unified omits FE0F.
+   * @param emoji - Native emoji character.
+   */
+  private resolveUnified(emoji: string): string {
+    const map = this.getNativeUnifiedMap();
+    return map.get(emoji)
+      ?? map.get(emoji.replace(/\uFE0F/g, ''))
+      ?? this.toUnified(emoji);
+  }
+
+  /**
+   * Lazily builds and caches a map from native emoji (and its FE0F-stripped form)
+   * to the unified code defined in emoji-mart's data set, including skin variations.
+   */
+  private getNativeUnifiedMap(): Map<string, string> {
+    if (MessageComponent.nativeUnifiedMap) return MessageComponent.nativeUnifiedMap;
+    const map = new Map<string, string>();
+    const add = (unified: string | undefined): void => {
+      if (!unified) return;
+      const native = this.unifiedToNative(unified);
+      if (!map.has(native)) map.set(native, unified);
+      const stripped = native.replace(/\uFE0F/g, '');
+      if (stripped && !map.has(stripped)) map.set(stripped, unified);
+    };
+    for (const data of this.emojiSvc.emojis) {
+      add(data.unified);
+      for (const variation of data.skinVariations ?? []) add(variation.unified);
+    }
+    MessageComponent.nativeUnifiedMap = map;
+    return map;
+  }
+
+  /**
+   * Converts a unified hexadecimal code (e.g. 270B-FE0F) back to its native emoji string.
+   * @param unified - Unified hexadecimal code.
+   */
+  private unifiedToNative(unified: string): string {
+    return String.fromCodePoint(...unified.split('-').map(part => parseInt(part, 16)));
   }
 }
