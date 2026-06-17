@@ -432,7 +432,7 @@ export class authService {
   ): Promise<UserProfile | null> {
     const { data: newProfile, error } = await this.supabaseSvc.supabase
       .from('profiles')
-      .insert({ id, display_name: displayName, email, avatar_url: avatarUrl, status: 'online' })
+      .upsert({ id, display_name: displayName, email, avatar_url: avatarUrl, status: 'online' }, { onConflict: 'id' })
       .select().single();
     if (error) { console.error('Error creating profile:', error); return null; }
 
@@ -639,7 +639,7 @@ export class authService {
     const trimmedEmail = email.trim();
     const { data, error } = await this.supabaseSvc.supabase.auth.signUp({
       email: trimmedEmail, password,
-      options: { data: { display_name: name, full_name: name } },
+      options: { data: { display_name: name, full_name: name, avatar_url: avatarUrl } },
     });
     if (error || !data.user) return { error, data };
     const { error: profileError } = await this.supabaseSvc.supabase
@@ -671,8 +671,8 @@ export class authService {
     if (error) { console.error('Error deleting current user account:', error); return false; }
     await this.clearUserState();
     this.currentUserSignal.set(null);
-    const { error: signOutError } = await this.supabaseSvc.supabase.auth.signOut();
-    if (signOutError) console.warn('Account deleted, but local sign-out reported an error:', signOutError);
+    this.currentUserProfileSignal.set(null);
+    this.clearStaleTokens();
     return true;
   }
 }
