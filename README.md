@@ -1,147 +1,173 @@
 <div align="center">
 
-# Julia Keller
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/img/logo/logo_with_text_white.svg">
+  <source media="(prefers-color-scheme: light)" srcset="public/img/logo/logo_with_text.svg">
+  <img src="public/img/logo/logo_with_text.svg" alt="DABubble logo" width="260">
+</picture>
 
-### Full-Stack Developer
+# DABubble
 
-**Angular & TypeScript | Python & Django REST Framework**
+**Real-time team communication built with Angular, TypeScript and Supabase.**
 
-I build user-focused web applications and maintainable APIs - from responsive interfaces to authentication, data processing and backend architecture.
+*A collaborative frontend project developed by a two-person team during the Developer Akademie training program.*
 
-<p>
-  <a href="https://juliakeller-dev.de/" style="text-decoration: none;"><img src="https://img.shields.io/badge/Portfolio-Visit%20Website-23566A?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Visit my portfolio" /></a>
-  <a href="mailto:juliakeller.vk@gmail.com" style="text-decoration: none;"><img src="https://img.shields.io/badge/Contact-Email%20Me-333B46?style=for-the-badge&logo=gmail&logoColor=white" alt="Contact me by email" /></a>
-</p>
+![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase&logoColor=white)
+![SCSS](https://img.shields.io/badge/SCSS-CC6699?logo=sass&logoColor=white)
+
+[**Live Demo**](https://dabubble.juliakeller-dev.de/) · [**My GitHub Fork**](https://github.com/JuliaKeller13/DABubble) · [**Team Repository**](https://github.com/JensBaumannDev/DABubble)
 
 </div>
 
 ---
 
-## About Me
+## Table of Contents
 
-I'm a full-stack developer working with **Angular and TypeScript** on the frontend and **Python, Django and Django REST Framework** on the backend.
+- [About the Project](#about-the-project)
+- [Key Features](#key-features)
+- [My Contributions](#my-contributions)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Team & Credits](#team--credits)
 
-I enjoy turning requirements into structured, reliable applications, with particular attention to **clean architecture, API design, authentication, testing and intuitive user experiences**.
+---
 
-My recent backend work includes video streaming, AI-assisted quiz generation, marketplace workflows and collaborative task management.
+## About the Project
 
-## Featured Projects
+**DABubble** is a Slack-inspired web application for team communication. It provides real-time conversations in channels and direct messages, including threads and message reactions. Angular powers the frontend, while Supabase provides authentication, PostgreSQL storage and real-time updates.
 
-<table>
-<tr>
-<td width="50%" valign="top">
+DABubble was **developed collaboratively**, not as an individual project. This repository is my fork of the shared codebase. The sections below distinguish the application's overall functionality from the parts I personally implemented or improved.
 
-<p><strong>Videoflix | Backend</strong></p>
-<p>Video-streaming backend with secure authentication, automated video processing, thumbnails and adaptive HLS playback.</p>
-<p><strong>Highlights:</strong> JWT cookies, email verification, background jobs, HLS in multiple resolutions.</p>
-<p><strong>Stack:</strong> Python | Django REST Framework | PostgreSQL | Redis | RQ | FFmpeg | Docker</p>
-<p><a href="https://github.com/JuliaKeller13/videoflix_backend"><strong>Explore backend →</strong></a></p>
+## Key Features
 
-</td>
-<td width="50%" valign="top">
+The **team-built application** includes:
 
-<p><strong>Quizly | Backend</strong></p>
-<p>Backend that turns YouTube video content into AI-generated quizzes through an automated processing pipeline.</p>
-<p><strong>Highlights:</strong> Audio extraction, local transcription, AI quiz generation and response validation.</p>
-<p><strong>Stack:</strong> Python | Django REST Framework | Whisper | Gemini | yt-dlp | FFmpeg</p>
-<p><a href="https://github.com/JuliaKeller13/quizly-backend"><strong>Explore backend →</strong></a></p>
+- **Real-time messaging:** channel conversations, direct messages and threaded replies.
+- **Channels and members:** organized conversations with channel membership management.
+- **User authentication:** registration, sign-in, guest access and password recovery.
+- **Profiles:** avatar selection, profile editing and account management.
+- **Message interactions:** emoji reactions, emoji picker, mentions and message editing.
+- **Search and presence:** tools for finding conversations and displaying user status.
+- **Responsive interface:** layouts and interactions designed for different screen sizes.
 
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
+## My Contributions
 
-<p><strong>Coderr | Backend</strong></p>
-<p>REST API for a service marketplace connecting customers and business users.</p>
-<p><strong>Highlights:</strong> User profiles, service offers, ordering workflows, reviews and statistics.</p>
-<p><strong>Stack:</strong> Python | Django | Django REST Framework | Token Authentication</p>
-<p>
-<a href="https://coderr.juliakeller-dev.de/index.html">Live demo</a> |
-<a href="https://github.com/JuliaKeller13/coderr_backend">Explore backend</a>
-</p>
+My work focused primarily on **authentication, account management and interactive messaging features**. The following contributions are supported by commits in the shared project history:
 
-</td>
-<td width="50%" valign="top">
+| Area | My work |
+| --- | --- |
+| Authentication | Built and improved login and sign-up flows, guest-login behavior, session handling and route protection. |
+| Password recovery | Implemented forgot-password and password-reset pages, forms, routing and associated authentication integration. |
+| Profiles & account management | Worked on avatar selection, profile editing and the account-deletion flow, including Supabase Edge Function logic for user-data cleanup. |
+| Messaging interactions | Implemented and refined emoji picker integration, recent emoji handling, message reactions and reaction tooltips. |
+| UI quality | Improved responsive layouts, dialog interactions, loading feedback, animations and related usability details. |
 
-<p><strong>DABubble | Frontend</strong></p>
-<p>Team messaging application featuring channels, direct messages and real-time communication.</p>
-<p><strong>Stack:</strong> Angular | TypeScript | SCSS | Supabase | PostgreSQL</p>
-<p>
-<a href="https://dabubble.juliakeller-dev.de/">Live demo</a> |
-<a href="https://github.com/JuliaKeller13/DABubble">Source code</a>
-</p>
+**Selected implementation commits:**
 
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
+- [Forgot-password flow](https://github.com/JuliaKeller13/DABubble/commit/edf55c7b86) and [password-reset implementation](https://github.com/JuliaKeller13/DABubble/commit/1541b9fe79)
+- [Profile editing](https://github.com/JuliaKeller13/DABubble/commit/3c9ab17d60) and [account-deletion functionality](https://github.com/JuliaKeller13/DABubble/commit/07a80688f3)
+- [Emoji picker integration](https://github.com/JuliaKeller13/DABubble/commit/4cdb085823) and [route guard](https://github.com/JuliaKeller13/DABubble/commit/11feb66c29)
 
-<p><strong>Join | Frontend</strong></p>
-<p>Kanban-style task-management application with boards, drag-and-drop tasks and collaborative workflows.</p>
-<p><strong>Stack:</strong> Angular | TypeScript | SCSS | Supabase</p>
-<p>
-<a href="https://join.juliakeller-dev.de/login">Live demo</a> |
-<a href="https://github.com/JuliaKeller13/Join">Source code</a>
-</p>
-
-</td>
-<td width="50%" valign="top">
-
-<p><strong>El Pollo Loco | JavaScript Game</strong></p>
-<p>Object-oriented browser game with character movement, collisions and interactive gameplay.</p>
-<p><strong>Stack:</strong> JavaScript | HTML | CSS | Object-Oriented Programming</p>
-<p>
-<a href="https://elpolloloco.juliakeller-dev.de/">Live demo</a> |
-<a href="https://github.com/JuliaKeller13/el-pollo-loco">Source code</a>
-</p>
-
-</td>
-</tr>
-</table>
+These examples describe **my contribution to the team project**, not exclusive authorship of the entire application.
 
 ## Tech Stack
 
-<div align="center">
+| Category | Technologies |
+| --- | --- |
+| Frontend | Angular 21, TypeScript, Angular Signals |
+| UI & styling | HTML, SCSS, Angular Material, Angular CDK |
+| Backend services | Supabase Authentication, PostgreSQL, Supabase Realtime |
+| Serverless functionality | Supabase Edge Functions (Deno / TypeScript) |
+| Messaging UI | `@ctrl/ngx-emoji-mart` |
+| Development & tests | npm, Git, Vitest, jsdom, Prettier |
 
-**Frontend**
+## Getting Started
 
-![Angular](https://img.shields.io/badge/Angular-DD0031?style=flat-square&logo=angular&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
-![SCSS](https://img.shields.io/badge/SCSS-CC6699?style=flat-square&logo=sass&logoColor=white)
+### Prerequisites
 
-**Backend & Data**
+- Node.js and npm versions compatible with Angular 21.
+- Access to a configured Supabase project with the database tables and policies required by DABubble.
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![Django](https://img.shields.io/badge/Django-092E20?style=flat-square&logo=django&logoColor=white)
-![Django REST Framework](https://img.shields.io/badge/Django%20REST%20Framework-A30000?style=flat-square)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)
+### 1. Clone this fork
 
-**Tools & Practices**
+```bash
+git clone https://github.com/JuliaKeller13/DABubble.git
+cd DABubble
+```
 
-![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![REST APIs](https://img.shields.io/badge/REST%20APIs-23566A?style=flat-square)
-![Automated Testing](https://img.shields.io/badge/Automated%20Testing-333B46?style=flat-square)
+### 2. Install dependencies
 
-</div>
+```bash
+npm install
+```
 
-## More Projects
+### 3. Configure Supabase
 
-- [Kanmind Backend](https://github.com/JuliaKeller13/Kanmind_backend) — collaborative board and task-management REST API.
-- [Pokédex](https://github.com/JuliaKeller13/pokedex) — interactive PokéAPI explorer.
-- [Portfolio](https://github.com/JuliaKeller13/portfolio) — my personal Angular website.
-- [All repositories](https://github.com/JuliaKeller13?tab=repositories) — additional projects and learning work.
+Configure your own Supabase project credentials in `src/environments/environment.ts` using the configuration keys expected by the application:
 
----
+```typescript
+export const environment = {
+  supabaseUrl: 'YOUR_SUPABASE_URL',
+  supabaseKey: 'YOUR_SUPABASE_ANON_KEY',
+};
+```
 
-<div align="center">
+Use a **public anon/publishable key** for frontend access, never a Supabase `service_role` key. Setting the credentials alone does not create the required database schema or access policies.
 
-**Explore my work:** [juliakeller-dev.de](https://juliakeller-dev.de/) | [GitHub](https://github.com/JuliaKeller13) | [Email](mailto:juliakeller.vk@gmail.com)
+### 4. Run locally
 
-<sub>Selected backend projects were developed as part of the Developer Akademie curriculum. Where frontends were provided for these projects, attribution is included in the respective repositories.</sub>
+```bash
+npm start
+```
 
-</div>
+Open `http://localhost:4200/`.
+
+### 5. Run tests
+
+```bash
+npm test
+```
+
+### Optional: generate code documentation
+
+```bash
+npm run compodoc
+```
+
+## Project Structure
+
+```text
+DABubble/
+├── public/                  # Images, icons and branding
+├── src/
+│   ├── app/
+│   │   ├── components/      # Chat, messages, profile dialogs and shared UI
+│   │   ├── guards/          # Protected-route access
+│   │   ├── interfaces/      # Application data models
+│   │   ├── pages/           # Authentication and application pages
+│   │   └── services/        # Authentication, messaging and Supabase integration
+│   ├── environments/       # Frontend environment configuration
+│   └── styles/             # Shared SCSS styles
+├── supabase/
+│   └── functions/
+│       └── delete-account/ # Account deletion Edge Function
+├── package.json
+└── README.md
+```
+
+## Team & Credits
+
+DABubble was built as a **team project** during the [Developer Akademie](https://developerakademie.com/) training program.
+
+| Contributor | GitHub | LinkedIn |
+| --- | --- | --- |
+| **Jens Baumann** | [@JensBaumannDev](https://github.com/JensBaumannDev) | [Jens Baumann](https://www.linkedin.com/in/jens-baumann-7a6866315/) |
+| **Julia Keller** | [@JuliaKeller13](https://github.com/JuliaKeller13) | [Julia Keller](https://www.linkedin.com/in/julia-keller-970409389/) |
+
+**Shared team repository:** [JensBaumannDev/DABubble](https://github.com/JensBaumannDev/DABubble)  
+**My fork:** [JuliaKeller13/DABubble](https://github.com/JuliaKeller13/DABubble)
+
+The project was created as part of Developer Akademie's training program. Project assets and materials may be subject to the program's applicable terms and licenses.
